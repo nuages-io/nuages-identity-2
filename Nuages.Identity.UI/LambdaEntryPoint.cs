@@ -46,6 +46,33 @@ namespace Nuages.Identity.UI
         /// <param name="builder"></param>
         protected override void Init(IHostBuilder builder)
         {
+            builder.ConfigureAppConfiguration((_, configBuilder) =>
+            {
+                configBuilder.AddJsonFile("appsettings.prod.json", true, true);
+
+                var name = Environment.GetEnvironmentVariable("Nuages__Identity__StackName");
+
+                if (name != null)
+                {
+                    configBuilder.AddSystemsManager(configureSource =>
+                    {
+                        // Parameter Store prefix to pull configuration data from.
+                        configureSource.Path = $"/{name}/UI";
+
+                        // Reload configuration data every 5 minutes.
+                        configureSource.ReloadAfter = TimeSpan.FromMinutes(15);
+
+                        // Configure if the configuration data is optional.
+                        configureSource.Optional = true;
+
+                        configureSource.OnLoadException += _ =>
+                        {
+                            // Add custom error handling. For example, look at the exceptionContext.Exception and decide
+                            // whether to ignore the error or tell the provider to attempt to reload.
+                        };
+                    });
+                }
+            });
         }
     }
 }
