@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI", "Nuages.Identity.UI\Nuages.Identity.UI.csproj", "{60D3AE30-4F18-495F-B0DB-220D7AA7A588}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60D3AE30-4F18-495F-B0DB-220D7AA7A588}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60D3AE30-4F18-495F-B0DB-220D7AA7A588}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60D3AE30-4F18-495F-B0DB-220D7AA7A588}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60D3AE30-4F18-495F-B0DB-220D7AA7A588}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,16 @@
+/*! @import */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    .was-validated input:invalid {
+        @apply mt-1 block w-full border border-dashed rounded-md border-red-600 shadow-sm focus:border-red-600 focus:ring focus:ring-red-200 focus:ring-opacity-50;
+    }
+    
+    .text-box
+    {
+        @apply appearance-none block w-full px-3 py-2 border  border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
+    }
+
+}

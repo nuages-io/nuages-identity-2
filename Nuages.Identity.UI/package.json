@@ -1,0 +1,22 @@
+{
+  "name": "Nuages.Identity.UI",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css:build": "npx tailwindcss-cli@latest build -i ./wwwroot/css/tailwind.css -o ./wwwroot/css/tailwind-output.css",
+    "css:build:prod": "NODE_ENV=production npx tailwindcss-cli@latest build -i ./wwwroot/css/tailwind.css -o ./wwwroot/css/tailwind-output.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.4.0",
+    "@tailwindcss/typography": "^0.5.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.5",
+    "tailwindcss": "3.0.6",
+    "tailwindcss-cli": "^0.1.2"
+  }
+}
