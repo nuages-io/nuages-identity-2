@@ -14,23 +14,23 @@ public partial class AuthorizationController
     {
         if (request.IsPasswordGrantType())
         {
-            var user = await _userManager.FindAsync(request.Username!);
-            if (user.FindMode == FindUserMode.NotFound)
-            {
-                var properties = new AuthenticationProperties(new Dictionary<string, string?>
-                {
-                    [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-                    [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
-                        "The username/password couple is invalid."
-                });
-
-                return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-            }
+            // var user = await _userManager.FindByNameAsync(request.Username!);
+            // if (user == null)
+            // {
+            //     var properties = new AuthenticationProperties(new Dictionary<string, string?>
+            //     {
+            //         [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
+            //         [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+            //             "The username/password couple is invalid."
+            //     });
+            //
+            //     return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            // }
 
             // Validate the username/password parameters and ensure the account is not locked out.
             var result =
-                await _signInManager.CheckPasswordSignInAsync(user.User!, request.Password!,
-                    true);
+                await _signInManager.PasswordSignInAsync(request.Username!, request.Password!,
+                    true, true);
             if (!result.Succeeded)
             {
                 var properties = new AuthenticationProperties(new Dictionary<string, string?>
@@ -43,9 +43,11 @@ public partial class AuthorizationController
                 return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
 
+            var user = await _userManager.FindByNameAsync(request.Username!);
+            
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.
-            var principal = await _signInManager.CreateUserPrincipalAsync(user.User!);
+            var principal = await _signInManager.CreateUserPrincipalAsync(user);
 
             // Set the list of scopes granted to the client application.
             principal.SetScopes(new[]

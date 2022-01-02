@@ -1,3 +1,6 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
+using Nuages.Identity.UI.Models;
 using OpenIddict.Abstractions;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
@@ -6,12 +9,16 @@ namespace Nuages.Identity.UI.OpenidDict;
 public class OpenIdDictInitializeWorker : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
-
+   
     public OpenIdDictInitializeWorker(IServiceProvider serviceProvider)
-        => _serviceProvider = serviceProvider;
+    {
+        _serviceProvider = serviceProvider;
+       
+    }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+       
         using var scope = _serviceProvider.CreateScope();
 
         

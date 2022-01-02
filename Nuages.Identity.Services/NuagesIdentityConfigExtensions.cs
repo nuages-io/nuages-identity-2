@@ -11,10 +11,13 @@ public static class NuagesIdentityConfigExtensions
     {
 
         builder.Services.AddScoped(typeof(NuagesUserManager<>).MakeGenericType(builder.UserType));
-        builder.Services.AddScoped(typeof(NuagesSignInManager<>).MakeGenericType(builder.UserType));   
+        builder.Services.AddScoped(typeof(NuagesSignInManager<>).MakeGenericType(builder.UserType));
+
+        builder.Services.AddScoped<ILookupProtector, LookupProtector>();
+        builder.Services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
         
         //builder.Services.TryAddScoped<NuagesUserManager<TUser>>();
-       // builder.Services.TryAddScoped<NuagesSignInManager<TUser>>();
+        // builder.Services.TryAddScoped<NuagesSignInManager<TUser>>();
         //services.TryAddScoped<RoleManager<TRole>>();
     }
 }

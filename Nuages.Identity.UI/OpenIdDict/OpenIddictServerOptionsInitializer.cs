@@ -105,11 +105,11 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
     // }
     public void Configure(OpenIddictServerOptions options)
     {
-        throw new NotImplementedException();
+       // throw new NotImplementedException();
     }
 
     public void Configure(string name, OpenIddictServerOptions options)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }

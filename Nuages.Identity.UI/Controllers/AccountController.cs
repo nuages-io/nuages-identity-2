@@ -44,11 +44,11 @@ public class AccountController
 
         if (result == SignInResult.Success)
         {
-            var findResult = await _userManager.FindAsync(model.UserNameOrEmail);
-            if (findResult.User == null)
+            var user = await _userManager.FindByNameAsync(model.UserNameOrEmail);
+            if (user == null)
                 throw new NotAuthorizedException();
                     
-            await _signInManager.SignInAsync(findResult.User, new AuthenticationProperties{ IsPersistent = model.RememberMe});
+            await _signInManager.SignInAsync(user, new AuthenticationProperties{ IsPersistent = model.RememberMe});
                 
             return new LoginResultModel
             {

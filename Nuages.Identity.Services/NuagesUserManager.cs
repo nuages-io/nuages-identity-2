@@ -15,29 +15,6 @@ public class NuagesUserManager<TUser> : UserManager<TUser>  where TUser : class
     {
     }
 
-    public async Task<FoundResult<TUser>> FindAsync(string modelUserNameOrEmail)
-    {
-        throw new NotImplementedException();
-    }
+  
 }
 
-
-public class FoundResult<TUser> where TUser : class
-{
-    public FoundResult(TUser? user, FindUserMode findMode= FindUserMode.NotFound)
-    {
-        User = user;
-        FindMode = findMode;
-    }
-        
-    public TUser? User { get; set; }
-    public FindUserMode FindMode { get; set; }
-}
-
-public enum FindUserMode
-{
-    Email,
-    Phone,
-    UserName,
-    NotFound
-}

@@ -1,11 +1,12 @@
 using System.Collections.Immutable;
 using System.Security.Claims;
+using System.Text.Json;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using Nuages.Identity.Services;
+using MongoDB.Bson;
 using Nuages.Identity.UI.Models;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -18,21 +19,23 @@ public partial class AuthorizationController : Controller
     private readonly IOpenIddictApplicationManager _applicationManager;
     private readonly IOpenIddictAuthorizationManager _authorizationManager;
     private readonly IOpenIddictScopeManager _scopeManager;
-    private readonly NuagesSignInManager<NuagesApplicationUser> _signInManager;
-    private readonly NuagesUserManager<NuagesApplicationUser> _userManager;
+    private readonly SignInManager<NuagesApplicationUser> _signInManager;
+    private readonly UserManager<NuagesApplicationUser> _userManager;
 
     public AuthorizationController(
         IOpenIddictApplicationManager applicationManager,
         IOpenIddictAuthorizationManager authorizationManager,
         IOpenIddictScopeManager scopeManager,
-        NuagesSignInManager<NuagesApplicationUser> signInManager,
-        NuagesUserManager<NuagesApplicationUser> userManager)
+        SignInManager<NuagesApplicationUser> signInManager,
+        UserManager<NuagesApplicationUser> userManager)
     {
         _applicationManager = applicationManager;
         _authorizationManager = authorizationManager;
         _scopeManager = scopeManager;
         _signInManager = signInManager;
         _userManager = userManager;
+        
+        
     }
 
     [HttpGet("~/connect/authorize")]
@@ -41,6 +44,17 @@ public partial class AuthorizationController : Controller
     public async Task<IActionResult> Authorize()
     {
 
+        var usr = await _userManager.FindByNameAsync("martin");
+        if (usr == null)
+        {
+            var res = await _userManager.CreateAsync(new NuagesApplicationUser
+            {
+                Email = "m@nuages.org"
+            }, "123");
+            
+            Console.WriteLine(JsonSerializer.Serialize(res));
+        }
+        
         var request = HttpContext.GetOpenIddictServerRequest() ??
                       throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
@@ -162,6 +176,19 @@ public partial class AuthorizationController : Controller
     [HttpPost("~/connect/token"), Produces("application/json")]
     public async Task<IActionResult> Exchange()
     {
+        var usr = await _userManager.FindByNameAsync("martin");
+        if (usr == null)
+        {
+            var res = await _userManager.CreateAsync(new NuagesApplicationUser
+            {
+                Id = ObjectId.GenerateNewId().ToString(),
+                Email = "m@nuages.org",
+                UserName = "martin"
+            }, "123");
+            
+           
+        }
+        
         var request = HttpContext.GetOpenIddictServerRequest() ??
                       throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 

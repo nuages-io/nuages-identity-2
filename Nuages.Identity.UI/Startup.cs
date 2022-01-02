@@ -1,10 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Security.Claims;
+using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.Runtime;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AspNetCore.Identity.Mongo;
 using AspNetCore.Identity.Mongo.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Nuages.Identity.Services;
@@ -12,6 +14,7 @@ using Nuages.Identity.UI.Models;
 using Nuages.Identity.UI.OpenidDict;
 using Nuages.Localization;
 using Nuages.Web.Recaptcha;
+using OpenIddict.Abstractions;
 using OpenIddict.Server;
 
 namespace Nuages.Identity.UI
@@ -36,6 +39,10 @@ namespace Nuages.Identity.UI
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddDataProtection()
+                .PersistKeysToAWSSystemsManager($"{_configuration["Nuages:IdentityUI:StackName"]}/DataProtection");
+            
             services.AddHttpClient();
 
             var awsOptions = _configuration.GetAWSOptions();
@@ -53,7 +60,14 @@ namespace Nuages.Identity.UI
 
             services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
                 {
-                    identity.Password.RequiredLength = 8;
+                    identity.Stores.ProtectPersonalData = true;
+                    
+                    identity.Password.RequiredLength = 1;
+                    identity.Password.RequireDigit = false;
+                    identity.Password.RequireLowercase = false;
+                    identity.Password.RequireUppercase = false;
+                    identity.Password.RequiredUniqueChars = 1;
+                    identity.Password.RequireNonAlphanumeric = false;
                     // other options
                 },
                 mongo =>
@@ -80,6 +94,13 @@ namespace Nuages.Identity.UI
             services.AddScoped<IRecaptchaValidator, GoogleRecaptchaValidator>();
 
             services.AddAuthentication();
+            
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.ClaimsIdentity.UserNameClaimType =  OpenIddictConstants.Claims.Name;
+                options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
+                options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
+            });
             
             services.AddOpenIddict()
 
@@ -127,6 +148,8 @@ namespace Nuages.Identity.UI
                         .EnableLogoutEndpointPassthrough()
                         .EnableStatusCodePagesIntegration()
                         .EnableTokenEndpointPassthrough();
+
+                    options.RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile, OpenIddictConstants.Scopes.Roles);
                 })
 
                 // Register the OpenIddict validation components.
@@ -139,7 +162,13 @@ namespace Nuages.Identity.UI
                     options.UseAspNetCore();
                 });
             
+#if DEBUG
+            services.AddHostedService<OpenIdDictInitializeWorker>();
+#endif
+            
             services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, OpenIddictServerOptionsInitializer>();
+            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
