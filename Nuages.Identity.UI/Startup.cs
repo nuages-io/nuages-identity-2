@@ -101,7 +101,6 @@ public class Startup
         }
 
         app.UseWebOptimizer();
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 

@@ -12,19 +12,7 @@ public partial class AuthorizationController
     {
         if (request.IsPasswordGrantType())
         {
-            // var user = await _userManager.FindByNameAsync(request.Username!);
-            // if (user == null)
-            // {
-            //     var properties = new AuthenticationProperties(new Dictionary<string, string?>
-            //     {
-            //         [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-            //         [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
-            //             "The username/password couple is invalid."
-            //     });
-            //
-            //     return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-            // }
-
+           
             // Validate the username/password parameters and ensure the account is not locked out.
             var result =
                 await _signInManager.PasswordSignInAsync(request.Username!, request.Password!,
@@ -56,6 +44,18 @@ public partial class AuthorizationController
                 Scopes.Roles
             }.Intersect(request.GetScopes()));
 
+            var error = CheckAudience(request, principal);
+            if (!string.IsNullOrEmpty(error))
+            {
+                var properties = new AuthenticationProperties(new Dictionary<string, string?>
+                {
+                    [OpenIddictServerAspNetCoreConstants.Properties.Error] = "invalid_audience",
+                    [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = error
+                });
+
+                return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
+            
             foreach (var claim in principal.Claims)
             {
                 claim.SetDestinations(GetDestinations(claim, principal));

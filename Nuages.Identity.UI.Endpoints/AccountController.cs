@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Nuages.Identity.Services;
 using Nuages.Identity.UI.Endpoints.Models;
 using Nuages.Web.Exceptions;

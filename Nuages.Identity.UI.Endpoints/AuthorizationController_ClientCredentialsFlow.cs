@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -7,7 +9,7 @@ namespace Nuages.Identity.UI.Endpoints;
 
 public partial class AuthorizationController
 {
-    public async Task<Microsoft.AspNetCore.Mvc.SignInResult> ProcessClientCredentialsFlow(
+    public async Task<IActionResult> ProcessClientCredentialsFlow(
         OpenIddictRequest openIdDictRequest)
     {
         if (openIdDictRequest.IsClientCredentialsGrantType())
@@ -57,6 +59,18 @@ public partial class AuthorizationController
             principal.SetScopes(openIdDictRequest.GetScopes());
             principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
 
+            var error = CheckAudience(openIdDictRequest, principal);
+            if (!string.IsNullOrEmpty(error))
+            {
+                var properties = new AuthenticationProperties(new Dictionary<string, string?>
+                {
+                    [OpenIddictServerAspNetCoreConstants.Properties.Error] = "invalid_audience",
+                    [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = error
+                });
+
+                return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
+            
             foreach (var claim in principal.Claims)
             {
                 claim.SetDestinations(GetDestinations(claim));

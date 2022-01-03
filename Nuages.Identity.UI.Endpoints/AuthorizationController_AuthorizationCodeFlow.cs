@@ -49,25 +49,16 @@ public partial class AuthorizationController
                     }));
             }
 
-            if (openIdDictRequest.Audiences != null)
+            var error = CheckAudience(openIdDictRequest, principal);
+            if (!string.IsNullOrEmpty(error))
             {
-                foreach (var audience in openIdDictRequest.Audiences)
+                var properties = new AuthenticationProperties(new Dictionary<string, string?>
                 {
-                    if (IsValidAudience(audience))
-                    {
-                        (principal!.Identity as ClaimsIdentity ?? throw new InvalidOperationException())
-                            .AddClaim("aud", audience);
-                    }
-                    else
-                    {
-                        throw new Exception("Invalid Audience provided");
-                    }
-                }
-            }
-            else
-            {
-                if (HasAudiences)
-                    throw new Exception("Audience must be provided");
+                    [OpenIddictServerAspNetCoreConstants.Properties.Error] = "invalid_audience",
+                    [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = error
+                });
+
+                return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
 
             foreach (var claim in principal!.Claims)
@@ -82,16 +73,36 @@ public partial class AuthorizationController
         throw new Exception("Wrong grant type");
     }
 
-    private bool IsValidAudience(string audience)
+    private string? CheckAudience(OpenIddictRequest openIdDictRequest, ClaimsPrincipal? principal)
     {
-        return true;
+        if (openIdDictRequest.Audiences != null)
+        {
+            foreach (var audience in openIdDictRequest.Audiences)
+            {
+                if (IsValidAudience(audience))
+                {
+                    (principal!.Identity as ClaimsIdentity ?? throw new InvalidOperationException())
+                        .AddClaim("aud", audience);
+                }
+                else
+                {
+                    return "Invalid Audience provided";
+                }
+            }
+        }
+        else
+        {
+            if (HasAudiences)
+                return "Audience must be provided";
+        }
+
+        return null;
     }
 
-    private bool HasAudiences
+    private bool IsValidAudience(string audience)
     {
-        get
-        {
-            return true;
-        }
+        return _identityOptions.Audiences != null && _identityOptions.Audiences.Contains(audience);
     }
+
+    private bool HasAudiences => _identityOptions.Audiences != null && _identityOptions.Audiences.Any();
 }

@@ -5,8 +5,10 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using MongoDB.Bson;
+using Nuages.Identity.Services;
 using Nuages.Identity.UI.Endpoints.Models;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -21,21 +23,24 @@ public partial class AuthorizationController : Controller
     private readonly IOpenIddictScopeManager _scopeManager;
     private readonly SignInManager<NuagesApplicationUser> _signInManager;
     private readonly UserManager<NuagesApplicationUser> _userManager;
+    private readonly NuagesIdentityOptions _identityOptions;
 
     public AuthorizationController(
         IOpenIddictApplicationManager applicationManager,
         IOpenIddictAuthorizationManager authorizationManager,
         IOpenIddictScopeManager scopeManager,
         SignInManager<NuagesApplicationUser> signInManager,
-        UserManager<NuagesApplicationUser> userManager)
+        UserManager<NuagesApplicationUser> userManager,
+        IOptions<NuagesIdentityOptions> identityOptions)
     {
         _applicationManager = applicationManager;
         _authorizationManager = authorizationManager;
         _scopeManager = scopeManager;
         _signInManager = signInManager;
         _userManager = userManager;
-        
-        
+        _identityOptions = identityOptions.Value;
+
+
     }
 
     [HttpGet("~/connect/authorize")]
