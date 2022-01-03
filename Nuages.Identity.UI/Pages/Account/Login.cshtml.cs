@@ -16,18 +16,14 @@ namespace Nuages.Identity.UI.Pages.Account;
 [AllowAnonymous]
 public class Login : PageModel
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IStringLocalizer _stringLocalizer;
-
 
     public string Lang { get; set; } = "en-CA";
     public string? ReturnUrl { get; set; }
-    public string? RecaptchaSiteKey { get; set; }
     public string UserNamePlaceHolder { get; set; } = "Email";
         
-    public Login( IStringLocalizer stringLocalizer, IHttpContextAccessor httpContextAccessor)
+    public Login( IStringLocalizer stringLocalizer)
     {
-        _httpContextAccessor = httpContextAccessor;
         _stringLocalizer = stringLocalizer;
     }
     public async Task<ActionResult> OnGetAsync(string? returnUrl = null)

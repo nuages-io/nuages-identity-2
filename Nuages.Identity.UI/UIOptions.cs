@@ -20,6 +20,6 @@ public static class UIConfigExtension
     {
         services.Configure<UIOptions>(configuration.GetSection("Nuages:UI"));
         
-        services.AddGoogleRecaptcha();
+        services.AddGoogleRecaptcha(configuration);
     }
 }
