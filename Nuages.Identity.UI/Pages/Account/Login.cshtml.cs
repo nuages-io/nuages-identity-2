@@ -1,8 +1,12 @@
 using System.Globalization;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
+using Nuages.Web.Recaptcha;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -28,26 +32,17 @@ public class Login : PageModel
     }
     public async Task<ActionResult> OnGetAsync(string? returnUrl = null)
     {
-       
-        // await _httpContextAccessor.HttpContext!.SignOutAsync(NuagesIdentityConstants.EmailNotVerifiedScheme);
-        // await _httpContextAccessor.HttpContext!.SignOutAsync(NuagesIdentityConstants.PhoneNotVerifiedScheme);
-        
         if (User.Identity is { IsAuthenticated: true })
         {
-            //TODO : Logout si returnUrl n'est pas fourni
-            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (string.IsNullOrEmpty(returnUrl))
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            
             return Redirect(returnUrl!);
         }
 
         ReturnUrl = returnUrl ?? Url.Content("~/");
            
         Lang = CultureInfo.CurrentCulture.Name;
-
-        RecaptchaSiteKey = "6Ldnbg4aAAAAAJhHymHUGQY9uqinHwIf7LYvRvpR";
-        
-        ViewData["LogoUrl"] = "";
-        ViewData["ShowRegistration"] = false;
-        ViewData["RegistrationUrl"] = "";
 
         UserNamePlaceHolder = _stringLocalizer[$"Login:Mode:userNameEmailPhone"] ;
         

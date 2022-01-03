@@ -20,7 +20,7 @@ public class LocalEntryPoint
                 config.AddJsonFile("appsettings.local.json", true, true);
  
                 var configuration = config.Build();
-                var url = configuration.GetValue<string>("Nuages:LocalesUrl");
+                var url = configuration.GetValue<string>("Nuages:UI:LocalesUrl");
 
                 config.AddJsonHttpTranslation($"{url}/fr.json");
                 config.AddJsonHttpTranslation($"{url}/en.json");

@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Nuages.Identity.Services;
 using OpenIddict.Server;
 
 namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
@@ -8,13 +9,13 @@ namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
 public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIddictServerOptions>
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly IConfiguration _configuration;
+    private readonly NuagesIdentityOptions _identityOptions;
 
     public OpenIddictServerOptionsInitializer(
-         IServiceProvider serviceProvider, IConfiguration configuration)
+         IServiceProvider serviceProvider, IOptions<NuagesIdentityOptions> identityOptions)
     {
         _serviceProvider = serviceProvider;
-        _configuration = configuration;
+        _identityOptions = identityOptions.Value;
     }
     
     public void Configure(string name, OpenIddictServerOptions options) => Configure(options);
@@ -35,7 +36,7 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
     {
         RsaSecurityKey? key;
 
-        var xml = _configuration["Nuages:Identity:OpenidDict:EncryptionKey"];
+        var xml = _identityOptions.OpenIdDict.EncryptionKey;
         
         if (!string.IsNullOrEmpty(xml))
         {
@@ -60,8 +61,8 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
     private void SetupSigningKey(OpenIddictServerOptions options)
     {
         RsaSecurityKey? key;
-    
-        var xml = _configuration["Nuages:Identity:OpenidDict:SigninKey"];
+
+        var xml = _identityOptions.OpenIdDict.SigningKey;
         
         if (!string.IsNullOrEmpty(xml))
         {

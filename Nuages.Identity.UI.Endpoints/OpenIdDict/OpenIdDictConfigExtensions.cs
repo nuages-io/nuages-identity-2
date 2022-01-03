@@ -10,12 +10,12 @@ public static class OpenIdDictConfigExtensions
 {
     public static void AddNuagesOpenIdDict(this IServiceCollection services, string connectionString, string databaseName = "openiddict")
     {
-        services.Configure<IdentityOptions>(options =>
-        {
-            options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name;
-            options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
-            options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
-        });
+        // services.Configure<IdentityOptions>(options =>
+        // {
+        //     options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name;
+        //     options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
+        //     options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
+        // });
         
         services.AddOpenIddict()
             // Register the OpenIddict core components.

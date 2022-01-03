@@ -1,5 +1,6 @@
 @page
 @model Nuages.Identity.UI.Pages.Account.Login
+@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
 
 
 <div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app" >
@@ -59,7 +60,7 @@
   </div>
 </div>
 
-<script src="https://www.google.com/recaptcha/api.js?render=@Model.RecaptchaSiteKey"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 
 @section Scripts
 {
@@ -67,7 +68,7 @@
     var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email:email"])";
     var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
     var emailInvalidMessage = "@Localizer["settings:invalidEmail"]";
-    var recaptcha = '@Model.RecaptchaSiteKey';
+    var recaptcha = '@RecaptchaOptions.Value.SiteKey';
     var returnUrl = '@Html.Raw(Model.ReturnUrl)';
   </script>
   <script src="/js/pages/login.js"></script>

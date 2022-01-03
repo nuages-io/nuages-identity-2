@@ -1,11 +1,12 @@
 @inject IConfiguration Configuration;
+@inject IOptions<UIOptions> UIOptions
 @{
-  
 
-  ViewBag.LogoUrl = Configuration["Nuages:LogosUrl"];
- 
-  ViewBag.ShowRegistration = Convert.ToBoolean(Configuration["Nuages:ShowRegistration"]);
-  ViewBag.RegistrationUrl = Configuration["Nuages:RegistrationUrl"];
+
+  ViewBag.LogoUrl = UIOptions.Value.LogosUrl;
+
+  ViewBag.ShowRegistration = UIOptions.Value.ShowRegistration;
+  ViewBag.RegistrationUrl = UIOptions.Value.RegistrationUrl;
 
 }
 

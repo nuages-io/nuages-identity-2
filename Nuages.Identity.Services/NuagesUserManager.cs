@@ -14,6 +14,11 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
     {
     }
 
-  
+    public override Task<bool> IsEmailConfirmedAsync(NuagesApplicationUser user)
+    {
+        //TODO utiliser RequireConfirmedEmailGracePeriodInMinutes et la date du Email
+        return base.IsEmailConfirmedAsync(user);
+    }
+    
 }
 
