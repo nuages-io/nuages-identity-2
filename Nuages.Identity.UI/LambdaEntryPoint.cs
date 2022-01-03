@@ -1,3 +1,5 @@
+using Nuages.Localization.Storage.Config.Sources;
+
 namespace Nuages.Identity.UI;
 
 /// <summary>
@@ -45,6 +47,12 @@ public class LambdaEntryPoint :
         {
             configBuilder.AddJsonFile("appsettings.prod.json", true, true);
 
+            var configuration = configBuilder.Build();
+            var url = configuration.GetValue<string>("Nuages:LocalesUrl");
+
+            configBuilder.AddJsonHttpTranslation($"{url}/fr.json");
+            configBuilder.AddJsonHttpTranslation($"{url}/en.json");
+            
             var name = Environment.GetEnvironmentVariable("Nuages__Identity__StackName");
 
             if (name != null)

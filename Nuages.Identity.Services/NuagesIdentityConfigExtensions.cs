@@ -15,14 +15,14 @@ public static class NuagesIdentityConfigExtensions
     {
         if (configuration != null)
         {
-            builder.Services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity:"));
+            builder.Services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
         }
         
         if (configure != null)
             builder.Services.Configure(configure);
         
-        builder.Services.AddScoped(typeof(NuagesUserManager<>).MakeGenericType(builder.UserType));
-        builder.Services.AddScoped(typeof(NuagesSignInManager<>).MakeGenericType(builder.UserType));
+        builder.Services.AddScoped(typeof(NuagesUserManager));
+        builder.Services.AddScoped(typeof(NuagesSignInManager));
 
         builder.Services.AddScoped<ILookupProtector, LookupProtector>();
         builder.Services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();

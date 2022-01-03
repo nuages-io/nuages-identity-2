@@ -1,11 +1,11 @@
-
+@inject IConfiguration Configuration;
 @{
   
 
- // ViewBag.LogoUrl = current.LogoUrl;
+  ViewBag.LogoUrl = Configuration["Nuages:LogosUrl"];
  
- // ViewBag.ShowRegistration = current.ShowRegistration;
- // ViewBag.RegistrationUrl = current.RegistrationUrl ;
+  ViewBag.ShowRegistration = Convert.ToBoolean(Configuration["Nuages:ShowRegistration"]);
+  ViewBag.RegistrationUrl = Configuration["Nuages:RegistrationUrl"];
 
 }
 

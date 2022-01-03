@@ -21,16 +21,16 @@ public partial class AuthorizationController : Controller
     private readonly IOpenIddictApplicationManager _applicationManager;
     private readonly IOpenIddictAuthorizationManager _authorizationManager;
     private readonly IOpenIddictScopeManager _scopeManager;
-    private readonly SignInManager<NuagesApplicationUser> _signInManager;
-    private readonly UserManager<NuagesApplicationUser> _userManager;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly NuagesUserManager _userManager;
     private readonly NuagesIdentityOptions _identityOptions;
 
     public AuthorizationController(
         IOpenIddictApplicationManager applicationManager,
         IOpenIddictAuthorizationManager authorizationManager,
         IOpenIddictScopeManager scopeManager,
-        SignInManager<NuagesApplicationUser> signInManager,
-        UserManager<NuagesApplicationUser> userManager,
+        NuagesSignInManager signInManager,
+        NuagesUserManager userManager,
         IOptions<NuagesIdentityOptions> identityOptions)
     {
         _applicationManager = applicationManager;
@@ -39,8 +39,6 @@ public partial class AuthorizationController : Controller
         _signInManager = signInManager;
         _userManager = userManager;
         _identityOptions = identityOptions.Value;
-
-
     }
 
     [HttpGet("~/connect/authorize")]
@@ -184,14 +182,17 @@ public partial class AuthorizationController : Controller
         var usr = await _userManager.FindByNameAsync("martin");
         if (usr == null)
         {
-            await _userManager.CreateAsync(new NuagesApplicationUser
+            var result = await _userManager.CreateAsync(new NuagesApplicationUser
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Email = "m@nuages.org",
                 UserName = "martin"
             }, "123");
-            
-           
+
+            if (!result.Succeeded)
+            {
+                throw new Exception(result.Errors.First().ToString());
+            }
         }
         
         var request = HttpContext.GetOpenIddictServerRequest() ??
@@ -220,8 +221,6 @@ public partial class AuthorizationController : Controller
 
         throw new InvalidOperationException("The specified grant type is not supported.");
     }
-
-   
 
     private static IEnumerable<string> GetDestinations(Claim claim)
     {

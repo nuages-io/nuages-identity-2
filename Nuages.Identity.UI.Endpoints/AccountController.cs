@@ -19,12 +19,12 @@ namespace Nuages.Identity.UI.Endpoints;
 [Route("api/[controller]")]
 public class AccountController
 {
-    private readonly UserManager<NuagesApplicationUser> _userManager;
-    private readonly SignInManager<NuagesApplicationUser> _signInManager;
+    private readonly NuagesUserManager _userManager;
+    private readonly NuagesSignInManager _signInManager;
     private readonly IRecaptchaValidator _recaptchaValidator;
     private readonly IStringLocalizer _stringLocalizer;
 
-    public AccountController(UserManager<NuagesApplicationUser> userManager, SignInManager<NuagesApplicationUser> signInManager, 
+    public AccountController(NuagesUserManager userManager, NuagesSignInManager signInManager, 
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer)
     {
         _userManager = userManager;

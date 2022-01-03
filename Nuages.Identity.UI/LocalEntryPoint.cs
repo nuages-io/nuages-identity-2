@@ -1,4 +1,6 @@
-﻿namespace Nuages.Identity.UI;
+﻿using Nuages.Localization.Storage.Config.Sources;
+
+namespace Nuages.Identity.UI;
 
 /// <summary>
 /// The Main function can be used to run the ASP.NET Core application locally using the Kestrel webserver.
@@ -17,6 +19,11 @@ public class LocalEntryPoint
             {
                 config.AddJsonFile("appsettings.local.json", true, true);
  
+                var configuration = config.Build();
+                var url = configuration.GetValue<string>("Nuages:LocalesUrl");
+
+                config.AddJsonHttpTranslation($"{url}/fr.json");
+                config.AddJsonHttpTranslation($"{url}/en.json");
             })
             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 }

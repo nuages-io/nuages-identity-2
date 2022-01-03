@@ -7,4 +7,7 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
+    </ItemGroup>
 </Project>

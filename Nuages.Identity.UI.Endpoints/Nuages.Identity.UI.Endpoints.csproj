@@ -12,7 +12,7 @@
         <PackageReference Include="OpenIddict.MongoDb" Version="3.1.1" />
         <PackageReference Include="System.Linq.Async" Version="5.0.0" />
 
-        <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
+        
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />

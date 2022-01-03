@@ -4,12 +4,12 @@ using Microsoft.Extensions.Options;
 
 namespace Nuages.Identity.Services;
 
-public class NuagesSignInManager<TUser> : SignInManager<TUser> where TUser : class
+public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 {
-    public NuagesSignInManager(UserManager<TUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<TUser> claimsFactory, 
+    public NuagesSignInManager(UserManager<NuagesApplicationUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<NuagesApplicationUser> claimsFactory, 
         // ReSharper disable once ContextualLoggerProblem
-        IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<TUser>> logger, IAuthenticationSchemeProvider schemes, 
-        IUserConfirmation<TUser> confirmation) : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
+        IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<NuagesApplicationUser>> logger, IAuthenticationSchemeProvider schemes, 
+        IUserConfirmation<NuagesApplicationUser> confirmation) : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
     {
     }
     

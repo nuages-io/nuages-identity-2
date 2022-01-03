@@ -1,4 +1,5 @@
 ﻿
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.Runtime;
@@ -50,28 +51,22 @@ public class Startup
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
+        var options = _configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
+        
         services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
             {
                 identity.Stores.ProtectPersonalData = false;
-
-                identity.Password.RequiredLength = 1;
-                identity.Password.RequireDigit = false;
-                identity.Password.RequireLowercase = false;
-                identity.Password.RequireUppercase = false;
-                identity.Password.RequiredUniqueChars = 1;
-                identity.Password.RequireNonAlphanumeric = false;
-                // other options
+                identity.Password = options.Password;
             },
             mongo =>
             {
                 mongo.ConnectionString =
                     _configuration["Nuages:Mongo:ConnectionString"];
-                // other options
-            }).AddNuagesIdentity();
+            }).AddNuagesIdentity(_configuration);
 
-        services.AddMvc().AddJsonOptions(options =>
+        services.AddMvc().AddJsonOptions(jsonOptions =>
         {
-            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }).AddNuagesLocalization(_configuration);
 
         services.AddHttpContextAccessor();
@@ -83,7 +78,7 @@ public class Startup
 
         services.AddAuthentication();
 
-        services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"]);
+        services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
