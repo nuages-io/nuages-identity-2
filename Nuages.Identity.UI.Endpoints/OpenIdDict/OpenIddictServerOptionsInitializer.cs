@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Server;
 
-namespace Nuages.Identity.UI.OpenidDict;
+namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
 
 public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIddictServerOptions>
 {

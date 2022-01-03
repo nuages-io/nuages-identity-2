@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Nuages.Identity.Services;
 using Nuages.Identity.UI.Endpoints.Models;
-using Nuages.Identity.UI.OpenidDict;
+using Nuages.Identity.UI.Endpoints.OpenIdDict;
 using Nuages.Localization;
 using Nuages.Web.Recaptcha;
 using OpenIddict.Abstractions;
@@ -65,14 +65,10 @@ public class Startup
             mongo =>
             {
                 mongo.ConnectionString =
-                    "mongodb+srv://nuages:wCFwlSoX4qK200E1@nuages-dev-2.qxak3.mongodb.net/nuages_identity_2?replicaSet=atlas-jugbu4-shard-0&readPreference=primary&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-1";
-
+                    _configuration["Nuages:Mongo:ConnectionString"];
                 // other options
             }).AddNuagesIdentity();
 
-        services.AddControllers();
-
-        services.AddRazorPages().AddNuagesLocalization(_configuration);
         services.AddMvc().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -82,81 +78,12 @@ public class Startup
 
         var enableOptimizer = !_env.IsDevelopment();
         services.AddWebOptimizer(enableOptimizer, enableOptimizer);
-
-        services.AddScoped<IRecaptchaValidator, GoogleRecaptchaValidator>();
+        
+        services.AddGoogleRecaptcha();
 
         services.AddAuthentication();
 
-        services.AddGoogleRecaptcha(configure => { configure.Key = "6Ldnbg4aAAAAAOvc8cYjFb2R-tuAEkh_GqHU5AwM"; });
-        services.Configure<IdentityOptions>(options =>
-        {
-            options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name;
-            options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject;
-            options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role;
-        });
-
-        services.AddOpenIddict()
-            // Register the OpenIddict core components.
-            .AddCore(options =>
-            {
-                options.UseMongoDb()
-                    .UseDatabase(new MongoClient(_configuration.GetValue<string>("Nuages:Mongo:ConnectionString"))
-                        .GetDatabase("openiddict"));
-            })
-
-            // Register the OpenIddict server components.
-            .AddServer(options =>
-            {
-#if DEBUG
-                options.DisableAccessTokenEncryption();
-#endif
-                // Enable the authorization, logout, token and userinfo endpoints.
-                options.SetAuthorizationEndpointUris("/connect/authorize")
-                    .SetLogoutEndpointUris("/connect/logout")
-                    .SetTokenEndpointUris("/connect/token")
-                    .SetUserinfoEndpointUris("/connect/userinfo");
-
-                // Mark the "email", "profile" and "roles" scopes as supported scopes.
-                options.RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile,
-                    OpenIddictConstants.Scopes.Roles);
-
-                // Note: the sample uses the code and refresh token flows but you can enable
-                // the other flows if you need to support implicit, password or client credentials.
-                options.AllowAuthorizationCodeFlow()
-                    .AllowRefreshTokenFlow()
-                    .AllowPasswordFlow()
-                    .AllowClientCredentialsFlow();
-
-                // Register the signing and encryption credentials.
-                options.AddDevelopmentEncryptionCertificate()
-                    .AddDevelopmentSigningCertificate();
-
-                // options.AddEphemeralSigningKey();
-                // options.AddEphemeralEncryptionKey();
-
-                // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
-                options.UseAspNetCore()
-                    .EnableAuthorizationEndpointPassthrough()
-                    .EnableLogoutEndpointPassthrough()
-                    .EnableStatusCodePagesIntegration()
-                    .EnableTokenEndpointPassthrough();
-            })
-
-            // Register the OpenIddict validation components.
-            .AddValidation(options =>
-            {
-                // Import the configuration from the local OpenIddict server instance.
-                options.UseLocalServer();
-
-                // Register the ASP.NET Core host.
-                options.UseAspNetCore();
-            });
-
-#if DEBUG
-        services.AddHostedService<OpenIdDictInitializeWorker>();
-#endif
-
-        services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, OpenIddictServerOptionsInitializer>();
+        services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"]);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

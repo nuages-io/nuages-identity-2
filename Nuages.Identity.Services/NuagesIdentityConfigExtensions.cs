@@ -5,8 +5,22 @@ namespace Nuages.Identity.Services;
 
 public static class NuagesIdentityConfigExtensions
 {
-    public static void AddNuagesIdentity(this IdentityBuilder builder)
+    public static void AddNuagesIdentity(this IdentityBuilder builder,
+        Action<NuagesIdentityOptions> configure )
     {
+        AddNuagesIdentity(builder, null, configure);
+    }
+    
+    public static void AddNuagesIdentity(this IdentityBuilder builder, IConfiguration? configuration = null, Action<NuagesIdentityOptions>? configure = null)
+    {
+        if (configuration != null)
+        {
+            builder.Services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity:"));
+        }
+        
+        if (configure != null)
+            builder.Services.Configure(configure);
+        
         builder.Services.AddScoped(typeof(NuagesUserManager<>).MakeGenericType(builder.UserType));
         builder.Services.AddScoped(typeof(NuagesSignInManager<>).MakeGenericType(builder.UserType));
 

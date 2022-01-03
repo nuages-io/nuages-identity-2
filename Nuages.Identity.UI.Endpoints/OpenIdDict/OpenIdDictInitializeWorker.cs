@@ -1,7 +1,7 @@
 using OpenIddict.Abstractions;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace Nuages.Identity.UI.OpenidDict;
+namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
 
 public class OpenIdDictInitializeWorker : IHostedService
 {
