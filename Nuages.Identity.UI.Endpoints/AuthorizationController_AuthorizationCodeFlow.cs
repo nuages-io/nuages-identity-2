@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
-namespace Nuages.Identity.UI.Controllers;
+namespace Nuages.Identity.UI.Endpoints;
 
 public partial class AuthorizationController
 {
@@ -84,14 +84,14 @@ public partial class AuthorizationController
 
     private bool IsValidAudience(string audience)
     {
-        throw new NotImplementedException();
+        return true;
     }
 
     private bool HasAudiences
     {
         get
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

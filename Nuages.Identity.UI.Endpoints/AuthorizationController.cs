@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using MongoDB.Bson;
-using Nuages.Identity.UI.Models;
+using Nuages.Identity.UI.Endpoints.Models;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace Nuages.Identity.UI.Controllers;
+namespace Nuages.Identity.UI.Endpoints;
 
 public partial class AuthorizationController : Controller
 {
@@ -121,7 +121,7 @@ public partial class AuthorizationController : Controller
 
         // Retrieve the permanent authorizations associated with the user and the calling client application.
         var authorizations = await _authorizationManager.FindAsync(
-            user.Id.ToString(),
+            user.Id,
             (await _applicationManager.GetIdAsync(application))!,
             Statuses.Valid,
             AuthorizationTypes.Permanent,
@@ -139,7 +139,7 @@ public partial class AuthorizationController : Controller
         // Automatically create a permanent authorization 
         var authorization = authorizations.LastOrDefault() ?? await _authorizationManager.CreateAsync(
             principal,
-            user.Id.ToString(),
+            user.Id,
             (await _applicationManager.GetIdAsync(application))!,
             AuthorizationTypes.Permanent,
             principal.GetScopes());
@@ -179,7 +179,7 @@ public partial class AuthorizationController : Controller
         var usr = await _userManager.FindByNameAsync("martin");
         if (usr == null)
         {
-            var res = await _userManager.CreateAsync(new NuagesApplicationUser
+            await _userManager.CreateAsync(new NuagesApplicationUser
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Email = "m@nuages.org",

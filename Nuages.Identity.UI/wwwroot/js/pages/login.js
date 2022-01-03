@@ -1,0 +1,127 @@
+var App =
+    {
+        data() {
+            return {
+                userNameOrEmail: "",
+                password: "",
+                errors: [],
+                remember: false,
+                action: ""
+            }
+        },
+        mounted() {
+            userNameOrEmail.focus();
+        },
+        methods:
+            {
+                doLogin: function (token) {
+                    var self = this;
+                    var e = self.userNameOrEmail;
+                    var p = self.password;
+                    var r = self.remember;
+
+                    fetch("/api/account/login", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                                userNameOrEmail: e,
+                                password: p,
+                                recaptchaToken: token,
+                                rememberMe: r
+                            }
+                        )
+                    })
+                        .then(response => response.json())
+                        .then(res => {
+                            if (res.success) {
+                                window.location = returnUrl;
+                            } else
+                                switch (res.result) {
+                                    case "PasswordExpired": {
+                                        //Redirect to change password page
+                                        break;
+                                    }
+                                    case "MfaRequired": {
+                                        //Redirect to mfa login
+                                        break;
+                                    }
+                                    case "EmailNotVerified": {
+                                        window.location = "/account/emailnotverified";
+                                        break;
+                                    }
+                                    case "PhoneNotVerified": {
+                                        //Redirect to PhoneNotVerified
+                                        break;
+                                    }
+                                    default: {
+                                        //NotActiveAtTime,
+                                        //RecaptchaError,
+                                        //LockedOut
+                                        self.errors.push({message: res.message});
+                                        break;
+                                    }
+                                }
+
+                        });
+
+                },
+                login: function () {
+                    this.errors = [];
+                    formLogin.classList.remove("was-validated");
+
+                    userNameOrEmail.setCustomValidity("");
+                    password.setCustomValidity("");
+
+                    var res = formLogin.checkValidity();
+                    if (res) {
+                        var self = this;
+
+                        grecaptcha.ready(function () {
+                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                self.doLogin(token);
+                            });
+                        });
+                    } else {
+                        formLogin.classList.add("was-validated");
+
+                        if (!userNameOrEmail.validity.valid) {
+                            if (userNameOrEmail.validity.valueMissing) {
+                                userNameOrEmail.setCustomValidity(emailRequiredMessage);
+                            } else {
+                                userNameOrEmail.setCustomValidity(emailInvalidMessage);
+                            }
+                        }
+
+                        if (!password.validity.valid) {
+                            password.setCustomValidity(passwordRequiredMessage);
+                        }
+
+                        var list = formLogin.querySelectorAll(":invalid");
+
+                        list.forEach((element) => {
+
+                            this.errors.push({
+                                message: element.validationMessage,
+                            });
+                        });
+
+                    }
+                }
+            },
+        watch: {
+            userNameOrEmail(value) {
+                this.errors = [];
+                this.action = "";
+                userNameOrEmail.setCustomValidity("");
+            },
+            password(value) {
+                this.errors = [];
+                this.action = "";
+                password.setCustomValidity("");
+            }
+        }
+    };
+
+Vue.createApp(App).mount('#app')

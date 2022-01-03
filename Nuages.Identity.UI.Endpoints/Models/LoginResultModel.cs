@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services;
 
-namespace Nuages.Identity.UI.Models;
+namespace Nuages.Identity.UI.Endpoints.Models;
 
 public class LoginResultModel
 {

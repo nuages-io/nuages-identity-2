@@ -1,6 +1,3 @@
-using System.Text.Json;
-using Microsoft.AspNetCore.Identity;
-using Nuages.Identity.UI.Models;
 using OpenIddict.Abstractions;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 

@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI", "Nuage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services", "Nuages.Identity.Services\Nuages.Identity.Services.csproj", "{4C823879-4801-4558-95DE-755A98E34667}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI.Endpoints", "Nuages.Identity.UI.Endpoints\Nuages.Identity.UI.Endpoints.csproj", "{45C7E196-7BCC-4208-BF9D-B1705E185767}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{4C823879-4801-4558-95DE-755A98E34667}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C823879-4801-4558-95DE-755A98E34667}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C823879-4801-4558-95DE-755A98E34667}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C7E196-7BCC-4208-BF9D-B1705E185767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C7E196-7BCC-4208-BF9D-B1705E185767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C7E196-7BCC-4208-BF9D-B1705E185767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C7E196-7BCC-4208-BF9D-B1705E185767}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

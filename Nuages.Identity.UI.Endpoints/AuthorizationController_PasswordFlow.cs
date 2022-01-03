@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Identity.Services;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
-
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace Nuages.Identity.UI.Controllers;
+namespace Nuages.Identity.UI.Endpoints;
 
 public partial class AuthorizationController
 {

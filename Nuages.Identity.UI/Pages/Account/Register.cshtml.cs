@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Pages.Account;
 

@@ -1,115 +1,100 @@
+using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Server;
 
 namespace Nuages.Identity.UI.OpenidDict;
 
 public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIddictServerOptions>
 {
-    // private readonly ITenantContext _tenantContext;
-    // private readonly IServiceProvider _serviceProvider;
-    //
-    // public OpenIddictServerOptionsInitializer(
-    //     ITenantContext tenantContext, IServiceProvider serviceProvider)
-    // {
-    //     _tenantContext = tenantContext;
-    //     _serviceProvider = serviceProvider;
-    // }
-    //
-    // public void Configure(string name, OpenIddictServerOptions options) => Configure(options);
-    //
-    // public void Configure(OpenIddictServerOptions options)
-    // {
-    //     var tenant = _tenantContext.GetCurrentAsync().Result;
-    //
-    //     SetupKeys(options, tenant);
-    //
-    //     options.Scopes.UnionWith(new []{OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile, OpenIddictConstants.Scopes.Roles/*, "https://localhost:5002"*/});
-    //        
-    //         
-    //     // Other tenant-specific options can be registered here.
-    // }
-    //
-    // private void SetupKeys(OpenIddictServerOptions options, Tenant tenant)
-    // {
-    //     SetupEncryptionKey(options, tenant);
-    //
-    //     // var signingCredentials = new SigningCredentials(CreateRsaSecurityKey(2048), SecurityAlgorithms.RsaSha256);
-    //     // options.SigningCredentials.Add(signingCredentials);
-    //
-    //     SetupSigningKey(options, tenant);
-    // }
-    //
-    // private void SetupEncryptionKey(OpenIddictServerOptions options, Tenant tenant)
-    // {
-    //     RsaSecurityKey? key;
-    //
-    //     if (!string.IsNullOrEmpty(tenant.EncryptionKeyXml))
-    //     {
-    //         key = CreateRsaSecurityKey(tenant.EncryptionKeyXml);
-    //     }
-    //     else
-    //     {
-    //         using var scope  = _serviceProvider.CreateScope();
-    //             
-    //         key = CreateRsaSecurityKey(2048);
-    //         tenant.EncryptionKeyXml =  key.Rsa.ToXmlString(true);
-    //             
-    //         var tenantDataService = scope.ServiceProvider.GetRequiredService<ITenantRepository>();
-    //         Task.Run(async () => await tenantDataService.UpdateAsync(tenant));
-    //     }
-    //         
-    //     var encryptionCredential = new EncryptingCredentials(key,
-    //         SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512);
-    //
-    //     options.EncryptionCredentials.Add(encryptionCredential);
-    // }
-    //     
-    // private void SetupSigningKey(OpenIddictServerOptions options, Tenant tenant)
-    // {
-    //     RsaSecurityKey? key;
-    //
-    //     if (!string.IsNullOrEmpty(tenant.SigningKeyXml))
-    //     {
-    //         key = CreateRsaSecurityKey(tenant.SigningKeyXml);
-    //     }
-    //     else
-    //     {
-    //         using var scope  = _serviceProvider.CreateScope();
-    //         key = CreateRsaSecurityKey(2048);
-    //         tenant.SigningKeyXml = key.Rsa.ToXmlString(true);
-    //            
-    //             
-    //         var tenantDataService = scope.ServiceProvider.GetRequiredService<ITenantRepository>();
-    //         Task.Run(async () => await tenantDataService.UpdateAsync(tenant));
-    //     }
-    //         
-    //     var signingCredential = new SigningCredentials(key,
-    //         SecurityAlgorithms.RsaSha256);
-    //
-    //     options.SigningCredentials.Add(signingCredential);
-    // }
-    //
-    // private static RsaSecurityKey CreateRsaSecurityKey(int size)
-    // {
-    //     var rsa = RSA.Create(size);
-    //         
-    //     return new RsaSecurityKey(rsa);
-    // }
-    //
-    // private static RsaSecurityKey CreateRsaSecurityKey(string xml)
-    // {
-    //     var rsa = RSA.Create();
-    //     rsa.FromXmlString(xml);
-    //         
-    //     return new RsaSecurityKey(rsa);
-    // }
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IConfiguration _configuration;
+
+    public OpenIddictServerOptionsInitializer(
+         IServiceProvider serviceProvider, IConfiguration configuration)
+    {
+        _serviceProvider = serviceProvider;
+        _configuration = configuration;
+    }
+    
+    public void Configure(string name, OpenIddictServerOptions options) => Configure(options);
+    
     public void Configure(OpenIddictServerOptions options)
     {
-       // throw new NotImplementedException();
+        
+        SetupKeys(options );
+    }
+    
+    private void SetupKeys(OpenIddictServerOptions options)
+    {
+        SetupEncryptionKey(options);
+        SetupSigningKey(options);
+    }
+    
+    private void SetupEncryptionKey(OpenIddictServerOptions options)
+    {
+        RsaSecurityKey? key;
+
+        var xml = _configuration["Nuages:Identity:OpenidDict:EncryptionKey"];
+        
+        if (!string.IsNullOrEmpty(xml))
+        {
+            key = CreateRsaSecurityKey(xml);
+        }
+        else
+        {
+            using var scope  = _serviceProvider.CreateScope();
+                
+            key = CreateRsaSecurityKey(2048);
+            var newKeyXml =  key.Rsa.ToXmlString(true);
+                
+            Console.WriteLine(newKeyXml);
+        }
+            
+        var encryptionCredential = new EncryptingCredentials(key,
+            SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512);
+    
+        options.EncryptionCredentials.Add(encryptionCredential);
+    }
+        
+    private void SetupSigningKey(OpenIddictServerOptions options)
+    {
+        RsaSecurityKey? key;
+    
+        var xml = _configuration["Nuages:Identity:OpenidDict:SigninKey"];
+        
+        if (!string.IsNullOrEmpty(xml))
+        {
+            key = CreateRsaSecurityKey(xml);
+        }
+        else
+        {
+            using var scope  = _serviceProvider.CreateScope();
+            key = CreateRsaSecurityKey(2048);
+            var xmlNewKey = key.Rsa.ToXmlString(true);
+               
+            Console.WriteLine(xmlNewKey);
+        }
+            
+        var signingCredential = new SigningCredentials(key,
+            SecurityAlgorithms.RsaSha256);
+    
+        options.SigningCredentials.Add(signingCredential);
+    }
+    
+    private static RsaSecurityKey CreateRsaSecurityKey(int size)
+    {
+        var rsa = RSA.Create(size);
+            
+        return new RsaSecurityKey(rsa);
+    }
+    
+    private static RsaSecurityKey CreateRsaSecurityKey(string xml)
+    {
+        var rsa = RSA.Create();
+        rsa.FromXmlString(xml);
+            
+        return new RsaSecurityKey(rsa);
     }
 
-    public void Configure(string name, OpenIddictServerOptions options)
-    {
-        //throw new NotImplementedException();
-    }
 }

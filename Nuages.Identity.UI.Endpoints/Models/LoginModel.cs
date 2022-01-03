@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Nuages.Identity.UI.Models;
+namespace Nuages.Identity.UI.Endpoints.Models;
 
 public class LoginModel
 {

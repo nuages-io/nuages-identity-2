@@ -1,6 +1,6 @@
 using OpenIddict.Abstractions;
 
-namespace Nuages.Identity.UI.Controllers;
+namespace Nuages.Identity.UI.Endpoints;
 
 public partial class AuthorizationController
 {

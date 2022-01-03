@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
-namespace Nuages.Identity.UI.Controllers;
+namespace Nuages.Identity.UI.Endpoints;
 
 public partial class AuthorizationController
 {

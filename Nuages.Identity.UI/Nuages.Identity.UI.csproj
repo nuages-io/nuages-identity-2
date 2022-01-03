@@ -10,25 +10,22 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="6.1.0" />
-        <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
+       
         <PackageReference Include="Nuages.Localization" Version="1.2.0" />
-        <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
         <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />
         <PackageReference Include="AWSXRayRecorder.Core" Version="2.10.1" />
         <PackageReference Include="AWSXRayRecorder.Handlers.AwsSdk" Version="2.8.3" />
         <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.319" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.11" />
-        <PackageReference Include="Nuages.Web" Version="1.2.0" />
+        
         <PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="2.1.0" />
-        <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
-        <PackageReference Include="OpenIddict.MongoDb" Version="3.1.1" />
-        <PackageReference Include="System.Linq.Async" Version="5.0.0" />
+
     </ItemGroup>
     <ItemGroup>
       <Folder Include="OpenIdDict" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
+      <ProjectReference Include="..\Nuages.Identity.UI.Endpoints\Nuages.Identity.UI.Endpoints.csproj" />
     </ItemGroup>
     
    

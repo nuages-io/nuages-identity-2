@@ -1,24 +1,29 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
-using Nuages.Identity.UI.Models;
+using Nuages.Identity.UI.Endpoints.Models;
 using Nuages.Web.Exceptions;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
-namespace Nuages.Identity.UI.Controllers;
+// ReSharper disable UnusedMember.Global
+
+namespace Nuages.Identity.UI.Endpoints;
 
 // ReSharper disable once UnusedType.Global
+[ApiController]
+[Route("api/[controller]")]
 public class AccountController
 {
-    private readonly NuagesUserManager<NuagesApplicationUser> _userManager;
-    private readonly NuagesSignInManager<NuagesApplicationUser> _signInManager;
+    private readonly UserManager<NuagesApplicationUser> _userManager;
+    private readonly SignInManager<NuagesApplicationUser> _signInManager;
     private readonly IRecaptchaValidator _recaptchaValidator;
     private readonly IStringLocalizer _stringLocalizer;
 
-    public AccountController(NuagesUserManager<NuagesApplicationUser> userManager, NuagesSignInManager<NuagesApplicationUser> signInManager, 
+    public AccountController(UserManager<NuagesApplicationUser> userManager, SignInManager<NuagesApplicationUser> signInManager, 
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer)
     {
         _userManager = userManager;
