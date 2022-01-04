@@ -1,5 +1,6 @@
 @page
 @model Nuages.Identity.UI.Pages.Account.EmailNotVerified
+@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
 
 <div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app" >
   
@@ -35,12 +36,12 @@
   </div>
 </div>
 
-<script src="https://www.google.com/recaptcha/api.js?render=@Model.RecaptchaSiteKey"></script>
+<script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 
 @section Scripts
 {
   <script>
-  var recaptcha = '@Model.RecaptchaSiteKey';
+  var recaptcha = '@RecaptchaOptions.Value.SiteKey';
   </script>
   <script src="/js/pages/emailNotVerified.js"></script> 
 }
