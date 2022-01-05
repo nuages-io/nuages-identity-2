@@ -1,32 +1,40 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewBag.Title = "Register";
+    ViewBag.ShowRegistration = false;
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app" >
 
-<div >
-    <div >
-        <form id="registerForm"  method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-           
-            <div >
-                <input asp-for="Input.Email"autocomplete="username" />
-             
-            </div>
-            <div >
-                <input asp-for="Input.Password"  autocomplete="new-password" />
-                
-            </div>
-            <div >
-                <input asp-for="Input.ConfirmPassword"  />
-                
-            </div>
-            <button id="registerSubmit" type="submit">Register</button>
-        </form>
-    </div>
+    <partial name="Shared/LogoHeader"/>
+      
+      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+           <div >
+                  <form id="registerForm"  method="post">
+                      <h2>Create a new account.</h2>
+                      <hr />
+                     
+                      <div >
+                          <input asp-for="Input.Email"autocomplete="username" />
+                       
+                      </div>
+                      <div >
+                          <input asp-for="Input.Password"  autocomplete="new-password" />
+                          
+                      </div>
+                      <div >
+                          <input asp-for="Input.ConfirmPassword"  />
+                          
+                      </div>
+                      <button id="registerSubmit" type="submit">Register</button>
+                  </form>
+              </div>
+      </div>
+</div>
+</div>
+   
     @* <div class="col-md-6 col-md-offset-2"> *@
     @*     <section> *@
     @*         <h3>Use another service to register.</h3> *@

@@ -71,4 +71,9 @@ public class AccountController
             Success = false
         };
     }
+
+    public async Task Register([FromBody] RegisterModel model)
+    {
+        
+    }
 }
