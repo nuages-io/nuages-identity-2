@@ -24,6 +24,9 @@
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
       <ProjectReference Include="..\Nuages.Identity.UI.Endpoints\Nuages.Identity.UI.Endpoints.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="wwwroot\locales" />
+    </ItemGroup>
     
    
 </Project>

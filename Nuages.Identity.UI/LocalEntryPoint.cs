@@ -22,8 +22,10 @@ public class LocalEntryPoint
                 var configuration = config.Build();
                 var url = configuration.GetValue<string>("Nuages:UI:LocalesUrl");
 
-                config.AddJsonHttpTranslation($"{url}/fr.json");
-                config.AddJsonHttpTranslation($"{url}/en.json");
+                config.AddJsonFileTranslation("/wwwroot/locales/fr-CA.json");
+                config.AddJsonFileTranslation("/wwwroot/locales/en-CA.json");
+                // config.AddJsonHttpTranslation($"{url}/fr.json");
+                // config.AddJsonHttpTranslation($"{url}/en.json");
             })
             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 }
