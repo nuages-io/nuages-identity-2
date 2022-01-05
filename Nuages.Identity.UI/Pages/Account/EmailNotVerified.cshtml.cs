@@ -15,7 +15,7 @@ public class EmailNotVerified : PageModel
       
     }
     
-    public async Task OnGet()
+    public void OnGet()
     {
       
     }
