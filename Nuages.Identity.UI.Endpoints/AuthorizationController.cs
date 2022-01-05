@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using MongoDB.Bson;
 using Nuages.Identity.Services;
-using Nuages.Identity.UI.Endpoints.Models;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using static OpenIddict.Abstractions.OpenIddictConstants;

@@ -1,6 +1,5 @@
 // ReSharper disable InconsistentNaming
 
-using MongoDB.Driver.Core.Configuration;
 using Nuages.Web.Recaptcha;
 
 namespace Nuages.Identity.UI;
@@ -9,7 +8,7 @@ public class UIOptions
 {
     public string SupportEmail { get; set; } = string.Empty;
     public string SupportUrl { get; set; } = string.Empty;
-    public bool ShowRegistration { get; set; } = false;
+    public bool ShowRegistration { get; set; } 
     public string RegistrationUrl { get; set; } = string.Empty;
     public string LogosUrl { get; set; } = string.Empty;
 }

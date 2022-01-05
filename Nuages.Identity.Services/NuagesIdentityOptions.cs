@@ -9,6 +9,17 @@ public class NuagesIdentityOptions
     public PasswordOptions Password { get; set; } = new ();
 
     public OpenIdDict OpenIdDict { get; set; } = new ();
+
+    public bool SupportsStartEnd { get; set; }
+    
+    public bool SupportsAutoPasswordExpiration { get; set; }
+    public int AutoExpirePasswordDelayInDays { get; set; }
+    
+    public bool SupportsUserLockout { get; set; }
+
+    public int RequireConfirmedEmailGracePeriodInMinutes { get; set; } = 60;
+    public int RequireConfirmedPhoneGracePeriodInMinutes { get; set; } = 60;
+    
 }
 
 

@@ -1,6 +1,5 @@
 ﻿
 using System.Security.Claims;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.Runtime;
@@ -8,15 +7,10 @@ using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 using Nuages.Identity.Services;
-using Nuages.Identity.UI.Endpoints.Models;
 using Nuages.Identity.UI.Endpoints.OpenIdDict;
 using Nuages.Localization;
-using Nuages.Web.Recaptcha;
 using OpenIddict.Abstractions;
-using OpenIddict.Server;
 
 namespace Nuages.Identity.UI;
 

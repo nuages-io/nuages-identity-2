@@ -44,6 +44,9 @@ var App =
 
                 },
                 register: function () {
+
+                    var self = this;
+                    
                     this.errors = [];
                     formLogin.classList.remove("was-validated");
 
@@ -51,9 +54,14 @@ var App =
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
 
+                    if (self.password !== self.passwordConfirm && self.passwordConfirm !== "")
+                    {
+                        passwordConfirm.setCustomValidity(passwordMustMatch);
+                    }
+                    
                     var res = formLogin.checkValidity();
                     if (res) {
-                        var self = this;
+                        
 
                         grecaptcha.ready(function () {
                             grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
@@ -76,7 +84,8 @@ var App =
                         }
 
                         if (!passwordConfirm.validity.valid) {
-                            passwordConfirm.setCustomValidity(passwordConfirmationRequiredMessage);
+                            if (passwordConfirm.validity.valueMissing)
+                                passwordConfirm.setCustomValidity(passwordConfirmationRequiredMessage);
                         }
 
                         var list = formLogin.querySelectorAll(":invalid");

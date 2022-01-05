@@ -29,7 +29,7 @@
             <form class="space-y-4" method="POST" v-on:submit.prevent="login" id="formLogin">
                 <div>
                     <div class="mt-1">
-                        <input id="userNameOrEmail" name="userNameOrEmail" autofocus="" v-model="userNameOrEmail" placeholder="email" required class="text-box" type="email">
+                        <input id="userNameOrEmail" name="userNameOrEmail" autofocus="" v-model="userNameOrEmail" placeholder="@Localizer["email"]" required class="text-box" type="email">
                     </div>
                 </div>
                 <div>
@@ -39,13 +39,13 @@
                 </div>
                 <div>
                     <div class="mt-1">
-                        <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["login:passwordConfirm"]" autocomplete="current-password" required class="text-box ">
+                        <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
                     </div>
                 </div>
 
                 <div>
                     <button v-on:click.prevent="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        @Localizer["register:register"]
+                        @Localizer["register:button"]
                     </button>
                 </div>
             </form>
@@ -61,10 +61,11 @@
 @section Scripts
 {
     <script>
-    var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email:email"])";
+    var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email"])";
     var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
-    var passwordConfirmationRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:passwordConfirmation"])";
-    var emailInvalidMessage = "@Localizer["settings:invalidEmail"]";
+    var passwordConfirmationRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["register:passwordConfirmation"])";
+     var passwordMustMatch = "@Localizer["register:passwordMustMatch"]";
+    var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
     var recaptcha = '@RecaptchaOptions.Value.SiteKey';
     var returnUrl = '@Html.Raw(Model.ReturnUrl)';
   </script>

@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Principal;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Abstractions;
@@ -73,7 +74,7 @@ public partial class AuthorizationController
         throw new Exception("Wrong grant type");
     }
 
-    private string? CheckAudience(OpenIddictRequest openIdDictRequest, ClaimsPrincipal? principal)
+    private string? CheckAudience(OpenIddictRequest openIdDictRequest, IPrincipal? principal)
     {
         if (openIdDictRequest.Audiences != null)
         {

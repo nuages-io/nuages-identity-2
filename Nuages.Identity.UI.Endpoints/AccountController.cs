@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using Nuages.Identity.Services;
 using Nuages.Identity.UI.Endpoints.Models;
-using Nuages.Web.Exceptions;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -44,16 +41,21 @@ public class AccountController
                 Result = SignInResult.Failed,
                 Reason = SignInFailedReason.RecaptchaError
             };
-            
-        var result = await _signInManager.PasswordSignInAsync(model.UserNameOrEmail, model.Password,
-            model.RememberMe, true);
+
+        var user = await _userManager.FindAsync(model.UserNameOrEmail);
+        if (user == null)
+        {
+            return new LoginResultModel
+            {
+                Result = SignInResult.Failed
+            };
+        }
+        
+        var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password,
+             true);
 
         if (result == SignInResult.Success)
         {
-            var user = await _userManager.FindByNameAsync(model.UserNameOrEmail);
-            if (user == null)
-                throw new NotAuthorizedException();
-                    
             await _signInManager.SignInAsync(user, new AuthenticationProperties{ IsPersistent = model.RememberMe});
                 
             return new LoginResultModel
@@ -72,6 +74,8 @@ public class AccountController
         };
     }
 
+    [HttpPost("register")]
+    [AllowAnonymous]
     public async Task Register([FromBody] RegisterModel model)
     {
         

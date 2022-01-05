@@ -1,5 +1,24 @@
 {
+	"email": "Courriel",
+	"errorMessage": {
+		"invalidEmail": "Le courriel est invalide",
+		"required": "Le champ [{0}] est requis."
+	},
 	"login": {
-		"title": "Ouverture de session"
+		"connect": "Connection",
+		"forgotPassword": "Mot de passe oublié?",
+		"mode": {
+			"userNameEmailPhone": "Nom d'utilisateur, courriel ou no. de téléphone"
+		},
+		"password": "Mot de passe",
+		"rememberMe": "Se souvenir de moi",
+		"title": "Connection à votre compte"
+	},
+	"or": "ou",
+	"register": {
+		"button": "S'inscrire",
+		"passwordConfirmation": "Confirmation du mot de passe",
+		"passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",
+		"title": "Inscrivez vous"
 	}
 }
