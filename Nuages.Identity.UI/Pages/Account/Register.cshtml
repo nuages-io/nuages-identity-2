@@ -1,72 +1,72 @@
 ﻿@page
-@model RegisterModel
+@model Nuages.Identity.UI.Pages.Account.Login
+@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<UIOptions> UIOptions
+
 @{
-    ViewBag.Title = "Register";
-    ViewBag.ShowRegistration = false;
+    ViewBag.Title = Localizer["register:title"];
+
 }
 
-<div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app" >
+<div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app">
 
     <partial name="Shared/LogoHeader"/>
-      
-      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-           <div >
-                  <form id="registerForm"  method="post">
-                      <h2>Create a new account.</h2>
-                      <hr />
-                     
-                      <div >
-                          <input asp-for="Input.Email"autocomplete="username" />
-                       
-                      </div>
-                      <div >
-                          <input asp-for="Input.Password"  autocomplete="new-password" />
-                          
-                      </div>
-                      <div >
-                          <input asp-for="Input.ConfirmPassword"  />
-                          
-                      </div>
-                      <button id="registerSubmit" type="submit">Register</button>
-                  </form>
-              </div>
-      </div>
-</div>
-</div>
-   
-    @* <div class="col-md-6 col-md-offset-2"> *@
-    @*     <section> *@
-    @*         <h3>Use another service to register.</h3> *@
-    @*         <hr /> *@
-    @*         @{ *@
-    @*             if ((Model.ExternalLogins?.Count ?? 0) == 0) *@
-    @*             { *@
-    @*                 <div> *@
-    @*                     <p> *@
-    @*                         There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article *@
-    @*                         about setting up this ASP.NET application to support logging in via external services</a>. *@
-    @*                     </p> *@
-    @*                 </div> *@
-    @*             } *@
-    @*             else *@
-    @*             { *@
-    @*                 <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal"> *@
-    @*                     <div> *@
-    @*                         <p> *@
-    @*                             @foreach (var provider in Model.ExternalLogins) *@
-    @*                             { *@
-    @*                                 <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button> *@
-    @*                             } *@
-    @*                         </p> *@
-    @*                     </div> *@
-    @*                 </form> *@
-    @*             } *@
-    @*         } *@
-    @*     </section> *@
-    @* </div> *@
+    
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <div class="pt-2 pl-4" v-if="errors.length > 0" v-show="errors.length > 0" style="display: none">
+                <ul class="text-red-800 mb-3">
+                    <li class="flex " v-for="error in errors">
+
+                        <i class="fas fa-exclamation-circle text-red-700 hover:text-red-700 mt-1 mb-2"></i>
+                        <div class="ml-2 mr-2 mb-2">
+                            {{error.message}}
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <form class="space-y-4" method="POST" v-on:submit.prevent="login" id="formLogin">
+                <div>
+                    <div class="mt-1">
+                        <input id="userNameOrEmail" name="userNameOrEmail" autofocus="" v-model="userNameOrEmail" placeholder="email" required class="text-box" type="email">
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-1">
+                        <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-1">
+                        <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["login:passwordConfirm"]" autocomplete="current-password" required class="text-box ">
+                    </div>
+                </div>
+
+                <div>
+                    <button v-on:click.prevent="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        @Localizer["register:register"]
+                    </button>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+    
 </div>
 
-@section Scripts {
-   
+<script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
+
+@section Scripts
+{
+    <script>
+    var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email:email"])";
+    var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
+    var passwordConfirmationRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:passwordConfirmation"])";
+    var emailInvalidMessage = "@Localizer["settings:invalidEmail"]";
+    var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+    var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+  </script>
+    <script src="/js/pages/register.js"></script>
 }
