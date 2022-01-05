@@ -1,5 +1,24 @@
 {
+	"email": "Email",
+	"errorMessage": {
+		"invalidEmail": "Email is invalid",
+		"required": "The [{0}] field is required."
+	},
 	"login": {
-		"title": "Open a new session"
+		"connect": "Connection",
+		"forgotPassword": "Forgot Your Password?",
+		"mode": {
+			"userNameEmailPhone": "Username, email or phone #"
+		},
+		"password": "Password",
+		"rememberMe": "Remember me",
+		"title": "Log in to your account"
+	},
+	"or": "or",
+	"register": {
+		"button": "Register",
+		"passwordConfirmation": "Password Confirmation",
+		"passwordMustMatch": "Password and confirmation must be the same",
+		"title": "Register"
 	}
 }
