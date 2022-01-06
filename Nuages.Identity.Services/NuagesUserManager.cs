@@ -86,9 +86,19 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return base.CreateAsync(user);
     }
 
-    public Task<NuagesApplicationUser?> FindAsync(string userNameOrEmail)
+    public async Task<NuagesApplicationUser?> FindAsync(string userNameOrEmail)
     {
-        throw new NotImplementedException();
+        NuagesApplicationUser? user = null;
+        
+        if (_nuagesIdentityOptions.SupportsUserName)
+        {
+            user = await FindByNameAsync(userNameOrEmail);
+        }
+
+        if (user == null)
+            user = await FindByEmailAsync(userNameOrEmail);
+
+        return user;
     }
 }
 

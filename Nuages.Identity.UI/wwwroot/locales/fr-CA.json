@@ -8,6 +8,8 @@
 		"connect": "Connection",
 		"forgotPassword": "Mot de passe oublié?",
 		"mode": {
+			"email": "Votre courriel",
+			"userNameEmail": "Nom d'utilisateur ou courriel",
 			"userNameEmailPhone": "Nom d'utilisateur, courriel ou no. de téléphone"
 		},
 		"password": "Mot de passe",

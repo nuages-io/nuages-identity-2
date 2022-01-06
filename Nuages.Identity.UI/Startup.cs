@@ -48,11 +48,12 @@ public class Startup
 
         var options = _configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
         
+        
         services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
             {
                 identity.Lockout = new LockoutOptions
                 {
-                    AllowedForNewUsers = true, /*SupportsUserLockout*/
+                    AllowedForNewUsers = options.SupportsUserLockout,
                     MaxFailedAccessAttempts = 5,
                     DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
                 };

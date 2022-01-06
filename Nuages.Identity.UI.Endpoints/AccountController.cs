@@ -39,7 +39,7 @@ public class AccountController
             {
                 Success = false,
                 Result = SignInResult.Failed,
-                Reason = SignInFailedReason.RecaptchaError
+                Reason = FailedLoginReason.RecaptchaError
             };
 
         var user = await _userManager.FindAsync(model.UserNameOrEmail);
@@ -70,7 +70,8 @@ public class AccountController
         {
             Result = result,
             Message = _stringLocalizer[message],
-            Success = false
+            Success = false,
+            Reason = user.LastFailedLoginReason
         };
     }
 

@@ -24,6 +24,7 @@ public static class NuagesIdentityConfigExtensions
         builder.Services.AddScoped(typeof(NuagesUserManager));
         builder.Services.AddScoped(typeof(NuagesSignInManager));
 
+
         builder.Services.AddScoped<ILookupProtector, LookupProtector>();
         builder.Services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
     }
