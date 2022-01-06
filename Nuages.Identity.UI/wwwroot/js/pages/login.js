@@ -38,25 +38,30 @@ var App =
                             if (res.success) {
                                 window.location = returnUrl;
                             } else
-                                switch (res.result) {
-                                    case "PasswordExpired": {
-                                        //Redirect to change password page
+                                switch (res.reason) {
+                                    case "PasswordExpired":
+                                    case "PasswordMustBeChanged": 
+                                    {
+                                        window.location = "/account/changepassword";
                                         break;
                                     }
                                     case "MfaRequired": {
-                                        //Redirect to mfa login
+                                        window.location = "/account/loginwith2fa";
                                         break;
                                     }
-                                    case "EmailNotVerified": {
+                                    case "EmailNotConfirmed": {
                                         window.location = "/account/emailnotverified";
                                         break;
                                     }
-                                    case "PhoneNotVerified": {
-                                        //Redirect to PhoneNotVerified
+                                    case "PhoneNotConfirmed": {
+                                        window.location = "/account/phonenotverified";
                                         break;
                                     }
                                     default: {
-                                        //NotActiveAtTime,
+
+                                        //NotWithinDateRange,
+                                        //AccountNotConfirmed,
+                                        //PasswordNeverSet,
                                         //RecaptchaError,
                                         //LockedOut
                                         self.errors.push({message: res.message});
