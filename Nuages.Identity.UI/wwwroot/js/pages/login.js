@@ -72,6 +72,7 @@ var App =
 
                 },
                 login: function () {
+                    
                     this.errors = [];
                     formLogin.classList.remove("was-validated");
 

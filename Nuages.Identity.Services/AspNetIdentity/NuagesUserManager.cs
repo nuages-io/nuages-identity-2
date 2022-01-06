@@ -79,11 +79,20 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         }
     }
 
-    public override Task<IdentityResult> CreateAsync(NuagesApplicationUser user)
+    public override async Task<IdentityResult> CreateAsync(NuagesApplicationUser user)
     {
-        user.CreatedOn = DateTime.UtcNow;
-        
-        return base.CreateAsync(user);
+        var res = await base.CreateAsync(user);
+       
+        if (res.Succeeded)
+        {
+            user.CreatedOn = DateTime.UtcNow;
+            user.LastPasswordChangedDate = user.CreatedOn;
+            user.EmailDateTime = user.CreatedOn;
+            
+            await UpdateAsync(user);
+        }
+
+        return res;
     }
 
     public async Task<NuagesApplicationUser?> FindAsync(string userNameOrEmail)
@@ -100,6 +109,19 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
 
         return user;
     }
-    
+
+    protected override async Task<IdentityResult> UpdatePasswordHash(NuagesApplicationUser user, string newPassword, bool validatePassword)
+    {
+        var res = await base.UpdatePasswordHash(user, newPassword, validatePassword);
+
+        if (res.Succeeded)
+        {
+            user.LastPasswordChangedDate = DateTime.UtcNow;
+            await UpdateAsync(user);
+        }
+
+        return res;
+    }
+
 }
 

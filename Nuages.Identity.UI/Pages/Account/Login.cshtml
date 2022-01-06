@@ -7,7 +7,6 @@
     ViewBag.Title = Localizer["login:title"];
     ViewBag.ShowRegistration = UIOptions.Value.ShowRegistration;
     ViewBag.RegistrationUrl = UIOptions.Value.RegistrationUrl;
-
 }
 
 @section Header
@@ -50,7 +49,7 @@
         </div>
 
         <div class="text-sm">
-            <a  href="/account/forgotpassword" >
+            <a href="/account/forgotpassword">
                 @Localizer["login:forgotPassword"]
             </a>
         </div>
@@ -69,11 +68,12 @@
 @section Scripts
 {
     <script>
-    var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Model.UserNamePlaceHolder)";
-    var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
-    var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
-    var recaptcha = '@RecaptchaOptions.Value.SiteKey';
-    var returnUrl = '@Html.Raw(Model.ReturnUrl)';
-  </script>
+        var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Model.UserNamePlaceHolder)";
+        var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
+        var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
+        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+    </script>
+
     <script src="/js/pages/login.js"></script>
 }

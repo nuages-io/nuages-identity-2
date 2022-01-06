@@ -186,7 +186,8 @@ public partial class AuthorizationController : Controller
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Email = "m@nuages.org",
-                UserName = "martin"
+                UserName = "martin",
+                
             }, "123");
 
             if (!result.Succeeded)

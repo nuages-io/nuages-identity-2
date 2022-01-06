@@ -53,7 +53,11 @@ public class LoginService : ILoginService
         };
     }
 
-    private static string GetMessage(FailedLoginReason? failedLoginReason)
+    private string GetMessage(FailedLoginReason? failedLoginReason)
+    {
+        return _stringLocalizer[GetMessageKey(failedLoginReason)];
+    }
+    private string GetMessageKey(FailedLoginReason? failedLoginReason)
     {
         switch (failedLoginReason)
         {
