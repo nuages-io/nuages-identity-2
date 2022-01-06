@@ -95,8 +95,8 @@ public class Startup
 
                 identity.SignIn = new SignInOptions
                 {
-                    RequireConfirmedEmail = false,
-                    RequireConfirmedPhoneNumber = false,
+                    RequireConfirmedEmail = options.RequireConfirmedEmail,
+                    RequireConfirmedPhoneNumber = options.RequireConfirmedPhoneNumber,
                     RequireConfirmedAccount = false
                 };
                 

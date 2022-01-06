@@ -11,6 +11,10 @@ var App =
         },
         mounted() {
             userNameOrEmail.focus();
+            setTimeout(function()
+            {
+                userNameOrEmail.value = "";
+            })
         },
         methods:
             {
@@ -54,7 +58,7 @@ var App =
                                         break;
                                     }
                                     case "PhoneNotConfirmed": {
-                                        window.location = "/account/phonenotverified";
+                                        window.location = "/account/phonenotconfirmed";
                                         break;
                                     }                                   
                                     default: {

@@ -2,46 +2,29 @@
 @model Nuages.Identity.UI.Pages.Account.EmailNotConfirmed
 @inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
 
-<div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app" >
-  
-  <partial name="Shared/LogoHeader"/>
-  
-  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-      <div class="pt-2 pl-4" v-if="errors.length > 0" v-show="errors.length > 0" style="display: none" >
-        <ul class="text-red-800 mb-3">
-          <li class="flex " v-for="error in errors">
-            <i class="fas fa-exclamation-circle text-red-700 hover:text-red-700 mt-1 mb-2"></i>
-            <div class="ml-2 mr-2 mb-2">
-              {{error.message}}
-            </div>
-          </li>
-        </ul>
-      </div>
-      
-      <div class="flex justify-center ">
-        <i class="fas fa-spinner fa-spin fa-3x"  v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-        <i class="fa fa-check-circle text-green-700  fa-3x"  v-if="status == 'sent'"  v-show="status == 'sent'" style="display: none"></i>
-      </div>
-      
-    
-      <form class="space-y-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status == ''">
-        <strong>@Localizer["emailNotConfirmed:title"]</strong>
-        <h4>@Localizer["emailNotConfirmed:message"]</h4>
-        <button v-on:click.prevent="send" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-           @Localizer["emailNotConfirmed:sendAgain"]
-         </button>
-      </form>
-    </div>
-  </div>
+
+<partial name="Shared/ErrorList"/>
+
+<div class="flex justify-center ">
+    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+    <i class="fa fa-check-circle text-green-700  fa-3x" v-if="status == 'sent'" v-show="status == 'sent'" style="display: none"></i>
 </div>
+
+
+<form class="space-y-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status == ''">
+    <strong>@Localizer["emailNotConfirmed:title"]</strong>
+    <h4>@Localizer["emailNotConfirmed:message"]</h4>
+    <button v-on:click.prevent="send" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        @Localizer["emailNotConfirmed:sendAgain"]
+    </button>
+</form>
 
 <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 
 @section Scripts
 {
-  <script>
+    <script>
   var recaptcha = '@RecaptchaOptions.Value.SiteKey';
   </script>
-  <script src="/js/pages/emailNotConfirmed.js"></script> 
+    <script src="/js/pages/emailNotConfirmed.js"></script>
 }

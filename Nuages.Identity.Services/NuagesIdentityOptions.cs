@@ -21,6 +21,8 @@ public class NuagesIdentityOptions
     public int RequireConfirmedPhoneGracePeriodInMinutes { get; set; } = 60;
 
     public bool SupportsUserName { get; set; } = true;
+    public bool RequireConfirmedEmail { get; set; }
+    public bool RequireConfirmedPhoneNumber { get; set; }
 }
 
 

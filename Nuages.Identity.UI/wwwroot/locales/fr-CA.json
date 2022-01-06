@@ -5,7 +5,7 @@
 		"no_access": {
 			"AccountNotConfirmed": "Votre compte n'est pas confirmé",
 			"lockedOut": "Votre compte est vérouillé",
-			"notWithinDateRange": "Votre compte utilisateur est inactif à cette date"
+			"notWithinDateRange": "Votre compte utilisateur est inactif en ce moment"
 		},
 		"recaptchaError": "Erreur de Recptcha",
 		"required": "Le champ [{0}] est requis.",
