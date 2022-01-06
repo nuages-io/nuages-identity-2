@@ -8,14 +8,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Nuages.Identity.Services;
 
 namespace Nuages.Identity.UI.Pages.Account
 {
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly NuagesUserManager _userManager;
 
-        public ForgotPasswordModel(UserManager<IdentityUser> userManager)
+        public ForgotPasswordModel(NuagesUserManager userManager)
         {
             _userManager = userManager;
         }

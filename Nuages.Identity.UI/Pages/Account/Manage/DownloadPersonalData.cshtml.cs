@@ -6,16 +6,17 @@ using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Nuages.Identity.Services;
 
 namespace Nuages.Identity.UI.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly NuagesUserManager _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
         public DownloadPersonalDataModel(
-            UserManager<IdentityUser> userManager,
+            NuagesUserManager userManager,
             ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;

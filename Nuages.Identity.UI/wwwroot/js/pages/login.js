@@ -50,7 +50,7 @@ var App =
                                         break;
                                     }
                                     case "EmailNotConfirmed": {
-                                        window.location = "/account/emailnotverified";
+                                        window.location = "/account/emailnotconfirmed";
                                         break;
                                     }
                                     case "PhoneNotConfirmed": {

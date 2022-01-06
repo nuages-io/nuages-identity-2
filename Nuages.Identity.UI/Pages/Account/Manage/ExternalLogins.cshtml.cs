@@ -6,19 +6,20 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Nuages.Identity.Services;
 
 namespace Nuages.Identity.UI.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly IUserStore<IdentityUser> _userStore;
+        private readonly NuagesUserManager _userManager;
+        private readonly NuagesSignInManager _signInManager;
+        private readonly IUserStore<NuagesApplicationUser> _userStore;
 
         public ExternalLoginsModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
-            IUserStore<IdentityUser> userStore)
+            NuagesUserManager userManager,
+            NuagesSignInManager signInManager,
+            IUserStore<NuagesApplicationUser> userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -64,7 +65,7 @@ namespace Nuages.Identity.UI.Pages.Account.Manage
                 .ToList();
 
             string passwordHash = null;
-            if (_userStore is IUserPasswordStore<IdentityUser> userPasswordStore)
+            if (_userStore is IUserPasswordStore<NuagesApplicationUser> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
             }

@@ -7,15 +7,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Nuages.Identity.Services;
 
 namespace Nuages.Identity.UI.Pages.Account
 {
     public class ConfirmEmailChangeModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly NuagesUserManager _userManager;
+        private readonly NuagesSignInManager _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ConfirmEmailChangeModel(NuagesUserManager userManager, NuagesSignInManager signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

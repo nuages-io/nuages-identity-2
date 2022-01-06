@@ -10,22 +10,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Nuages.Identity.Services;
 
 namespace Nuages.Identity.UI.Pages.Account;
 
 [AllowAnonymous]
 public class ExternalLoginModel : PageModel
 {
-    private readonly SignInManager<IdentityUser> _signInManager;
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly IUserStore<IdentityUser> _userStore;
-    private readonly IUserEmailStore<IdentityUser> _emailStore;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly NuagesUserManager _userManager;
+    private readonly IUserStore<NuagesApplicationUser> _userStore;
+    private readonly IUserEmailStore<NuagesApplicationUser> _emailStore;
     private readonly ILogger<ExternalLoginModel> _logger;
 
     public ExternalLoginModel(
-        SignInManager<IdentityUser> signInManager,
-        UserManager<IdentityUser> userManager,
-        IUserStore<IdentityUser> userStore,
+        NuagesSignInManager signInManager,
+        NuagesUserManager userManager,
+        IUserStore<NuagesApplicationUser> userStore,
         ILogger<ExternalLoginModel> logger)
     {
         _signInManager = signInManager;
@@ -187,26 +188,26 @@ public class ExternalLoginModel : PageModel
         return Page();
     }
 
-    private IdentityUser CreateUser()
+    private NuagesApplicationUser CreateUser()
     {
         try
         {
-            return Activator.CreateInstance<IdentityUser>();
+            return Activator.CreateInstance<NuagesApplicationUser>();
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                                                $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(NuagesApplicationUser)}'. " +
+                                                $"Ensure that '{nameof(NuagesApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                                                 $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
         }
     }
 
-    private IUserEmailStore<IdentityUser> GetEmailStore()
+    private IUserEmailStore<NuagesApplicationUser> GetEmailStore()
     {
         if (!_userManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
-        return (IUserEmailStore<IdentityUser>)_userStore;
+        return (IUserEmailStore<NuagesApplicationUser>)_userStore;
     }
 }

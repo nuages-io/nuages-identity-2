@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace Nuages.Identity.UI.Pages.Account;
 
 //[Authorize(AuthenticationSchemes = NuagesIdentityConstants.EmailNotVerifiedScheme)]
-public class EmailNotVerified : PageModel
+public class EmailNotConfirmed : PageModel
 {
 
-    public EmailNotVerified()
+    public EmailNotConfirmed()
     {
       
     }

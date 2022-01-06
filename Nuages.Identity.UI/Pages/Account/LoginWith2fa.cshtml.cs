@@ -6,18 +6,19 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Nuages.Identity.Services;
 
 namespace Nuages.Identity.UI.Pages.Account
 {
     public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly NuagesSignInManager _signInManager;
+        private readonly NuagesUserManager _userManager;
         private readonly ILogger<LoginWith2faModel> _logger;
 
         public LoginWith2faModel(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
+            NuagesSignInManager signInManager,
+            NuagesUserManager userManager,
             ILogger<LoginWith2faModel> logger)
         {
             _signInManager = signInManager;

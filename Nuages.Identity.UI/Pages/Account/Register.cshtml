@@ -7,54 +7,31 @@
     ViewBag.Title = Localizer["register:title"];
 
 }
+<partial name="Shared/ErrorList"/>
 
-<div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app">
-
-    <partial name="Shared/LogoHeader"/>
-    
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <div class="pt-2 pl-4" v-if="errors.length > 0" v-show="errors.length > 0" style="display: none">
-                <ul class="text-red-800 mb-3">
-                    <li class="flex " v-for="error in errors">
-
-                        <i class="fas fa-exclamation-circle text-red-700 hover:text-red-700 mt-1 mb-2"></i>
-                        <div class="ml-2 mr-2 mb-2">
-                            {{error.message}}
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <form class="space-y-4" method="POST" v-on:submit.prevent="login" id="formLogin">
-                <div>
-                    <div class="mt-1">
-                        <input id="userNameOrEmail" name="userNameOrEmail" autofocus="" v-model="userNameOrEmail" placeholder="@Localizer["email"]" required class="text-box" type="email">
-                    </div>
-                </div>
-                <div>
-                    <div class="mt-1">
-                        <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
-                    </div>
-                </div>
-                <div>
-                    <div class="mt-1">
-                        <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
-                    </div>
-                </div>
-
-                <div>
-                    <button v-on:click.prevent="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        @Localizer["register:button"]
-                    </button>
-                </div>
-            </form>
-
-
+<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin">
+    <div>
+        <div class="mt-1">
+            <input id="userNameOrEmail" name="userNameOrEmail" autofocus="" v-model="userNameOrEmail" placeholder="@Localizer["email"]" required class="text-box" type="email">
         </div>
     </div>
-    
-</div>
+    <div>
+        <div class="mt-1">
+            <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+        </div>
+    </div>
+    <div>
+        <div class="mt-1">
+            <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
+        </div>
+    </div>
+
+    <div>
+        <button v-on:click.prevent="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            @Localizer["register:button"]
+        </button>
+    </div>
+</form>
 
 <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 
