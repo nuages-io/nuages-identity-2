@@ -116,11 +116,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         {
             if (!user.LastPasswordChangedDate.HasValue)
             {
-                user.LastFailedLoginReason = FailedLoginReason.PasswordNeverSet;
-
-                await UserManager.UpdateAsync(user);
-
-                return false;
+                throw new NotSupportedException("PasswordWasNeverSet");
             }
 
             if (user.EnableAutoExpirePassword)

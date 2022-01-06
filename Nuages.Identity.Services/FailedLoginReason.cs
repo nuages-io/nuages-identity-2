@@ -8,7 +8,6 @@ public enum FailedLoginReason
     PhoneNotConfirmed,
     AccountNotConfirmed,
     PasswordExpired,
-    PasswordNeverSet,
     RecaptchaError,
     LockedOut,
     UserNameOrPasswordInvalid

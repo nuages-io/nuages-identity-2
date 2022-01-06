@@ -13,7 +13,6 @@ public class NuagesApplicationUser : MongoUser<string>
     public string? Country { get; set; }
     
     public DateTime? ValidFrom { get; set; }
-    
     public DateTime? ValidTo { get; set; }
     
     public DateTime? LastLogin { get; set; }

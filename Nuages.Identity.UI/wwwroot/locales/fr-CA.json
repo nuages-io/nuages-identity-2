@@ -3,6 +3,7 @@
 	"errorMessage": {
 		"invalidEmail": "Le courriel est invalide",
 		"no_access": {
+			"AccountNotConfirmed": "Votre compte n'est pas confirmé",
 			"lockedOut": "Votre compte est vérouillé",
 			"notWithinDateRange": "Votre compte utilisateur est inactif à cette date"
 		},
@@ -28,5 +29,8 @@
 		"passwordConfirmation": "Confirmation du mot de passe",
 		"passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",
 		"title": "Inscrivez vous"
+	},
+	"resetPassword": {
+		"title": ""
 	}
 }
