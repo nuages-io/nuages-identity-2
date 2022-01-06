@@ -100,5 +100,6 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
 
         return user;
     }
+    
 }
 

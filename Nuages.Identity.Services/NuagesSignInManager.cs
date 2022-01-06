@@ -161,4 +161,13 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         
         await base.SignInWithClaimsAsync(user, authenticationProperties, additionalClaims);
     }
+
+    protected override async Task<SignInResult> LockedOut(NuagesApplicationUser user)
+    {
+        user.LastFailedLoginReason = FailedLoginReason.LockedOut;
+
+        await UserManager.UpdateAsync(user);
+        
+        return await base.LockedOut(user);
+    }
 }
