@@ -69,7 +69,7 @@
 @section Scripts
 {
     <script>
-    var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer[Model.UserNamePlaceHolder])";
+    var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Model.UserNamePlaceHolder)";
     var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
     var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
     var recaptcha = '@RecaptchaOptions.Value.SiteKey';

@@ -1,4 +1,5 @@
-@inject  Nuages.Identity.Services.NuagesSignInManager SignInManager
+@using Nuages.Identity.Services.AspNetIdentity
+@inject  NuagesSignInManager SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }

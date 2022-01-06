@@ -1,9 +1,8 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
-using Nuages.Identity.UI.Endpoints.Models;
+using Nuages.Identity.Services.Models;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -16,18 +15,16 @@ namespace Nuages.Identity.UI.Endpoints;
 [Route("api/[controller]")]
 public class AccountController
 {
-    private readonly NuagesUserManager _userManager;
-    private readonly NuagesSignInManager _signInManager;
     private readonly IRecaptchaValidator _recaptchaValidator;
     private readonly IStringLocalizer _stringLocalizer;
+    private readonly ILoginService _loginService;
 
-    public AccountController(NuagesUserManager userManager, NuagesSignInManager signInManager, 
-        IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer)
+    public AccountController(
+        IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, ILoginService loginService)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
         _recaptchaValidator = recaptchaValidator;
         _stringLocalizer = stringLocalizer;
+        _loginService = loginService;
     }
     
     [HttpPost("login")]
@@ -39,40 +36,11 @@ public class AccountController
             {
                 Success = false,
                 Result = SignInResult.Failed,
-                Reason = FailedLoginReason.RecaptchaError
+                Reason = FailedLoginReason.RecaptchaError,
+                Message = _stringLocalizer["errorMessage:RecaptchaError"]
             };
 
-        var user = await _userManager.FindAsync(model.UserNameOrEmail);
-        if (user == null)
-        {
-            return new LoginResultModel
-            {
-                Result = SignInResult.Failed
-            };
-        }
-        
-        var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password,
-             true);
-
-        if (result == SignInResult.Success)
-        {
-            await _signInManager.SignInAsync(user, new AuthenticationProperties{ IsPersistent = model.RememberMe});
-                
-            return new LoginResultModel
-            {
-                Success = true
-            };
-        }
-
-        var message = "login:no_access:" + result;
-            
-        return new LoginResultModel
-        {
-            Result = result,
-            Message = _stringLocalizer[message],
-            Success = false,
-            Reason = user.LastFailedLoginReason
-        };
+        return await _loginService.LoginAsync(model);
     }
 
     [HttpPost("register")]

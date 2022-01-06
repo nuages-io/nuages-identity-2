@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class LookupProtectorKeyRing : ILookupProtectorKeyRing
 {

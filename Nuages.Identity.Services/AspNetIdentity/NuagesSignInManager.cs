@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 {
@@ -24,8 +24,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         if (!await CheckStartEndAsync(user)) 
             return false;
 
-        if (!await CheckPasswordAsync(user)) 
-            return false;
+        
 
         if (!await CheckEmailAsync(user)) 
             return false;
@@ -39,6 +38,28 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         user.LastFailedLoginReason = null;
         
         return true;
+    }
+
+    public override async Task<SignInResult> CheckPasswordSignInAsync(NuagesApplicationUser user, string password, bool lockoutOnFailure)
+    {
+        var res = await base.CheckPasswordSignInAsync(user, password, lockoutOnFailure);
+        
+        if (res.Succeeded)
+        {
+            if (!await CheckPasswordAsync(user))
+                return SignInResult.NotAllowed;
+        }
+        else
+        {
+            if (!res.IsLockedOut && !res.IsNotAllowed && !res.RequiresTwoFactor)
+            {
+                user.LastFailedLoginReason = FailedLoginReason.UserNameOrPasswordInvalid;
+                await UserManager.UpdateAsync(user);
+            }
+        }
+     
+        
+        return res;
     }
 
     private async Task<bool> CheckAccountAsync(NuagesApplicationUser user)

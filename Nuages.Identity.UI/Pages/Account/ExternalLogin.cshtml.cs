@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services;
+using Nuages.Identity.Services.AspNetIdentity;
 
 namespace Nuages.Identity.UI.Pages.Account;
 

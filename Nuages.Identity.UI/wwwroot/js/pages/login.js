@@ -42,7 +42,7 @@ var App =
                                     case "PasswordExpired":
                                     case "PasswordMustBeChanged": 
                                     {
-                                        window.location = "/account/changepassword";
+                                        window.location = "/account/resetpassword";
                                         break;
                                     }
                                     case "MfaRequired": {
@@ -56,7 +56,7 @@ var App =
                                     case "PhoneNotConfirmed": {
                                         window.location = "/account/phonenotverified";
                                         break;
-                                    }
+                                    }                                   
                                     default: {
 
                                         //NotWithinDateRange,
@@ -68,7 +68,6 @@ var App =
                                         break;
                                     }
                                 }
-
                         });
 
                 },
@@ -106,12 +105,10 @@ var App =
                         var list = formLogin.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
-
                             this.errors.push({
                                 message: element.validationMessage,
                             });
                         });
-
                     }
                 }
             },

@@ -2,7 +2,13 @@
 	"email": "Courriel",
 	"errorMessage": {
 		"invalidEmail": "Le courriel est invalide",
-		"required": "Le champ [{0}] est requis."
+		"no_access": {
+			"lockedOut": "Votre compte est vérouillé",
+			"notWithinDateRange": "Votre compte utilisateur est inactif à cette date"
+		},
+		"recaptchaError": "Erreur de Recptcha",
+		"required": "Le champ [{0}] est requis.",
+		"userNameOrPasswordInvalid": "Nom d'utilisateur/courriel ou mot de pass invalide"
 	},
 	"login": {
 		"connect": "Connection",

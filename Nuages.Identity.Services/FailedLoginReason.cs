@@ -10,5 +10,6 @@ public enum FailedLoginReason
     PasswordExpired,
     PasswordNeverSet,
     RecaptchaError,
-    LockedOut
+    LockedOut,
+    UserNameOrPasswordInvalid
 }

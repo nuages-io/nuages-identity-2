@@ -1,9 +1,9 @@
-﻿
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class NuagesUserManager : UserManager<NuagesApplicationUser> 
 {

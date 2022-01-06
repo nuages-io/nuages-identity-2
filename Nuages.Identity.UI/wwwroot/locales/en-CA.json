@@ -2,7 +2,13 @@
 	"email": "Email",
 	"errorMessage": {
 		"invalidEmail": "Email is invalid",
-		"required": "The [{0}] field is required."
+		"no_access": {
+			"lockedOut": "Your account is locked",
+			"notWithinDateRange": "Your user account is inactive on this date"
+		},
+		"recaptchaError": "Recaptcha error",
+		"required": "The [{0}] field is required.",
+		"userNameOrPasswordInvalid": "Invalid username / email or password"
 	},
 	"login": {
 		"connect": "Connection",
