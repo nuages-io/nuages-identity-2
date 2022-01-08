@@ -18,13 +18,16 @@ public class AccountController
     private readonly IRecaptchaValidator _recaptchaValidator;
     private readonly IStringLocalizer _stringLocalizer;
     private readonly ILoginService _loginService;
+    private readonly IForgotPasswordService _forgotPasswordService;
 
     public AccountController(
-        IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, ILoginService loginService)
+        IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
+        ILoginService loginService, IForgotPasswordService forgotPasswordService)
     {
         _recaptchaValidator = recaptchaValidator;
         _stringLocalizer = stringLocalizer;
         _loginService = loginService;
+        _forgotPasswordService = forgotPasswordService;
     }
     
     [HttpPost("login")]
@@ -48,5 +51,23 @@ public class AccountController
     public async Task Register([FromBody] RegisterModel model)
     {
         
+    }
+    
+    [HttpPost("forgotPassword")]
+    [AllowAnonymous]
+    public async Task<ForgotPasswordResultModel> ForgotPassword([FromBody] ForgotPasswordModel model)
+    {
+        if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            return new ForgotPasswordResultModel
+            {
+                Success = false
+            };
+        
+        await _forgotPasswordService.ForgotPassword(model);
+        
+        return new ForgotPasswordResultModel
+        {
+            Success = true
+        };
     }
 }

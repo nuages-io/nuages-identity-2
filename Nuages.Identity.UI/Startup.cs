@@ -122,6 +122,7 @@ public class Startup
         services.AddAuthentication();
 
         services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
+        
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

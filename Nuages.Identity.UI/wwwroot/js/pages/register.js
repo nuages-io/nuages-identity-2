@@ -48,7 +48,7 @@ var App =
                     var self = this;
                     
                     this.errors = [];
-                    formLogin.classList.remove("was-validated");
+                    formRegister.classList.remove("was-validated");
 
                     userNameOrEmail.setCustomValidity("");
                     password.setCustomValidity("");
@@ -59,7 +59,7 @@ var App =
                         passwordConfirm.setCustomValidity(passwordMustMatch);
                     }
                     
-                    var res = formLogin.checkValidity();
+                    var res = formRegister.checkValidity();
                     if (res) {
                         
 
@@ -69,7 +69,7 @@ var App =
                             });
                         });
                     } else {
-                        formLogin.classList.add("was-validated");
+                        formRegister.classList.add("was-validated");
 
                         if (!userNameOrEmail.validity.valid) {
                             if (userNameOrEmail.validity.valueMissing) {
@@ -88,7 +88,7 @@ var App =
                                 passwordConfirm.setCustomValidity(passwordConfirmationRequiredMessage);
                         }
 
-                        var list = formLogin.querySelectorAll(":invalid");
+                        var list = formRegister.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
 

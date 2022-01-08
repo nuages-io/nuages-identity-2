@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Models;
+using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services;
 
@@ -9,11 +10,13 @@ public class ForgotPasswordService : IForgotPasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IEmailSender _emailSender;
 
-    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor)
+    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender)
     {
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
+        _emailSender = emailSender;
     }
     
     public async Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model)
@@ -27,19 +30,17 @@ public class ForgotPasswordService : IForgotPasswordService
             };
         }
 
-        // For more information on how to enable account confirmation and password reset please
-        // visit https://go.microsoft.com/fwlink/?LinkID=532713
+       
         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
         var url =
             $"{_httpContextAccessor.HttpContext!.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Host}/Account/ResetPassword?code{code}";
-        
 
-        // await _emailSender.SendEmailAsync(
-        //     Input.Email,
-        //     "Reset Password",
-        //     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+        await _emailSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
+        {
+            { "Link", url }
+        });
 
         return new ForgotPasswordResultModel
         {

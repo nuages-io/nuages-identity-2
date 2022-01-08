@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services;
 
@@ -21,6 +22,8 @@ public static class NuagesIdentityConfigExtensions
             services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
         }
         
+        services.AddSenderClient(configuration);
+        
         if (configure != null)
             services.Configure(configure);
         
@@ -28,7 +31,8 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped(typeof(NuagesSignInManager));
 
         services.AddScoped<ILoginService, LoginService>();
-    
+        services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
+        
         services.AddScoped<ILookupProtector, LookupProtector>();
         services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
     }
