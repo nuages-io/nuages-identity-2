@@ -1,3 +1,4 @@
+using NLog.Web;
 using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.UI;
@@ -75,6 +76,8 @@ public class LambdaEntryPoint :
                     };
                 });
             }
-        });
+        }).UseNLog();
+        
+        NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("nlog.aws.config");
     }
 }

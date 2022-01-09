@@ -1,3 +1,4 @@
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -19,31 +20,63 @@ public class AccountController
     private readonly IStringLocalizer _stringLocalizer;
     private readonly ILoginService _loginService;
     private readonly IForgotPasswordService _forgotPasswordService;
+    private readonly ILogger<AccountController> _logger;
+    private readonly IHostEnvironment _environment;
 
     public AccountController(
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
-        ILoginService loginService, IForgotPasswordService forgotPasswordService)
+        ILoginService loginService, IForgotPasswordService forgotPasswordService,
+        ILogger<AccountController> logger, IHostEnvironment environment)
     {
         _recaptchaValidator = recaptchaValidator;
         _stringLocalizer = stringLocalizer;
         _loginService = loginService;
         _forgotPasswordService = forgotPasswordService;
+        _logger = logger;
+        _environment = environment;
     }
     
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<LoginResultModel>> Login([FromBody] LoginModel model)
+    public async Task<ActionResult<LoginResultModel>> LoginAsync([FromBody] LoginModel model)
     {
-        if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
-            return new LoginResultModel
-            {
-                Success = false,
-                Result = SignInResult.Failed,
-                Reason = FailedLoginReason.RecaptchaError,
-                Message = _stringLocalizer["errorMessage:RecaptchaError"]
-            };
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginAsync");
 
-        return await _loginService.LoginAsync(model);
+            var id = Guid.NewGuid().ToString();
+            
+            _logger.LogInformation($"Initiate login : ID = {id} {model.UserNameOrEmail} RememberMe = {model.RememberMe} RecaptchaToken = {model.RecaptchaToken}");
+        
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new LoginResultModel
+                {
+                    Success = false,
+                    Result = SignInResult.Failed,
+                    Reason = FailedLoginReason.RecaptchaError,
+                    Message = _stringLocalizer["errorMessage:RecaptchaError"]
+                };
+
+            var res= await _loginService.LoginAsync(model);
+            
+            _logger.LogInformation($"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+
+            return res;
+
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 
     [HttpPost("register")]

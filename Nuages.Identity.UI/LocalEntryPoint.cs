@@ -1,4 +1,5 @@
-﻿using Nuages.Localization.Storage.Config.Sources;
+﻿using NLog.Web;
+using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.UI;
 
@@ -27,5 +28,5 @@ public class LocalEntryPoint
                 // config.AddJsonHttpTranslation($"{url}/fr.json");
                 // config.AddJsonHttpTranslation($"{url}/en.json");
             })
-            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); }).UseNLog();
 }
