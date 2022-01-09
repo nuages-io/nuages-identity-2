@@ -4,7 +4,7 @@ var App =
             return {
                 email: "",
                 errors: [],
-                action: ""
+                status: ""
             }
         },
         mounted() {
@@ -31,7 +31,7 @@ var App =
                         .then(response => response.json())
                         .then(res => {
                             if (res.success) {
-                               
+                               self.status = "done";
                             } else
                                 self.errors.push({message: res.message});
                         });
@@ -81,7 +81,7 @@ var App =
         watch: {
             email(value) {
                 this.errors = [];
-                this.action = "";
+                this.status = "";
                 email.setCustomValidity("");
             }
         }
