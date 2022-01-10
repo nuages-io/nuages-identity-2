@@ -11,7 +11,14 @@
 		"required": "Le champ [{0}] est requis.",
 		"userNameOrPasswordInvalid": "Nom d'utilisateur/courriel ou mot de pass invalide"
 	},
+	"forgotPassword": {
+		"instructions": "Entrez le courriel associé à votre compte. Un courriel vous sera envoyé afin de vous permettre de choisir un nouveau mot de passe.",
+		"reset": "Ré-initialiser",
+		"seeEmail": "Voir vos courriel afin de retrouver le messages de ré-initialisation",
+		"title": "Ré-initialisation de votre mot de passe"
+	},
 	"login": {
+		"back": "Retour à la page de connexion",
 		"connect": "Connection",
 		"forgotPassword": "Mot de passe oublié?",
 		"mode": {

@@ -11,7 +11,14 @@
 		"required": "The [{0}] field is required.",
 		"userNameOrPasswordInvalid": "Invalid username / email or password"
 	},
+	"forgotPassword": {
+		"instructions": "Enter the email associated with your account. An email message will be sent to you allowing you to choose a new password.",
+		"reset": "Reset",
+		"seeEmail": "See your email to find the reset messages",
+		"title": "Reset your password"
+	},
 	"login": {
+		"back": "Back to the login page",
 		"connect": "Connection",
 		"forgotPassword": "Forgot Your Password?",
 		"mode": {
