@@ -38,14 +38,14 @@
 @section Scripts
 {
     <script>
-    var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email"])";
-    var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
-    var passwordConfirmationRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["register:passwordConfirmation"])";
-     var passwordMustMatch = "@Localizer["register:passwordMustMatch"]";
-    var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
-    var recaptcha = '@RecaptchaOptions.Value.SiteKey';
-    var returnUrl = '@Html.Raw(Model.ReturnUrl)';
-  </script>
+        var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email"])";
+        var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
+        var passwordConfirmationRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["register:passwordConfirmation"])";
+        var passwordMustMatch = "@Localizer["register:passwordMustMatch"]";
+        var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
+        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+    </script>
     <script src="/js/pages/register.js"></script>
 }
 

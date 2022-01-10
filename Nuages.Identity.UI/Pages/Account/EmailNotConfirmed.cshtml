@@ -24,7 +24,12 @@
 @section Scripts
 {
     <script>
-  var recaptcha = '@RecaptchaOptions.Value.SiteKey';
-  </script>
+        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+    </script>
     <script src="/js/pages/emailNotConfirmed.js"></script>
+}
+
+@section MainFooter
+{
+    <partial name="Shared/BackToLogin"/>
 }
