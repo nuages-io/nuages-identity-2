@@ -16,3 +16,5 @@ tailwind-output.css
 /packages/
 .DS_Store
 cdk.out
+internal-nlog-AspNetCore.txt
+nlog.config

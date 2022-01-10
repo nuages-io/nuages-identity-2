@@ -78,6 +78,5 @@ public class LambdaEntryPoint :
             }
         }).UseNLog();
         
-        NLog.LogManager.Configuration = new NLog.Config.XmlLoggingConfiguration("nlog.aws.config");
     }
 }

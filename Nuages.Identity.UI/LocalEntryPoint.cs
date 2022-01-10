@@ -28,5 +28,5 @@ public class LocalEntryPoint
                 // config.AddJsonHttpTranslation($"{url}/fr.json");
                 // config.AddJsonHttpTranslation($"{url}/en.json");
             })
-            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); }).UseNLog();
+            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 }
