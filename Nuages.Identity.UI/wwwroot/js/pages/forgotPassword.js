@@ -15,8 +15,9 @@ var App =
                 doforgotPassword: function (token) {
                     var self = this;
                     var e = self.email;
-                 
 
+                    this.status = "sending";
+                    
                     fetch("/api/account/forgotPassword", {
                         method: "POST",
                         headers: {
@@ -30,8 +31,11 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
+
+                            self.status = "done";
+                            
                             if (res.success) {
-                               self.status = "done";
+                               
                             } else
                                 self.errors.push({message: res.message});
                         });
@@ -48,8 +52,6 @@ var App =
                     
                     var res = formforgotPassword.checkValidity();
                     if (res) {
-                        
-
                         grecaptcha.ready(function () {
                             grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
                                 self.doforgotPassword(token);
