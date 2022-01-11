@@ -45,7 +45,7 @@ var App =
                             if (res.success) {
                                 window.location = returnUrl;
                             } else
-                                this.status = "";
+                                
                                 switch (res.reason) {
                                     case "PasswordExpired":
                                     case "PasswordMustBeChanged": 
@@ -66,7 +66,7 @@ var App =
                                         break;
                                     }                                   
                                     default: {
-
+                                        this.status = "";
                                         //NotWithinDateRange,
                                         //AccountNotConfirmed,
                                         //PasswordNeverSet,
@@ -80,8 +80,6 @@ var App =
 
                 },
                 login: function () {
-                    
-                  
                     
                     this.errors = [];
                     formLogin.classList.remove("was-validated");

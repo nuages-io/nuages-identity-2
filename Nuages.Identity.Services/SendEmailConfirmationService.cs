@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -21,8 +22,10 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
     }
     public async Task<SendEmailConfirmationResultModel> SendEmailConfirmation(SendEmailConfirmationModel model)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        var claim = _httpContextAccessor.HttpContext!.User.Claims.Single(u => u.Type == ClaimTypes.Email);
+        
+        var user = await _userManager.FindByEmailAsync(claim.Value);
+        if (user == null)
         {
             return new SendEmailConfirmationResultModel
             {
@@ -40,8 +43,8 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         
         var url =
             $"{scheme}://{host}/Account/ConfirmEmail?code={code}";
-
-        await _emailSender.SendEmailUsingTemplateAsync(model.Email, "Confirm_Email", new Dictionary<string, string>
+        
+        await _emailSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
         {
             { "Link", url }
         });
@@ -60,7 +63,6 @@ public interface ISendEmailConfirmationService
 
 public class SendEmailConfirmationModel
 {
-    public string Email { get; set; }
     public string? RecaptchaToken { get; set; }
 }
 

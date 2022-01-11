@@ -1,5 +1,11 @@
 {
 	"email": "Email",
+	"emailNotConfirmed": {
+		"message": "Your email has not been confirmed. Check your emails to find the verification email. You can also click on the following button to receive it again.",
+		"seeEmail": "See your email to find the verification messages",
+		"sendAgain": "Resend email",
+		"title": "Unconfirmed email"
+	},
 	"errorMessage": {
 		"invalidEmail": "Email is invalid",
 		"no_access": {

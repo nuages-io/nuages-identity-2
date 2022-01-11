@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -41,7 +42,8 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return confirmed;
     }
 
-
+   
+    
     public override async Task<bool> IsPhoneNumberConfirmedAsync (NuagesApplicationUser user)
     {
         var confirmed = await base.IsPhoneNumberConfirmedAsync(user);

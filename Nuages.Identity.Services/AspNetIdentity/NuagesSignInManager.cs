@@ -24,8 +24,6 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         if (!await CheckStartEndAsync(user)) 
             return false;
 
-        
-
         if (!await CheckEmailAsync(user)) 
             return false;
         
@@ -69,10 +67,21 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
             user.LastFailedLoginReason = FailedLoginReason.AccountNotConfirmed;
 
             await UserManager.UpdateAsync(user);
+            
+           
             return false;
         }
 
         return true;
+    }
+
+
+    private ClaimsPrincipal StoreConfirmEmailInfo(string userId, string email)
+    {
+        var identity = new ClaimsIdentity("EmailNotConfirmed");
+        identity.AddClaim(new Claim(ClaimTypes.Name, userId));
+        identity.AddClaim(new Claim(ClaimTypes.Email, email));
+        return new ClaimsPrincipal(identity);
     }
 
     private async Task<bool> CheckPhoneNumberAsync(NuagesApplicationUser user)
@@ -93,8 +102,11 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         if (Options.SignIn.RequireConfirmedEmail && !await UserManager.IsEmailConfirmedAsync(user))
         {
             user.LastFailedLoginReason = FailedLoginReason.EmailNotConfirmed;
-
+            
             await UserManager.UpdateAsync(user);
+            
+            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreConfirmEmailInfo(user.Id, user.Email));
+            
             return false;
         }
 
@@ -189,4 +201,14 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         
         return await base.LockedOut(user);
     }
+
+    public  Task<SignInResult> CustomSignInOrTwoFactorAsync(NuagesApplicationUser user, bool isPersistent, string loginProvider = null, bool bypassTwoFactor = false)
+    {
+        return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
+    }
+}
+
+public static class NuagesIdentityConstants 
+{
+    public const string  EmailNotVerifiedScheme = "EmailNotVerifiedScheme";
 }

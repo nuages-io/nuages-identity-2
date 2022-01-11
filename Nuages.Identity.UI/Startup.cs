@@ -1,4 +1,5 @@
 ﻿
+using System.Net;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Amazon;
@@ -6,6 +7,8 @@ using Amazon.Runtime;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AspNetCore.Identity.Mongo;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -48,7 +51,6 @@ public class Startup
         }
 
         var options = _configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
-        
         
         services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
             {
@@ -119,7 +121,8 @@ public class Startup
         
         services.AddUI(_configuration);
         
-        services.AddAuthentication();
+        services.AddAuthentication()
+            .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme);
 
         services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
 

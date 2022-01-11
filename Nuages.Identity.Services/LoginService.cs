@@ -33,10 +33,13 @@ public class LoginService : ILoginService
         var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password,
             true);
 
+        if (result.Succeeded)
+        {
+            result = await _signInManager.CustomSignInOrTwoFactorAsync(user, model.RememberMe);
+        }
+        
         if (result == SignInResult.Success)
         {
-            await _signInManager.SignInAsync(user, new AuthenticationProperties{ IsPersistent = model.RememberMe});
-                
             return new LoginResultModel
             {
                 Success = true

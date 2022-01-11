@@ -1,5 +1,11 @@
 {
 	"email": "Courriel",
+	"emailNotConfirmed": {
+		"message": "Votre courriel n'a pas été confirmé. Vérifier vos courriels afin de trouver le courriel de vérification. Vous pouvez également cliquer sur le bouton suivant afin de le recevoir à nouveau.",
+		"seeEmail": "Voir vos courriel afin de retrouver le messages de vérification",
+		"sendAgain": "Retransmettre le courriel",
+		"title": "Courriel non confirmé"
+	},
 	"errorMessage": {
 		"invalidEmail": "Le courriel est invalide",
 		"no_access": {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -124,7 +125,7 @@ public class AccountController
     }
     
     [HttpPost("sendEmailConfirmation")]
-    [AllowAnonymous]
+    [Authorize(AuthenticationSchemes = NuagesIdentityConstants.EmailNotVerifiedScheme)]
     public async Task<SendEmailConfirmationResultModel> SendEmailConfirmationAsync([FromBody] SendEmailConfirmationModel model)
     {
         try
@@ -186,7 +187,5 @@ public class AccountController
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.EndSubsegment();
         }
-      
-        
     }
 }

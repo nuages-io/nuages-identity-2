@@ -3,16 +3,23 @@
 @inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
 
 
+@{
+    ViewData["Title"] = Localizer["emailNotConfirmed:title"];
+}
+
 <partial name="Shared/ErrorList"/>
 
-<div class="flex justify-center ">
+<div class="flex justify-center mt-4">
     <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
     <i class="fa fa-check-circle text-green-700  fa-3x" v-if="status == 'sent'" v-show="status == 'sent'" style="display: none"></i>
+    
+    <div class="flex flex-col " v-if="status == 'sent'" v-show="status == 'sent'" style="display: none">
+        <i class="fa fa-check-circle text-green-700 fa-3x text-center" ></i>
+        <span class="mt-4">@Localizer["emailNotConfirmed:seeEmail"]</span>
+    </div>
 </div>
 
-
-<form class="space-y-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status == ''">
-    <strong>@Localizer["emailNotConfirmed:title"]</strong>
+<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status == ''">
     <h4>@Localizer["emailNotConfirmed:message"]</h4>
     <button v-on:click.prevent="send" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
         @Localizer["emailNotConfirmed:sendAgain"]
