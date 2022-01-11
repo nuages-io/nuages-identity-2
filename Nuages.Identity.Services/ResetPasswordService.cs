@@ -1,16 +1,20 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
+// ReSharper disable ClassNeverInstantiated.Global
 
 namespace Nuages.Identity.Services;
 
 public class ResetPasswordService : IResetPasswordService
 {
     private readonly NuagesUserManager _userManager;
+    private readonly IStringLocalizer _localizer;
 
-    public ResetPasswordService(NuagesUserManager userManager)
+    public ResetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
+        _localizer = localizer;
     }
     
     public async Task<ResetPasswordResultModel> Reset(ResetPasswordModel model)
@@ -20,7 +24,7 @@ public class ResetPasswordService : IResetPasswordService
             return new ResetPasswordResultModel
             {
                 Success = false,
-                Errors = new List<string> { "PasswordConfirmDoesNotMatch" }
+                Errors = new List<string> { _localizer.GetString("resetPasswors:passwordConfirmDoesNotMatch") }
             };
         }
         
@@ -51,7 +55,7 @@ public class ResetPasswordService : IResetPasswordService
 
         foreach (var error in result.Errors)
         {
-            res.Errors.Add(error.Description);
+            res.Errors.Add(_localizer.GetString($"identity.{error.Code}"));
         }
 
         return res;
@@ -75,5 +79,6 @@ public class ResetPasswordModel
 public class ResetPasswordResultModel
 {
     public bool Success { get; set; }
+    // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
 }

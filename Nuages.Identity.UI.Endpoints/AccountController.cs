@@ -115,11 +115,7 @@ public class AccountController
                 Success = false
             };
         
-        await _resetPasswordService.Reset(model);
+        return await _resetPasswordService.Reset(model);
         
-        return new ResetPasswordResultModel
-        {
-            Success = true
-        };
     }
 }

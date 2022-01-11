@@ -17,6 +17,30 @@
 		"seeEmail": "See your email to find the reset messages",
 		"title": "Reset your password"
 	},
+	"identity": {
+		"DefaultError": "An unknown failure has occured.",
+		"DuplicateEmail": "Email '{0}' is already taken.",
+		"DuplicateName": "Name {0} is already taken.",
+		"ExternalLoginExists": "A user with that external login already exists.",
+		"InvalidEmail": "Email '{0}' is invalid.",
+		"InvalidToken": "Invalid token.",
+		"InvalidUserName": "User name {0} is invalid, can only contain letters or digits.",
+		"LockoutNotEnabled": "Lockout is not enabled for this user.",
+		"NoTokenProvider": "No IUserTokenProvider is registered.",
+		"NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
+		"PasswordMismatch": "Incorrect password.",
+		"PasswordRequireDigit": "Passwords must have at least one digit ('0'-'9').",
+		"PasswordRequireLower": "Passwords must have at least one lowercase ('a'-'z').",
+		"PasswordRequireNonLetterOrDigit": "Passwords must have at least one non letter or digit character.",
+		"PasswordTooShort": "Passwords must be at least {0} characters.",
+		"PropertyTooShort": "{0} cannot be null or empty.",
+		"RoleNotFound": "Role {0} does not exist.",
+		"UserAlreadyHasPassword": "User already has a password set.",
+		"UserAlreadyInRole": "User already in role.",
+		"UserIdNotFound": "UserId not found.",
+		"UserNameNotFound": "User {0} does not exist.",
+		"UserNotInRole": "User is not in role."
+	},
 	"login": {
 		"back": "Go to login page",
 		"connect": "Connection",
@@ -42,6 +66,7 @@
 		"instructions": "Select your new password",
 		"password": "New password",
 		"passwordConfirm": "New password confirmation",
+		"passwordConfirmDoesNotMatch": "Password confirmation does not match",
 		"reset": "Reset",
 		"title": "Reset password"
 	}

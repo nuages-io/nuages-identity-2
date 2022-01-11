@@ -20,7 +20,7 @@ var App =
                     var p = self.password;
                     var c = self.passwordConfirm;
                     
-                    this.status = "sending";
+                   
                     
                     fetch("/api/account/resetPassword", {
                         method: "POST",
@@ -39,17 +39,32 @@ var App =
                         .then(response => response.json())
                         .then(res => {
 
-                            self.status = "done";
+                           
                             
                             if (res.success) {
-                               
-                            } else
-                                self.errors.push({message: res.message});
+                                self.status = "done";
+                                self.errors = [];
+                            }
+                            else
+                            {
+                                self.status = "error";
+                                var err = res.errors.map(function(m) {
+                                    return { message : m}
+                                });
+                                self.errors = err;
+                                if (res.message)
+                                {
+                                    self.errors.push({message: res.message});
+                                }
+                            }
+                                
                         });
 
                 },
                 resetPassword: function () {
 
+                    this.status = "sending";
+                    
                     var self = this;
                     
                     this.errors = [];

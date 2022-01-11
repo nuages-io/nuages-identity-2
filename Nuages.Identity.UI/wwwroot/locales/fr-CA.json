@@ -17,6 +17,30 @@
 		"seeEmail": "Voir vos courriel afin de retrouver le messages de ré-initialisation",
 		"title": "Ré-initialisation de votre mot de passe"
 	},
+	"identity": {
+		"DefaultError": "Une erreur inconnue s'est produite.",
+		"DuplicateEmail": "Le courriel \"{0}\" est déjà utilisé.",
+		"DuplicateName": "Le nom {0} est déjà utilisé.",
+		"ExternalLoginExists": "Un utilisateur avec cette connexion externe existe déjà.",
+		"InvalidEmail": "Le courriel « {0} » est invalide.",
+		"InvalidToken": "Jeton invalide.",
+		"InvalidUserName": "Le nom d'utilisateur {0} n'est pas valide, il ne peut contenir que des lettres ou des chiffres.",
+		"LockoutNotEnabled": "Le verrouillage n'est pas activé pour cet utilisateur.",
+		"NoTokenProvider": "No IUserTokenProvider is registered.",
+		"NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
+		"PasswordMismatch": "Mot de passe incorrect.",
+		"PasswordRequireDigit": "Les mots de passe doivent avoir au moins un chiffre ('0' - '9').",
+		"PasswordRequireLower": "Les mots de passe doivent avoir au moins une minuscule («a» - «z»).",
+		"PasswordRequireNonLetterOrDigit": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
+		"PasswordTooShort": "Les mots de passe doivent comporter au moins {0}  caractères.",
+		"PropertyTooShort": "{0} ne peut pas être nul ou vide.",
+		"RoleNotFound": "Le rôle {0} n'existe pas.",
+		"UserAlreadyHasPassword": "L'utilisateur a déjà défini un mot de passe.",
+		"UserAlreadyInRole": "Utilisateur déjà dans le rôle.",
+		"UserIdNotFound": "ID de l'utilisateur non trouvé.",
+		"UserNameNotFound": "L'utilisateur {0} n'existe pas.",
+		"UserNotInRole": "L'utilisateur n'est pas dans le rôle."
+	},
 	"login": {
 		"back": "Aller à la page de connexion",
 		"connect": "Connection",
@@ -42,6 +66,7 @@
 		"instructions": "Sélectionnez votre nouveau mot de passe",
 		"password": "Nouveau mot de passe",
 		"passwordConfirm": "Confirmation du nouveau mot de passe",
+		"passwordConfirmDoesNotMatch": "La confirmation du mot de passe ne correspond pas",
 		"reset": "Réinitialiser",
 		"title": "Ré-initialisation du mot de passe"
 	}
