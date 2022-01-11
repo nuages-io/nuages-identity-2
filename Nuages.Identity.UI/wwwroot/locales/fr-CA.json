@@ -68,6 +68,7 @@
 		"passwordConfirm": "Confirmation du nouveau mot de passe",
 		"passwordConfirmDoesNotMatch": "La confirmation du mot de passe ne correspond pas",
 		"reset": "Réinitialiser",
+		"success": "Votre mot de passe a été changé avec succès.",
 		"title": "Ré-initialisation du mot de passe"
 	}
 }

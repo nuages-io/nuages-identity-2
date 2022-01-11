@@ -26,9 +26,16 @@
     }
 }
 
-<partial name="Shared/ErrorList"/>
+<div class="flex justify-center mt-4" >
+    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
+</div>
+
+<div v-show="status != 'sending'">
+    <partial name="Shared/ErrorList"/>
+</div>
+
+<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off” v-show="status != 'sending'">
     <div>
         <div class="mt-1">
             <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>

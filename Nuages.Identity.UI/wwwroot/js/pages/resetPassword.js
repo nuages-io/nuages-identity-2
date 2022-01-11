@@ -62,9 +62,7 @@ var App =
 
                 },
                 resetPassword: function () {
-
-                    this.status = "sending";
-                    
+                   
                     var self = this;
                     
                     this.errors = [];
@@ -76,12 +74,16 @@ var App =
                     
                     var res = formResetPassword.checkValidity();
                     if (res) {
+
+                        this.status = "sending";
+                        
                         grecaptcha.ready(function () {
                             grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
                                 self.doResetPassword(token);
                             });
                         });
                     } else {
+                        
                         formResetPassword.classList.add("was-validated");
 
                         if (!email.validity.valid) {

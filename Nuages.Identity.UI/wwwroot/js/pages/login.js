@@ -6,7 +6,8 @@ var App =
                 password: "",
                 errors: [],
                 remember: false,
-                action: ""
+                action: "",
+                status : ""
             }
         },
         mounted() {
@@ -39,9 +40,12 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
+                           
+                            
                             if (res.success) {
                                 window.location = returnUrl;
                             } else
+                                this.status = "";
                                 switch (res.reason) {
                                     case "PasswordExpired":
                                     case "PasswordMustBeChanged": 
@@ -77,6 +81,8 @@ var App =
                 },
                 login: function () {
                     
+                  
+                    
                     this.errors = [];
                     formLogin.classList.remove("was-validated");
 
@@ -85,6 +91,8 @@ var App =
 
                     var res = formLogin.checkValidity();
                     if (res) {
+
+                        this.status = "sending";
                         var self = this;
 
                         grecaptcha.ready(function () {
@@ -93,6 +101,8 @@ var App =
                             });
                         });
                     } else {
+
+                        
                         formLogin.classList.add("was-validated");
 
                         if (!userNameOrEmail.validity.valid) {

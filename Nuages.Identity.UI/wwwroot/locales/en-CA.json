@@ -68,6 +68,7 @@
 		"passwordConfirm": "New password confirmation",
 		"passwordConfirmDoesNotMatch": "Password confirmation does not match",
 		"reset": "Reset",
+		"success": "Your password has been successfully changed.",
 		"title": "Reset password"
 	}
 }
