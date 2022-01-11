@@ -98,7 +98,12 @@ var App =
         watch: {
             email(value) {
                 
-                this.errors = [];
+                var index = this.errors.findIndex( a => a.id === "email");
+                if (index !== -1)
+                {
+                    this.errors.splice(index, 1);
+                }
+               
                 this.status = "";
                 
                 email.setCustomValidity("");
