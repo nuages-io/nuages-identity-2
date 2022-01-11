@@ -36,5 +36,6 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<ILookupProtector, LookupProtector>();
         services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
         services.AddScoped<ISendEmailConfirmationService, SendEmailConfirmationService>();
+        services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
     }
 }

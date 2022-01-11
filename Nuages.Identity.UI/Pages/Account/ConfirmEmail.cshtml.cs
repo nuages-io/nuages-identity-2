@@ -15,21 +15,19 @@ namespace Nuages.Identity.UI.Pages.Account
 {
     public class ConfirmEmailModel : PageModel
     {
-        private readonly NuagesUserManager _userManager;
+       
         private readonly IStringLocalizer _localizer;
+        private readonly IConfirmEmailService _confirmEmailService;
 
-        public ConfirmEmailModel(NuagesUserManager userManager, IStringLocalizer localizer)
+        public ConfirmEmailModel(IStringLocalizer localizer, IConfirmEmailService confirmEmailService)
         {
-            _userManager = userManager;
             _localizer = localizer;
+            _confirmEmailService = confirmEmailService;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
+        
         public async Task<IActionResult> OnGetAsync(string userId, string code)
         {
             if (userId == null || code == null)
@@ -37,16 +35,10 @@ namespace Nuages.Identity.UI.Pages.Account
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{userId}'.");
-            }
-
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            var res = await _confirmEmailService.Confirm(userId, code);
             
-            StatusMessage = result.Succeeded ? _localizer["confirmEmail:success"] : _localizer["confirmEmail:error"];
+            StatusMessage = res ? _localizer["confirmEmail:success"] : _localizer["confirmEmail:error"];
+            
             return Page();
         }
     }
