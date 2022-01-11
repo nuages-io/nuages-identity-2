@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
-using Nuages.Identity.Services.Models;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -20,18 +19,20 @@ public class AccountController
     private readonly IStringLocalizer _stringLocalizer;
     private readonly ILoginService _loginService;
     private readonly IForgotPasswordService _forgotPasswordService;
+    private readonly IResetPasswordService _resetPasswordService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHostEnvironment _environment;
 
     public AccountController(
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
-        ILoginService loginService, IForgotPasswordService forgotPasswordService,
+        ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
         ILogger<AccountController> logger, IHostEnvironment environment)
     {
         _recaptchaValidator = recaptchaValidator;
         _stringLocalizer = stringLocalizer;
         _loginService = loginService;
         _forgotPasswordService = forgotPasswordService;
+        _resetPasswordService = resetPasswordService;
         _logger = logger;
         _environment = environment;
     }
@@ -99,6 +100,24 @@ public class AccountController
         await _forgotPasswordService.ForgotPassword(model);
         
         return new ForgotPasswordResultModel
+        {
+            Success = true
+        };
+    }
+    
+    [HttpPost("resetPassword")]
+    [AllowAnonymous]
+    public async Task<ResetPasswordResultModel> ResetPassword([FromBody] ResetPasswordModel model)
+    {
+        if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            return new ResetPasswordResultModel
+            {
+                Success = false
+            };
+        
+        await _resetPasswordService.Reset(model);
+        
+        return new ResetPasswordResultModel
         {
             Success = true
         };

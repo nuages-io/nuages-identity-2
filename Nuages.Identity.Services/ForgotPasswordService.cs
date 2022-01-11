@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Models;
 using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services;
@@ -35,7 +34,7 @@ public class ForgotPasswordService : IForgotPasswordService
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
         var url =
-            $"{_httpContextAccessor.HttpContext!.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Host}/Account/ResetPassword?code{code}";
+            $"{_httpContextAccessor.HttpContext!.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Host}/Account/ResetPassword?code={code}";
 
         await _emailSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
         {
@@ -52,4 +51,15 @@ public class ForgotPasswordService : IForgotPasswordService
 public interface IForgotPasswordService
 {
     Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model);
+}
+
+public class ForgotPasswordModel
+{
+    public string Email { get; set; } = string.Empty;
+    public string? RecaptchaToken { get; set; }
+}
+
+public class ForgotPasswordResultModel
+{
+    public bool Success { get; set; }
 }

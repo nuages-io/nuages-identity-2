@@ -32,7 +32,7 @@ public static class NuagesIdentityConfigExtensions
 
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
-        
+        services.AddScoped<IResetPasswordService, ResetPasswordService>();
         services.AddScoped<ILookupProtector, LookupProtector>();
         services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
     }

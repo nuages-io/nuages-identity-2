@@ -5,11 +5,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 
 namespace Nuages.Identity.UI.Pages.Account

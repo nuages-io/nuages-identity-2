@@ -1,5 +1,4 @@
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Models;
 
 namespace Nuages.Identity.Services;
 
@@ -58,4 +57,19 @@ public class ResetPasswordService : IResetPasswordService
 public interface IResetPasswordService
 {
     Task<ResetPasswordResultModel> Reset(ResetPasswordModel model);
+}
+
+public class ResetPasswordModel
+{
+    public string Email { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
+    public string PasswordConfirm { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
+    public string? RecaptchaToken { get; set; }
+}
+
+public class ResetPasswordResultModel
+{
+    public bool Success { get; set; }
+    public List<string> Errors { get; set; } = new();
 }

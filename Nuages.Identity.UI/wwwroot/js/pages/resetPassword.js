@@ -3,6 +3,8 @@ var App =
         data() {
             return {
                 email: "",
+                password: "",
+                confirmPassword : "",
                 errors: [],
                 status: ""
             }
@@ -12,19 +14,24 @@ var App =
         },
         methods:
             {
-                doforgotPassword: function (token) {
+                doResetPassword: function (token) {
                     var self = this;
                     var e = self.email;
-
+                    var p = self.password;
+                    var c = self.passwordConfirm;
+                    
                     this.status = "sending";
                     
-                    fetch("/api/account/forgotPassword", {
+                    fetch("/api/account/resetPassword", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                                 email: e,
+                                password: p,
+                                passwordConfirm: c,
+                                 code : code,
                                 recaptchaToken: token
                             }
                         )
@@ -41,24 +48,26 @@ var App =
                         });
 
                 },
-                forgotPassword: function () {
+                resetPassword: function () {
 
                     var self = this;
                     
                     this.errors = [];
-                    formforgotPassword.classList.remove("was-validated");
+                    formResetPassword.classList.remove("was-validated");
 
                     email.setCustomValidity("");
+                    password.setCustomValidity("");
+                    passwordConfirm.setCustomValidity("");
                     
-                    var res = formforgotPassword.checkValidity();
+                    var res = formResetPassword.checkValidity();
                     if (res) {
                         grecaptcha.ready(function () {
                             grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doforgotPassword(token);
+                                self.doResetPassword(token);
                             });
                         });
                     } else {
-                        formforgotPassword.classList.add("was-validated");
+                        formResetPassword.classList.add("was-validated");
 
                         if (!email.validity.valid) {
                             if (email.validity.valueMissing) {
@@ -68,7 +77,15 @@ var App =
                             }
                         }
 
-                        var list = formforgotPassword.querySelectorAll(":invalid");
+                        if (!password.validity.valid) {
+                            password.setCustomValidity(passwordRequiredMessage);
+                        }
+
+                        if (!passwordConfirm.validity.valid) {
+                            passwordConfirm.setCustomValidity(passwordConfirmRequiredMessage);
+                        }
+
+                        var list = formResetPassword.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
 
@@ -80,9 +97,21 @@ var App =
             },
         watch: {
             email(value) {
+                
                 this.errors = [];
                 this.status = "";
+                
                 email.setCustomValidity("");
+            },
+            password(value) {
+                this.errors = [];
+                this.status = "";
+                password.setCustomValidity("");
+            },
+            passwordConfirm(value) {
+                this.errors = [];
+                this.status = "";
+                passwordCustom.setCustomValidity("");
             }
         }
     };

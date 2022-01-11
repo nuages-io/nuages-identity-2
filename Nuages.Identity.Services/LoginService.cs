@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Models;
 
 namespace Nuages.Identity.Services;
 
@@ -84,4 +83,23 @@ public class LoginService : ILoginService
 public interface ILoginService
 {
     Task<LoginResultModel> LoginAsync(LoginModel model);
+}
+
+public class LoginModel
+{
+    public string UserNameOrEmail { get; set; } = null!;
+
+    public string Password { get; set; } = null!;
+
+    public bool RememberMe { get; set; }
+
+    public string? RecaptchaToken { get; set; } = null!;
+}
+
+public class LoginResultModel
+{
+    public bool Success { get; set; }
+    public SignInResult Result { get; set; } = null!;
+    public string? Message { get; set; }
+    public FailedLoginReason? Reason { get; set; }
 }

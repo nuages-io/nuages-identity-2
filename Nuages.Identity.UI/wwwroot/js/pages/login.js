@@ -110,9 +110,7 @@ var App =
                         var list = formLogin.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({
-                                message: element.validationMessage,
-                            });
+                            this.errors.push({ message : element.validationMessage, id : element.id});
                         });
                     }
                 }
