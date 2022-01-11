@@ -10,12 +10,14 @@ public class ForgotPasswordService : IForgotPasswordService
     private readonly NuagesUserManager _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IEmailSender _emailSender;
+    private readonly IWebHostEnvironment _env;
 
-    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender)
+    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender, IWebHostEnvironment env)
     {
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
         _emailSender = emailSender;
+        _env = env;
     }
     
     public async Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model)
@@ -33,8 +35,13 @@ public class ForgotPasswordService : IForgotPasswordService
         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
+        var scheme = _httpContextAccessor.HttpContext!.Request.Scheme;
+        var host = _httpContextAccessor.HttpContext.Request.Host.Host;
+        if (_env.IsDevelopment())
+            host += ":" + _httpContextAccessor.HttpContext!.Request.Host.Port;
+        
         var url =
-            $"{_httpContextAccessor.HttpContext!.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Host}/Account/ResetPassword?code={code}";
+            $"{scheme}://{host}/Account/ResetPassword?code={code}";
 
         await _emailSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
         {

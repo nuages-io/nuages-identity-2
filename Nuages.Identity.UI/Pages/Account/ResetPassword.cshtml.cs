@@ -17,8 +17,8 @@ namespace Nuages.Identity.UI.Pages.Account
             {
                 return BadRequest("A code must be supplied for password reset.");
             }
-            
-            ViewData["code"] = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+
+            ViewData["code"] = code; ;
                 
             return Page();
         }

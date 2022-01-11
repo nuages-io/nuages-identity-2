@@ -1,3 +1,5 @@
+using System.Text;
+using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 
 namespace Nuages.Identity.Services;
@@ -31,7 +33,9 @@ public class ResetPasswordService : IResetPasswordService
             };
         }
 
-        var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+        var c = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
+
+        var result = await _userManager.ResetPasswordAsync(user, c, model.Password);
         if (result.Succeeded)
         {
             return new ResetPasswordResultModel

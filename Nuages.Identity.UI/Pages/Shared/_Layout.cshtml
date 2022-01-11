@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+
+<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="utf-8"/>
@@ -8,15 +10,12 @@
     <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/tailwind-output.css"/>
     <script src="https://kit.fontawesome.com/34d2a269b0.js" crossorigin="anonymous"></script>
+    
+   <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 </head>
 <body>
 
-<div style="display:none">
-    <div class="was-validated"></div>
-</div>
-
 <div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app">
-
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <partial name="Shared/LogoHeader"/>
@@ -35,6 +34,6 @@
     <script src="https://unpkg.com/vue@3"></script>
 </environment>
 
-@await RenderSectionAsync("Scripts", false)
+@RenderSection("Scripts", false)
 </body>
 </html>

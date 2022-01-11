@@ -18,7 +18,7 @@
 		"title": "Reset your password"
 	},
 	"login": {
-		"back": "Back to the login page",
+		"back": "Go to login page",
 		"connect": "Connection",
 		"forgotPassword": "Forgot Your Password?",
 		"mode": {
@@ -38,6 +38,11 @@
 		"title": "Register"
 	},
 	"resetPassword": {
-		"title": ""
+		"email": "Your email",
+		"instructions": "Select your new password",
+		"password": "New password",
+		"passwordConfirm": "New password confirmation",
+		"reset": "Reset",
+		"title": "Reset password"
 	}
 }

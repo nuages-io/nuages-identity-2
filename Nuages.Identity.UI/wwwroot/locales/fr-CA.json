@@ -18,7 +18,7 @@
 		"title": "Ré-initialisation de votre mot de passe"
 	},
 	"login": {
-		"back": "Retour à la page de connexion",
+		"back": "Aller à la page de connexion",
 		"connect": "Connection",
 		"forgotPassword": "Mot de passe oublié?",
 		"mode": {
@@ -38,6 +38,11 @@
 		"title": "Inscrivez vous"
 	},
 	"resetPassword": {
-		"title": ""
+		"email": "Votre courriel",
+		"instructions": "Sélectionnez votre nouveau mot de passe",
+		"password": "Nouveau mot de passe",
+		"passwordConfirm": "Confirmation du nouveau mot de passe",
+		"reset": "Réinitialiser",
+		"title": "Ré-initialisation du mot de passe"
 	}
 }

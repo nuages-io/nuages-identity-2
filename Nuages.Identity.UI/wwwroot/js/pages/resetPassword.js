@@ -97,24 +97,22 @@ var App =
             },
         watch: {
             email(value) {
-                
-                var index = this.errors.findIndex( a => a.id === "email");
-                if (index !== -1)
-                {
-                    this.errors.splice(index, 1);
-                }
+
+                this.errors.splice(this.errors.findIndex( a => a.id === "email"), 1);
                
                 this.status = "";
                 
                 email.setCustomValidity("");
             },
             password(value) {
-                this.errors = [];
+                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
+                
                 this.status = "";
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                this.errors = [];
+                this.errors.splice(this.errors.findIndex( a => a.id === "passwordConfirm"), 1);
+                
                 this.status = "";
                 passwordCustom.setCustomValidity("");
             }
