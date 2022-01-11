@@ -12,7 +12,7 @@ var App =
                 {
                     this.status = "sending";
                     
-                    fetch("/api/account/sendEmailConfirmationMessage",
+                    fetch("/api/account/sendEmailConfirmation",
                         {
                             method: "POST",
                             headers: {

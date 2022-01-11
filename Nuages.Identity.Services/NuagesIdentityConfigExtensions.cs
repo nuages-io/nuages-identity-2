@@ -35,5 +35,6 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IResetPasswordService, ResetPasswordService>();
         services.AddScoped<ILookupProtector, LookupProtector>();
         services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
+        services.AddScoped<ISendEmailConfirmationService, SendEmailConfirmationService>();
     }
 }

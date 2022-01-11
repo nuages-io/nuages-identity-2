@@ -20,12 +20,14 @@ public class AccountController
     private readonly ILoginService _loginService;
     private readonly IForgotPasswordService _forgotPasswordService;
     private readonly IResetPasswordService _resetPasswordService;
+    private readonly ISendEmailConfirmationService _sendEmailConfirmationService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHostEnvironment _environment;
 
     public AccountController(
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
+        ISendEmailConfirmationService sendEmailConfirmationService,
         ILogger<AccountController> logger, IHostEnvironment environment)
     {
         _recaptchaValidator = recaptchaValidator;
@@ -33,6 +35,7 @@ public class AccountController
         _loginService = loginService;
         _forgotPasswordService = forgotPasswordService;
         _resetPasswordService = resetPasswordService;
+        _sendEmailConfirmationService = sendEmailConfirmationService;
         _logger = logger;
         _environment = environment;
     }
@@ -89,33 +92,101 @@ public class AccountController
     
     [HttpPost("forgotPassword")]
     [AllowAnonymous]
-    public async Task<ForgotPasswordResultModel> ForgotPassword([FromBody] ForgotPasswordModel model)
+    public async Task<ForgotPasswordResultModel> ForgotPasswordAsync([FromBody] ForgotPasswordModel model)
     {
-        if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
-            return new ForgotPasswordResultModel
-            {
-                Success = false
-            };
-        
-        await _forgotPasswordService.ForgotPassword(model);
-        
-        return new ForgotPasswordResultModel
+        try
         {
-            Success = true
-        };
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new ForgotPasswordResultModel
+                {
+                    Success = false
+                };
+        
+            return await _forgotPasswordService.ForgotPassword(model);
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
+    }
+    
+    [HttpPost("sendEmailConfirmation")]
+    [AllowAnonymous]
+    public async Task<SendEmailConfirmationResultModel> SendEmailConfirmationAsync([FromBody] SendEmailConfirmationModel model)
+    {
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendEmailConfirmationAsync");
+            
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new SendEmailConfirmationResultModel
+                {
+                    Success = false
+                };
+        
+            return await _sendEmailConfirmationService.SendEmailConfirmation(model);
+
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
+       
     }
     
     [HttpPost("resetPassword")]
     [AllowAnonymous]
-    public async Task<ResetPasswordResultModel> ResetPassword([FromBody] ResetPasswordModel model)
+    public async Task<ResetPasswordResultModel> ResetPasswordAsync([FromBody] ResetPasswordModel model)
     {
-        if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
-            return new ResetPasswordResultModel
-            {
-                Success = false
-            };
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ResetPasswordAsync");
+            
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new ResetPasswordResultModel
+                {
+                    Success = false
+                };
         
-        return await _resetPasswordService.Reset(model);
+            return await _resetPasswordService.Reset(model);
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+      
         
     }
 }
