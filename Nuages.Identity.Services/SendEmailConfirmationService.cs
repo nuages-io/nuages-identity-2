@@ -42,7 +42,7 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
             host += ":" + _httpContextAccessor.HttpContext!.Request.Host.Port;
         
         var url =
-            $"{scheme}://{host}/Account/ConfirmEmail?code={code}";
+            $"{scheme}://{host}/Account/ConfirmEmail?code={code}&userId={user.Id}";
         
         await _emailSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
         {

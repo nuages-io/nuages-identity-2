@@ -1,4 +1,9 @@
 {
+	"confirmEmail": {
+		"error": "Error confirming your email.",
+		"success": "Thank you for confirming your email.",
+		"title": "Confirmation of your email"
+	},
 	"email": "Email",
 	"emailNotConfirmed": {
 		"message": "Your email has not been confirmed. Check your emails to find the verification email. You can also click on the following button to receive it again.",

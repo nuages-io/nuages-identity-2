@@ -1,4 +1,9 @@
 {
+	"confirmEmail": {
+		"error": "Erreur lors de la confirmation de votre courriel.",
+		"success": "Merci d'avoir confirmé votre courriel.",
+		"title": "Confirmation de votre courriel"
+	},
 	"email": "Courriel",
 	"emailNotConfirmed": {
 		"message": "Votre courriel n'a pas été confirmé. Vérifier vos courriels afin de trouver le courriel de vérification. Vous pouvez également cliquer sur le bouton suivant afin de le recevoir à nouveau.",

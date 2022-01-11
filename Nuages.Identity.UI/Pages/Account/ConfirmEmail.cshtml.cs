@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 
@@ -15,10 +16,12 @@ namespace Nuages.Identity.UI.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly NuagesUserManager _userManager;
+        private readonly IStringLocalizer _localizer;
 
-        public ConfirmEmailModel(NuagesUserManager userManager)
+        public ConfirmEmailModel(NuagesUserManager userManager, IStringLocalizer localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         /// <summary>
@@ -42,7 +45,8 @@ namespace Nuages.Identity.UI.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            
+            StatusMessage = result.Succeeded ? _localizer["confirmEmail:success"] : _localizer["confirmEmail:error"];
             return Page();
         }
     }

@@ -10,6 +10,8 @@ var App =
             {
                 send : function()
                 {
+                    var self = this;
+                    
                     this.status = "sending";
 
                     grecaptcha.ready(function () {
@@ -26,7 +28,7 @@ var App =
                                     )
                                 }).then(response => response.json())
                                 .then(res => {
-                                    this.status = "sent";
+                                    self.status = "sent";
                                 });
                         });
                     });
