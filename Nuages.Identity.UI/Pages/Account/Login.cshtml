@@ -14,21 +14,18 @@
     @if (ViewBag.ShowRegistration)
     {
         <div class="sm:mx-auto sm:w-full sm:max-w-md">
-
             <p class="mt-2 text-center text-sm text-gray-600">
                 @Localizer["or"]
                 <a href="@ViewBag.RegistrationUrl" class="font-medium text-indigo-600 hover:text-indigo-500">
                     @Localizer["register.title"]
                 </a>
             </p>
-
         </div>
     }
 }
 
-<div class="flex justify-center mt-4" >
+<div class="flex justify-center mt-6" >
     <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-
 </div>
 
 <div v-show="status != 'sending'">
@@ -46,7 +43,6 @@
             <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
         </div>
     </div>
-
     <div class="flex items-center justify-between">
         <div class="flex items-center">
             <input id="remember-me" name="remember-me" v-model="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
@@ -54,22 +50,18 @@
                 @Localizer["login:rememberMe"]
             </label>
         </div>
-
         <div class="text-sm">
             <a href="/account/forgotpassword">
                 @Localizer["login:forgotPassword"]
             </a>
         </div>
     </div>
-
     <div>
         <button v-on:click.prevent="login" class="btn btn-primary">
             @Localizer["login:connect"]
         </button>
     </div>
 </form>
-
-
 
 @section Scripts
 {

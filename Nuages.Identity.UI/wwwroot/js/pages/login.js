@@ -50,7 +50,7 @@ var App =
                                     case "PasswordExpired":
                                     case "PasswordMustBeChanged": 
                                     {
-                                        window.location = "/account/resetpassword";
+                                        window.location = "/account/resetpassword?expired=true";
                                         break;
                                     }
                                     case "MfaRequired": {

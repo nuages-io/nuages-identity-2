@@ -48,11 +48,8 @@ public class LambdaEntryPoint :
         {
             configBuilder.AddJsonFile("appsettings.prod.json", true, true);
 
-            var configuration = configBuilder.Build();
-            var url = configuration.GetValue<string>("Nuages:UI:LocalesUrl");
-
-            configBuilder.AddJsonHttpTranslation($"{url}/fr.json");
-            configBuilder.AddJsonHttpTranslation($"{url}/en.json");
+            configBuilder.AddJsonFileTranslation("/wwwroot/locales/fr-CA.json");
+            configBuilder.AddJsonFileTranslation("/wwwroot/locales/en-CA.json");
             
             var name = Environment.GetEnvironmentVariable("Nuages__Identity__StackName");
 

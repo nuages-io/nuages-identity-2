@@ -22,12 +22,12 @@ var App =
         methods:
             {
                 doResetPassword: function (token) {
-                    var self = this;
+                    var self = this;                    
+                    
                     var e = self.email;
                     var p = self.password;
                     var c = self.passwordConfirm;
-                    
-                   
+                                       
                     
                     fetch("/api/account/resetPassword", {
                         method: "POST",
@@ -45,8 +45,6 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-
-                           
                             
                             if (res.success) {
                                 self.status = "done";
@@ -75,7 +73,9 @@ var App =
                     this.errors = [];
                     formResetPassword.classList.remove("was-validated");
 
-                    email.setCustomValidity("");
+                    if (typeof email !== 'undefined')
+                        email.setCustomValidity("");
+                    
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
                     
@@ -93,11 +93,14 @@ var App =
                         
                         formResetPassword.classList.add("was-validated");
 
-                        if (!email.validity.valid) {
-                            if (email.validity.valueMissing) {
-                                email.setCustomValidity(emailRequiredMessage);
-                            } else {
-                                email.setCustomValidity(emailInvalidMessage);
+                        if (typeof email !== 'undefined')
+                        {
+                            if (!email.validity.valid) {
+                                if (email.validity.valueMissing) {
+                                    email.setCustomValidity(emailRequiredMessage);
+                                } else {
+                                    email.setCustomValidity(emailInvalidMessage);
+                                }
                             }
                         }
 

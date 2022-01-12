@@ -66,6 +66,20 @@
 		"title": "Connection à votre compte"
 	},
 	"or": "ou",
+	"passwordExpired": {
+		"instructions": "Votre mnot de passe est expiré ou doit être modifié. Choisissez un nouveau mot de passe.",
+		"submit": "Changer mon mot de passe",
+		"title": "Mot de passe expiré"
+	},
+	"passwordRequirement": {
+		"RequireDigit": "Requiert au moins un nombre [0-9]",
+		"RequireLowercase": "Requiert une lettre minuscule [a-z]",
+		"RequireNonAlphanumeric": "Requiert un caractère spécial qui n'est pas une lettre ou un nombre (Ex. $%*# etc.)",
+		"RequireUppercase": "Requiert une lettre majuscule [A-Z]",
+		"RequiredLength": "Requiert au moins {0} caractères",
+		"RequiredUniqueChars": "Requiert au moins {0} caractères différents",
+		"title": "Exigences du mot de passe"
+	},
 	"register": {
 		"button": "S'inscrire",
 		"passwordConfirmation": "Confirmation du mot de passe",

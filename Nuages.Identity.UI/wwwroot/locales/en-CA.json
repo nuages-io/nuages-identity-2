@@ -66,6 +66,20 @@
 		"title": "Log in to your account"
 	},
 	"or": "or",
+	"passwordExpired": {
+		"instructions": "Your password has expired or needs to be changed. Choose a new password.",
+		"submit": "Change my password",
+		"title": "Password expired"
+	},
+	"passwordRequirement": {
+		"RequireDigit": "Requires at least 1anumber [0-9]",
+		"RequireLowercase": "Requires a lowercase letter [a-z]",
+		"RequireNonAlphanumeric": "Requires a special character that is not a letter or a number (Ex. $% * # Etc.)",
+		"RequireUppercase": "Requires an uppercase letter [A-Z]",
+		"RequiredLength": "Requires at least {0} characters",
+		"RequiredUniqueChars": "Requires at least {0} different characters",
+		"title": "Password requirements"
+	},
 	"register": {
 		"button": "Register",
 		"passwordConfirmation": "Password Confirmation",

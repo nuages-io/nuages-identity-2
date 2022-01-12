@@ -42,6 +42,10 @@ public class ResetPasswordService : IResetPasswordService
         var result = await _userManager.ResetPasswordAsync(user, c, model.Password);
         if (result.Succeeded)
         {
+            user.UserMustChangePassword = false;
+            
+            await _userManager.UpdateAsync(user);
+            
             return new ResetPasswordResultModel
             {
                 Success = true

@@ -76,9 +76,9 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
     }
 
 
-    private ClaimsPrincipal StoreConfirmEmailInfo(string userId, string email)
+    private ClaimsPrincipal StoreAuthInfo(string authType, string userId, string email)
     {
-        var identity = new ClaimsIdentity("EmailNotConfirmed");
+        var identity = new ClaimsIdentity(authType);
         identity.AddClaim(new Claim(ClaimTypes.Name, userId));
         identity.AddClaim(new Claim(ClaimTypes.Email, email));
         return new ClaimsPrincipal(identity);
@@ -105,7 +105,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
             
             await UserManager.UpdateAsync(user);
             
-            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreConfirmEmailInfo(user.Id, user.Email));
+            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email));
             
             return false;
         }
@@ -121,6 +121,8 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
             await UserManager.UpdateAsync(user);
 
+            await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email));
+            
             return false;
         }
 
@@ -140,6 +142,8 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
                     await UserManager.UpdateAsync(user);
 
+                    await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email));
+                    
                     return false;
                 }
             }
@@ -212,4 +216,5 @@ public static class NuagesIdentityConstants
 {
     public const string EmailNotVerifiedScheme = "EmailNotVerifiedScheme";
     public const string ResetPasswordScheme = "ResetPasswordScheme";
+    public const string PasswordExpiredScheme = "PasswordExpiredScheme";
 }
