@@ -19,7 +19,6 @@ var App =
                     var e = self.userNameOrEmail;
                     var p = self.password;
                     var pc = self.passwordConfirm;
-                    var r = self.remember;
 
                     fetch("/api/account/register", {
                         method: "POST",
@@ -100,17 +99,17 @@ var App =
             },
         watch: {
             userNameOrEmail(value) {
-                this.errors = [];
+                this.errors.splice(this.errors.findIndex( a => a.id === "userNameOrEmail"), 1);
                 this.action = "";
                 userNameOrEmail.setCustomValidity("");
             },
             password(value) {
-                this.errors = [];
+                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
                 this.action = "";
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                this.errors = [];
+                this.errors.splice(this.errors.findIndex( a => a.id === "passwordConfirm"), 1);
                 this.action = "";
                 passwordConfirm.setCustomValidity("");
             }

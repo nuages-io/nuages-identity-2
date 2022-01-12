@@ -125,12 +125,12 @@ var App =
             },
         watch: {
             userNameOrEmail(value) {
-                this.errors = [];
+                this.errors.splice(this.errors.findIndex( a => a.id === "userNameOrEmail"), 1);
                 this.action = "";
                 userNameOrEmail.setCustomValidity("");
             },
             password(value) {
-                this.errors = [];
+                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
                 this.action = "";
                 password.setCustomValidity("");
             }

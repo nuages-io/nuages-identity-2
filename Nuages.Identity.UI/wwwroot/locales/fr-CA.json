@@ -43,6 +43,8 @@
 		"PasswordRequireDigit": "Les mots de passe doivent avoir au moins un chiffre ('0' - '9').",
 		"PasswordRequireLower": "Les mots de passe doivent avoir au moins une minuscule («a» - «z»).",
 		"PasswordRequireNonLetterOrDigit": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
+		"PasswordRequiresNonAlphanumeric": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
+		"PasswordRequiresUpper": "Les mots de passe doivent avoir au moins une minuscule («A» - «Z»).",
 		"PasswordTooShort": "Les mots de passe doivent comporter au moins {0}  caractères.",
 		"PropertyTooShort": "{0} ne peut pas être nul ou vide.",
 		"RoleNotFound": "Le rôle {0} n'existe pas.",

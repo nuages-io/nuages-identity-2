@@ -43,6 +43,8 @@
 		"PasswordRequireDigit": "Passwords must have at least one digit ('0'-'9').",
 		"PasswordRequireLower": "Passwords must have at least one lowercase ('a'-'z').",
 		"PasswordRequireNonLetterOrDigit": "Passwords must have at least one non letter or digit character.",
+		"PasswordRequiresNonAlphanumeric": "Passwords must have at least one non letter or digit character.",
+		"PasswordRequiresUpper": "Passwords must have at least one lowercase letter (\"A\" - \"Z\").",
 		"PasswordTooShort": "Passwords must be at least {0} characters.",
 		"PropertyTooShort": "{0} cannot be null or empty.",
 		"RoleNotFound": "Role {0} does not exist.",

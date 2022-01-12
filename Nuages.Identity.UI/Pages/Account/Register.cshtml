@@ -4,12 +4,12 @@
 @inject IOptions<UIOptions> UIOptions
 
 @{
-    ViewBag.Title = Localizer["register:title"];
+    ViewData["title"] = Localizer["register:title"];
 
 }
 <partial name="Shared/ErrorList"/>
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin">
+<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formRegister">
     <div>
         <div class="mt-1">
             <input id="userNameOrEmail" name="userNameOrEmail" autofocus="" v-model="userNameOrEmail" placeholder="@Localizer["email"]" required class="text-box" type="email">
