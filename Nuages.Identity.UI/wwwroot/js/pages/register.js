@@ -2,21 +2,22 @@ var App =
     {
         data() {
             return {
-                userNameOrEmail: "",
+                email: "",
                 password: "",
                 passwordConfirm: "",
                 errors: [],
-                action: ""
+                action: "",
+                status : ""
             }
         },
         mounted() {
-            userNameOrEmail.focus();
+            email.focus();
         },
         methods:
             {
                 doRegister: function (token) {
                     var self = this;
-                    var e = self.userNameOrEmail;
+                    var e = self.email;
                     var p = self.password;
                     var pc = self.passwordConfirm;
 
@@ -26,7 +27,7 @@ var App =
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                                userNameOrEmail: e,
+                                email: e,
                                 password: p,
                                 passwordConfirm: pc,
                                 recaptchaToken: token
@@ -36,20 +37,35 @@ var App =
                         .then(response => response.json())
                         .then(res => {
                             if (res.success) {
-                                window.location = returnUrl;
-                            } else
+                                if (res.showConfirmationMessage)
+                                {
+                                    self.status = "done";
+                                }
+                                else
+                                {
+                                    window.location = returnUrl;
+                                }
+                                
+                            } 
+                            else
+                            {
+                                self.status = "";
                                 self.errors.push({message: res.message});
+                            }
+                               
                         });
 
                 },
                 register: function () {
 
                     var self = this;
+
+                    self.errors = [];
+                    self.status = "sending";
                     
-                    this.errors = [];
                     formRegister.classList.remove("was-validated");
 
-                    userNameOrEmail.setCustomValidity("");
+                    email.setCustomValidity("");
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
 
@@ -68,13 +84,16 @@ var App =
                             });
                         });
                     } else {
+
+                        self.status = "";
+                        
                         formRegister.classList.add("was-validated");
 
-                        if (!userNameOrEmail.validity.valid) {
-                            if (userNameOrEmail.validity.valueMissing) {
-                                userNameOrEmail.setCustomValidity(emailRequiredMessage);
+                        if (!email.validity.valid) {
+                            if (email.validity.valueMissing) {
+                                email.setCustomValidity(emailRequiredMessage);
                             } else {
-                                userNameOrEmail.setCustomValidity(emailInvalidMessage);
+                                email.setCustomValidity(emailInvalidMessage);
                             }
                         }
 
@@ -98,10 +117,10 @@ var App =
                 }
             },
         watch: {
-            userNameOrEmail(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "userNameOrEmail"), 1);
+            email(value) {
+                this.errors.splice(this.errors.findIndex( a => a.id === "email"), 1);
                 this.action = "";
-                userNameOrEmail.setCustomValidity("");
+                email.setCustomValidity("");
             },
             password(value) {
                 this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);

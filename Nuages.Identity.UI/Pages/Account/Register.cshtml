@@ -9,28 +9,40 @@
 }
 <partial name="Shared/ErrorList"/>
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formRegister">
-    <div>
-        <div class="mt-1">
-            <input id="userNameOrEmail" name="userNameOrEmail" autofocus="" v-model="userNameOrEmail" placeholder="@Localizer["email"]" required class="text-box" type="email">
-        </div>
-    </div>
-    <div>
-        <div class="mt-1">
-            <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
-        </div>
-    </div>
-    <div>
-        <div class="mt-1">
-            <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
-        </div>
+<div class="flex justify-center mt-6">
+
+    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+    <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
+        <i class="fa fa-check-circle text-green-700 fa-3x text-center"></i>
+        <span class="mt-4">@Localizer["register:accountCreated"]</span>
     </div>
 
-    <div>
+</div>
+
+<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formRegister" v-if="status == ''">
+
+    <div class="mt-1">
+        <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["email"]" required class="text-box" type="email">
+    </div>
+
+    <div class="mt-1">
+        <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+    </div>
+
+    <div class="mt-1">
+        <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
+    </div>
+
+    <div class="mt-1">
         <button v-on:click.prevent="register" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             @Localizer["register:button"]
         </button>
     </div>
+    <div class="mt-1">
+        <partial name="Shared/PasswordRequirements"/>
+    </div>
+
+
 </form>
 
 @section Scripts

@@ -40,9 +40,9 @@
 		"NoTokenProvider": "No IUserTokenProvider is registered.",
 		"NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
 		"PasswordMismatch": "Incorrect password.",
-		"PasswordRequireDigit": "Passwords must have at least one digit ('0'-'9').",
-		"PasswordRequireLower": "Passwords must have at least one lowercase ('a'-'z').",
 		"PasswordRequireNonLetterOrDigit": "Passwords must have at least one non letter or digit character.",
+		"PasswordRequiresDigit": "Passwords must have at least one digit ('0'-'9').",
+		"PasswordRequiresLower": "Passwords must have at least one lowercase ('a'-'z').",
 		"PasswordRequiresNonAlphanumeric": "Passwords must have at least one non letter or digit character.",
 		"PasswordRequiresUpper": "Passwords must have at least one lowercase letter (\"A\" - \"Z\").",
 		"PasswordTooShort": "Passwords must be at least {0} characters.",
@@ -83,6 +83,7 @@
 		"title": "Password requirements"
 	},
 	"register": {
+		"accountCreated": "Your account was created. Please check your emails to find the confirmation message for your email address.",
 		"button": "Register",
 		"passwordConfirmation": "Password Confirmation",
 		"passwordMustMatch": "Password and confirmation must be the same",

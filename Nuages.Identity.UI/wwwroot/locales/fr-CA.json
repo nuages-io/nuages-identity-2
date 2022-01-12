@@ -40,9 +40,9 @@
 		"NoTokenProvider": "No IUserTokenProvider is registered.",
 		"NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
 		"PasswordMismatch": "Mot de passe incorrect.",
-		"PasswordRequireDigit": "Les mots de passe doivent avoir au moins un chiffre ('0' - '9').",
-		"PasswordRequireLower": "Les mots de passe doivent avoir au moins une minuscule («a» - «z»).",
 		"PasswordRequireNonLetterOrDigit": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
+		"PasswordRequiresDigit": "Les mots de passe doivent avoir au moins un chiffre ('0' - '9').",
+		"PasswordRequiresLower": "Les mots de passe doivent avoir au moins une minuscule («a» - «z»).",
 		"PasswordRequiresNonAlphanumeric": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
 		"PasswordRequiresUpper": "Les mots de passe doivent avoir au moins une minuscule («A» - «Z»).",
 		"PasswordTooShort": "Les mots de passe doivent comporter au moins {0}  caractères.",
@@ -83,6 +83,7 @@
 		"title": "Exigences du mot de passe"
 	},
 	"register": {
+		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
 		"button": "S'inscrire",
 		"passwordConfirmation": "Confirmation du mot de passe",
 		"passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",

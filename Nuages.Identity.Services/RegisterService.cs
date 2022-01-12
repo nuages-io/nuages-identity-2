@@ -3,6 +3,7 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
+using MongoDB.Bson;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
@@ -47,11 +48,15 @@ public class RegisterService : IRegisterService
                 Message = _localizer["register.userEmailAlreadyExists"]
             };
         }
-        
-        var res = await _userManager.CreateAsync(new NuagesApplicationUser
+
+        user = new NuagesApplicationUser
         {
-            Email = model.Email
-        }, model.Password);
+            Id = ObjectId.GenerateNewId().ToString(),
+            Email = model.Email,
+            UserName = model.Email
+        };
+        
+        var res = await _userManager.CreateAsync(user, model.Password);
 
         if (res.Succeeded)
         {
@@ -64,13 +69,22 @@ public class RegisterService : IRegisterService
                 host += ":" + _httpContextAccessor.HttpContext!.Request.Host.Port;
         
             var url =
-                $"{scheme}://{host}/Account/ConfirmEmail?code={code}";
+                $"{scheme}://{host}/Account/ConfirmEmail?code={code}&userId={user.Id}";
 
             await _emailSender.SendEmailUsingTemplateAsync(model.Email, "Confirm_Email", new Dictionary<string, string>
             {
                 { "Link", url }
             });
         
+            if (_userManager.Options.SignIn.RequireConfirmedEmail)
+            {
+                return new RegisterResultModel
+                {
+                    ShowConfirmationMessage = true,
+                    Success = true
+                };
+            }
+            
             await _signInManager.SignInAsync(user, isPersistent: false);
 
             return new RegisterResultModel
@@ -103,6 +117,5 @@ public class RegisterResultModel
 {
     public bool Success { get; set; }
     public string? Message { get; set; }
-
-    public string? ConfirmationUrl { get; set; }
+    public bool ShowConfirmationMessage { get; set; }
 }

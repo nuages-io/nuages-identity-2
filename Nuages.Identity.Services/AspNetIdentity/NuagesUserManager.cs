@@ -42,8 +42,6 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return confirmed;
     }
 
-   
-    
     public override async Task<bool> IsPhoneNumberConfirmedAsync (NuagesApplicationUser user)
     {
         var confirmed = await base.IsPhoneNumberConfirmedAsync(user);
