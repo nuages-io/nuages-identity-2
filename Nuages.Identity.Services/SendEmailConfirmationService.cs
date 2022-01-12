@@ -48,7 +48,7 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         {
             { "Link", url }
         });
-
+        
         return new SendEmailConfirmationResultModel
         {
             Success = true // Fake success

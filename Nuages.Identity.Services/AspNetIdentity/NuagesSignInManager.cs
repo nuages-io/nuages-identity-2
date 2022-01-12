@@ -210,6 +210,15 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
     {
         return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
     }
+
+    public override async Task SignOutAsync()
+    {
+        await Context.SignOutAsync(NuagesIdentityConstants.EmailNotVerifiedScheme);
+        await Context.SignOutAsync(NuagesIdentityConstants.ResetPasswordScheme);
+        await Context.SignOutAsync(NuagesIdentityConstants.PasswordExpiredScheme);
+        
+        await base.SignOutAsync();
+    }
 }
 
 public static class NuagesIdentityConstants 
