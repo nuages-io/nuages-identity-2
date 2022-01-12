@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Nuages.Identity.Services;
 
@@ -48,10 +50,21 @@ public class ForgotPasswordService : IForgotPasswordService
             { "Link", url }
         });
 
+        await _httpContextAccessor.HttpContext.SignInAsync(NuagesIdentityConstants.ResetPasswordScheme, StorePasswordResetEmailInfo(user.Id, user.Email));
+
+        
         return new ForgotPasswordResultModel
         {
             Success = true // Fake success
         };
+    }
+    
+    private ClaimsPrincipal StorePasswordResetEmailInfo(string userId, string email)
+    {
+        var identity = new ClaimsIdentity("PasswordReset");
+        identity.AddClaim(new Claim(ClaimTypes.Name, userId));
+        identity.AddClaim(new Claim(ClaimTypes.Email, email));
+        return new ClaimsPrincipal(identity);
     }
 }
 

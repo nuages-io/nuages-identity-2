@@ -2,7 +2,7 @@ var App =
     {
         data() {
             return {
-                email: "",
+                email: emailInitialValue,
                 password: "",
                 confirmPassword : "",
                 errors: [],
@@ -10,7 +10,14 @@ var App =
             }
         },
         mounted() {
-            email.focus();
+            
+            if (this.email === "")
+                email.focus();
+           else
+            {
+                password.focus();
+            }
+              
         },
         methods:
             {

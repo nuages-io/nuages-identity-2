@@ -122,7 +122,8 @@ public class Startup
         services.AddUI(_configuration);
         
         services.AddAuthentication()
-            .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme);
+            .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
+            .AddCookie(NuagesIdentityConstants.ResetPasswordScheme);
 
         services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
 

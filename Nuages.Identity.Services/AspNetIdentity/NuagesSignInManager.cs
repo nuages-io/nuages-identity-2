@@ -202,7 +202,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return await base.LockedOut(user);
     }
 
-    public  Task<SignInResult> CustomSignInOrTwoFactorAsync(NuagesApplicationUser user, bool isPersistent, string loginProvider = null, bool bypassTwoFactor = false)
+    public  Task<SignInResult> CustomSignInOrTwoFactorAsync(NuagesApplicationUser user, bool isPersistent, string? loginProvider = null, bool bypassTwoFactor = false)
     {
         return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
     }
@@ -210,5 +210,6 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
 public static class NuagesIdentityConstants 
 {
-    public const string  EmailNotVerifiedScheme = "EmailNotVerifiedScheme";
+    public const string EmailNotVerifiedScheme = "EmailNotVerifiedScheme";
+    public const string ResetPasswordScheme = "ResetPasswordScheme";
 }

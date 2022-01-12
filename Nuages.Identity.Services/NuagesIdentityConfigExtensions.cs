@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
@@ -37,5 +38,6 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
         services.AddScoped<ISendEmailConfirmationService, SendEmailConfirmationService>();
         services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
+        services.AddScoped<IRegisterService, RegisterService>();
     }
 }
