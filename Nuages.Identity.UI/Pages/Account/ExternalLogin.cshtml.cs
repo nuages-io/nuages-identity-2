@@ -79,8 +79,6 @@ public class ExternalLoginModel : PageModel
             ErrorMessage = _localizer["externalLogin:lockout"];
             return Page();
         }
-
-        
         
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
