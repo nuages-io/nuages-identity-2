@@ -125,7 +125,7 @@ public class Startup
             {
                 googleOptions.ClientId = _configuration["Nuages:Identity:ExternalLogin:Google:ClientId"];
                 googleOptions.ClientSecret = _configuration["Nuages:Identity:ExternalLogin:Google:ClientSecret"];
-            });;
+            });
 
         services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
 
@@ -161,11 +161,6 @@ public class Startup
         {
             endpoints.MapRazorPages();
             endpoints.MapControllers();
-            // endpoints.MapGet("/",
-            //     async context =>
-            //     {
-            //         await context.Response.WriteAsync("Welcome to running ASP.NET Core on AWS Lambda <a href='/account/logout'>Logout</a>");
-            //     }).RequireAuthorization();
             endpoints.MapHealthChecks("health");
         });
     }

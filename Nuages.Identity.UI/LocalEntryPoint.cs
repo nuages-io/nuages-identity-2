@@ -1,5 +1,4 @@
-﻿using NLog.Web;
-using Nuages.Localization.Storage.Config.Sources;
+﻿using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.UI;
 
