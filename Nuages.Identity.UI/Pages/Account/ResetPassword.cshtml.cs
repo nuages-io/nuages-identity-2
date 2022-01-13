@@ -28,7 +28,6 @@ public class ResetPasswordModel : PageModel
         ViewData["expired"] = expired;
         ViewData["email"] = "";
             
-            
         if (!expired)
         {
             if (code == null)

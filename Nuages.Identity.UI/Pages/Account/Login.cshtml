@@ -78,7 +78,6 @@
         </div>
         <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4">
             <ul>
-
                 @foreach (var provider in Model.ExternalLogins)
                 {
                     <li>
@@ -88,11 +87,9 @@
                         </button>
                     </li>
                 }
-
             </ul>
         </form>
     }
-   
 </div>
 
 @section Scripts

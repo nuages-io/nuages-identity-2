@@ -2,14 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System.Text;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
-using Nuages.Identity.Services.AspNetIdentity;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Pages.Account
