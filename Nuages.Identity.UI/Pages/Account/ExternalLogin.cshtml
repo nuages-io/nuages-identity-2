@@ -1,22 +1,66 @@
 ﻿@page
 @model ExternalLoginModel
+@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = Localizer["externalLogin:title"];
 }
 
-<h1>@ViewData["Title"]</h1>
-<h2 id="external-login-title">Associate your @Model.ProviderDisplayName account.</h2>
-<hr />
+<div class="flex justify-center mt-6" >
+        
+    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+    <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
+        <i class="fa fa-check-circle text-green-700 fa-3x text-center" ></i>
+        
+    </div>
+       
+</div>
 
-<p id="external-login-description" class="text-info">
-    You've successfully authenticated with <strong>@Model.ProviderDisplayName</strong>.
-    Please enter an email address for this site below and click the Register button to finish
-    logging in.
-</p>
+@if (string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <form id="formExternalLogin" class="space-y-4 mt-4" method="POST" v-on:submit.prevent="externalLogin" v-if="status == ''">
+        <div>
+            <span class="mt-4"> @Localizer["externalLogin:instructions"]</span> <strong>@Model.ProviderDisplayName.</strong>
+        </div>
+        <div>
+            <span class="mt-2"> @Localizer["externalLogin:instructions2"]</span>
+        </div>
+  
 
-<form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-    <input asp-for="Input.Email" class="form-control" autocomplete="email" type="hidden" />
-    <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-</form>
+        <input id="email" name="email" type="hidden" autofocus="" v-model="email" placeholder="@Localizer["email"]" required class="text-box">
+
+        <div>
+            <button v-on:click.prevent="externalLogin" class="btn btn-primary">@Localizer["externalLogin:button"]</button>
+        </div>
    
+    </form> 
+}
+else
+{      
+    <ul class="text-red-800 mb-3">
+        <li class="flex " >
 
+            <i class="fas fa-exclamation-circle text-red-700 hover:text-red-700 mt-1 mb-2"></i>
+            <div class="ml-2 mr-2 mb-2">
+               @Model.ErrorMessage
+            </div>
+        </li>
+    </ul>
+}
+
+
+
+@section Scripts
+{
+    <script>
+        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+    </script>
+   
+    <script src="/js/pages/externalLogin.js"></script>
+}
+   
+@section MainFooter
+{
+    <partial name="Shared/BackToLogin"/>
+}

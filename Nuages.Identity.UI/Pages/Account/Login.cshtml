@@ -83,7 +83,7 @@
                 {
                     <li>
                         <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
-                            <i class="@("fab fa-" + provider.DisplayName.ToLower())"></i>&nbsp;
+                            <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
                             @provider.DisplayName
                         </button>
                     </li>

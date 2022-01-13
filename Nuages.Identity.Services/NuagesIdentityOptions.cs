@@ -23,6 +23,9 @@ public class NuagesIdentityOptions
     public bool SupportsUserName { get; set; } = true;
     public bool RequireConfirmedEmail { get; set; }
     public bool RequireConfirmedPhoneNumber { get; set; }
+
+    public bool ExternalLoginAutoEnrollIfEmailExists { get; set; }
+    public bool ExternalLoginPersistent { get; set; }
 }
 
 

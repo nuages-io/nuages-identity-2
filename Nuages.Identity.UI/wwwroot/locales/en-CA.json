@@ -22,6 +22,14 @@
 		"required": "The [{0}] field is required.",
 		"userNameOrPasswordInvalid": "Invalid username / email or password"
 	},
+	"externalLogin": {
+		"button": "Register",
+		"emailNotAvailable": "No email available with this login information. Impossible to continue.",
+		"instructions": "You've successfully authenticated with",
+		"instructions2": "Click the \"Register\" button to create your account and continue the login process.",
+		"lockout": "The account is locked",
+		"title": "Register"
+	},
 	"forgotPassword": {
 		"instructions": "Enter the email associated with your account. An email message will be sent to you allowing you to choose a new password.",
 		"reset": "Reset",

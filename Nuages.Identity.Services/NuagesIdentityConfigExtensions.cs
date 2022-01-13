@@ -39,5 +39,6 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<ISendEmailConfirmationService, SendEmailConfirmationService>();
         services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
         services.AddScoped<IRegisterService, RegisterService>();
+        services.AddScoped<IExternalLoginService, ExternalLoginService>();
     }
 }

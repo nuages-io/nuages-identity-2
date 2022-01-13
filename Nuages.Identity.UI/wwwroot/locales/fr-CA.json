@@ -22,6 +22,14 @@
 		"required": "Le champ [{0}] est requis.",
 		"userNameOrPasswordInvalid": "Nom d'utilisateur/courriel ou mot de pass invalide"
 	},
+	"externalLogin": {
+		"button": "Créer le compte",
+		"emailNotAvailable": "Aucun courriel disponible avec ces information de connexion. IMpossible de continuer.",
+		"instructions": "Vous êtes authentifié avec",
+		"instructions2": "Cliquez le bouton \"Créer le compte\" afin de créer votre compte et continuer avec la connexion.",
+		"lockout": "Le compte est vérouillé",
+		"title": "Création d'un compte"
+	},
 	"forgotPassword": {
 		"instructions": "Entrez le courriel associé à votre compte. Un courriel vous sera envoyé afin de vous permettre de choisir un nouveau mot de passe.",
 		"reset": "Ré-initialiser",
@@ -85,10 +93,10 @@
 	},
 	"register": {
 		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
-		"button": "S'inscrire",
+		"button": "Créer le compte",
 		"passwordConfirmation": "Confirmation du mot de passe",
 		"passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",
-		"title": "Inscrivez vous"
+		"title": "Création d'un compte"
 	},
 	"resetPassword": {
 		"email": "Votre courriel",

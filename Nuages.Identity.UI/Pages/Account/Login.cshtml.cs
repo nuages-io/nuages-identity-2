@@ -30,6 +30,7 @@ public class Login : PageModel
         _signInManager = signInManager;
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
+    
     public async Task<ActionResult> OnGetAsync(string? returnUrl = null)
     {
         if (User.Identity is { IsAuthenticated: true })
@@ -49,5 +50,5 @@ public class Login : PageModel
         return Page();
     }
 
-    public List<AuthenticationScheme> ExternalLogins { get; set; }
+    public List<AuthenticationScheme> ExternalLogins { get; set; } = new();
 }
