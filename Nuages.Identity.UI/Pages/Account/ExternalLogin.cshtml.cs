@@ -80,6 +80,8 @@ public class ExternalLoginModel : PageModel
             return Page();
         }
 
+        
+        
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
         
@@ -92,6 +94,30 @@ public class ExternalLoginModel : PageModel
                 var user = await _userManager.FindByEmailAsync(Email);
                 if (user != null)
                 {
+                    if (result.IsNotAllowed)
+                    {
+                        switch (user.LastFailedLoginReason)
+                        {
+                            case FailedLoginReason.EmailNotConfirmed:
+                            {
+                                return RedirectToPage("./EmailNotConfirmed");
+                            }
+                            case FailedLoginReason.PhoneNotConfirmed:
+                            {
+                                return RedirectToPage("./PhoneNotConfirmed");
+                            }
+                            case FailedLoginReason.NotWithinDateRange:
+                            {
+                                ErrorMessage = _localizer[$"errorMessage:no_access:{user.LastFailedLoginReason}"];
+                                return Page();
+                            }
+                            default:
+                            {
+                                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
+                            }
+                        }
+                    }
+   
                     var res = await _userManager.AddLoginAsync(user, info);
                     if (res.Succeeded)
                     {
