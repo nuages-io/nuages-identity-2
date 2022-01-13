@@ -10,7 +10,7 @@ public class UIOptions
     public string SupportUrl { get; set; } = string.Empty;
     public bool ShowRegistration { get; set; } 
     public string RegistrationUrl { get; set; } = string.Empty;
-    public string LogosUrl { get; set; } = string.Empty;
+    public string LogoUrl { get; set; } = string.Empty;
 }
 
 public static class UIConfigExtension

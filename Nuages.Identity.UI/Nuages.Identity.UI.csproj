@@ -10,6 +10,7 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="7.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.1" />
        
         <PackageReference Include="Nuages.Localization" Version="1.2.0" />
         <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />

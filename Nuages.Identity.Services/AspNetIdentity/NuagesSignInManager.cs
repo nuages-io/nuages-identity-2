@@ -1,6 +1,8 @@
 using System.Security.Claims;
+using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
@@ -76,11 +78,14 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
     }
 
 
-    private ClaimsPrincipal StoreAuthInfo(string authType, string userId, string email)
+    private ClaimsPrincipal StoreAuthInfo(string authType, string userId, string email, string? code = null)
     {
         var identity = new ClaimsIdentity(authType);
         identity.AddClaim(new Claim(ClaimTypes.Name, userId));
         identity.AddClaim(new Claim(ClaimTypes.Email, email));
+        if (!string.IsNullOrEmpty(code))
+            identity.AddClaim(new Claim(ClaimTypes.UserData, code));
+
         return new ClaimsPrincipal(identity);
     }
 
@@ -105,7 +110,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
             
             await UserManager.UpdateAsync(user);
             
-            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email));
+            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email, null));
             
             return false;
         }
@@ -121,7 +126,10 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
             await UserManager.UpdateAsync(user);
 
-            await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email));
+            var newCode = UserManager.GeneratePasswordResetTokenAsync(user).Result;
+            newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
+            
+            await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
             
             return false;
         }
@@ -142,7 +150,10 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
                     await UserManager.UpdateAsync(user);
 
-                    await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email));
+                    var newCode = UserManager.GeneratePasswordResetTokenAsync(user).Result;
+                    newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
+                    
+                    await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
                     
                     return false;
                 }

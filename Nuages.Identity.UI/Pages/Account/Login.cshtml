@@ -24,7 +24,7 @@
     }
 }
 
-<div class="flex justify-center mt-6" >
+<div class="flex justify-center mt-6">
     <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
 </div>
 
@@ -32,36 +32,68 @@
     <partial name="Shared/ErrorList"/>
 </div>
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off” v-show="status != 'sending'">
-    <div>
-        <div class="mt-1">
-            <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>
+<div v-show="status != 'sending'">
+    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
+        <div>
+            <div class="mt-1">
+                <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>
+            </div>
         </div>
-    </div>
-    <div>
-        <div class="mt-1">
-            <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+        <div>
+            <div class="mt-1">
+                <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+            </div>
         </div>
-    </div>
-    <div class="flex items-center justify-between">
-        <div class="flex items-center">
-            <input id="remember-me" name="remember-me" v-model="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-            <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                @Localizer["login:rememberMe"]
-            </label>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <input id="remember-me" name="remember-me" v-model="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                    @Localizer["login:rememberMe"]
+                </label>
+            </div>
+            <div class="text-sm">
+                <a href="/account/forgotpassword">
+                    @Localizer["login:forgotPassword"]
+                </a>
+            </div>
         </div>
-        <div class="text-sm">
-            <a href="/account/forgotpassword">
-                @Localizer["login:forgotPassword"]
-            </a>
+        <div>
+            <button v-on:click.prevent="login" class="btn btn-primary">
+                @Localizer["login:connect"]
+            </button>
         </div>
-    </div>
-    <div>
-        <button v-on:click.prevent="login" class="btn btn-primary">
-            @Localizer["login:connect"]
-        </button>
-    </div>
-</form>
+    </form>
+    
+    @if (Model.ExternalLogins.Count > 0)
+    {
+        <div class="relative mt-6">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">
+                    @Localizer["login:continueWith"]
+                </span>
+            </div>
+        </div>
+        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4">
+            <ul>
+
+                @foreach (var provider in Model.ExternalLogins)
+                {
+                    <li>
+                        <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
+                            <i class="@("fab fa-" + provider.DisplayName.ToLower())"></i>&nbsp;
+                            @provider.DisplayName
+                        </button>
+                    </li>
+                }
+
+            </ul>
+        </form>
+    }
+   
+</div>
 
 @section Scripts
 {

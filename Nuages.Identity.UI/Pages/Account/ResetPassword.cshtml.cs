@@ -47,9 +47,9 @@ namespace Nuages.Identity.UI.Pages.Account
                 var res = await _contextAccessor.HttpContext!.AuthenticateAsync(NuagesIdentityConstants.ResetPasswordScheme);
                 if (res.Succeeded)
                 {
-                    var claim = res.Principal!.Claims.Single(u => u.Type == ClaimTypes.Email);
+                    var email = res.Principal!.FindFirstValue(ClaimTypes.Email);
                 
-                    ViewData["email"] = claim.Value;
+                    ViewData["email"] = email;
                 }
 
                 ViewData["code"] = code;
@@ -64,14 +64,11 @@ namespace Nuages.Identity.UI.Pages.Account
                 ViewData["Title"] = _localizer["passwordExpired.title"];
                 ViewData["Submit"] = _localizer["passwordExpired:submit"];
                 
-                var claim = res.Principal!.Claims.Single(u => u.Type == ClaimTypes.Email);
+                var email = res.Principal!.FindFirstValue(ClaimTypes.Email);
                 
-                ViewData["email"] = claim.Value;
+                ViewData["email"] = email;
 
-                var user = await _userManager.FindByIdAsync(res.Principal!.Identity!.Name);
-                
-                var newCode = await _userManager.GeneratePasswordResetTokenAsync(user);
-                newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
+                var newCode = res.Principal!.FindFirstValue(ClaimTypes.UserData);
                 
                 ViewData["code"] = newCode;
             }

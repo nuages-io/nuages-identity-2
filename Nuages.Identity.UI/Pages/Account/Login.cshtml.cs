@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services;
+using Nuages.Identity.Services.AspNetIdentity;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -17,15 +18,16 @@ namespace Nuages.Identity.UI.Pages.Account;
 public class Login : PageModel
 {
     private readonly IStringLocalizer _stringLocalizer;
+    private readonly NuagesSignInManager _signInManager;
     private readonly NuagesIdentityOptions _nuagesIdentityOptions;
 
-    public string Lang { get; set; } = "en-CA";
     public string? ReturnUrl { get; set; }
     public string UserNamePlaceHolder { get; set; } = "Email";
         
-    public Login( IStringLocalizer stringLocalizer, IOptions<NuagesIdentityOptions> nuagesIdentityOptions)
+    public Login( IStringLocalizer stringLocalizer, IOptions<NuagesIdentityOptions> nuagesIdentityOptions, NuagesSignInManager signInManager)
     {
         _stringLocalizer = stringLocalizer;
+        _signInManager = signInManager;
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
     public async Task<ActionResult> OnGetAsync(string? returnUrl = null)
@@ -39,13 +41,13 @@ public class Login : PageModel
         }
 
         ReturnUrl = returnUrl ?? Url.Content("~/");
-           
-        Lang = CultureInfo.CurrentCulture.Name;
 
         UserNamePlaceHolder = _stringLocalizer[_nuagesIdentityOptions.SupportsUserName ? "Login:Mode:userNameEmail" : "Login:Mode:email"] ;
         
+        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
         return Page();
     }
 
-       
+    public List<AuthenticationScheme> ExternalLogins { get; set; }
 }

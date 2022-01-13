@@ -120,7 +120,12 @@ public class Startup
         services.AddAuthentication()
             .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
             .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
-            .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme);
+            .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme)
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = _configuration["Nuages:Identity:ExternalLogin:Google:ClientId"];
+                googleOptions.ClientSecret = _configuration["Nuages:Identity:ExternalLogin:Google:ClientSecret"];
+            });;
 
         services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
 

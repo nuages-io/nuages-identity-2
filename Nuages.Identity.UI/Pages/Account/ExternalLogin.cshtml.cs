@@ -107,27 +107,26 @@ public class ExternalLoginModel : PageModel
         var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
         if (result.Succeeded)
         {
-            _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
+            _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity!.Name, info.LoginProvider);
             return LocalRedirect(returnUrl);
         }
+        
         if (result.IsLockedOut)
         {
             return RedirectToPage("./Lockout");
         }
-        else
+
+        // If the user does not have an account, then ask the user to create an account.
+        ReturnUrl = returnUrl;
+        ProviderDisplayName = info.ProviderDisplayName;
+        if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
         {
-            // If the user does not have an account, then ask the user to create an account.
-            ReturnUrl = returnUrl;
-            ProviderDisplayName = info.ProviderDisplayName;
-            if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+            Input = new InputModel
             {
-                Input = new InputModel
-                {
-                    Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-                };
-            }
-            return Page();
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+            };
         }
+        return Page();
     }
 
     public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)

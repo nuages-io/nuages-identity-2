@@ -22,9 +22,9 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
     }
     public async Task<SendEmailConfirmationResultModel> SendEmailConfirmation(SendEmailConfirmationModel model)
     {
-        var claim = _httpContextAccessor.HttpContext!.User.Claims.Single(u => u.Type == ClaimTypes.Email);
+        var email = _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Email);
         
-        var user = await _userManager.FindByEmailAsync(claim.Value);
+        var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
         {
             return new SendEmailConfirmationResultModel

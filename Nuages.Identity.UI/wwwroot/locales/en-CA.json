@@ -57,6 +57,7 @@
 	"login": {
 		"back": "Go to login page",
 		"connect": "Connection",
+		"continueWith": "Or continue with",
 		"forgotPassword": "Forgot Your Password?",
 		"mode": {
 			"email": "Your email",
