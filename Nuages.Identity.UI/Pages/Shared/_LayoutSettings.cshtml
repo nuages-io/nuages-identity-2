@@ -1,18 +1,19 @@
 ﻿@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" class="dark ">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Nuages.Identity.UI</title>
 
+    <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/tailwind-output.css"/>
     <script src="https://kit.fontawesome.com/34d2a269b0.js" crossorigin="anonymous"></script>
     
    <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 </head>
-<body>
+<body class="w-full">
 
 
 @RenderBody()

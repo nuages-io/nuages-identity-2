@@ -1,11 +1,8 @@
 module.exports = {
-    purge: {
-        enabled: true,
-        content: [
-            './Pages/**/*.cshtml',
-            '.wwwroot/js/pages/**/*.js'
-        ]
-    },
+    content: [
+        './Pages/**/*.cshtml',
+        '.wwwroot/js/pages/**/*.js'
+    ],
     darkMode: 'class', // or 'media' or 'class'
     theme: {
         extend: {},
