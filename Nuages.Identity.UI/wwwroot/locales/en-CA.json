@@ -20,6 +20,7 @@
 		},
 		"recaptchaError": "Recaptcha error",
 		"required": "The [{0}] field is required.",
+		"unknownError": "Unknown error",
 		"userNameOrPasswordInvalid": "Invalid username / email or password"
 	},
 	"externalLogin": {

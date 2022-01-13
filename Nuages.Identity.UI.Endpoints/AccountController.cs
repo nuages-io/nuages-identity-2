@@ -24,13 +24,14 @@ public class AccountController
     private readonly IResetPasswordService _resetPasswordService;
     private readonly ISendEmailConfirmationService _sendEmailConfirmationService;
     private readonly IRegisterService _registerService;
+    private readonly IRegisterExternalLoginService _registerExternalLoginService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHostEnvironment _environment;
 
     public AccountController(
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
-        ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService,
+        ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService, IRegisterExternalLoginService registerExternalLoginService,
         ILogger<AccountController> logger, IHostEnvironment environment)
     {
         _recaptchaValidator = recaptchaValidator;
@@ -40,6 +41,7 @@ public class AccountController
         _resetPasswordService = resetPasswordService;
         _sendEmailConfirmationService = sendEmailConfirmationService;
         _registerService = registerService;
+        _registerExternalLoginService = registerExternalLoginService;
         _logger = logger;
         _environment = environment;
     }
@@ -103,6 +105,37 @@ public class AccountController
                 };
         
             return await _registerService.Register(model);
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpPost("registerExternalLogin")]
+    [AllowAnonymous]
+    public async Task<RegisterExternalLoginResultModel> RegisterExternalLogin([FromBody] RegisterExternalLoginModel model)
+    {
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new RegisterExternalLoginResultModel()
+                {
+                    Success = false
+                };
+        
+            return await _registerExternalLoginService.Register(model);
         }
         catch (Exception e)
         {

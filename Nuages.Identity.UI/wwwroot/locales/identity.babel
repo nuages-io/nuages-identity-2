@@ -273,6 +273,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>unknownError</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>userNameOrPasswordInvalid</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>

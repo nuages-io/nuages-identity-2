@@ -16,6 +16,9 @@
        
 </div>
 
+<div v-show="status != 'sending'">
+    <partial name="Shared/ErrorList"/>
+</div>
 @if (string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <form id="formExternalLogin" class="space-y-4 mt-4" method="POST" v-on:submit.prevent="externalLogin" v-if="status == ''">
@@ -55,6 +58,7 @@ else
     <script>
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var emailInitialValue = '@ViewData["email"]'
     </script>
    
     <script src="/js/pages/externalLogin.js"></script>
