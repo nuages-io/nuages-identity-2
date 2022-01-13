@@ -273,23 +273,6 @@
                         </translations>
                     </concept_node>
                     <concept_node>
-                        <name>unknownError</name>
-                        <definition_loaded>false</definition_loaded>
-                        <description/>
-                        <comment/>
-                        <default_text/>
-                        <translations>
-                            <translation>
-                                <language>en-CA</language>
-                                <approved>false</approved>
-                            </translation>
-                            <translation>
-                                <language>fr-CA</language>
-                                <approved>false</approved>
-                            </translation>
-                        </translations>
-                    </concept_node>
-                    <concept_node>
                         <name>userNameOrPasswordInvalid</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -311,6 +294,23 @@
             <folder_node>
                 <name>externalLogin</name>
                 <children>
+                    <concept_node>
+                        <name>accountCreated</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
                     <concept_node>
                         <name>button</name>
                         <definition_loaded>false</definition_loaded>
@@ -1316,6 +1316,40 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>continueWith</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>instructions</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>passwordConfirmation</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -1509,6 +1543,23 @@
                     </concept_node>
                 </children>
             </folder_node>
+            <concept_node>
+                <name>yourEmail</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>en-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
         </children>
     </folder_node>
     <isTemplateProject>false</isTemplateProject>

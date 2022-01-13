@@ -20,16 +20,16 @@
 		},
 		"recaptchaError": "Erreur de Recptcha",
 		"required": "Le champ [{0}] est requis.",
-		"unknownError": "Erreur inconnue",
 		"userNameOrPasswordInvalid": "Nom d'utilisateur/courriel ou mot de pass invalide"
 	},
 	"externalLogin": {
+		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
 		"button": "Créer le compte",
 		"emailNotAvailable": "Aucun courriel disponible avec ces information de connexion. IMpossible de continuer.",
 		"instructions": "Vous êtes authentifié avec",
 		"instructions2": "Cliquez le bouton \"Créer le compte\" afin de créer votre compte et continuer avec la connexion.",
 		"lockout": "Le compte est vérouillé",
-		"title": "Création d'un compte"
+		"title": "Enregistrement avec un compte externe"
 	},
 	"forgotPassword": {
 		"instructions": "Entrez le courriel associé à votre compte. Un courriel vous sera envoyé afin de vous permettre de choisir un nouveau mot de passe.",
@@ -95,6 +95,8 @@
 	"register": {
 		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
 		"button": "Créer le compte",
+		"continueWith": "Or enregistrez-vous avec",
+		"instructions": "Entrez votre courriel et choisissez un mot de passe.",
 		"passwordConfirmation": "Confirmation du mot de passe",
 		"passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",
 		"title": "Création d'un compte"
@@ -108,5 +110,6 @@
 		"reset": "Réinitialiser",
 		"success": "Votre mot de passe a été changé avec succès.",
 		"title": "Ré-initialisation du mot de passe"
-	}
+	},
+	"yourEmail": "Votre courriel"
 }

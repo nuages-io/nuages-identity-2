@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Pages.Account
 {

@@ -21,8 +21,11 @@
 
 <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formRegister" v-if="status == ''">
 
+    <div>
+        <span>@Localizer["register:instructions"]</span>
+    </div>
     <div class="mt-1">
-        <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["email"]" required class="text-box" type="email">
+        <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box" type="email">
     </div>
 
     <div class="mt-1">
@@ -44,7 +47,36 @@
 
 
 </form>
+ 
+    @if (Model.ExternalLogins.Count > 0)
+    {
+        <div class="relative mt-6">
+            <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-gray-300"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white text-gray-500">
+                    @Localizer["register:continueWith"]
+                </span>
+            </div>
+        </div>
+        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4">
+            <ul>
 
+                @foreach (var provider in Model.ExternalLogins)
+                {
+                    <li>
+                        <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
+                            <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
+                            @provider.DisplayName
+                        </button>
+                    </li>
+                }
+
+            </ul>
+        </form>
+    }
+   
 @section Scripts
 {
     <script>

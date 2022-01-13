@@ -20,16 +20,16 @@
 		},
 		"recaptchaError": "Recaptcha error",
 		"required": "The [{0}] field is required.",
-		"unknownError": "Unknown error",
 		"userNameOrPasswordInvalid": "Invalid username / email or password"
 	},
 	"externalLogin": {
+		"accountCreated": "Your account was created. Please check your emails to find the confirmation message for your email address.",
 		"button": "Register",
 		"emailNotAvailable": "No email available with this login information. Impossible to continue.",
 		"instructions": "You've successfully authenticated with",
 		"instructions2": "Click the \"Register\" button to create your account and continue the login process.",
 		"lockout": "The account is locked",
-		"title": "Register"
+		"title": "Register using an external account"
 	},
 	"forgotPassword": {
 		"instructions": "Enter the email associated with your account. An email message will be sent to you allowing you to choose a new password.",
@@ -95,6 +95,8 @@
 	"register": {
 		"accountCreated": "Your account was created. Please check your emails to find the confirmation message for your email address.",
 		"button": "Register",
+		"continueWith": "Or register with ",
+		"instructions": "Enter your email and choose a password.",
 		"passwordConfirmation": "Password Confirmation",
 		"passwordMustMatch": "Password and confirmation must be the same",
 		"title": "Register"
@@ -108,5 +110,6 @@
 		"reset": "Reset",
 		"success": "Your password has been successfully changed.",
 		"title": "Reset password"
-	}
+	},
+	"yourEmail": "Your email"
 }
