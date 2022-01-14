@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 // ReSharper disable UnusedMember.Global
 
@@ -8,7 +9,8 @@ namespace Nuages.Identity.UI.Pages;
 public class IndexModel : PageModel
 {
 
-    public void OnGet()
+    public IActionResult OnGet()
     {
+        return Redirect("~/account/manage");
     }
 }
