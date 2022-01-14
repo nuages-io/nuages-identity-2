@@ -7,7 +7,7 @@
     ViewData["title"] = Localizer["register:title"];
 
 }
-<partial name="Shared/ErrorList"/>
+
 
 <div class="flex justify-center mt-6">
 
@@ -24,6 +24,7 @@
     <div>
         <span>@Localizer["register:instructions"]</span>
     </div>
+    <partial name="Shared/ErrorList"/>
     <div class="mt-1">
         <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box" type="email">
     </div>
