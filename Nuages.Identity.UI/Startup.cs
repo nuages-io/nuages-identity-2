@@ -130,6 +130,8 @@ public class Startup
         services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
 
         services.AddHealthChecks();
+        
+        
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
