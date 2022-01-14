@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using MongoDB.Bson;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.UI.Services;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 

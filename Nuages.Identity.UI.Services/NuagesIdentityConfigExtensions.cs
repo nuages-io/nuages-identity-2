@@ -1,10 +1,9 @@
-
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.UI.Services;
 
 public static class NuagesIdentityConfigExtensions
 {

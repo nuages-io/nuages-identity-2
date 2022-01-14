@@ -1,5 +1,3 @@
-
-
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
@@ -7,7 +5,7 @@ using MongoDB.Bson;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.UI.Services;
 
 public class RegisterService : IRegisterService
 {

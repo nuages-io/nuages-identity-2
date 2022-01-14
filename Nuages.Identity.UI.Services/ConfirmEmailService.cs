@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.UI.Services;
 
 public class ConfirmEmailService : IConfirmEmailService
 {

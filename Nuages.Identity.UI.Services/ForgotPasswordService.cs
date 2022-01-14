@@ -1,11 +1,11 @@
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
-using Microsoft.AspNetCore.Authentication;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.UI.Services;
 
 public class ForgotPasswordService : IForgotPasswordService
 {

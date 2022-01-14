@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+
+  "profiles": {
+
+    "Nuages.Identity.API": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:8007/swagger",
+      "applicationUrl": "https://localhost:8007",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

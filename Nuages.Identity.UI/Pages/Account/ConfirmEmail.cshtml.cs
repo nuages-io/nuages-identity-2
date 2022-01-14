@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
+using Nuages.Identity.UI.Services;
 
 // ReSharper disable UnusedMember.Global
 

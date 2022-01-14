@@ -1,9 +1,9 @@
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.UI.Services;
 
 public class LoginService : ILoginService
 {
