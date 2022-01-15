@@ -147,21 +147,99 @@ public class ProfileController : Controller
         
     }
     
-    [HttpPost("addMfa")]
-    public async Task<bool> AddAuthenticator()
+    [HttpPost("enableMfa")]
+    public async Task<MFAResultModel> EnableMfaAsync([FromBody] EnableMFAModel model)
     {
-        return await Task.FromResult(true);
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.EnableMfaAsync");
+
+            return await _mfaService.EnableMFAAsync(User.Sub()!, model);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
     
-    [HttpDelete("removeMfa")]
-    public async Task<bool> RemoaveMfa()
+    [HttpDelete("disableMfa")]
+    public async Task<DisableMFAResultModel> DisableMfaAsync()
     {
-        return await Task.FromResult(true);
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.DisableMfaAsync");
+
+            return await _mfaService.DisableMFAAsync(User.Sub()!);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
     
     [HttpPost("resetRecoveryCodes")]
-    public async Task<bool> ResetRecoveryCodes()
+    public async Task<MFAResultModel> ResetRecoveryCodesAsync()
     {
-        return await Task.FromResult(true);
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ResetRecoveryCodesAsync");
+
+            return await _mfaService.ResetRecoveryCodesAsync(User.Sub()!);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpGet("mfaUrl")]
+    public async Task<GetMFAUrlResultModel> GetMfaUrlAsync()
+    {
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetMfaUrlAsync");
+
+            return await _mfaService.GetMFAUrlAsync(User.Sub()!);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 }

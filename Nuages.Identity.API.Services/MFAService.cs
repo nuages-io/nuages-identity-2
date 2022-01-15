@@ -3,6 +3,8 @@
 using System.Globalization;
 using System.Text;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
 
@@ -12,32 +14,94 @@ public class MFAService : IMFAService
 {
     private readonly NuagesUserManager _userManager;
     private readonly UrlEncoder _urlEncoder;
+    private readonly IStringLocalizer _localizer;
 
     private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
     
-    public MFAService(NuagesUserManager userManager, UrlEncoder urlEncoder)
+    public MFAService(NuagesUserManager userManager, UrlEncoder urlEncoder, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _urlEncoder = urlEncoder;
+        _localizer = localizer;
     }
-    public Task<DisableMFAResultModel> DisableMFAAsync(DisableMFAModel model)
+    public async Task<DisableMFAResultModel> DisableMFAAsync(string userId)
     {
-        throw new NotImplementedException();
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            throw new NotFoundException("UserNotFound");
+        
+        var res = await _userManager.SetTwoFactorEnabledAsync(user, false);
+
+        var res2 = await _userManager.RemoveAuthenticationTokenAsync(user, "[AspNetUserStore]",
+            "AuthenticatorKey");
+        
+        var res3 = await _userManager.RemoveAuthenticationTokenAsync(user, "[AspNetUserStore]",
+            "RecoveryCodes");
+        
+        return new DisableMFAResultModel
+        {
+            Success = res.Succeeded,
+            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+        };
     }
 
-    public Task<MFAResultModel> EnableMFAAsync(EnableMFAModel model)
+    public async Task<MFAResultModel> EnableMFAAsync(string userId, EnableMFAModel model)
     {
-        throw new NotImplementedException();
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Code);
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            throw new NotFoundException("UserNotFound");
+            
+        var verificationCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+
+        var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
+            user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
+
+        if (!is2faTokenValid)
+        {
+            return new MFAResultModel
+            {
+                Errors = new List<string>{ "InvalidVerificationCode" }
+            };
+        }
+
+        await _userManager.SetTwoFactorEnabledAsync(user, true);
+        
+        var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+
+        return new MFAResultModel
+        {
+            Success = true,
+            Codes = recoveryCodes.ToList()
+        };
     }
 
-    public Task<MFAResultModel> ResetRecoveryCodesAsync(ResetRecoveryCodesModel model)
+    public async Task<MFAResultModel> ResetRecoveryCodesAsync(string userId)
     {
-        throw new NotImplementedException();
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            throw new NotFoundException("UserNotFound");
+        
+        var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
+
+        return new MFAResultModel
+        {
+            Success = true,
+            Codes = recoveryCodes.ToList()
+        };
     }
 
-    public async Task<GetMFAUrlResultModel>  GetMFAUrlAsync(GetMFAUrlModel model)
+    public async Task<GetMFAUrlResultModel>  GetMFAUrlAsync(string userId)
     {
-        var user = await _userManager.FindByIdAsync(model.UserId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
+        
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
@@ -45,6 +109,7 @@ public class MFAService : IMFAService
 
         return new GetMFAUrlResultModel
         {
+            Success = true,
             Key = key,
             Url = url
         };
@@ -91,7 +156,7 @@ public class MFAService : IMFAService
         return string.Format(
             CultureInfo.InvariantCulture,
             AuthenticatorUriFormat,
-            _urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
+            _urlEncoder.Encode("Nuages"),
             _urlEncoder.Encode(email),
             unformattedKey);
     }
@@ -99,43 +164,36 @@ public class MFAService : IMFAService
 
 public interface IMFAService
 {
-    Task<DisableMFAResultModel> DisableMFAAsync(DisableMFAModel model);
-    Task<MFAResultModel> EnableMFAAsync(EnableMFAModel model);
-    Task<MFAResultModel> ResetRecoveryCodesAsync(ResetRecoveryCodesModel model);
-    Task<GetMFAUrlResultModel> GetMFAUrlAsync(GetMFAUrlModel model);
+    Task<DisableMFAResultModel> DisableMFAAsync(string userId);
+    Task<MFAResultModel> EnableMFAAsync(string userId, EnableMFAModel model);
+    Task<MFAResultModel> ResetRecoveryCodesAsync(string userId);
+    Task<GetMFAUrlResultModel> GetMFAUrlAsync(string userId);
 }
 
 public class GetMFAUrlResultModel
 {
+    public bool Success { get; set; }
     public string Key { get; set; } = string.Empty;
     public string Url { get; set; } = string.Empty;
 }
 
-public class GetMFAUrlModel
-{
-    public string UserId { get; set; } = string.Empty;
-}
-
-public class ResetRecoveryCodesModel
-{
-}
 
 public class EnableMFAModel
 {
+    public string Code { get; set; } = string.Empty;
 }
 
 public class DisableMFAResultModel
 {
+    public bool Success { get; set; }
+    public List<string> Errors { get; set; } = new();
 }
 
-public class DisableMFAModel
-{
-    
-}
 
 public class MFAResultModel
 {
-    public bool Succeeded { get; set; }
+    public bool Success { get; set; }
+    
     public List<string> Errors { get; set; } = new();
     public List<string> Codes { get; set; } = new();
 }

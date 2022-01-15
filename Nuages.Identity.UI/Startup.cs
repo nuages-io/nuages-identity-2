@@ -71,8 +71,8 @@ public class Startup
                     PasswordResetTokenProvider = TokenOptions.DefaultProvider,
                     ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
                     ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
-                    AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider,
-                    AuthenticatorIssuer =  "Microsoft.AspNetCore.Identity.UI"
+                    AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider
+                    //AuthenticatorIssuer =  "Nuages" NOT USED
                 };
 
                 identity.Password = options.Password;
