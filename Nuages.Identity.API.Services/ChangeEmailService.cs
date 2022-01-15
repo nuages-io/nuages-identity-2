@@ -16,10 +16,12 @@ public class ChangeEmailService : IChangeEmailService
         _localizer = localizer;
     }
     
-    public async Task<ChangeEmailResultModel> ChangeEmail(ChangeEmailModel model)
+    public async Task<ChangeEmailResultModel> ChangeEmailAsync(string userId, ChangeEmailModel model)
     {
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Email);
         
-        var user = await _userManager.FindByIdAsync(model.UserId);
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
@@ -30,14 +32,14 @@ public class ChangeEmailService : IChangeEmailService
         return new ChangeEmailResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[e.Code].Value).ToList()
+            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
         };
     }
 }
 
 public interface IChangeEmailService
 {
-    Task<ChangeEmailResultModel> ChangeEmail(ChangeEmailModel model);
+    Task<ChangeEmailResultModel> ChangeEmailAsync(string userId, ChangeEmailModel model);
 }
 
 public class ChangeEmailResultModel
@@ -48,6 +50,5 @@ public class ChangeEmailResultModel
 
 public class ChangeEmailModel
 {
-    public string UserId { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
 }

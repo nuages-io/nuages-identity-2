@@ -16,27 +16,30 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
         _localizer = localizer;
     }
     
-    public async Task<ChangePhoneNumberResultModel> ChangePhoneNumber(ChangePhoneNumberModel model)
+    public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync(string userId, ChangePhoneNumberModel model)
     {
-        var user = await _userManager.FindByIdAsync(model.UserId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.PhoneNumber);
+        
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
         var token = await _userManager.GenerateChangePhoneNumberTokenAsync(user, model.PhoneNumber);
         
-        var res = await _userManager.ChangeEmailAsync(user, model.PhoneNumber, token);
+        var res = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber, token);
 
         return new ChangePhoneNumberResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[e.Code].Value).ToList()
+            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
         };
     }
 }
 
 public interface IChangePhoneNumberService
 {
-    Task<ChangePhoneNumberResultModel> ChangePhoneNumber(ChangePhoneNumberModel model);
+    Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync(string userId, ChangePhoneNumberModel model);
 }
 
 public class ChangePhoneNumberResultModel
@@ -47,6 +50,5 @@ public class ChangePhoneNumberResultModel
 
 public class ChangePhoneNumberModel
 {
-    public string UserId { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
 }

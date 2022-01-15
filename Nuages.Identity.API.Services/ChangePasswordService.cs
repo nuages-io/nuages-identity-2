@@ -16,13 +16,14 @@ public class ChangePasswordService : IChangePasswordService
         _localizer = localizer;
     }
     
-    public async Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordModel model)
+    public async Task<ChangePasswordResultModel> ChangePasswordAsync(string userId, ChangePasswordModel model)
     {
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.UserId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.CurrentPassword);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPassword);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPasswordConfirm);
         
-        var user = await _userManager.FindByIdAsync(model.UserId);
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
@@ -31,21 +32,21 @@ public class ChangePasswordService : IChangePasswordService
         return new ChangePasswordResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[e.Code].Value).ToList()
+            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
         };
     }
 }
 
 public interface IChangePasswordService
 {
-    Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordModel model);
+    Task<ChangePasswordResultModel> ChangePasswordAsync(string userid, ChangePasswordModel model);
 }
 
 public class ChangePasswordModel
 {
-    public string UserId { get; set; } = string.Empty;
     public string NewPassword { get; set; } = string.Empty;
     public string CurrentPassword { get; set; } = string.Empty;
+    public string NewPasswordConfirm { get; set; } = string.Empty;
 }
 
 public class ChangePasswordResultModel

@@ -1,15 +1,20 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
+using Amazon.XRay.Recorder.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.API.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Web;
 
 namespace Nuages.Identity.API.Endpoints;
 
 [ExcludeFromCodeCoverage]
 
 [Route("api/profile")]
-public class ProfileController
+[Authorize]
+public class ProfileController : Controller
 {
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly NuagesUserManager _userManager;
@@ -46,51 +51,100 @@ public class ProfileController
     }
     
     [HttpPost("changeEmail")]
-    public async Task<bool> ChangeEmail()
+    public async Task<ChangeEmailResultModel> ChangeEmailAsync([FromBody] ChangeEmailModel model)
     {
-        return await Task.FromResult(true);
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("ProfileController.ChangeEmailAsync");
+
+            return await _changeEmailService.ChangeEmailAsync(User.Sub()!, model);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
     
     [HttpPost("changeUsername")]
-    public async Task<bool> ChangeUserName()
+    public async Task<ChangeUserNameResultModel> ChangeUserNameAsync([FromBody] ChangeUserNameModel model)
     {
-        return await Task.FromResult(true);
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChangeUserNameAsync");
+
+            return await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
     
     [HttpPost("changePhoneNumber")]
-    public async Task<bool> ChengePhoneNumber()
+    public async Task<ChangePhoneNumberResultModel> ChengePhoneNumberAsync([FromBody] ChangePhoneNumberModel model)
     {
-        return await Task.FromResult(true);
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChengePhoneNumberAsync");
+
+            return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
     
     [HttpPost("changePassword")]
-    public async Task<bool> ChangePassword()
-    {
-        // if (!await _roleManager.RoleExistsAsync("Admin2"))
-        // {
-        //     var role = new NuagesApplicationRole
-        //     {
-        //         Id = ObjectId.GenerateNewId().ToString(),
-        //         Name = "Admin2",
-        //         NormalizedName = "ADMIN"
-        //     };
-        //     
-        //     await _roleManager.CreateAsync(role);
-        //
-        //     await _roleManager.AddClaimAsync(role, new Claim("Test", "Value"));
-        // }
+    public async Task<ChangePasswordResultModel> ChangePassword([FromBody] ChangePasswordModel model)
+    { 
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.SetPasswordAsync");
+
+            return await _changePasswordService.ChangePasswordAsync(User.Sub()!, model);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
         
-        //var user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
-        
-        // var r = await _userManager.IsInRoleAsync(user,"Admin");
-        // if (!r)
-        // {
-        //     await _userManager.AddToRoleAsync(user, "Admin");
-        // }
-        
-        //var r = await _userManager.IsInRoleAsync(user,"Admin");
-        
-        return await Task.FromResult(true);
     }
     
     [HttpPost("addMfa")]

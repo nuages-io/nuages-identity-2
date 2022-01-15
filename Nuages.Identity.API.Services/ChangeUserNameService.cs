@@ -16,9 +16,12 @@ public class ChangeUserNameService : IChangeUserNameService
         _localizer = localizer;
     }
     
-    public async Task<ChangeUserNameResultModel> ChangeUserName(ChangeUserNameModel model)
+    public async Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, ChangeUserNameModel model)
     {
-        var user = await _userManager.FindByIdAsync(model.UserId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewUserName);
+        
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
@@ -27,19 +30,18 @@ public class ChangeUserNameService : IChangeUserNameService
         return new ChangeUserNameResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[e.Code].Value).ToList()
+            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
         };
     }
 }
 
 public interface IChangeUserNameService
 {
-    Task<ChangeUserNameResultModel> ChangeUserName(ChangeUserNameModel model);
+    Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, ChangeUserNameModel model);
 }
 
 public class ChangeUserNameModel
 {
-    public string UserId { get; set; } = string.Empty;
     public string NewUserName { get; set; } = string.Empty;
 }
 
