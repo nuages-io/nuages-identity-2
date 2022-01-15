@@ -8,7 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Nuages.Identity.API.Services\Nuages.Identity.API.Services.csproj" />
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AWSXRayRecorder.Core" Version="2.10.1" />
     </ItemGroup>
 
     

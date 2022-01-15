@@ -18,6 +18,7 @@ public class ChangeEmailService : IChangeEmailService
     
     public async Task<ChangeEmailResultModel> ChangeEmail(ChangeEmailModel model)
     {
+        
         var user = await _userManager.FindByIdAsync(model.UserId);
         if (user == null)
             throw new NotFoundException("UserNotFound");

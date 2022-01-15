@@ -129,7 +129,7 @@ public class Startup
                 
                 mongo.ConnectionString = connection;
 
-            }).AddNuagesIdentityAPI(Configuration);
+            }).AddNuagesIdentityApi(Configuration);
         
         
         services.AddAuthentication(options =>

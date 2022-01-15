@@ -6,19 +6,22 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.API.Services.Admin;
 
-public class SetPassworService : ISetPasswordService
+public class SetPasswordService : ISetPasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
 
-    public SetPassworService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public SetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _localizer = localizer;
     }
     
-    public async Task<SetPasswordResultModel> SetPassword(SetPasswordModel model)
+    public async Task<SetPasswordResultModel> SetPasswordAsync(SetPasswordModel model)
     {
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.UserId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Password);
+        
         var user = await _userManager.FindByIdAsync(model.UserId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
@@ -27,6 +30,16 @@ public class SetPassworService : ISetPasswordService
 
         var res = await _userManager.ResetPasswordAsync(user, token, model.Password);
 
+        if (res.Succeeded)
+        {
+            user.UserMustChangePassword = model.UserMustChangePassword;
+        }
+
+        if (model.SendByEmail)
+        {
+            //TODO
+        }
+        
         return new SetPasswordResultModel
         {
             Success = res.Succeeded,
@@ -37,13 +50,15 @@ public class SetPassworService : ISetPasswordService
 
 public interface ISetPasswordService
 {
-    Task<SetPasswordResultModel> SetPassword(SetPasswordModel model);
+    Task<SetPasswordResultModel> SetPasswordAsync(SetPasswordModel model);
 }
 
 public class SetPasswordModel
 {
     public string UserId { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public bool UserMustChangePassword { get; set; }
+    public bool SendByEmail { get; set; }
 }
 
 public class SetPasswordResultModel

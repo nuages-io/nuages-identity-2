@@ -16,8 +16,12 @@ public class ChangePasswordService : IChangePasswordService
         _localizer = localizer;
     }
     
-    public async Task<ChangePasswordResultModel> ChangePassword(ChangePasswordModel model)
+    public async Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordModel model)
     {
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.UserId);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.CurrentPassword);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPassword);
+        
         var user = await _userManager.FindByIdAsync(model.UserId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
@@ -34,7 +38,7 @@ public class ChangePasswordService : IChangePasswordService
 
 public interface IChangePasswordService
 {
-    Task<ChangePasswordResultModel> ChangePassword(ChangePasswordModel model);
+    Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordModel model);
 }
 
 public class ChangePasswordModel
