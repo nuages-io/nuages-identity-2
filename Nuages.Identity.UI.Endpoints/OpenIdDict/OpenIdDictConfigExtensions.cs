@@ -7,15 +7,16 @@ namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
 
 public static class OpenIdDictConfigExtensions
 {
-    public static void AddNuagesOpenIdDict(this IServiceCollection services, string connectionString, string databaseName = "openiddict")
+    public static void AddNuagesOpenIdDict(this IServiceCollection services, OpenIdDictOptions openIdDictOptions)
     {
+        
         services.AddOpenIddict()
             // Register the OpenIddict core components.
             .AddCore(options =>
             {
                 options.UseMongoDb()
-                    .UseDatabase(new MongoClient(connectionString)
-                    .GetDatabase("openiddict"));
+                    .UseDatabase(new MongoClient(openIdDictOptions.ConnectionString)
+                    .GetDatabase(openIdDictOptions.Database));
             })
 
             // Register the OpenIddict server components.

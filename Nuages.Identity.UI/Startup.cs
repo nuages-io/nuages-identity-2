@@ -124,11 +124,13 @@ public class Startup
             .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme)
             .AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = _configuration["Nuages:Identity:ExternalLogin:Google:ClientId"];
-                googleOptions.ClientSecret = _configuration["Nuages:Identity:ExternalLogin:Google:ClientSecret"];
+                googleOptions.ClientId = _configuration["Nuages:UI:ExternalLogin:Google:ClientId"];
+                googleOptions.ClientSecret = _configuration["Nuages:UI:ExternalLogin:Google:ClientSecret"];
             });
 
-        services.AddNuagesOpenIdDict(_configuration["Nuages:Mongo:ConnectionString"], "nuages_identity");
+        var openIdDictOptions = _configuration.GetSection("Nuages:OpenIdDict").Get<OpenIdDictOptions>();
+            
+        services.AddNuagesOpenIdDict(openIdDictOptions);
 
         services.AddHealthChecks();
         

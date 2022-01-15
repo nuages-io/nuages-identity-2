@@ -9,13 +9,13 @@ namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
 public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIddictServerOptions>
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly NuagesIdentityOptions _identityOptions;
+    private readonly OpenIdDictOptions _options;
 
     public OpenIddictServerOptionsInitializer(
-         IServiceProvider serviceProvider, IOptions<NuagesIdentityOptions> identityOptions)
+         IServiceProvider serviceProvider, IOptions<OpenIdDictOptions> options)
     {
         _serviceProvider = serviceProvider;
-        _identityOptions = identityOptions.Value;
+        _options = options.Value;
     }
     
     public void Configure(string name, OpenIddictServerOptions options) => Configure(options);
@@ -36,7 +36,7 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
     {
         RsaSecurityKey? key;
 
-        var xml = _identityOptions.OpenIdDict.EncryptionKey;
+        var xml = _options.EncryptionKey;
         
         if (!string.IsNullOrEmpty(xml))
         {
@@ -62,7 +62,7 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
     {
         RsaSecurityKey? key;
 
-        var xml = _identityOptions.OpenIdDict.SigningKey;
+        var xml = _options.SigningKey;
         
         if (!string.IsNullOrEmpty(xml))
         {

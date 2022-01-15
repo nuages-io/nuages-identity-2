@@ -11,6 +11,8 @@ public class UIOptions
     public bool ShowRegistration { get; set; } 
     public string RegistrationUrl { get; set; } = string.Empty;
     public string LogoUrl { get; set; } = string.Empty;
+    public bool ExternalLoginAutoEnrollIfEmailExists { get; set; }
+    public bool ExternalLoginPersistent { get; set; }
 }
 
 public static class UIConfigExtension

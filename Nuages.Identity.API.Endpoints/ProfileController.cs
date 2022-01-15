@@ -40,25 +40,25 @@ public class ProfileController
     [HttpPost("changePassword")]
     public async Task<bool> ChangePassword()
     {
-        if (!await _roleManager.RoleExistsAsync("Admin"))
-        {
-            await _roleManager.CreateAsync(new NuagesApplicationRole
-            {
-                Id = ObjectId.GenerateNewId().ToString(),
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            });
-        }
+        // if (!await _roleManager.RoleExistsAsync("Admin"))
+        // {
+        //     await _roleManager.CreateAsync(new NuagesApplicationRole
+        //     {
+        //         Id = ObjectId.GenerateNewId().ToString(),
+        //         Name = "Admin",
+        //         NormalizedName = "ADMIN"
+        //     });
+        // }
         
         var user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
         
-        var r = await _userManager.IsInRoleAsync(user,"Admin");
-        if (!r)
-        {
-            await _userManager.AddToRoleAsync(user, "Admin");
-        }
+        // var r = await _userManager.IsInRoleAsync(user,"Admin");
+        // if (!r)
+        // {
+        //     await _userManager.AddToRoleAsync(user, "Admin");
+        // }
         
-        r = await _userManager.IsInRoleAsync(user,"Admin");
+        var r = await _userManager.IsInRoleAsync(user,"Admin");
         
         return await Task.FromResult(r);
     }
