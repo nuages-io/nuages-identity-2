@@ -123,5 +123,9 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return res;
     }
 
+    public override async Task<bool> IsInRoleAsync(NuagesApplicationUser user, string role)
+    {
+        return await base.IsInRoleAsync(user, role);
+    }
 }
 

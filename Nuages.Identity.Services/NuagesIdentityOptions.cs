@@ -26,6 +26,7 @@ public class NuagesIdentityOptions
 
     public bool ExternalLoginAutoEnrollIfEmailExists { get; set; }
     public bool ExternalLoginPersistent { get; set; }
+    public string? Authority { get; set; }
 }
 
 
