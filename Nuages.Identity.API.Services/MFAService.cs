@@ -3,7 +3,6 @@
 using System.Globalization;
 using System.Text;
 using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
 
@@ -42,12 +41,12 @@ public class MFAService : IMFAService
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        var data = await GetSharedKeyAndQrCodeUriAsync(user);
+        var (key, url) = await GetSharedKeyAndQrCodeUriAsync(user);
 
         return new GetMFAUrlResultModel
         {
-            Key = data.Key,
-            Url = data.Url
+            Key = key,
+            Url = url
         };
     }
     
@@ -70,10 +69,10 @@ public class MFAService : IMFAService
         return (key, url);
     }
 
-    private string FormatKey(string unformattedKey)
+    private static string FormatKey(string unformattedKey)
     {
         var result = new StringBuilder();
-        int currentPosition = 0;
+        var currentPosition = 0;
         while (currentPosition + 4 < unformattedKey.Length)
         {
             result.Append(unformattedKey.AsSpan(currentPosition, 4)).Append(' ');

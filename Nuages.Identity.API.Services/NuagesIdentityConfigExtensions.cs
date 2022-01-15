@@ -9,7 +9,7 @@ namespace Nuages.Identity.API.Services;
 
 public static class NuagesIdentityConfigExtensions
 {
-    public static void AddNuagesIdentityAPI(this IdentityBuilder builder,
+    public static void AddNuagesIdentityApi(this IdentityBuilder builder,
         Action<NuagesIdentityOptions> configure )
     {
         AddNuagesIdentityAPI(builder, null, configure);

@@ -59,7 +59,7 @@ public class LoginService : ILoginService
     {
         return _stringLocalizer[GetMessageKey(failedLoginReason)];
     }
-    private string GetMessageKey(FailedLoginReason? failedLoginReason)
+    private static string GetMessageKey(FailedLoginReason? failedLoginReason)
     {
         switch (failedLoginReason)
         {
@@ -72,6 +72,15 @@ public class LoginService : ILoginService
             case FailedLoginReason.RecaptchaError:
             {
                 return $"errorMessage:{failedLoginReason}";
+            }
+            case null:
+            case FailedLoginReason.PasswordMustBeChanged:
+            case FailedLoginReason.EmailNotConfirmed:
+            case FailedLoginReason.PhoneNotConfirmed:
+            case FailedLoginReason.AccountNotConfirmed:
+            case FailedLoginReason.PasswordExpired:
+            {
+                throw new NotSupportedException("ValueNotSupportedHere");
             }
             default:
             {
@@ -88,6 +97,7 @@ public interface ILoginService
     Task<LoginResultModel> LoginAsync(LoginModel model);
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class LoginModel
 {
     public string UserNameOrEmail { get; set; } = null!;

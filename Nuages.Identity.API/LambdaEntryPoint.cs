@@ -1,7 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using NLog.Web;
 
 namespace Nuages.Identity.API;

@@ -1,7 +1,6 @@
 using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Nuages.Identity.Services;
 using OpenIddict.Server;
 
 namespace Nuages.Identity.UI.Endpoints.OpenIdDict;

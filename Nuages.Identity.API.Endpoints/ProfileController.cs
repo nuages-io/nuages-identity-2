@@ -1,8 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using Nuages.Identity.Services.AspNetIdentity;
 
 namespace Nuages.Identity.API.Endpoints;

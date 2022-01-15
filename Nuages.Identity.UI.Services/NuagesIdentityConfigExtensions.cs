@@ -7,6 +7,7 @@ namespace Nuages.Identity.UI.Services;
 
 public static class NuagesIdentityConfigExtensions
 {
+    // ReSharper disable once UnusedMember.Global
     public static void AddNuagesIdentity(this IdentityBuilder builder,
         Action<NuagesIdentityOptions> configure )
     {

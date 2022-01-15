@@ -78,7 +78,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
     }
 
 
-    private ClaimsPrincipal StoreAuthInfo(string authType, string userId, string email, string? code = null)
+    private static ClaimsPrincipal StoreAuthInfo(string authType, string userId, string email, string? code = null)
     {
         var identity = new ClaimsIdentity(authType);
         identity.AddClaim(new Claim(ClaimTypes.Name, userId));
@@ -110,7 +110,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
             
             await UserManager.UpdateAsync(user);
             
-            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email, null));
+            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email ));
             
             return false;
         }

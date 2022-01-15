@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -22,7 +21,10 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
     }
     public async Task<SendEmailConfirmationResultModel> SendEmailConfirmation(SendEmailConfirmationModel model)
     {
-        var email = _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Email);
+        if (string.IsNullOrEmpty(model.Email))
+            throw new ArgumentNullException(model.Email);
+
+        var email = model.Email;
         
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
@@ -61,9 +63,11 @@ public interface ISendEmailConfirmationService
     Task<SendEmailConfirmationResultModel> SendEmailConfirmation(SendEmailConfirmationModel model);
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class SendEmailConfirmationModel
 {
     public string? RecaptchaToken { get; set; }
+    public string? Email { get; set; }
 }
 
 public class SendEmailConfirmationResultModel

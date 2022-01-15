@@ -183,7 +183,7 @@ public class Startup
                 // ValidAlgorithms = null,
                 //ValidAudience = Configuration["Nuages:Identity:Audience"],
                 ValidAudiences = identityOptions.Audiences,
-                ValidIssuer = identityOptions.Authority,
+                ValidIssuer = identityOptions.Authority
                 // ValidIssuers = null,
                 // ValidTypes = null
 

@@ -25,7 +25,7 @@ public class ForgotPasswordService : IForgotPasswordService
     public async Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
         {
             return new ForgotPasswordResultModel
             {
@@ -59,7 +59,7 @@ public class ForgotPasswordService : IForgotPasswordService
         };
     }
     
-    private ClaimsPrincipal StorePasswordResetEmailInfo(string userId, string email)
+    private static ClaimsPrincipal StorePasswordResetEmailInfo(string userId, string email)
     {
         var identity = new ClaimsIdentity("PasswordReset");
         identity.AddClaim(new Claim(ClaimTypes.Name, userId));
@@ -73,6 +73,7 @@ public interface IForgotPasswordService
     Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model);
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class ForgotPasswordModel
 {
     public string Email { get; set; } = string.Empty;

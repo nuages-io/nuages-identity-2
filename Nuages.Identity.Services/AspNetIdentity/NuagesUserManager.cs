@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -123,9 +122,5 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return res;
     }
 
-    public override async Task<bool> IsInRoleAsync(NuagesApplicationUser user, string role)
-    {
-        return await base.IsInRoleAsync(user, role);
-    }
 }
 

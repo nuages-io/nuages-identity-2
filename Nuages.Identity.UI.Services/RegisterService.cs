@@ -83,7 +83,7 @@ public class RegisterService : IRegisterService
                 };
             }
             
-            await _signInManager.SignInAsync(user, isPersistent: false);
+            await _signInManager.SignInAsync(user, false);
 
             return new RegisterResultModel
             {
@@ -104,6 +104,7 @@ public interface IRegisterService
     Task<RegisterResultModel> Register(RegisterModel model);
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class RegisterModel
 {
     public string Email { get; set; } = string.Empty;

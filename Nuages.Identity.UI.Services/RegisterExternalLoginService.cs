@@ -54,7 +54,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         {
             Id = ObjectId.GenerateNewId().ToString(),
             Email = email,
-            UserName = email,
+            UserName = email
         };
         
         var result = await _userManager.CreateAsync(user);
@@ -89,7 +89,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
                     };
                 }
                 
-                await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                await _signInManager.SignInAsync(user, false, info.LoginProvider);
 
                 return new RegisterExternalLoginResultModel
                 {
@@ -109,9 +109,11 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
 
 public interface IRegisterExternalLoginService
 {
+    // ReSharper disable once UnusedParameter.Global
     Task<RegisterExternalLoginResultModel> Register(RegisterExternalLoginModel model);
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class RegisterExternalLoginModel
 {
     public string? RecaptchaToken { get; set; }

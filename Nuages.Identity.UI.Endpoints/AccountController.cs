@@ -1,8 +1,8 @@
+using System.Security.Claims;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using MongoDB.Bson;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.UI.Services;
@@ -28,12 +28,13 @@ public class AccountController
     private readonly IRegisterExternalLoginService _registerExternalLoginService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHostEnvironment _environment;
+    private readonly IHttpContextAccessor _contextAccessor;
 
     public AccountController(
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
         ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService, IRegisterExternalLoginService registerExternalLoginService,
-        ILogger<AccountController> logger, IHostEnvironment environment)
+        ILogger<AccountController> logger, IHostEnvironment environment, IHttpContextAccessor contextAccessor)
     {
         _recaptchaValidator = recaptchaValidator;
         _stringLocalizer = stringLocalizer;
@@ -45,6 +46,7 @@ public class AccountController
         _registerExternalLoginService = registerExternalLoginService;
         _logger = logger;
         _environment = environment;
+        _contextAccessor = contextAccessor;
     }
     
     [HttpPost("login")]
@@ -100,7 +102,7 @@ public class AccountController
                 AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
-                return new RegisterResultModel()
+                return new RegisterResultModel
                 {
                     Success = false
                 };
@@ -131,7 +133,7 @@ public class AccountController
                 AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
-                return new RegisterExternalLoginResultModel()
+                return new RegisterExternalLoginResultModel
                 {
                     Success = false
                 };
@@ -200,6 +202,8 @@ public class AccountController
                     Success = false
                 };
         
+            model.Email = _contextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Email);
+            
             return await _sendEmailConfirmationService.SendEmailConfirmation(model);
 
         }
