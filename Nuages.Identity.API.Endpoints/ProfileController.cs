@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
+
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

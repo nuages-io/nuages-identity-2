@@ -32,8 +32,12 @@
       <ProjectReference Include="..\Nuages.Identity.UI.Endpoints\Nuages.Identity.UI.Endpoints.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="wwwroot\locales" />
+        <Content Include="..\locales\en-CA.json" CopyToOutputDirectory="Always">
+            <Link>locales\en-CA.json</Link>
+        </Content>
+        <Content Include="..\locales\fr-CA.json" CopyToOutputDirectory="Always">
+            <Link>locales\fr-CA.json</Link>
+        </Content>
     </ItemGroup>
-    
    
 </Project>

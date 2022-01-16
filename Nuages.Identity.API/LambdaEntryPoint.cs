@@ -48,6 +48,7 @@ public class LambdaEntryPoint :
     {
         builder.ConfigureAppConfiguration((_, configBuilder) =>
         {
+            configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
             configBuilder.AddJsonFile("appsettings.prod.json", true, true);
 
             var name = Environment.GetEnvironmentVariable("Nuages__Sender__StackName");

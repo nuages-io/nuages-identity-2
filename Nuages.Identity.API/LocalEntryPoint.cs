@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.API;
 
@@ -19,8 +21,12 @@ public class LocalEntryPoint
         Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration(config =>
             {
+                config.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
+                
                 config.AddJsonFile("appsettings.local.json", true, true);
  
+                config.AddJsonFileTranslation("/locales/fr-CA.json");
+                config.AddJsonFileTranslation("/locales/en-CA.json");
             })
             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 }

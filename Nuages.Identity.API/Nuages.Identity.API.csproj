@@ -41,4 +41,13 @@
         <PackageReference Include="NLog" Version="4.7.13" />
         <PackageReference Include="AWS.Logger.NLog" Version="3.0.0" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\locales\en-CA.json" CopyToOutputDirectory="Always">
+        <Link>locales\en-CA.json</Link>
+      </Content>
+      <Content Include="..\locales\fr-CA.json" CopyToOutputDirectory="Always">
+        <Link>locales\fr-CA.json</Link>
+      </Content>
+    </ItemGroup>
 </Project>
