@@ -22,6 +22,18 @@ public class SetPasswordService : ISetPasswordService
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.UserId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Password);
         
+        if (model.Password != model.PasswordConfirmation)
+        {
+            return new SetPasswordResultModel()
+            {
+                Errors = new List<string>()
+                {
+                   _localizer["resetPassword.passwordConfirmDoesNotMatch"]
+                }
+            };
+        }
+
+        
         var user = await _userManager.FindByIdAsync(model.UserId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
@@ -57,6 +69,7 @@ public class SetPasswordModel
 {
     public string UserId { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
+    public string PasswordConfirmation { get; set; } = string.Empty;
     public bool UserMustChangePassword { get; set; }
     public bool SendByEmail { get; set; }
 }

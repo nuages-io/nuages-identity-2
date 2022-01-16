@@ -22,6 +22,17 @@ public class ChangePasswordService : IChangePasswordService
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.CurrentPassword);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPassword);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPasswordConfirm);
+
+        if (model.NewPassword != model.NewPasswordConfirm)
+        {
+            return new ChangePasswordResultModel()
+            {
+                Errors = new List<string>()
+                {
+                    _localizer["resetPassword.passwordConfirmDoesNotMatch"]
+                }
+            };
+        }
         
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)

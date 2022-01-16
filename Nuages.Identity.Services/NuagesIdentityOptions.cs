@@ -8,7 +8,6 @@ public class NuagesIdentityOptions
     
     public PasswordOptions Password { get; set; } = new ();
 
-
     public bool SupportsStartEnd { get; set; }
     
     public bool SupportsAutoPasswordExpiration { get; set; }
@@ -26,4 +25,3 @@ public class NuagesIdentityOptions
    
     public string? Authority { get; set; }
 }
-
