@@ -8,6 +8,7 @@ using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.UI.Services;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+// ReSharper disable TemplateIsNotCompileTimeConstantProblem
 
 // ReSharper disable UnusedMember.Global
 
@@ -92,6 +93,95 @@ public class AccountController
         }
     }
 
+    [HttpPost("login2fa")]
+    [AllowAnonymous]
+    // ReSharper disable once InconsistentNaming
+    public async Task<ActionResult<LoginResultModel>> Login2FAAsync([FromBody] Login2FAModel model)
+    {
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Login2FAAsync");
+
+            var id = Guid.NewGuid().ToString();
+            
+            _logger.LogInformation($"Initiate login 2FA : ID = {id} {model.Code} RememberMe = {model.RememberMe} RecaptchaToken = {model.RecaptchaToken}");
+        
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new LoginResultModel
+                {
+                    Success = false,
+                    Result = SignInResult.Failed,
+                    Reason = FailedLoginReason.RecaptchaError,
+                    Message = _stringLocalizer["errorMessage:RecaptchaError"]
+                };
+
+            var res= await _loginService.Login2FAAsync(model);
+            
+            _logger.LogInformation($"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+
+            return res;
+
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+
+    [HttpPost("loginRecoveryCOde")]
+    [AllowAnonymous]
+    // ReSharper disable once InconsistentNaming
+    public async Task<ActionResult<LoginResultModel>> LoginRecoveryCodeAsync([FromBody] LoginRecoveryCodeModel model)
+    {
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginRecoveryCodeAsync");
+
+            var id = Guid.NewGuid().ToString();
+            
+            _logger.LogInformation($"Initiate login Recovery Code : ID = {id} {model.Code} RecaptchaToken = {model.RecaptchaToken}");
+        
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new LoginResultModel
+                {
+                    Success = false,
+                    Result = SignInResult.Failed,
+                    Reason = FailedLoginReason.RecaptchaError,
+                    Message = _stringLocalizer["errorMessage:RecaptchaError"]
+                };
+
+            var res= await _loginService.LoginRecoveryCodeAsync(model);
+            
+            _logger.LogInformation($"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+
+            return res;
+
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+
+    
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<RegisterResultModel> Register([FromBody] RegisterModel model)

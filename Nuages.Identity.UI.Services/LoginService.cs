@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.UI.Services;
 
@@ -55,8 +56,76 @@ public class LoginService : ILoginService
         };
     }
 
-    private string GetMessage(FailedLoginReason? failedLoginReason)
+    public async Task<LoginResultModel> Login2FAAsync(Login2FAModel model)
     {
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user == null)
+        {
+            throw new NotFoundException("UserNotFound");
+        }
+
+        var authenticatorCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+
+        var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, model.RememberMe, model.RememberMachine);
+
+        if (result == SignInResult.Success)
+        {
+            return new LoginResultModel
+            {
+                Success = true
+            };
+        }
+
+        user.LastFailedLoginReason = FailedLoginReason.FailedMfa;
+        await _userManager.UpdateAsync(user);
+        
+        return new LoginResultModel
+        {
+            Result = result,
+            Message = GetMessage(user.LastFailedLoginReason),
+            Success = false,
+            Reason = user.LastFailedLoginReason
+        };
+    }
+    
+    public async Task<LoginResultModel> LoginRecoveryCodeAsync(LoginRecoveryCodeModel model)
+    {
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user == null)
+        {
+            throw new NotFoundException("UserNotFound");
+        }
+
+        var recoveryCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+
+        var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
+
+        if (result == SignInResult.Success)
+        {
+            return new LoginResultModel
+            {
+                Success = true
+            };
+        }
+
+        user.LastFailedLoginReason = FailedLoginReason.FailedRecoveryCode;
+        await _userManager.UpdateAsync(user);
+
+        return new LoginResultModel
+        {
+            Result = result,
+            Message = GetMessage(user.LastFailedLoginReason),
+            Success = false,
+            Reason = user.LastFailedLoginReason
+        };
+    }
+    
+    
+    private string? GetMessage(FailedLoginReason? failedLoginReason)
+    {
+        if (failedLoginReason == null)
+            return null;
+        
         return _stringLocalizer[GetMessageKey(failedLoginReason)];
     }
     private static string GetMessageKey(FailedLoginReason? failedLoginReason)
@@ -73,7 +142,7 @@ public class LoginService : ILoginService
             {
                 return $"errorMessage:{failedLoginReason}";
             }
-            case null:
+            
             case FailedLoginReason.PasswordMustBeChanged:
             case FailedLoginReason.EmailNotConfirmed:
             case FailedLoginReason.PhoneNotConfirmed:
@@ -82,9 +151,13 @@ public class LoginService : ILoginService
             {
                 throw new NotSupportedException("ValueNotSupportedHere");
             }
+            case null:
+            {
+                return "";
+            }
             default:
             {
-                return "errorMessage:no_access:error";
+                return "errorMessage.no_access.error";
             }
         }
     }
@@ -95,6 +168,8 @@ public class LoginService : ILoginService
 public interface ILoginService
 {
     Task<LoginResultModel> LoginAsync(LoginModel model);
+    Task<LoginResultModel> Login2FAAsync(Login2FAModel model);
+    Task<LoginResultModel> LoginRecoveryCodeAsync(LoginRecoveryCodeModel model);
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -106,6 +181,23 @@ public class LoginModel
 
     public bool RememberMe { get; set; }
 
+    public string? RecaptchaToken { get; set; } = null!;
+}
+
+public class Login2FAModel
+{
+    public string Code { get; set; } = null!;
+
+    public bool RememberMe { get; set; }
+    public bool RememberMachine { get; set; }
+    
+    public string? RecaptchaToken { get; set; } = null!;
+}
+
+public class LoginRecoveryCodeModel
+{
+    public string Code { get; set; } = null!;
+    
     public string? RecaptchaToken { get; set; } = null!;
 }
 

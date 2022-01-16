@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
+using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
 
@@ -15,14 +17,19 @@ public class MFAService : IMFAService
     private readonly NuagesUserManager _userManager;
     private readonly UrlEncoder _urlEncoder;
     private readonly IStringLocalizer _localizer;
+    private readonly NuagesIdentityOptions _options;
 
     private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
-    
-    public MFAService(NuagesUserManager userManager, UrlEncoder urlEncoder, IStringLocalizer localizer)
+    private const string LoginProvider = "[AspNetUserStore]";
+    private const string AuthenticatorKey = "AuthenticatorKey";
+    private const string RecoveryCodes = "RecoveryCodes";
+
+    public MFAService(NuagesUserManager userManager, UrlEncoder urlEncoder, IStringLocalizer localizer, IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _urlEncoder = urlEncoder;
         _localizer = localizer;
+        _options = options.Value;
     }
     public async Task<DisableMFAResultModel> DisableMFAAsync(string userId)
     {
@@ -34,11 +41,11 @@ public class MFAService : IMFAService
         
         var res = await _userManager.SetTwoFactorEnabledAsync(user, false);
 
-        var res2 = await _userManager.RemoveAuthenticationTokenAsync(user, "[AspNetUserStore]",
-            "AuthenticatorKey");
+        var res2 = await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
+            AuthenticatorKey);
         
-        var res3 = await _userManager.RemoveAuthenticationTokenAsync(user, "[AspNetUserStore]",
-            "RecoveryCodes");
+        var res3 = await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
+            RecoveryCodes);
         
         return new DisableMFAResultModel
         {
@@ -156,7 +163,7 @@ public class MFAService : IMFAService
         return string.Format(
             CultureInfo.InvariantCulture,
             AuthenticatorUriFormat,
-            _urlEncoder.Encode("Nuages"),
+            _urlEncoder.Encode(_options.Name),
             _urlEncoder.Encode(email),
             unformattedKey);
     }

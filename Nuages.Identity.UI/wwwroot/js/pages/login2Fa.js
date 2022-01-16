@@ -2,77 +2,69 @@ var App =
     {
         data() {
             return {
-                userNameOrEmail: "",
-                password: "",
+                code: "",            
                 errors: [],
-                remember: false,
+                remember: rememberMe,
+                rememberMachine: false,
                 action: "",
                 status : ""
             }
         },
         mounted() {
-            userNameOrEmail.focus();
+            code.focus();
             setTimeout(function()
             {
-                userNameOrEmail.value = "";
+                code.value = "";
             })
         },
         methods:
             {
                 doLogin: function (token) {
                     var self = this;
-                    var e = self.userNameOrEmail;
-                    var p = self.password;
+                    var c = self.code;
                     var r = self.remember;
-
-                    fetch("/api/account/login", {
+                    var m = self.rememberMachine;
+                    
+                    fetch("/api/account/login2fa", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                                userNameOrEmail: e,
-                                password: p,
-                                recaptchaToken: token,
-                                rememberMe: r
+                                code: c,
+                                rememberMe: r,
+                                rememberMachine: m,
+                                recaptchaToken: token
                             }
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
-                           
-                            
+                                
                             if (res.success) {
                                 window.location = returnUrl;
                             } else
                                 
                                 switch (res.reason) {
-                                    case "PasswordExpired":
-                                    case "PasswordMustBeChanged": 
-                                    {
-                                        window.location = "/account/resetpassword?expired=true";
-                                        break;
-                                    }
+                                    // case "PasswordExpired":
+                                    // case "PasswordMustBeChanged": 
+                                    // {
+                                    //     window.location = "/account/resetpassword?expired=true";
+                                    //     break;
+                                    // }
                                     // case "MfaRequired": {
                                     //     window.location = "/account/loginwith2fa";
                                     //     break;
                                     // }
-                                    case "EmailNotConfirmed": {
-                                        window.location = "/account/emailnotconfirmed";
-                                        break;
-                                    }
-                                    case "PhoneNotConfirmed": {
-                                        window.location = "/account/phonenotconfirmed";
-                                        break;
-                                    }                                   
+                                    // case "EmailNotConfirmed": {
+                                    //     window.location = "/account/emailnotconfirmed";
+                                    //     break;
+                                    // }
+                                    // case "PhoneNotConfirmed": {
+                                    //     window.location = "/account/phonenotconfirmed";
+                                    //     break;
+                                    // }                                   
                                     default: {
-                                        
-                                        if (res.result.requiresTwoFactor === true)
-                                        {
-                                            window.location = "/account/loginwith2fa?returnUrl=" + returnUrl;
-                                            break;
-                                        }
-                                        
                                         this.status = "";
                                         //NotWithinDateRange,
                                         //AccountNotConfirmed,
@@ -91,8 +83,7 @@ var App =
                     this.errors = [];
                     formLogin.classList.remove("was-validated");
 
-                    userNameOrEmail.setCustomValidity("");
-                    password.setCustomValidity("");
+                    code.setCustomValidity("");
 
                     var res = formLogin.checkValidity();
                     if (res) {
@@ -110,16 +101,8 @@ var App =
                         
                         formLogin.classList.add("was-validated");
 
-                        if (!userNameOrEmail.validity.valid) {
-                            if (userNameOrEmail.validity.valueMissing) {
-                                userNameOrEmail.setCustomValidity(emailRequiredMessage);
-                            } else {
-                                userNameOrEmail.setCustomValidity(emailInvalidMessage);
-                            }
-                        }
-
-                        if (!password.validity.valid) {
-                            password.setCustomValidity(passwordRequiredMessage);
+                        if (!code.validity.valid) {
+                            code.setCustomValidity(codeRequiredMessage);
                         }
 
                         var list = formLogin.querySelectorAll(":invalid");
@@ -131,16 +114,12 @@ var App =
                 }
             },
         watch: {
-            userNameOrEmail(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "userNameOrEmail"), 1);
+            code(value) {
+                this.errors.splice(this.errors.findIndex( a => a.id === "code"), 1);
                 this.action = "";
-                userNameOrEmail.setCustomValidity("");
+                code.setCustomValidity("");
             },
-            password(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
-                this.action = "";
-                password.setCustomValidity("");
-            }
+           
         }
     };
 

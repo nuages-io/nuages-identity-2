@@ -95,7 +95,7 @@ public class Startup
                     ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
                     ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
                     AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider,
-                    AuthenticatorIssuer =  "Microsoft.AspNetCore.Identity.UI"
+                    //AuthenticatorIssuer =  "Microsoft.AspNetCore.Identity.UI"
                 };
 
                 identity.Password = identityOptions.Password;

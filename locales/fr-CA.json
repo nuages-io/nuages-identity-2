@@ -15,6 +15,7 @@
 		"invalidEmail": "Le courriel est invalide",
 		"no_access": {
 			"AccountNotConfirmed": "Votre compte n'est pas confirmé",
+			"error": "Accès refusé",
 			"lockedOut": "Votre compte est vérouillé",
 			"notWithinDateRange": "Votre compte utilisateur est inactif en ce moment"
 		},
@@ -77,6 +78,13 @@
 		"rememberMe": "Se souvenir de moi",
 		"title": "Connection à votre compte"
 	},
+	"mfa": {
+		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification? Vous pouvez",
+		"appNotAvailableRecoveryCodes": "vous connecter avec une code de récupération.",
+		"instructions": "Votre compte est protégé par une application d'authentification. Entrée votgre code çi-bas.",
+		"rememberMachine": "Se rappeler de cette appareil",
+		"title": "Authentification à deux facteurs"
+	},
 	"or": "ou",
 	"passwordExpired": {
 		"instructions": "Votre mnot de passe est expiré ou doit être modifié. Choisissez un nouveau mot de passe.",
@@ -91,6 +99,10 @@
 		"RequiredLength": "Requiert au moins {0} caractères",
 		"RequiredUniqueChars": "Requiert au moins {0} caractères différents",
 		"title": "Exigences du mot de passe"
+	},
+	"recoveryCode": {
+		"instructions": "Vous avez demandé à vous connecter avec un code de récupération. Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
+		"title": "Vérification du code de récupération"
 	},
 	"register": {
 		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",

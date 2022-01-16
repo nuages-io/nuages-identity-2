@@ -24,4 +24,6 @@ public class NuagesIdentityOptions
 
    
     public string? Authority { get; set; }
+    
+    public string Name { get; set; } = string.Empty;
 }

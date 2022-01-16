@@ -1,0 +1,52 @@
+﻿@page
+@model LoginWithRecoveryCodeModel
+@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+
+@{
+    ViewData["Title"] = Localizer["recoveryCode.title"];
+}
+
+
+
+<div class="flex justify-center mt-6">
+    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+</div>
+
+
+<div v-show="status != 'sending'">
+    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
+        <div>
+            <span>@Localizer["recoveryCode.instructions"]</span>
+        </div>
+         <partial name="Shared/ErrorList"/>
+        <div>
+            <div class="mt-1">
+                <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="Code" required class="text-box" autocomplete=“off”>
+            </div>
+        </div>
+        
+        <div>
+            <button v-on:click.prevent="login" class="btn btn-primary" type="button">
+                @Localizer["login:connect"]
+            </button>
+        </div>
+    </form>
+ 
+</div>
+
+@section MainFooter
+{
+    <partial name="Shared/BackToLogin"/>
+}
+
+@section Scripts
+{
+    <script>
+       
+        var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
+        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+    </script>
+
+    <script src="/js/pages/loginRecoveryCode.js"></script>
+}
