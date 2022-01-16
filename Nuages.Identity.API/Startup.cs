@@ -9,7 +9,6 @@ using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Nuages.Identity.API.Services;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Localization;
@@ -129,7 +128,7 @@ public class Startup
                 
                 mongo.ConnectionString = connection;
 
-            }).AddNuagesIdentityApi(Configuration);
+            }).AddNuagesIdentity(Configuration);
         
         
         services.AddAuthentication(options =>

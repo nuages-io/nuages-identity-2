@@ -5,7 +5,7 @@ using Nuages.Identity.Services.AspNetIdentity;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace Nuages.Identity.UI.Services;
+namespace Nuages.Identity.Services;
 
 public class ResetPasswordService : IResetPasswordService
 {

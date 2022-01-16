@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Manage;
+using Nuages.Identity.Services.Manage.Admin;
+using Nuages.Identity.UI.Services;
 using Nuages.Sender.API.Sdk;
 
-namespace Nuages.Identity.UI.Services;
+namespace Nuages.Identity.Services;
 
 public static class NuagesIdentityConfigExtensions
 {
@@ -40,5 +42,13 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
+        
+        services.AddScoped<ISetPasswordService, SetPasswordService>();
+        services.AddScoped<IChangeEmailService, ChangeEmailService>();
+        services.AddScoped<IChangeUserNameService, ChangeUserNameService>();
+        services.AddScoped<IChangePasswordService, ChangePasswordService>();
+        services.AddScoped<IChangePhoneNumberService, ChangePhoneNumberService>();
+
+        services.AddScoped<IMFAService, MFAService>();
     }
 }

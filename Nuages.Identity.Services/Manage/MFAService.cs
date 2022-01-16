@@ -3,14 +3,12 @@
 using System.Globalization;
 using System.Text;
 using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
 
-namespace Nuages.Identity.API.Services;
+namespace Nuages.Identity.Services.Manage;
 
 public class MFAService : IMFAService
 {

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
-namespace Nuages.Identity.UI.Services;
+namespace Nuages.Identity.Services;
 
 public class ForgotPasswordService : IForgotPasswordService
 {

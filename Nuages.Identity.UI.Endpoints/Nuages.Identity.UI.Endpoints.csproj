@@ -17,7 +17,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
-      <ProjectReference Include="..\Nuages.Identity.UI.Services\Nuages.Identity.UI.Services.csproj" />
     </ItemGroup>
 
 </Project>

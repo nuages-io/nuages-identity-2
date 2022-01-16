@@ -4,7 +4,7 @@ using Nuages.Web.Exceptions;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace Nuages.Identity.API.Services.Admin;
+namespace Nuages.Identity.Services.Manage.Admin;
 
 public class SetPasswordService : ISetPasswordService
 {

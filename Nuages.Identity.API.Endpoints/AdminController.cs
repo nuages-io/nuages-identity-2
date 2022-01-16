@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Identity.API.Services;
-using Nuages.Identity.API.Services.Admin;
+using Nuages.Identity.Services.Manage;
+using Nuages.Identity.Services.Manage.Admin;
 
 namespace Nuages.Identity.API.Endpoints;
 

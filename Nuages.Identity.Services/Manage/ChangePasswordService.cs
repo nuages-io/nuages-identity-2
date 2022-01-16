@@ -1,9 +1,10 @@
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
+
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace Nuages.Identity.API.Services;
+namespace Nuages.Identity.Services.Manage;
 
 public class ChangePasswordService : IChangePasswordService
 {
