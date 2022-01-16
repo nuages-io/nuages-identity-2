@@ -8,6 +8,7 @@ using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Passwordless;
 using Nuages.Identity.UI.Endpoints.OpenIdDict;
 using Nuages.Identity.UI.Services;
 using Nuages.Localization;
@@ -104,7 +105,9 @@ public class Startup
             {
                 mongo.ConnectionString =
                     _configuration["Nuages:Mongo:ConnectionString"];
-            }).AddNuagesIdentity(_configuration);
+            })
+            .AddNuagesIdentity(_configuration)
+            .AddPasswordlessLoginProvider();
 
         services.AddMvc().AddJsonOptions(jsonOptions =>
         {

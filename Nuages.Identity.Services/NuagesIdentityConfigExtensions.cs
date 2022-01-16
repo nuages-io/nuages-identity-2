@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 using Nuages.Identity.Services.Manage.Admin;
+using Nuages.Identity.Services.Passwordless;
 using Nuages.Identity.UI.Services;
 using Nuages.Sender.API.Sdk;
 
@@ -16,7 +17,7 @@ public static class NuagesIdentityConfigExtensions
         AddNuagesIdentity(builder, null, configure);
     }
     
-    public static void AddNuagesIdentity(this IdentityBuilder builder, IConfiguration? configuration = null, Action<NuagesIdentityOptions>? configure = null)
+    public static IdentityBuilder AddNuagesIdentity(this IdentityBuilder builder, IConfiguration? configuration = null, Action<NuagesIdentityOptions>? configure = null)
     {
         var services = builder.Services;
         
@@ -50,5 +51,9 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IChangePhoneNumberService, ChangePhoneNumberService>();
 
         services.AddScoped<IMFAService, MFAService>();
+        services.AddScoped<IPasswordlessService, PasswordlessService>();
+        
+        services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
+        return builder;
     }
 }

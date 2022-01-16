@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Passwordless;
 using Nuages.Localization;
 using Nuages.Web;
 using OpenIddict.Abstractions;
@@ -128,7 +129,7 @@ public class Startup
                 
                 mongo.ConnectionString = connection;
 
-            }).AddNuagesIdentity(Configuration);
+            }).AddNuagesIdentity(Configuration).AddPasswordlessLoginProvider();
         
         
         services.AddAuthentication(options =>

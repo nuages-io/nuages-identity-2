@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Passwordless;
 using Nuages.Identity.UI.Services;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -17,7 +18,7 @@ namespace Nuages.Identity.UI.Endpoints;
 // ReSharper disable once UnusedType.Global
 [ApiController]
 [Route("api/[controller]")]
-public class AccountController
+public class AccountController : Controller
 {
     private readonly IRecaptchaValidator _recaptchaValidator;
     private readonly IStringLocalizer _stringLocalizer;
@@ -27,6 +28,7 @@ public class AccountController
     private readonly ISendEmailConfirmationService _sendEmailConfirmationService;
     private readonly IRegisterService _registerService;
     private readonly IRegisterExternalLoginService _registerExternalLoginService;
+    private readonly IPasswordlessService _passwordlessService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHostEnvironment _environment;
     private readonly IHttpContextAccessor _contextAccessor;
@@ -35,6 +37,7 @@ public class AccountController
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
         ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService, IRegisterExternalLoginService registerExternalLoginService,
+        IPasswordlessService passwordlessService,
         ILogger<AccountController> logger, IHostEnvironment environment, IHttpContextAccessor contextAccessor)
     {
         _recaptchaValidator = recaptchaValidator;
@@ -45,6 +48,7 @@ public class AccountController
         _sendEmailConfirmationService = sendEmailConfirmationService;
         _registerService = registerService;
         _registerExternalLoginService = registerExternalLoginService;
+        _passwordlessService = passwordlessService;
         _logger = logger;
         _environment = environment;
         _contextAccessor = contextAccessor;
@@ -343,4 +347,19 @@ public class AccountController
                 AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
+
+    [HttpGet("passwordless")]
+    [AllowAnonymous]
+    public virtual async Task<IActionResult> LoginPasswordLess(string token, string userId)
+    {
+        var res= await _passwordlessService.LoginPasswordLess(token, userId);
+
+        if (res.Success)
+            return Redirect("/");
+        else
+        {
+            return Unauthorized();
+        }
+    }
+    
 }

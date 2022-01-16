@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
+using Nuages.Identity.Services.Passwordless;
 using Nuages.Web;
 
 namespace Nuages.Identity.API.Endpoints;
@@ -26,6 +27,7 @@ public class ProfileController : Controller
     private readonly IChangeEmailService _changeEmailService;
     private readonly IChangePhoneNumberService _changePhoneNumberService;
     private readonly IChangeUserNameService _changeUserNameService;
+    private readonly IPasswordlessService _passwordlessService;
     private readonly IMFAService _mfaService;
 
     
@@ -35,6 +37,7 @@ public class ProfileController : Controller
         IChangeEmailService changeEmailService,
         IChangePhoneNumberService changePhoneNumberService,
         IChangeUserNameService changeUserNameService,
+        IPasswordlessService passwordlessService,
         IMFAService mfaService)
     {
         _contextAccessor = contextAccessor;
@@ -47,6 +50,7 @@ public class ProfileController : Controller
         _changeEmailService = changeEmailService;
         _changePhoneNumberService = changePhoneNumberService;
         _changeUserNameService = changeUserNameService;
+        _passwordlessService = passwordlessService;
         _mfaService = mfaService;
     }
     
@@ -228,6 +232,30 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetMfaUrlAsync");
 
             return await _mfaService.GetMFAUrlAsync(User.Sub()!);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpGet("passwordlessUrl")]
+    public async Task<GetPasswordlessUrlResultModel> GetPasswordlessUrlAsync()
+    {
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetPasswordlessUrlAsync");
+
+            return await _passwordlessService.GetPasswordlessUrl(User.Sub()!);
         }
         catch (Exception e)
         {
