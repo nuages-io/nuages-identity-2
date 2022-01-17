@@ -250,7 +250,7 @@ public class AccountController : Controller
     
     [HttpPost("forgotPassword")]
     [AllowAnonymous]
-    public async Task<ForgotPasswordResultModel> ForgotPasswordAsync([FromBody] ForgotPasswordModel model)
+    public async Task<ForgotPasswordResultModel> PasswordLoginAsync([FromBody] ForgotPasswordModel model)
     {
         try
         {
@@ -348,18 +348,37 @@ public class AccountController : Controller
         }
     }
 
-    [HttpGet("passwordless")]
+    [HttpPost("passwordlessLogin")]
     [AllowAnonymous]
-    public virtual async Task<IActionResult> LoginPasswordLess(string token, string userId)
+    public async Task<StartPasswordlessResultModel> PasswordLoginAsync([FromBody] StartPasswordlessModel model)
     {
-        var res= await _passwordlessService.LoginPasswordLess(token, userId);
-
-        if (res.Success)
-            return Redirect("/");
-        else
+        try
         {
-            return Unauthorized();
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.PasswordLoginAsync");
+            
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new StartPasswordlessResultModel
+                {
+                    Success = false
+                };
+        
+            return await _passwordlessService.StartPasswordless(model);
         }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
     }
     
 }
