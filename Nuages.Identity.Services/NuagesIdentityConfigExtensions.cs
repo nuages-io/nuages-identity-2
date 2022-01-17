@@ -52,6 +52,7 @@ public static class NuagesIdentityConfigExtensions
 
         services.AddScoped<IMFAService, MFAService>();
         services.AddScoped<IPasswordlessService, PasswordlessService>();
+        services.AddScoped<ISMSLoginService, SMSLoginService>();
         
         services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
         return builder;

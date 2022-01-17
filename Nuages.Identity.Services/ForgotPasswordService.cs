@@ -11,14 +11,14 @@ public class ForgotPasswordService : IForgotPasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IEmailSender _emailSender;
+    private readonly IMessageSender _messageSender;
     private readonly IWebHostEnvironment _env;
 
-    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IEmailSender emailSender, IWebHostEnvironment env)
+    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IMessageSender messageSender, IWebHostEnvironment env)
     {
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
-        _emailSender = emailSender;
+        _messageSender = messageSender;
         _env = env;
     }
     
@@ -45,7 +45,7 @@ public class ForgotPasswordService : IForgotPasswordService
         var url =
             $"{scheme}://{host}/Account/ResetPassword?code={code}";
 
-        await _emailSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
+        await _messageSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
         {
             { "Link", url }
         });

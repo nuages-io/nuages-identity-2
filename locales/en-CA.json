@@ -75,12 +75,14 @@
 			"userNameEmailPhone": "Username, email or phone #"
 		},
 		"password": "Password",
+		"passwordless": "Passwordless",
 		"rememberMe": "Remember me",
 		"title": "Log in to your account"
 	},
 	"loginWithSMS": {
 		"instructions": "Enter your email. A text message will be sent to you containing a verification code. This function must have been activated.",
 		"seeSMS": "Verify your text message for the code",
+		"send": "Send code",
 		"title": "SMS Log in"
 	},
 	"mfa": {
@@ -107,7 +109,8 @@
 		"title": "Password requirements"
 	},
 	"passwordless": {
-		"instructions": "You have requested to log in without a password. An email will be sent to you by email.",
+		"instructions": "You have requested to log in without a password. An log in link will be sent to you by email.",
+		"message": "Verification code is {0}",
 		"seeEmail": "Check your emails to find the passwordless connection link",
 		"send": "Send Link",
 		"title": "Passwordless login"

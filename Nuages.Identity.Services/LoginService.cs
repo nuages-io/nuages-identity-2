@@ -119,6 +119,38 @@ public class LoginService : ILoginService
         };
     }
     
+    public async Task<LoginResultModel> LoginSMSAsync(LoginSMSModel model)
+    {
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user == null)
+        {
+            throw new NotFoundException("UserNotFound");
+        }
+
+        var code = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+
+        var result = await _signInManager.TwoFactorSignInAsync("Phone", code, false, false);
+
+        if (result == SignInResult.Success)
+        {
+            return new LoginResultModel
+            {
+                Success = true
+            };
+        }
+
+        user.LastFailedLoginReason = FailedLoginReason.FailedSMS;
+        await _userManager.UpdateAsync(user);
+
+        return new LoginResultModel
+        {
+            Result = result,
+            Message = GetMessage(user.LastFailedLoginReason),
+            Success = false,
+            Reason = user.LastFailedLoginReason
+        };
+    }
+
     
     private string? GetMessage(FailedLoginReason? failedLoginReason)
     {
@@ -169,6 +201,7 @@ public interface ILoginService
     Task<LoginResultModel> LoginAsync(LoginModel model);
     Task<LoginResultModel> Login2FAAsync(Login2FAModel model);
     Task<LoginResultModel> LoginRecoveryCodeAsync(LoginRecoveryCodeModel model);
+    Task<LoginResultModel> LoginSMSAsync(LoginSMSModel model);
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -194,6 +227,13 @@ public class Login2FAModel
 }
 
 public class LoginRecoveryCodeModel
+{
+    public string Code { get; set; } = null!;
+    
+    public string? RecaptchaToken { get; set; } = null!;
+}
+
+public class LoginSMSModel
 {
     public string Code { get; set; } = null!;
     

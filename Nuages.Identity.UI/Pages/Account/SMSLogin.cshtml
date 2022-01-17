@@ -1,9 +1,9 @@
 ﻿@page
-@model LoginWithRecoveryCodeModel
+@model SMSLoginModel
 @inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
 
 @{
-    ViewData["Title"] = Localizer["recoveryCode.title"];
+    ViewData["Title"] = Localizer["loginSMS.title"];
 }
 
 
@@ -16,7 +16,7 @@
 <div v-show="status != 'sending'">
     <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
         <div>
-            <span>@Localizer["recoveryCode.instructions"]</span>
+            <span>@Localizer["loginSMS.instructions"]</span>
         </div>
          <partial name="Shared/ErrorList"/>
         <div>
@@ -27,7 +27,7 @@
         
         <div>
             <button v-on:click.prevent="login" class="btn btn-primary" >
-                @Localizer["login:connect"]
+                @Localizer["loginSMS:connect"]
             </button>
         </div>
     </form>
@@ -48,5 +48,5 @@
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
     </script>
 
-    <script src="/js/pages/loginWithRecoveryCode.js"></script>
+    <script src="/js/pages/SMSlogin.js"></script>
 }

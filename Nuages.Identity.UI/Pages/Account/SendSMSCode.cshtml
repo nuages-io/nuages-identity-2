@@ -21,9 +21,6 @@
             <span>@Localizer["loginWithSMS:instructions"]</span>
         </div>
         <partial name="Shared/ErrorList"/>
-        <div class="mt-4">
-            <input id="email" name="email" type="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box">
-        </div>
     </div>
     <div>
         <button v-on:click.prevent="loginSMS" class="btn btn-primary">
@@ -35,11 +32,10 @@
 @section Scripts
 {
     <script>
-        var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email"])";
-        var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
     </script>
-    <script src="/js/pages/loginSMS.js"></script>
+    <script src="/js/pages/sendSMSCode.js"></script>
 }
 
 @section MainFooter

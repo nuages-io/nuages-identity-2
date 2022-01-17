@@ -10,15 +10,16 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
     private readonly NuagesUserManager _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IWebHostEnvironment _env;
-    private readonly IEmailSender _emailSender;
+    private readonly IMessageSender _messageSender;
 
-    public SendEmailConfirmationService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env, IEmailSender emailSender)
+    public SendEmailConfirmationService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env, IMessageSender messageSender)
     {
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
         _env = env;
-        _emailSender = emailSender;
+        _messageSender = messageSender;
     }
+    
     public async Task<SendEmailConfirmationResultModel> SendEmailConfirmation(SendEmailConfirmationModel model)
     {
         if (string.IsNullOrEmpty(model.Email))
@@ -46,7 +47,7 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         var url =
             $"{scheme}://{host}/Account/ConfirmEmail?code={code}&userId={user.Id}";
         
-        await _emailSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
+        await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
         {
             { "Link", url }
         });

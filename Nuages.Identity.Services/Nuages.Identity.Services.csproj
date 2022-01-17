@@ -9,7 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCore.Identity.Mongo" Version="8.3.3" />
-        <PackageReference Include="Nuages.Sender.API.Sdk" Version="1.1.4" />
+        <PackageReference Include="Nuages.Sender.API.Sdk" Version="1.1.7" />
         <PackageReference Include="Nuages.Web" Version="1.2.5" />
     </ItemGroup>
 </Project>

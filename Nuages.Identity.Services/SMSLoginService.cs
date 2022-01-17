@@ -1,22 +1,43 @@
+using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
+// ReSharper disable TemplateIsNotCompileTimeConstantProblem
+// ReSharper disable InconsistentNaming
 
 namespace Nuages.Identity.Services;
 
 public class SMSLoginService : ISMSLoginService
 {
     private readonly NuagesUserManager _userManager;
-    private readonly IEmailSender _sender;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly IMessageSender _sender;
+    private readonly IStringLocalizer _localizer;
+    private readonly ILogger<SMSLoginService> _logger;
 
-    public SMSLoginService(NuagesUserManager userManager, IEmailSender sender)
+    public SMSLoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageSender sender, IStringLocalizer localizer, ILogger<SMSLoginService> logger)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
         _sender = sender;
+        _localizer = localizer;
+        _logger = logger;
+    }
+
+    public async Task<SendSMSCodeResultModel> SendCode()
+    {
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+
+        if (user == null)
+        {
+            throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+        }
+
+        return await SendCode(user.Id);
     }
     
-    public async Task<SendSMSCodeResultModel> SendCode(SendSMSCodeModel model)
+    public async Task<SendSMSCodeResultModel> SendCode(string userId)
     {
-        var user = await _userManager.FindByEmailAsync(model.Email);
+        var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
             return new SendSMSCodeResultModel
@@ -35,11 +56,11 @@ public class SMSLoginService : ISMSLoginService
 
         var code = await _userManager.GenerateTwoFactorTokenAsync(user, "Phone");
 
+        var message = _localizer["passwordless:message", code];
 
-        await _sender.SendEmailUsingTemplateAsync(user.Email, "SMS_Login", new Dictionary<string, string>
-        {
-            { "Code", code }
-        });
+        _logger.LogInformation($"Message : {message} No: {user.PhoneNumber}");
+        
+        await _sender.SendSmsAsync(user.PhoneNumber, message);
         
         return new SendSMSCodeResultModel
         {
@@ -50,7 +71,8 @@ public class SMSLoginService : ISMSLoginService
 
 public interface ISMSLoginService
 {
-    Task<SendSMSCodeResultModel> SendCode(SendSMSCodeModel model);
+    Task<SendSMSCodeResultModel> SendCode(string userId);
+    Task<SendSMSCodeResultModel> SendCode();
 }
 
 public class SendSMSCodeResultModel
@@ -61,5 +83,5 @@ public class SendSMSCodeResultModel
 
 public class SendSMSCodeModel
 {
-    public string Email { get; set; } = string.Empty;
+    public string? RecaptchaToken { get; set; }
 }

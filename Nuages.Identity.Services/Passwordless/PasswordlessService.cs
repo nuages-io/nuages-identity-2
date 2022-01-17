@@ -9,16 +9,16 @@ public class PasswordlessService : IPasswordlessService
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signinManager;
-    private readonly IEmailSender _emailSender;
+    private readonly IMessageSender _messageSender;
     private readonly NuagesIdentityOptions _options;
 
     public PasswordlessService(NuagesUserManager userManager, NuagesSignInManager signinManager, 
-        IEmailSender emailSender,
+        IMessageSender messageSender,
         IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _signinManager = signinManager;
-        _emailSender = emailSender;
+        _messageSender = messageSender;
         _options = options.Value;
     }
     
@@ -88,7 +88,7 @@ public class PasswordlessService : IPasswordlessService
 
         if (res.Success)
         {
-            await _emailSender.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
+            await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
             {
                 { "Link", res.Url }
             });

@@ -10,6 +10,7 @@ using Nuages.Identity.UI.Services;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable UnusedMember.Global
 
@@ -29,6 +30,7 @@ public class AccountController : Controller
     private readonly IRegisterService _registerService;
     private readonly IRegisterExternalLoginService _registerExternalLoginService;
     private readonly IPasswordlessService _passwordlessService;
+    private readonly ISMSLoginService _smsLoginService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHostEnvironment _environment;
     private readonly IHttpContextAccessor _contextAccessor;
@@ -37,7 +39,7 @@ public class AccountController : Controller
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
         ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService, IRegisterExternalLoginService registerExternalLoginService,
-        IPasswordlessService passwordlessService,
+        IPasswordlessService passwordlessService, ISMSLoginService smsLoginService,
         ILogger<AccountController> logger, IHostEnvironment environment, IHttpContextAccessor contextAccessor)
     {
         _recaptchaValidator = recaptchaValidator;
@@ -49,6 +51,7 @@ public class AccountController : Controller
         _registerService = registerService;
         _registerExternalLoginService = registerExternalLoginService;
         _passwordlessService = passwordlessService;
+        _smsLoginService = smsLoginService;
         _logger = logger;
         _environment = environment;
         _contextAccessor = contextAccessor;
@@ -383,7 +386,7 @@ public class AccountController : Controller
     
     [HttpPost("sendSMSCode")]
     [AllowAnonymous]
-    public async Task<StartPasswordlessResultModel> SendSMSCodeAsync([FromBody] StartPasswordlessModel model)
+    public async Task<SendSMSCodeResultModel> SendSMSCodeAsync([FromBody] SendSMSCodeModel model)
     {
         try
         {
@@ -391,12 +394,12 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendSMSCodeAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
-                return new StartPasswordlessResultModel
+                return new SendSMSCodeResultModel
                 {
                     Success = false
                 };
         
-            return await _passwordlessService.StartPasswordless(model);
+            return await _smsLoginService.SendCode();
         }
         catch (Exception e)
         {
@@ -413,5 +416,50 @@ public class AccountController : Controller
      
       
     }
+    
+    [HttpPost("loginSMS")]
+    [AllowAnonymous]
+    // ReSharper disable once InconsistentNaming
+    public async Task<ActionResult<LoginResultModel>> LoginSMSAsync([FromBody] LoginSMSModel model)
+    {
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginSMSAsync");
+
+            var id = Guid.NewGuid().ToString();
+            
+            _logger.LogInformation($"Initiate login SMS : ID = {id} {model.Code} RecaptchaToken = {model.RecaptchaToken}");
+        
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new LoginResultModel
+                {
+                    Success = false,
+                    Result = SignInResult.Failed,
+                    Reason = FailedLoginReason.RecaptchaError,
+                    Message = _stringLocalizer["errorMessage:RecaptchaError"]
+                };
+
+            var res= await _loginService.LoginSMSAsync(model);
+            
+            _logger.LogInformation($"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+
+            return res;
+
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+
     
 }

@@ -11,11 +11,11 @@ using Nuages.Identity.Services.AspNetIdentity;
 
 namespace Nuages.Identity.UI.Pages.Account
 {
-    public class LoginWithRecoveryCodeModel : PageModel
+    public class SMSLoginModel : PageModel
     {
         private readonly NuagesSignInManager _signInManager;
 
-        public LoginWithRecoveryCodeModel(
+        public SMSLoginModel(
             NuagesSignInManager signInManager)
         {
             _signInManager = signInManager;

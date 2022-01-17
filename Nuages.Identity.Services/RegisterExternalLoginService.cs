@@ -14,17 +14,17 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _stringLocalizer;
     private readonly IHttpContextAccessor _contextAccessor;
-    private readonly IEmailSender _emailSender;
+    private readonly IMessageSender _messageSender;
     private readonly IWebHostEnvironment _env;
 
     public RegisterExternalLoginService(NuagesSignInManager signInManager, NuagesUserManager userManager, 
-            IStringLocalizer stringLocalizer, IHttpContextAccessor contextAccessor, IEmailSender emailSender, IWebHostEnvironment env)
+            IStringLocalizer stringLocalizer, IHttpContextAccessor contextAccessor, IMessageSender messageSender, IWebHostEnvironment env)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _stringLocalizer = stringLocalizer;
         _contextAccessor = contextAccessor;
-        _emailSender = emailSender;
+        _messageSender = messageSender;
         _env = env;
     }
     
@@ -75,7 +75,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
                 var url =
                     $"{scheme}://{host}/Account/ConfirmEmail?code={code}&userId={user.Id}";
 
-                await _emailSender.SendEmailUsingTemplateAsync(email, "Confirm_Email", new Dictionary<string, string>
+                await _messageSender.SendEmailUsingTemplateAsync(email, "Confirm_Email", new Dictionary<string, string>
                 {
                     { "Link", url }
                 });
