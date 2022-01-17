@@ -88,12 +88,11 @@ public class PasswordlessService : IPasswordlessService
 
         if (res.Success)
         {
-            // await _emailSender.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
-            // {
-            //     { "Link", res.Url }
-            // });
+            await _emailSender.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
+            {
+                { "Link", res.Url }
+            });
 
-            //await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
             
             Console.WriteLine(res.Url);
         }

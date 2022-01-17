@@ -42,8 +42,13 @@
         </div>
     </form>
   <div class="text-sm mt-4">
-     @Localizer["mfa.appNotAvailable"]
-     <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableRecoveryCodes"]</a>.
+    
+      <span>@Localizer["mfa.appNotAvailable"]</span>
+     <ul class="list-disc mt-2 ml-4">  
+         <li><a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableRecoveryCodes"]</a></li>
+         <li><a id="recovery-code-login" asp-page="./LoginWithSMS" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableSMS"]</a></li>
+     </ul>
+     
 
  </div>
 </div>

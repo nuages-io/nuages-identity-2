@@ -58,12 +58,12 @@
             </div>
         </div>
         <div>
-            <button v-on:click.prevent="login" class="btn btn-primary" >
+            <button v-on:click.prevent="login" class="btn btn-primary">
                 @Localizer["login:connect"]
             </button>
         </div>
     </form>
-    
+
     @if (Model.ExternalLogins.Count > 0)
     {
         <div class="relative mt-6">
@@ -90,6 +90,18 @@
             </ul>
         </form>
     }
+
+    <div class="relative mt-6">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">
+                @Localizer["or"]
+            </span>
+        </div>
+    </div>
+    <a href="~/Account/LoginWithPasswordless" class="btn-simple mt-4"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
 </div>
 
 @section Scripts

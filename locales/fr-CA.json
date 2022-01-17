@@ -78,9 +78,15 @@
 		"rememberMe": "Se souvenir de moi",
 		"title": "Connection à votre compte"
 	},
+	"loginWithSMS": {
+		"instructions": "Entrez-votre courriel. Un message texte vous sera transmis contenant un code de vérification. Cette fonction doit avoir été activée.",
+		"seeSMS": "Voir vos message textes pour le code",
+		"title": "Connection avec Texto"
+	},
 	"mfa": {
-		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification? Vous pouvez",
-		"appNotAvailableRecoveryCodes": "vous connecter avec une code de récupération.",
+		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification?",
+		"appNotAvailableRecoveryCodes": "Connection avec une code de récupération.",
+		"appNotAvailableSMS": "Connection avec une clé Texto",
 		"instructions": "Votre compte est protégé par une application d'authentification. Entrée votgre code çi-bas.",
 		"rememberMachine": "Se rappeler de cette appareil",
 		"title": "Authentification à deux facteurs"

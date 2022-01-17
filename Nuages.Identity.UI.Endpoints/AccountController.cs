@@ -381,4 +381,37 @@ public class AccountController : Controller
       
     }
     
+    [HttpPost("sendSMSCode")]
+    [AllowAnonymous]
+    public async Task<StartPasswordlessResultModel> SendSMSCodeAsync([FromBody] StartPasswordlessModel model)
+    {
+        try
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendSMSCodeAsync");
+            
+            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+                return new StartPasswordlessResultModel
+                {
+                    Success = false
+                };
+        
+            return await _passwordlessService.StartPasswordless(model);
+        }
+        catch (Exception e)
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_environment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
+    }
+    
 }

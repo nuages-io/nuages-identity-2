@@ -78,9 +78,15 @@
 		"rememberMe": "Remember me",
 		"title": "Log in to your account"
 	},
+	"loginWithSMS": {
+		"instructions": "Enter your email. A text message will be sent to you containing a verification code. This function must have been activated.",
+		"seeSMS": "Verify your text message for the code",
+		"title": "SMS Log in"
+	},
 	"mfa": {
-		"appNotAvailable": "Don't have access to your authenticator device? You can",
-		"appNotAvailableRecoveryCodes": "log in with a recovery code.",
+		"appNotAvailable": "Don't have access to your authenticator device?",
+		"appNotAvailableRecoveryCodes": "Log in with a recovery code.",
+		"appNotAvailableSMS": "Log in with SMS key",
 		"instructions": "Your login is protected with an authenticator app. Enter your authenticator code below.",
 		"rememberMachine": "Remember this device",
 		"title": "Two-factor authentication"
