@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.Services.Email;
 
 public class SendEmailConfirmationService : ISendEmailConfirmationService
 {

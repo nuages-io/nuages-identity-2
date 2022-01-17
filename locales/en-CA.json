@@ -66,6 +66,7 @@
 	},
 	"login": {
 		"back": "Go to login page",
+		"cantRemember": "This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.",
 		"connect": "Connection",
 		"continueWith": "Or continue with",
 		"forgotPassword": "Forgot Your Password?",
@@ -80,7 +81,7 @@
 		"title": "Log in to your account"
 	},
 	"loginWithSMS": {
-		"instructions": "Enter your email. A text message will be sent to you containing a verification code. This function must have been activated.",
+		"instructions": "A text message will be sent to you containing a verification code. This function is only available if you have a verified phone number configured.",
 		"seeSMS": "Verify your text message for the code",
 		"send": "Send code",
 		"title": "SMS Log in"
@@ -109,14 +110,14 @@
 		"title": "Password requirements"
 	},
 	"passwordless": {
-		"instructions": "You have requested to log in without a password. An log in link will be sent to you by email.",
+		"instructions": "You have requested to log in without a password. A log in link will be sent to you by email.",
 		"message": "Verification code is {0}",
 		"seeEmail": "Check your emails to find the passwordless connection link",
 		"send": "Send Link",
 		"title": "Passwordless login"
 	},
 	"recoveryCode": {
-		"instructions": "You have requested to log in with a recovery code. This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.",
+		"instructions": "You have requested to log in with a recovery code.",
 		"title": "Recovery code verification"
 	},
 	"register": {
@@ -138,5 +139,6 @@
 		"success": "Your password has been successfully changed.",
 		"title": "Reset password"
 	},
+	"warning": "Warning!",
 	"yourEmail": "Your email"
 }

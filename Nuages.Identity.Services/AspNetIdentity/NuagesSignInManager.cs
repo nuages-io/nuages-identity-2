@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using Nuages.Identity.Services.Login;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 

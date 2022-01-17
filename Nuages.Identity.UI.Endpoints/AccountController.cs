@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Login;
+using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Passwordless;
-using Nuages.Identity.UI.Services;
+using Nuages.Identity.Services.Register;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem

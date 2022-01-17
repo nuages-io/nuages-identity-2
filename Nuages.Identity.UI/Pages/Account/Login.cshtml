@@ -76,32 +76,24 @@
                 </span>
             </div>
         </div>
-        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4">
-            <ul>
+        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4 space-x-2">
+           
                 @foreach (var provider in Model.ExternalLogins)
                 {
-                    <li>
+                   
                         <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
                             <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
                             @provider.DisplayName
                         </button>
-                    </li>
+                   
                 }
-            </ul>
+              
+                <a href="~/Account/LoginWithPasswordless" class="btn-simple mt-4"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
+               
         </form>
     }
 
-    <div class="relative mt-6">
-        <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-gray-300"></div>
-        </div>
-        <div class="relative flex justify-center text-sm">
-            <span class="px-2 bg-white text-gray-500">
-                @Localizer["or"]
-            </span>
-        </div>
-    </div>
-    <a href="~/Account/LoginWithPasswordless" class="btn-simple mt-4"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
+  
     
 </div>
 

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Login;
 
 namespace Nuages.Identity.UI.Pages.Account;
 

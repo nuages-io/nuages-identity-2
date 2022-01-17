@@ -3,7 +3,7 @@ using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.Services.Login;
 
 public class LoginService : ILoginService
 {

@@ -1,10 +1,11 @@
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
+
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 // ReSharper disable InconsistentNaming
 
-namespace Nuages.Identity.Services;
+namespace Nuages.Identity.Services.Login;
 
 public class SMSLoginService : ISMSLoginService
 {

@@ -1,6 +1,7 @@
 using AspNetCore.Identity.Mongo.Model;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Nuages.Identity.Services.Login;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 

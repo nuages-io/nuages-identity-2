@@ -66,6 +66,7 @@
 	},
 	"login": {
 		"back": "Aller à la page de connexion",
+		"cantRemember": "Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
 		"connect": "Connection",
 		"continueWith": "Ou conitnuer avec",
 		"forgotPassword": "Mot de passe oublié?",
@@ -80,7 +81,7 @@
 		"title": "Connection à votre compte"
 	},
 	"loginWithSMS": {
-		"instructions": "Entrez-votre courriel. Un message texte vous sera transmis contenant un code de vérification. Cette fonction doit avoir été activée.",
+		"instructions": "Un message texte vous sera transmis contenant un code de vérification. Cette fonction est disponible seulement si un no. de téléphone a été vérifié.",
 		"seeSMS": "Voir vos message textes pour le code",
 		"send": "Envoyer le code",
 		"title": "Connection avec Texto"
@@ -109,14 +110,14 @@
 		"title": "Exigences du mot de passe"
 	},
 	"passwordless": {
-		"instructions": "Vous avez demandé de vous connecter sans mot de passe. Un lien de connection vous sera transmis pr courriel.",
+		"instructions": "Vous avez demandé de vous connecter sans mot de passe. Un lien de connection vous sera transmis par courriel.",
 		"message": "Le code de vérification est {0}",
 		"seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",
 		"send": "Envoyer le lien",
 		"title": "Connection sans mot de passe"
 	},
 	"recoveryCode": {
-		"instructions": "Vous avez demandé à vous connecter avec un code de récupération. Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
+		"instructions": "Vous avez demandé à vous connecter avec un code de récupération.",
 		"title": "Vérification du code de récupération"
 	},
 	"register": {
@@ -138,5 +139,6 @@
 		"success": "Votre mot de passe a été changé avec succès.",
 		"title": "Ré-initialisation du mot de passe"
 	},
+	"warning": "Attention!",
 	"yourEmail": "Votre courriel"
 }
