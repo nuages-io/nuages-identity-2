@@ -100,6 +100,12 @@
 		"RequiredUniqueChars": "Requires at least {0} different characters",
 		"title": "Password requirements"
 	},
+	"passwordless": {
+		"instructions": "You have requested to log in without a password. An email will be sent to you by email.",
+		"seeEmail": "Check your emails to find the passwordless connection link",
+		"send": "Send Link",
+		"title": "Passwordless login"
+	},
 	"recoveryCode": {
 		"instructions": "You have requested to log in with a recovery code. This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.",
 		"title": "Recovery code verification"

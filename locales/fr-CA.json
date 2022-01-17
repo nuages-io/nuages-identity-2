@@ -100,6 +100,12 @@
 		"RequiredUniqueChars": "Requiert au moins {0} caractères différents",
 		"title": "Exigences du mot de passe"
 	},
+	"passwordless": {
+		"instructions": "Vous avez demandé de vous connecter sans mot de passe. Un courriel vous sera transmis pr courriel.",
+		"seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",
+		"send": "Envoyer le lien",
+		"title": "Connection sans mot de passe"
+	},
 	"recoveryCode": {
 		"instructions": "Vous avez demandé à vous connecter avec un code de récupération. Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
 		"title": "Vérification du code de récupération"
