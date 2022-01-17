@@ -92,6 +92,8 @@ public class PasswordlessService : IPasswordlessService
             // {
             //     { "Link", res.Url }
             // });
+
+            //await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
             
             Console.WriteLine(res.Url);
         }

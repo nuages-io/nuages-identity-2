@@ -131,9 +131,11 @@ public class Startup
                 googleOptions.ClientSecret = _configuration["Nuages:UI:ExternalLogin:Google:ClientSecret"];
             });
 
-        var openIdDictOptions = _configuration.GetSection("Nuages:OpenIdDict").Get<OpenIdDictOptions>();
+       // var openIdDictOptions = _configuration.GetSection("Nuages:OpenIdDict").Get<OpenIdDictOptions>();
             
-        services.AddNuagesOpenIdDict(openIdDictOptions);
+        services.AddNuagesOpenIdDict(_configuration, (configure) => {
+            
+        });
 
         services.AddHealthChecks();
         
