@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
-using Nuages.Identity.Services.Passwordless;
 using Nuages.Web;
 
 namespace Nuages.Identity.API.Endpoints;

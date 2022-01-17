@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.Identity.Services.Passwordless;
+using Nuages.Identity.Services.Login.Passwordless;
 
 namespace Nuages.Identity.UI.Pages.Account;
 

@@ -3,7 +3,7 @@ using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 using Nuages.Web.Exceptions;
 
-namespace Nuages.Identity.Services.Passwordless;
+namespace Nuages.Identity.Services.Login.Passwordless;
 
 public class PasswordlessService : IPasswordlessService
 {

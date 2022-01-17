@@ -8,7 +8,7 @@ using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Passwordless;
+using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.UI.Endpoints.OpenIdDict;
 using Nuages.Localization;
 using OpenIddict.Abstractions;

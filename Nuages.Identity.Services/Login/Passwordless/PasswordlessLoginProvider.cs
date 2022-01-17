@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.Identity.Services.Passwordless;
+namespace Nuages.Identity.Services.Login.Passwordless;
 
 public class PasswordlessLoginProvider<TUser> : TotpSecurityStampBasedTokenProvider<TUser>
     where TUser : class
