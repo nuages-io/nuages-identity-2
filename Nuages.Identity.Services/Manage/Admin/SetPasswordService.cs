@@ -24,9 +24,9 @@ public class SetPasswordService : ISetPasswordService
         
         if (model.Password != model.PasswordConfirmation)
         {
-            return new SetPasswordResultModel()
+            return new SetPasswordResultModel
             {
-                Errors = new List<string>()
+                Errors = new List<string>
                 {
                    _localizer["resetPassword.passwordConfirmDoesNotMatch"]
                 }

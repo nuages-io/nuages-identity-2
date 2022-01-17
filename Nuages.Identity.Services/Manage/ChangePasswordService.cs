@@ -26,9 +26,9 @@ public class ChangePasswordService : IChangePasswordService
 
         if (model.NewPassword != model.NewPasswordConfirm)
         {
-            return new ChangePasswordResultModel()
+            return new ChangePasswordResultModel
             {
-                Errors = new List<string>()
+                Errors = new List<string>
                 {
                     _localizer["resetPassword.passwordConfirmDoesNotMatch"]
                 }

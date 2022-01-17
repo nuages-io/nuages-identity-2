@@ -30,7 +30,7 @@ public class SMSLoginService : ISMSLoginService
 
         if (user == null)
         {
-            throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+            throw new InvalidOperationException("Unable to load two-factor authentication user.");
         }
 
         return await SendCode(user.Id);
@@ -72,6 +72,7 @@ public class SMSLoginService : ISMSLoginService
 
 public interface ISMSLoginService
 {
+    // ReSharper disable once UnusedMemberInSuper.Global
     Task<SendSMSCodeResultModel> SendCode(string userId);
     Task<SendSMSCodeResultModel> SendCode();
 }

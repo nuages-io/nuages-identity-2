@@ -13,5 +13,5 @@ public enum FailedLoginReason
     UserNameOrPasswordInvalid,
     FailedRecoveryCode,
     FailedMfa,
-    FailedSMS
+    FailedSms
 }

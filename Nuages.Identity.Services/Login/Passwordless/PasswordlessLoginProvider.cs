@@ -11,7 +11,7 @@ public class PasswordlessLoginProvider<TUser> : TotpSecurityStampBasedTokenProvi
     }
 
     //We need to override this method as well.
-    public async override Task<string> GetUserModifierAsync(string purpose, UserManager<TUser> manager, TUser user)
+    public override async Task<string> GetUserModifierAsync(string purpose, UserManager<TUser> manager, TUser user)
     {
         var userId = await manager.GetUserIdAsync(user);
 

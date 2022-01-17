@@ -21,63 +21,46 @@
 
 <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formRegister" v-if="status == ''">
 
-    <div>
-        <span>@Localizer["register:instructions"]</span>
-    </div>
+    <span>@Localizer["register:instructions"]</span>
     <partial name="Shared/ErrorList"/>
-    <div class="mt-1">
-        <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box" type="email">
-    </div>
-
-    <div class="mt-1">
-        <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
-    </div>
-
-    <div class="mt-1">
-        <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
-    </div>
-
-    <div class="mt-1">
-        <button v-on:click.prevent="register" class="btn btn-primary">
-            @Localizer["register:button"]
-        </button>
-    </div>
-    <div class="mt-1">
-        <partial name="Shared/PasswordRequirements"/>
-    </div>
-
-
+    <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box" type="email">
+    <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+    <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
+    <button v-on:click.prevent="register" class="btn btn-primary">
+        @Localizer["register:button"]
+    </button>
+    <partial name="Shared/PasswordRequirements"/>
 </form>
- 
-    @if (Model.ExternalLogins.Count > 0)
-    {
-        <div class="relative mt-6">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-300"></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="px-2 bg-white text-gray-500">
-                    @Localizer["register:continueWith"]
-                </span>
-            </div>
+
+@if (Model.ExternalLogins.Count > 0)
+{
+    <div class="relative mt-6">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
         </div>
-        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4">
-            <ul>
+        <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500">
+                @Localizer["register:continueWith"]
+            </span>
+        </div>
+    </div>
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4">
+        <ul>
 
-                @foreach (var provider in Model.ExternalLogins)
-                {
-                    <li>
-                        <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
-                            <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
-                            @provider.DisplayName
-                        </button>
-                    </li>
-                }
+            @foreach (var provider in Model.ExternalLogins)
+            {
+                <li>
+                    <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
+                        <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
+                        @provider.DisplayName
+                    </button>
+                </li>
+            }
 
-            </ul>
-        </form>
-    }
-   
+        </ul>
+    </form>
+}
+
 @section Scripts
 {
     <script>

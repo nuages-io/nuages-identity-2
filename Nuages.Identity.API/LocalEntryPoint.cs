@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.API;

@@ -29,21 +29,11 @@
 </div>
 
 <div v-show="status != 'sending'">
-    <partial name="Shared/ErrorList"/>
-</div>
-
-<div v-show="status != 'sending'">
     <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
-        <div>
-            <div class="mt-1">
-                <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>
-            </div>
-        </div>
-        <div>
-            <div class="mt-1">
-                <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
-            </div>
-        </div>
+        <partial name="Shared/ErrorList"/>
+        <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>
+        <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+                
         <div class="flex items-center justify-between">
             <div class="flex items-center">
                 <input id="remember-me" name="remember-me" v-model="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
@@ -57,11 +47,9 @@
                 </a>
             </div>
         </div>
-        <div>
-            <button v-on:click.prevent="login" class="btn btn-primary">
-                @Localizer["login:connect"]
-            </button>
-        </div>
+        <button v-on:click.prevent="login" class="btn btn-primary">
+            @Localizer["login:connect"]
+        </button>
     </form>
 
     @if (Model.ExternalLogins.Count > 0)
@@ -77,24 +65,16 @@
             </div>
         </div>
         <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4 space-x-2">
-           
-                @foreach (var provider in Model.ExternalLogins)
-                {
-                   
-                        <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
-                            <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
-                            @provider.DisplayName
-                        </button>
-                   
-                }
-              
-                <a href="~/Account/LoginWithPasswordless" class="btn-simple mt-4"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
-               
+            @foreach (var provider in Model.ExternalLogins)
+            {
+                <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
+                    <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
+                    @provider.DisplayName
+                </button>
+            }
+            <a href="~/Account/LoginWithPasswordless" class="btn-simple mt-4"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
         </form>
     }
-
-  
-    
 </div>
 
 @section Scripts

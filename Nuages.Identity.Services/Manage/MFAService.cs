@@ -39,10 +39,10 @@ public class MFAService : IMFAService
         
         var res = await _userManager.SetTwoFactorEnabledAsync(user, false);
 
-        var res2 = await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
+        await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
             AuthenticatorKey);
         
-        var res3 = await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
+        await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
             RecoveryCodes);
         
         return new DisableMFAResultModel

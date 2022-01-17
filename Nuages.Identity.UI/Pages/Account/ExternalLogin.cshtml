@@ -22,27 +22,16 @@
 @if (string.IsNullOrEmpty(Model.ErrorMessage))
 {
     <form id="formExternalLogin" class="space-y-4 mt-4" method="POST" v-on:submit.prevent="externalLogin" v-if="status == ''">
-        <div>
-            <span class="mt-4"> @Localizer["externalLogin:instructions"]</span> <strong>@Model.ProviderDisplayName.</strong>
-        </div>
-        <div>
-            <span class="mt-2"> @Localizer["externalLogin:instructions2"]</span>
-        </div>
-  
-
+        <span> @Localizer["externalLogin:instructions"]</span> <strong>@Model.ProviderDisplayName.</strong>
+        <span class="mt-2"> @Localizer["externalLogin:instructions2"]</span>
         <input id="email" name="email" type="hidden" autofocus="" v-model="email" placeholder="@Localizer["email"]" required class="text-box">
-
-        <div>
-            <button v-on:click.prevent="externalLogin" class="btn btn-primary">@Localizer["externalLogin:button"]</button>
-        </div>
-   
+        <button v-on:click.prevent="externalLogin" class="btn btn-primary">@Localizer["externalLogin:button"]</button>
     </form> 
 }
 else
 {      
     <ul class="text-red-800 mb-3">
-        <li class="flex " >
-
+        <li class="flex">
             <i class="fas fa-exclamation-circle text-red-700 hover:text-red-700 mt-1 mb-2"></i>
             <div class="ml-2 mr-2 mb-2">
                @Model.ErrorMessage
@@ -50,8 +39,6 @@ else
         </li>
     </ul>
 }
-
-
 
 @section Scripts
 {

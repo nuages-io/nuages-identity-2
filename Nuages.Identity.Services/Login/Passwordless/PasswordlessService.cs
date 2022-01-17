@@ -31,7 +31,7 @@ public class PasswordlessService : IPasswordlessService
         return await GetPasswordlessUrl(user);
     }
     
-     async Task<GetPasswordlessUrlResultModel> GetPasswordlessUrl(NuagesApplicationUser user)
+    private async Task<GetPasswordlessUrlResultModel> GetPasswordlessUrl(NuagesApplicationUser user)
     {
       
         var token = await _userManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
@@ -65,7 +65,7 @@ public class PasswordlessService : IPasswordlessService
 
         await _userManager.UpdateSecurityStampAsync(user);
 
-        await _signinManager.SignInAsync(user, isPersistent: false);
+        await _signinManager.SignInAsync(user, false);
 
         return new PasswordlessResultModel
         {
@@ -119,7 +119,7 @@ public interface IPasswordlessService
 
 public class StartPasswordlessModel
 {
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
     public string? RecaptchaToken { get; set; }
 }
 

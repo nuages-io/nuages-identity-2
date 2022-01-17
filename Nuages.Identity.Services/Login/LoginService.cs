@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
+// ReSharper disable InconsistentNaming
 
 namespace Nuages.Identity.Services.Login;
 
@@ -139,7 +140,7 @@ public class LoginService : ILoginService
             };
         }
 
-        user.LastFailedLoginReason = FailedLoginReason.FailedSMS;
+        user.LastFailedLoginReason = FailedLoginReason.FailedSms;
         await _userManager.UpdateAsync(user);
 
         return new LoginResultModel
@@ -154,6 +155,7 @@ public class LoginService : ILoginService
     
     private string? GetMessage(FailedLoginReason? failedLoginReason)
     {
+        // ReSharper disable once ConvertIfStatementToReturnStatement
         if (failedLoginReason == null)
             return null;
         
@@ -161,6 +163,7 @@ public class LoginService : ILoginService
     }
     private static string GetMessageKey(FailedLoginReason? failedLoginReason)
     {
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (failedLoginReason)
         {
             case FailedLoginReason.LockedOut:

@@ -24,5 +24,6 @@ public class CurrentBaseUrlProvider : ICurrentBaseUrlProvider
 
 public interface ICurrentBaseUrlProvider
 {
+    // ReSharper disable once UnusedMember.Global
     string GetUrl();
 }

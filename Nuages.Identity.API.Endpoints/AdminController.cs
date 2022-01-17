@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.Manage;
 using Nuages.Identity.Services.Manage.Admin;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.API.Endpoints;
 
