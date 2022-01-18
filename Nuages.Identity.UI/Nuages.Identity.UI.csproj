@@ -8,6 +8,11 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
+
+    <Target Name="Tailwind" BeforeTargets="Build">
+        <Exec Command="npm run css:build"/>
+    </Target>
+    
     <ItemGroup>
         <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="7.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.1" />

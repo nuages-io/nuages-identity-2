@@ -13,7 +13,7 @@ public class LoginWithSMS : PageModel
         _signInManager = signInManager;
     }
     
-    public async Task<IActionResult> OnGet(string returnUrl = null)
+    public async Task<IActionResult> OnGet(string? returnUrl = null)
     {
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 
@@ -22,10 +22,10 @@ public class LoginWithSMS : PageModel
             throw new InvalidOperationException($"Unable to load two-factor authentication user.");
         }
 
-        ReturnUrl = returnUrl;
+        ReturnUrl = returnUrl ?? "~/";
         
         return Page();
     }
 
-    public string ReturnUrl { get; set; }
+    public string? ReturnUrl { get; set; }
 }

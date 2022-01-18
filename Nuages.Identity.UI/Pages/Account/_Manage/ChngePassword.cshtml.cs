@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
 
-namespace Nuages.Identity.UI.Pages.Account.Manage.Components.ChangePassword
+namespace Nuages.Identity.UI.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
