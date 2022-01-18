@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Login;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Pages.Account;
 

@@ -3,13 +3,11 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 
-namespace Nuages.Identity.UI.Pages.Account.Manage
+namespace Nuages.Identity.UI.Pages.Account.Manage.Components.ChangePassword
 {
     public class ChangePasswordModel : PageModel
     {
