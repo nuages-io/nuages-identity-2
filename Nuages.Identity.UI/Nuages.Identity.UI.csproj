@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <Target Name="Tailwind" BeforeTargets="Build">
-        <Exec Command="npm run css:build"/>
+        <Exec Command="npm run css:build" />
     </Target>
     
     <ItemGroup>
@@ -43,6 +43,9 @@
         <Content Include="..\locales\fr-CA.json" CopyToOutputDirectory="Always">
             <Link>locales\fr-CA.json</Link>
         </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Account\Manage\Shared\_ViewStart.cshtml" />
     </ItemGroup>
    
 </Project>

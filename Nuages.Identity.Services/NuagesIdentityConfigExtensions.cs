@@ -58,6 +58,8 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<ISMSLoginService, SMSLoginService>();
         
         services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
+        
+        services.AddScoped<IAdminSetPasswordService, AdminSetPasswordService>();
         return builder;
     }
 }

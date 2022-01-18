@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
@@ -6,25 +7,25 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage.Admin;
 
-public class SetPasswordService : ISetPasswordService
+public class AdminSetPasswordService : IAdminSetPasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
 
-    public SetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public AdminSetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _localizer = localizer;
     }
     
-    public async Task<SetPasswordResultModel> SetPasswordAsync(SetPasswordModel model)
+    public async Task<AdminSetPasswordResultModel> AdminSetPasswordAsync(AdminSetPasswordModel model)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.UserId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Password);
         
         if (model.Password != model.PasswordConfirmation)
         {
-            return new SetPasswordResultModel
+            return new AdminSetPasswordResultModel
             {
                 Errors = new List<string>
                 {
@@ -38,9 +39,19 @@ public class SetPasswordService : ISetPasswordService
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        IdentityResult res;
+        
+        if (await _userManager.HasPasswordAsync(user))
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-        var res = await _userManager.ResetPasswordAsync(user, token, model.Password);
+            res = await _userManager.ResetPasswordAsync(user, token, model.Password);
+        }
+        else
+        {
+            res = await _userManager.AddPasswordAsync(user, model.Password);
+        }
+       
 
         if (res.Succeeded)
         {
@@ -52,7 +63,7 @@ public class SetPasswordService : ISetPasswordService
             //TODO
         }
         
-        return new SetPasswordResultModel
+        return new AdminSetPasswordResultModel
         {
             Success = res.Succeeded,
             Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
@@ -60,12 +71,12 @@ public class SetPasswordService : ISetPasswordService
     }
 }
 
-public interface ISetPasswordService
+public interface IAdminSetPasswordService
 {
-    Task<SetPasswordResultModel> SetPasswordAsync(SetPasswordModel model);
+    Task<AdminSetPasswordResultModel> AdminSetPasswordAsync(AdminSetPasswordModel model);
 }
 
-public class SetPasswordModel
+public class AdminSetPasswordModel
 {
     public string UserId { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
@@ -74,7 +85,7 @@ public class SetPasswordModel
     public bool SendByEmail { get; set; }
 }
 
-public class SetPasswordResultModel
+public class AdminSetPasswordResultModel
 {
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();

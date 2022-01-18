@@ -16,8 +16,20 @@
 
 <div class="min-h-screen bg-gray-100 flex flex-col justify-start sm:px-6 lg:px-8">
     <div class="mt-8 ">
-         <a href="~/account/logout">Logout</a>
-        @RenderBody()
+         
+       
+       <div class="flex flex-row">
+           <div class="basis-1/4">
+               
+               <ul class="list-disc">
+                   <li> <a href="~/account/logout">@Localizer["logout:title"]</a></li>
+                   <li> <a href="~/account/manage/changePassword">@Localizer["changePassword:title"]</a></li>
+               </ul>
+           </div>
+           <div class="basis-1/2">@RenderBody()</div>
+           <div class="basis-1/4"></div>
+       </div>
+        
     </div>
 </div>
 

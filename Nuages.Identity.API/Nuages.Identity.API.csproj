@@ -32,7 +32,7 @@
 
     <ItemGroup>
         <PackageReference Include="Nuages.Localization" Version="1.2.0" />
-        <PackageReference Include="Nuages.Web" Version="1.2.5" />
+        <PackageReference Include="Nuages.Web" Version="1.2.6" />
     </ItemGroup>
 
     <ItemGroup>

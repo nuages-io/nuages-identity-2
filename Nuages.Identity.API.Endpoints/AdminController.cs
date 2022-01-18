@@ -15,12 +15,12 @@ public class AdminController
 {
     private readonly IWebHostEnvironment _env;
     private readonly ILogger<AdminController> _logger;
-    private readonly ISetPasswordService _setPasswordService;
+    private readonly IAdminSetPasswordService _setPasswordService;
   
     private readonly IMFAService _mfaService;
 
     public AdminController(IWebHostEnvironment env, ILogger<AdminController> logger,
-        ISetPasswordService setPasswordService,
+        IAdminSetPasswordService setPasswordService,
        
         IMFAService mfaService)
     {
@@ -56,14 +56,14 @@ public class AdminController
     }
     
     [HttpPost("setPassword")]
-    public async Task<SetPasswordResultModel> SetPasswordAsync([FromBody] SetPasswordModel model)
+    public async Task<AdminSetPasswordResultModel> AdminSetPasswordAsync([FromBody] AdminSetPasswordModel model)
     {
         try
         {
             if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.SetPasswordAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPasswordAsync");
 
-            return await _setPasswordService.SetPasswordAsync(model);
+            return await _setPasswordService.AdminSetPasswordAsync(model);
         }
         catch (Exception e)
         {

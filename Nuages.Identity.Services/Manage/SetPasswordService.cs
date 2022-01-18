@@ -6,29 +6,28 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage;
 
-public class ChangePasswordService : IChangePasswordService
+public class SetPasswordService : ISetPasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _localizer;
 
-    public ChangePasswordService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer)
+    public SetPasswordService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _localizer = localizer;
     }
     
-    public async Task<ChangePasswordResultModel> ChangePasswordAsync(string userId, ChangePasswordModel model)
+    public async Task<SetPasswordResultModel> SetPasswordAsync(string userId, SetPasswordModel model)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.CurrentPassword);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPassword);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPasswordConfirm);
 
         if (model.NewPassword != model.NewPasswordConfirm)
         {
-            return new ChangePasswordResultModel
+            return new SetPasswordResultModel
             {
                 Errors = new List<string>
                 {
@@ -41,14 +40,14 @@ public class ChangePasswordService : IChangePasswordService
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        var res = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        var res = await _userManager.AddPasswordAsync(user, model.NewPassword);
 
         if (res.Succeeded)
         {
             await _signInManager.RefreshSignInAsync(user);
         }
         
-        return new ChangePasswordResultModel
+        return new SetPasswordResultModel
         {
             Success = res.Succeeded,
             Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
@@ -56,20 +55,19 @@ public class ChangePasswordService : IChangePasswordService
     }
 }
 
-public interface IChangePasswordService
+public interface ISetPasswordService
 {
-    Task<ChangePasswordResultModel> ChangePasswordAsync(string userid, ChangePasswordModel model);
+    Task<SetPasswordResultModel> SetPasswordAsync(string userid, SetPasswordModel model);
 }
 
-public class ChangePasswordModel
+public class SetPasswordModel
 {
     
     public string NewPassword { get; set; } = string.Empty;
-    public string CurrentPassword { get; set; } = string.Empty;
     public string NewPasswordConfirm { get; set; } = string.Empty;
 }
 
-public class ChangePasswordResultModel
+public class SetPasswordResultModel
 {
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();
