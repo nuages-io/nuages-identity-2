@@ -46,9 +46,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
-        
-        services.AddScoped<ISetPasswordService, SetPasswordService>();
-        services.AddScoped<IChangeEmailService, ChangeEmailService>();
+
         services.AddScoped<IChangeUserNameService, ChangeUserNameService>();
         services.AddScoped<IChangePasswordService, ChangePasswordService>();
         services.AddScoped<IChangePhoneNumberService, ChangePhoneNumberService>();
@@ -59,7 +57,8 @@ public static class NuagesIdentityConfigExtensions
         
         services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
         
-        services.AddScoped<IAdminSetPasswordService, AdminSetPasswordService>();
+        services.AddScoped<IAdminChangePasswordService, AdminChangePasswordService>();
+        services.AddScoped<IAdminChangeEmailService, AdminChangeEmailService>();
         return builder;
     }
 }

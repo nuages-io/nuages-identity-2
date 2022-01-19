@@ -7,25 +7,25 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage.Admin;
 
-public class AdminSetPasswordService : IAdminSetPasswordService
+public class AdminChangePasswordService : IAdminChangePasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
 
-    public AdminSetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public AdminChangePasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _localizer = localizer;
     }
     
-    public async Task<AdminSetPasswordResultModel> AdminSetPasswordAsync(AdminSetPasswordModel model)
+    public async Task<AdminChangePasswordResultModel> AdminSetPasswordAsync(AdminChangePasswordModel model)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.UserId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Password);
         
         if (model.Password != model.PasswordConfirmation)
         {
-            return new AdminSetPasswordResultModel
+            return new AdminChangePasswordResultModel
             {
                 Errors = new List<string>
                 {
@@ -33,7 +33,6 @@ public class AdminSetPasswordService : IAdminSetPasswordService
                 }
             };
         }
-
         
         var user = await _userManager.FindByIdAsync(model.UserId);
         if (user == null)
@@ -51,8 +50,7 @@ public class AdminSetPasswordService : IAdminSetPasswordService
         {
             res = await _userManager.AddPasswordAsync(user, model.Password);
         }
-       
-
+        
         if (res.Succeeded)
         {
             user.UserMustChangePassword = model.UserMustChangePassword;
@@ -63,7 +61,7 @@ public class AdminSetPasswordService : IAdminSetPasswordService
             //TODO
         }
         
-        return new AdminSetPasswordResultModel
+        return new AdminChangePasswordResultModel
         {
             Success = res.Succeeded,
             Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
@@ -71,12 +69,12 @@ public class AdminSetPasswordService : IAdminSetPasswordService
     }
 }
 
-public interface IAdminSetPasswordService
+public interface IAdminChangePasswordService
 {
-    Task<AdminSetPasswordResultModel> AdminSetPasswordAsync(AdminSetPasswordModel model);
+    Task<AdminChangePasswordResultModel> AdminSetPasswordAsync(AdminChangePasswordModel model);
 }
 
-public class AdminSetPasswordModel
+public class AdminChangePasswordModel
 {
     public string UserId { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
@@ -85,7 +83,7 @@ public class AdminSetPasswordModel
     public bool SendByEmail { get; set; }
 }
 
-public class AdminSetPasswordResultModel
+public class AdminChangePasswordResultModel
 {
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();

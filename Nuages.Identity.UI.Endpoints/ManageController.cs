@@ -14,15 +14,13 @@ namespace Nuages.Identity.UI.Endpoints;
 public class ManageController : Controller
 {
     private readonly IChangePasswordService _changePasswordService;
-    private readonly ISetPasswordService _setPasswordService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
 
-    public ManageController(IChangePasswordService changePasswordService, ISetPasswordService setPasswordService,
+    public ManageController(IChangePasswordService changePasswordService,
         IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger)
     {
         _changePasswordService = changePasswordService;
-        _setPasswordService = setPasswordService;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
     }
@@ -58,7 +56,7 @@ public class ManageController : Controller
     }
     
     [HttpPost("setPassword")]
-    public async Task<SetPasswordResultModel> SetPasswordAsync(SetPasswordModel model)
+    public async Task<ChangePasswordResultModel> SetPasswordAsync(ChangePasswordModel model)
     {
         try
         {
@@ -67,7 +65,7 @@ public class ManageController : Controller
 
             _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
-            var res = await _setPasswordService.SetPasswordAsync(User.Sub()!, model);
+            var res = await _changePasswordService.ChangePasswordAsync(User.Sub()!, model);
             
             _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
 

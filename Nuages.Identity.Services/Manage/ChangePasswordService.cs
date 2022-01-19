@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
@@ -41,8 +42,18 @@ public class ChangePasswordService : IChangePasswordService
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        var res = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        IdentityResult res;
 
+        if (await _userManager.HasPasswordAsync(user))
+        {
+            res = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+        }
+        else
+        {
+            res = await _userManager.AddPasswordAsync(user, model.NewPassword);
+        }
+        
         if (res.Succeeded)
         {
             await _signInManager.RefreshSignInAsync(user);
