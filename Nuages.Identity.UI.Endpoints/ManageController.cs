@@ -14,12 +14,15 @@ namespace Nuages.Identity.UI.Endpoints;
 public class ManageController : Controller
 {
     private readonly IChangePasswordService _changePasswordService;
+    private readonly ISetPasswordService _setPasswordService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
 
-    public ManageController(IChangePasswordService changePasswordService, IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger)
+    public ManageController(IChangePasswordService changePasswordService, ISetPasswordService setPasswordService,
+        IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger)
     {
         _changePasswordService = changePasswordService;
+        _setPasswordService = setPasswordService;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
     }
@@ -30,11 +33,41 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ChangePasswordAsync");
 
-            _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword}");
+            _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
             var res = await _changePasswordService.ChangePasswordAsync(User.Sub()!, model);
+            
+            _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
+
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpPost("setPassword")]
+    public async Task<SetPasswordResultModel> SetPasswordAsync(SetPasswordModel model)
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SetPasswordAsync");
+
+            _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
+
+            var res = await _setPasswordService.SetPasswordAsync(User.Sub()!, model);
             
             _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
 
