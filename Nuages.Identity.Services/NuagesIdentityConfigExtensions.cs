@@ -7,6 +7,7 @@ using Nuages.Identity.Services.Manage;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
 using Nuages.Sender.API.Sdk;
+using Nuages.Web.Utilities;
 
 namespace Nuages.Identity.Services;
 
@@ -38,7 +39,8 @@ public static class NuagesIdentityConfigExtensions
 
         services.AddScoped<ILookupProtector, LookupProtector>();
         services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
-        
+
+        services.AddScoped<IEmailValidator, EmailValidator>();
         
         services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
         

@@ -32,18 +32,59 @@ public class AdminController : Controller
     [HttpPost("setEmail")]
     public async Task<bool> SetEmailAsync()
     {
+        //     try
+        //     {
+        //         if (!_env.IsDevelopment())
+        //             AWSXRayRecorder.Instance.BeginSubsegment("ProfileController.ChangeEmailAsync");
+        //
+        //         return await _changeEmailService.ChangeEmailAsync(User.Sub()!, model.Email, null);
+        //     }
+        //     catch (Exception e)
+        //     {
+        //         if (!_env.IsDevelopment())
+        //             AWSXRayRecorder.Instance.AddException(e);
+        //
+        //         throw;
+        //     }
+        //     finally
+        //     {
+        //         if (!_env.IsDevelopment())
+        //             AWSXRayRecorder.Instance.EndSubsegment();
+        //     }
+        
         return await Task.FromResult(true);
     }
     
     [HttpPost("setUsername")]
     public async Task<bool> SetUserNameAsync()
     {
+        
         return await Task.FromResult(true);
     }
     
     [HttpPost("setPhoneNumber")]
     public async Task<bool> SetPhoneNumberAsync()
     {
+        // try
+        // {
+        //     if (!_env.IsDevelopment())
+        //         AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChengePhoneNumberAsync");
+        //
+        //     return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, null);
+        // }
+        // catch (Exception e)
+        // {
+        //     if (!_env.IsDevelopment())
+        //         AWSXRayRecorder.Instance.AddException(e);
+        //
+        //     throw;
+        // }
+        // finally
+        // {
+        //     if (!_env.IsDevelopment())
+        //         AWSXRayRecorder.Instance.EndSubsegment();
+        // }
+        
         return await Task.FromResult(true);
     }
     

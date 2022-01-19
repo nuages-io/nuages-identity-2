@@ -57,30 +57,6 @@ public class ProfileController : Controller
         _mfaService = mfaService;
     }
     
-    [HttpPost("changeEmail")]
-    public async Task<ChangeEmailResultModel> ChangeEmailAsync([FromBody] ChangeEmailModel model)
-    {
-        try
-        {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ProfileController.ChangeEmailAsync");
-
-            return await _changeEmailService.ChangeEmailAsync(User.Sub()!, model.Email, null);
-        }
-        catch (Exception e)
-        {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-
-            throw;
-        }
-        finally
-        {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
-        }
-    }
-    
     [HttpPost("changeUsername")]
     public async Task<ChangeUserNameResultModel> ChangeUserNameAsync([FromBody] ChangeUserNameModel model)
     {
@@ -105,29 +81,6 @@ public class ProfileController : Controller
         }
     }
     
-    [HttpPost("changePhoneNumber")]
-    public async Task<ChangePhoneNumberResultModel> ChengePhoneNumberAsync([FromBody] ChangePhoneNumberModel model)
-    {
-        try
-        {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChengePhoneNumberAsync");
-
-            return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, null);
-        }
-        catch (Exception e)
-        {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-
-            throw;
-        }
-        finally
-        {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
-        }
-    }
     
     [HttpPost("changePassword")]
     public async Task<ChangePasswordResultModel> ChangePassword([FromBody] ChangePasswordModel model)
