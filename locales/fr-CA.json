@@ -1,5 +1,12 @@
 {
 	"changeEmail": {
+		"currentEmail": "Courriel actuel",
+		"error": "Le changement de courriel a échoué.",
+		"instructions": "Entrez le nouveau courriel. Un message vous sera tramis par courriel à votre nouvelle adresse afin de compléter le changement.",
+		"newEmail": "Nouveau courriel",
+		"seeEmail": "Un courriel a été transmis à votre nouvelle adresse. Vous devez cliquer sur le lien inclus dans le courriel afin de compléter le changement.",
+		"submit": "Changer le courriel",
+		"success": "Le courriel a été changé avec succès.",
 		"title": "Changer votre courriel"
 	},
 	"changePassword": {

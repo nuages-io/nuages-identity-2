@@ -7,9 +7,21 @@
 
 @if (Model.Success)
 {
-    <span>ok</span>
+    <div class="flex justify-center mt-6">
+       
+        <div class="flex flex-col">
+            <i class="fa fa-check-circle text-green-700 fa-3x text-center"></i>
+            <span class="mt-4">@Localizer["changeEmail:success"]</span>
+        </div>
+    </div>
 }
 else
 {
-    <span>error</span>
+    <div class="flex justify-center mt-6">
+      
+        <div class="flex flex-col">
+            <i class="fa fa-circle-xmark text-red-700 fa-3x text-center"></i>
+            <span class="mt-4">@Localizer["changeEmail:error"]</span>
+        </div>
+    </div>
 }

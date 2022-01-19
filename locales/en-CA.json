@@ -1,5 +1,12 @@
 {
 	"changeEmail": {
+		"currentEmail": "Current email",
+		"error": "Email change failed.",
+		"instructions": "Enter the new email. A message will be emailed to your new address to complete the change.",
+		"newEmail": "New email",
+		"seeEmail": "An email has been sent to your new address. You must click on the link included in the email to complete the change.",
+		"submit": "Change email",
+		"success": "The email has been changed successfully.",
 		"title": "Change your email"
 	},
 	"changePassword": {
