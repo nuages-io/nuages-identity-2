@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Manage;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Pages.Account
 {
@@ -16,19 +18,18 @@ namespace Nuages.Identity.UI.Pages.Account
     {
         private readonly NuagesUserManager _userManager;
         private readonly NuagesSignInManager _signInManager;
+        private readonly IChangeEmailService _changeEmailService;
 
-        public ConfirmEmailChangeModel(NuagesUserManager userManager, NuagesSignInManager signInManager)
+        public ConfirmEmailChangeModel(NuagesUserManager userManager, NuagesSignInManager signInManager, IChangeEmailService changeEmailService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _changeEmailService = changeEmailService;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
+        
         [TempData]
-        public string StatusMessage { get; set; }
+        public bool Success { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
         {
@@ -44,24 +45,20 @@ namespace Nuages.Identity.UI.Pages.Account
             }
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            var result = await _userManager.ChangeEmailAsync(user, email, code);
-            if (!result.Succeeded)
+            email = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(email));
+            
+            var res = await _changeEmailService.ChangeEmailAsync(userId, email, code);
+            
+            if (!res.Success)
             {
-                StatusMessage = "Error changing email.";
-                return Page();
-            }
-
-            // In our UI email and user name are one and the same, so when we update the email
-            // we need to update the user name.
-            var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
-            if (!setUserNameResult.Succeeded)
-            {
-                StatusMessage = "Error changing user name.";
+                Success = false;
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Thank you for confirming your email change.";
+            
+            Success = true;
+            
             return Page();
         }
     }

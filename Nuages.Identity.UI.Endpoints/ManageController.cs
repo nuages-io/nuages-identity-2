@@ -1,10 +1,9 @@
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
-using Nuages.Web.Recaptcha;
 
 namespace Nuages.Identity.UI.Endpoints;
 
@@ -14,13 +13,20 @@ namespace Nuages.Identity.UI.Endpoints;
 public class ManageController : Controller
 {
     private readonly IChangePasswordService _changePasswordService;
+    private readonly NuagesUserManager _userManager;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly ISendEmailChangedConfirmationService _sendEmailChangedConfirmationService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
 
-    public ManageController(IChangePasswordService changePasswordService,
+    public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
+        ISendEmailChangedConfirmationService sendEmailChangedConfirmationService,
         IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger)
     {
         _changePasswordService = changePasswordService;
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _sendEmailChangedConfirmationService = sendEmailChangedConfirmationService;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
     }
@@ -39,6 +45,12 @@ public class ManageController : Controller
             
             _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
 
+            if (res.Success)
+            {
+                var user = await _userManager.FindByIdAsync(User.Sub()!);
+                await _signInManager.RefreshSignInAsync(user);
+            }
+            
             return res;
         }
         catch (Exception e)
@@ -68,6 +80,32 @@ public class ManageController : Controller
             var res = await _changePasswordService.AddPasswordAsync(User.Sub()!, model.NewPassword, model.NewPasswordConfirm);
             
             _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
+
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpPost("sendEmailChange")]
+    public async Task<SendEmailChangeResultModel> SendEmailChangeMessageAsync([FromBody] SendEmailChangeModel model)
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendEmailChangeMessageAsync");
+
+            var res = await _sendEmailChangedConfirmationService.SendEmailChangeConfirmation(User.Sub()!, model.Email);
 
             return res;
         }

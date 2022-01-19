@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -25,7 +26,7 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
         _options = options.Value;
     }
     
-    public async Task<SendEmailConfirmationResultModel> SendEmailConfirmation(string userId, string email)
+    public async Task<SendEmailChangeResultModel> SendEmailChangeConfirmation(string userId, string email)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(email);
 
@@ -34,14 +35,14 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
         {
             if (existing.Id == userId)
             {
-                return new SendEmailConfirmationResultModel
+                return new SendEmailChangeResultModel
                 {
                     Success = false,
                     Errors = new List<string>() { _localizer["changeEmail:isNotChanged"]}
                 };
             }
            
-            return new SendEmailConfirmationResultModel
+            return new SendEmailChangeResultModel
             {
                 Success = false,
                 Errors = new List<string>() { _localizer["changeEmail:emailAlreadyUsed"]}
@@ -52,23 +53,23 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            return new SendEmailConfirmationResultModel
+            return new SendEmailChangeResultModel
             {
                 Success = true // Fake success
             };
         }
        
-        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var code = await _userManager.GenerateChangeEmailTokenAsync(user, email);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         
-        var url = $"{_options.Authority}Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={email}";
+        var url = $"{_options.Authority}Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(email))}";
         
-        await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email_Changed", new Dictionary<string, string>
+        await _messageSender.SendEmailUsingTemplateAsync(email, "Confirm_Email_Change", new Dictionary<string, string>
         {
             { "Link", url }
         });
         
-        return new SendEmailConfirmationResultModel
+        return new SendEmailChangeResultModel
         {
             Success = true // Fake success
         };
@@ -77,16 +78,15 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
 
 public interface ISendEmailChangedConfirmationService
 {
-    Task<SendEmailConfirmationResultModel> SendEmailConfirmation(string userId, string email);
+    Task<SendEmailChangeResultModel> SendEmailChangeConfirmation(string userId, string email);
 }
 
-// ReSharper disable once ClassNeverInstantiated.Global
-public class SendEmailConfirmationChangedModel
+public class SendEmailChangeModel
 {
-    public string? Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 }
 
-public class SendEmailConfirmationResultModel
+public class SendEmailChangeResultModel
 {
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();

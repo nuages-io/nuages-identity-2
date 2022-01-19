@@ -60,10 +60,7 @@ public class ChangePasswordService : IChangePasswordService
             res = await _userManager.AddPasswordAsync(user, newPassword);
         }
         
-        if (res.Succeeded)
-        {
-            await _signInManager.RefreshSignInAsync(user);
-        }
+
         
         return new ChangePasswordResultModel
         {
