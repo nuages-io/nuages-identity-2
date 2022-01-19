@@ -2,9 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
@@ -17,25 +15,18 @@ namespace Nuages.Identity.API.Endpoints;
 [Authorize]
 public class ProfileController : Controller
 {
-    private readonly IHttpContextAccessor _contextAccessor;
-    private readonly NuagesUserManager _userManager;
-    private readonly RoleManager<NuagesApplicationRole> _roleManager;
 
     private readonly IWebHostEnvironment _env;
     private readonly ILogger<AdminController> _logger;
     private readonly IChangePasswordService _changePasswordService;
-    private readonly IChangeEmailService _changeEmailService;
     private readonly IChangePhoneNumberService _changePhoneNumberService;
     private readonly IChangeUserNameService _changeUserNameService;
     private readonly IPasswordlessService _passwordlessService;
     private readonly IMFAService _mfaService;
 
     
-    public ProfileController(IHttpContextAccessor contextAccessor, NuagesUserManager userManager, RoleManager<NuagesApplicationRole> roleManager,
-        IWebHostEnvironment env, ILogger<AdminController> logger,
+    public ProfileController(IWebHostEnvironment env, ILogger<AdminController> logger,
        
-        IChangeEmailService changeEmailService,
-        
         IChangePasswordService changePasswordService,
         IChangePhoneNumberService changePhoneNumberService,
         IChangeUserNameService changeUserNameService,
@@ -43,14 +34,9 @@ public class ProfileController : Controller
         IPasswordlessService passwordlessService,
         IMFAService mfaService)
     {
-        _contextAccessor = contextAccessor;
-        _userManager = userManager;
-        _roleManager = roleManager;
-        
         _env = env;
         _logger = logger;
         _changePasswordService = changePasswordService;
-        _changeEmailService = changeEmailService;
         _changePhoneNumberService = changePhoneNumberService;
         _changeUserNameService = changeUserNameService;
         _passwordlessService = passwordlessService;
@@ -218,6 +204,30 @@ public class ProfileController : Controller
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpPost("changePhoneNumber")]
+    public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync(string userId, string phoneNumber, string token)
+    {
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("ProfilenController.ChangePhoneNumberAsync");
+        
+            return await _changePhoneNumberService.ChangePhoneNumberAsync(userId, phoneNumber, token);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+        
             throw;
         }
         finally

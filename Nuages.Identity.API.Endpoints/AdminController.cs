@@ -16,76 +16,119 @@ public class AdminController : Controller
 {
     private readonly IWebHostEnvironment _env;
     private readonly IChangePasswordService _changePasswordService;
-  
-    public AdminController(IWebHostEnvironment env, IChangePasswordService changePasswordService)
+    private readonly IChangePhoneNumberService _changePhoneNumberService;
+    private readonly IChangeEmailService _changeEmailService;
+    private readonly IMFAService _mfaService;
+    private readonly IChangeUserNameService _changeUserNameService;
+
+    public AdminController(IWebHostEnvironment env, IChangePasswordService changePasswordService, 
+        IChangePhoneNumberService changePhoneNumberService, IChangeEmailService changeEmailService, IMFAService mfaService, IChangeUserNameService changeUserNameService)
     {
         _env = env;
         _changePasswordService = changePasswordService;
+        _changePhoneNumberService = changePhoneNumberService;
+        _changeEmailService = changeEmailService;
+        _mfaService = mfaService;
+        _changeUserNameService = changeUserNameService;
     }
     
     [HttpDelete("removeMfa")]
-    public async Task<bool> RemoveMfaAsync()
+    public async Task<DisableMFAResultModel> AdminRemoveMfaAsync(string userId)
     {
-        return await Task.FromResult(true);
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminRemoveMfaAsync");
+        
+            return await _mfaService.DisableMFAAsync(userId);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+        
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
     
     [HttpPost("setEmail")]
-    public async Task<bool> SetEmailAsync()
+    public async Task<ChangeEmailResultModel> AdminSetEmailAsync(string userId, string email)
     {
-        //     try
-        //     {
-        //         if (!_env.IsDevelopment())
-        //             AWSXRayRecorder.Instance.BeginSubsegment("ProfileController.ChangeEmailAsync");
-        //
-        //         return await _changeEmailService.ChangeEmailAsync(User.Sub()!, model.Email, null);
-        //     }
-        //     catch (Exception e)
-        //     {
-        //         if (!_env.IsDevelopment())
-        //             AWSXRayRecorder.Instance.AddException(e);
-        //
-        //         throw;
-        //     }
-        //     finally
-        //     {
-        //         if (!_env.IsDevelopment())
-        //             AWSXRayRecorder.Instance.EndSubsegment();
-        //     }
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetEmailAsync");
         
-        return await Task.FromResult(true);
+            return await _changeEmailService.ChangeEmailAsync(userId, email, null);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+        
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
     }
     
     [HttpPost("setUsername")]
-    public async Task<bool> SetUserNameAsync()
+    public async Task<ChangeUserNameResultModel> AdminSetUserNameAsync(string userId, string userName)
     {
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetUserNameAsync");
         
-        return await Task.FromResult(true);
+            return await _changeUserNameService.ChangeUserNameAsync(userId, userName);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+        
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+
     }
     
     [HttpPost("setPhoneNumber")]
-    public async Task<bool> SetPhoneNumberAsync()
+    public async Task<ChangePhoneNumberResultModel> AdminSetPhoneNumberAsync(string userId, string phoneNumber)
     {
-        // try
-        // {
-        //     if (!_env.IsDevelopment())
-        //         AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChengePhoneNumberAsync");
-        //
-        //     return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, null);
-        // }
-        // catch (Exception e)
-        // {
-        //     if (!_env.IsDevelopment())
-        //         AWSXRayRecorder.Instance.AddException(e);
-        //
-        //     throw;
-        // }
-        // finally
-        // {
-        //     if (!_env.IsDevelopment())
-        //         AWSXRayRecorder.Instance.EndSubsegment();
-        // }
+        try
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPhoneNumberAsync");
         
-        return await Task.FromResult(true);
+            return await _changePhoneNumberService.ChangePhoneNumberAsync(userId, phoneNumber, null);
+        }
+        catch (Exception e)
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+        
+            throw;
+        }
+        finally
+        {
+            if (!_env.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
     }
     
     [HttpPost("setPassword")]
