@@ -1,4 +1,24 @@
 {
+	"changeEmail": {
+		"title": "Change your email"
+	},
+	"changePassword": {
+		"currentPassword": "Current password",
+		"instructions": "Enter your current password and the new desired password.",
+		"password": "New password",
+		"passwordConfirm": "New password confirmation",
+		"submit": "Update",
+		"success": "Your password has been successfully changed",
+		"title": "Change your password"
+	},
+	"changePhoneNumber": {
+		"smsMessage": "Verification code is {0}",
+		"title": "Change your phone #"
+	},
+	"changeUsername": {
+		"mustNotBeAnEmail": "The new username cannot be an email. Use 'Change your email' to select a new email as the username.",
+		"title": "Change your username"
+	},
 	"confirmEmail": {
 		"error": "Error confirming your email.",
 		"success": "Thank you for confirming your email.",
@@ -86,6 +106,9 @@
 		"send": "Send code",
 		"title": "SMS Log in"
 	},
+	"logout": {
+		"title": "Log out"
+	},
 	"mfa": {
 		"appNotAvailable": "Don't have access to your authenticator device?",
 		"appNotAvailableRecoveryCodes": "Log in with a recovery code.",
@@ -115,6 +138,9 @@
 		"seeEmail": "Check your emails to find the passwordless connection link",
 		"send": "Send Link",
 		"title": "Passwordless login"
+	},
+	"profile": {
+		"title": "Profile"
 	},
 	"recoveryCode": {
 		"instructions": "You have requested to log in with a recovery code.",

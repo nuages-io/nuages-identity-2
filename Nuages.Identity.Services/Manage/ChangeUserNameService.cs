@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
+using Nuages.Web.Utilities;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -10,23 +11,54 @@ public class ChangeUserNameService : IChangeUserNameService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
+    private readonly IEmailValidator _emailValidator;
 
-    public ChangeUserNameService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public ChangeUserNameService(NuagesUserManager userManager, IStringLocalizer localizer, IEmailValidator emailValidator)
     {
         _userManager = userManager;
         _localizer = localizer;
+        _emailValidator = emailValidator;
     }
     
-    public async Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, ChangeUserNameModel model)
+    public async Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, string newUserName)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewUserName);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(newUserName);
+
+        if (_emailValidator.IsValidEmail(newUserName))
+        {
+            return new ChangeUserNameResultModel
+            {
+                Success = false,
+                Errors = new List<string>() { _localizer["changeUsername:mustNotBeAnEmail"] }
+            };
+        }
+
+        var existing = await _userManager.FindByNameAsync(newUserName);
+        if (existing != null)
+        {
+            if (existing.Id == userId)
+            {
+                return new ChangeUserNameResultModel
+                {
+                    Success = false,
+                    Errors = new List<string>() { _localizer["changeUsername:isNotChanged"]}
+                };
+            }
+           
+            return new ChangeUserNameResultModel
+            {
+                Success = false,
+                Errors = new List<string>() { _localizer["changeUsername:nameAlreadyUsed"]}
+
+            };
+        }
         
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        var res = await _userManager.SetUserNameAsync(user, model.NewUserName);
+        var res = await _userManager.SetUserNameAsync(user, newUserName);
         
         return new ChangeUserNameResultModel
         {
@@ -38,7 +70,7 @@ public class ChangeUserNameService : IChangeUserNameService
 
 public interface IChangeUserNameService
 {
-    Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, ChangeUserNameModel model);
+    Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, string newUserName);
 }
 
 public class ChangeUserNameModel

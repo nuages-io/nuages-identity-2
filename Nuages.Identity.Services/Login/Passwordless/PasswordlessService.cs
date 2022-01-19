@@ -38,7 +38,7 @@ public class PasswordlessService : IPasswordlessService
             "passwordless-auth");
 
         var baseUrl = _options.Authority;
-        if (!baseUrl!.EndsWith("/"))
+        if (!baseUrl.EndsWith("/"))
             baseUrl += "/";
         
         var url = $"{baseUrl}account/passwordlessLogin?token={token}&userId={user.Id}";

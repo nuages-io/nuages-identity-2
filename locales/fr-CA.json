@@ -1,4 +1,24 @@
 {
+	"changeEmail": {
+		"title": "Changer votre courriel"
+	},
+	"changePassword": {
+		"currentPassword": "Mot de passe actuel",
+		"instructions": "Entrez votre mot de passe actuel et le nouveau mot de passe désiré.",
+		"password": "Nouveau mot de passe",
+		"passwordConfirm": "Confirmation du nouveau mot de passe",
+		"submit": "Changer",
+		"success": "Votre mot de passe a été changé avec succès",
+		"title": "Changer votre mot de passe"
+	},
+	"changePhoneNumber": {
+		"smsMessage": "Le code de vérification est {0}",
+		"title": "Changer votre no. de téléphone"
+	},
+	"changeUsername": {
+		"mustNotBeAnEmail": "Le nouveau nom d'utilisateur ne peut être un courriel. Utilisez 'Changer votre courriel' afin de sélectionner un nouveau courriel en tant que nom d'utilisateur.",
+		"title": "Changer votre nom d'utilisateur"
+	},
 	"confirmEmail": {
 		"error": "Erreur lors de la confirmation de votre courriel.",
 		"success": "Merci d'avoir confirmé votre courriel.",
@@ -86,6 +106,9 @@
 		"send": "Envoyer le code",
 		"title": "Connection avec Texto"
 	},
+	"logout": {
+		"title": "Fermer la session"
+	},
 	"mfa": {
 		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification?",
 		"appNotAvailableRecoveryCodes": "Connection avec une code de récupération.",
@@ -115,6 +138,9 @@
 		"seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",
 		"send": "Envoyer le lien",
 		"title": "Connection sans mot de passe"
+	},
+	"profile": {
+		"title": "Profile"
 	},
 	"recoveryCode": {
 		"instructions": "Vous avez demandé à vous connecter avec un code de récupération.",

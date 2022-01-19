@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
@@ -12,14 +13,15 @@ public class ForgotPasswordService : IForgotPasswordService
     private readonly NuagesUserManager _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMessageSender _messageSender;
-    private readonly IWebHostEnvironment _env;
+    private readonly NuagesIdentityOptions _options;
 
-    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IMessageSender messageSender, IWebHostEnvironment env)
+    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IMessageSender messageSender,  IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
         _messageSender = messageSender;
-        _env = env;
+
+        _options = options.Value;
     }
     
     public async Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model)
@@ -32,26 +34,19 @@ public class ForgotPasswordService : IForgotPasswordService
                 Success = true // Fake success
             };
         }
-
        
         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        var scheme = _httpContextAccessor.HttpContext!.Request.Scheme;
-        var host = _httpContextAccessor.HttpContext.Request.Host.Host;
-        if (_env.IsDevelopment())
-            host += ":" + _httpContextAccessor.HttpContext!.Request.Host.Port;
-        
-        var url =
-            $"{scheme}://{host}/Account/ResetPassword?code={code}";
+       
+        var url = $"{_options.Authority}Account/ResetPassword?code={code}";
 
         await _messageSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
         {
             { "Link", url }
         });
 
-        await _httpContextAccessor.HttpContext.SignInAsync(NuagesIdentityConstants.ResetPasswordScheme, StorePasswordResetEmailInfo(user.Id, user.Email));
-
+        await _httpContextAccessor.HttpContext!.SignInAsync(NuagesIdentityConstants.ResetPasswordScheme, StorePasswordResetEmailInfo(user.Id, user.Email));
         
         return new ForgotPasswordResultModel
         {

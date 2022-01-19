@@ -22,15 +22,42 @@ public class ChangeEmailService : IChangeEmailService
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(email);
         
+        var existing = await _userManager.FindByEmailAsync(email);
+        if (existing != null)
+        {
+            if (existing.Id == userId)
+            {
+                return new ChangeEmailResultModel
+                {
+                    Success = false,
+                    Errors = new List<string>() { _localizer["changeEmail:isNotChanged"]}
+                };
+            }
+           
+            return new ChangeEmailResultModel
+            {
+                Success = false,
+                Errors = new List<string>() { _localizer["changeEmail:emailAlreadyUsed"]}
+
+            };
+        }
+        
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
+        bool changeUserName = user.NormalizedEmail == user.NormalizedUserName;
+        
         if (string.IsNullOrEmpty(token))
             token = await _userManager.GenerateChangeEmailTokenAsync(user, email);
-        
+
         var res = await _userManager.ChangeEmailAsync(user, email, token);
 
+        if (changeUserName)
+        {
+            res = await _userManager.SetUserNameAsync(user, email);
+        }
+        
         return new ChangeEmailResultModel
         {
             Success = res.Succeeded,

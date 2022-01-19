@@ -23,7 +23,7 @@ public class NuagesIdentityOptions
     public bool RequireConfirmedPhoneNumber { get; set; }
 
    
-    public string? Authority { get; set; }
+    public string Authority { get; set; } = string.Empty;
     
     public string Name { get; set; } = string.Empty;
 }

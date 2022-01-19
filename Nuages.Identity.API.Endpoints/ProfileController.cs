@@ -89,7 +89,7 @@ public class ProfileController : Controller
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChangeUserNameAsync");
 
-            return await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model);
+            return await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
         }
         catch (Exception e)
         {

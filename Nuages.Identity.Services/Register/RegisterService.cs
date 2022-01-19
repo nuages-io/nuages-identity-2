@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
@@ -12,18 +13,18 @@ public class RegisterService : IRegisterService
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _localizer;
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IWebHostEnvironment _env;
     private readonly IMessageSender _messageSender;
+    private readonly NuagesIdentityOptions _options;
 
-    public RegisterService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer, IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env, IMessageSender messageSender)
+    public RegisterService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer, 
+        IMessageSender messageSender, IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _localizer = localizer;
-        _httpContextAccessor = httpContextAccessor;
-        _env = env;
+     
         _messageSender = messageSender;
+        _options = options.Value;
     }
     
     public async Task<RegisterResultModel> Register(RegisterModel model)
@@ -61,13 +62,7 @@ public class RegisterService : IRegisterService
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            var scheme = _httpContextAccessor.HttpContext!.Request.Scheme;
-            var host = _httpContextAccessor.HttpContext.Request.Host.Host;
-            if (_env.IsDevelopment())
-                host += ":" + _httpContextAccessor.HttpContext!.Request.Host.Port;
-        
-            var url =
-                $"{scheme}://{host}/Account/ConfirmEmail?code={code}&userId={user.Id}";
+            var url = $"{_options.Authority}Account/ConfirmEmail?code={code}&userId={user.Id}";
 
             await _messageSender.SendEmailUsingTemplateAsync(model.Email, "Confirm_Email", new Dictionary<string, string>
             {

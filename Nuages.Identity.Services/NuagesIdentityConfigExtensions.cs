@@ -36,25 +36,33 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped(typeof(NuagesUserManager));
         services.AddScoped(typeof(NuagesSignInManager));
 
+        services.AddScoped<ILookupProtector, LookupProtector>();
+        services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
+        
+        
+        services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
+        
+        //Anonymous
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
         services.AddScoped<IResetPasswordService, ResetPasswordService>();
-        services.AddScoped<ILookupProtector, LookupProtector>();
-        services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
         services.AddScoped<ISendEmailConfirmationService, SendEmailConfirmationService>();
         services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
+        services.AddScoped<IPasswordlessService, PasswordlessService>();
+        services.AddScoped<ISMSLoginService, SMSLoginService>();
+        
+        //Manage
         services.AddScoped<IChangeEmailService, ChangeEmailService>();
         services.AddScoped<IChangeUserNameService, ChangeUserNameService>();
         services.AddScoped<IChangePasswordService, ChangePasswordService>();
         services.AddScoped<IChangePhoneNumberService, ChangePhoneNumberService>();
-
+        services.AddScoped<ISendSMSVerificationCode, SendSMSVerificationCode>();
+        services.AddScoped<ISendEmailChangedConfirmationService, SendEmailChangedConfirmationService>();
         services.AddScoped<IMFAService, MFAService>();
-        services.AddScoped<IPasswordlessService, PasswordlessService>();
-        services.AddScoped<ISMSLoginService, SMSLoginService>();
         
-        services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
+        
         
         
         return builder;

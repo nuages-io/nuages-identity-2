@@ -12,6 +12,9 @@ public class NuagesApplicationUser : MongoUser<string>
     public string? FirstName { get; set; }
     public string? UserAgreementVersion { get; set; }
     public string? Country { get; set; }
+    public string? Bio { get; set; }
+    public string? Url { get; set; }
+    
     
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }
