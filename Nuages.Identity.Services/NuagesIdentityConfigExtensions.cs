@@ -4,7 +4,6 @@ using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
-using Nuages.Identity.Services.Manage.Admin;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
 using Nuages.Sender.API.Sdk;
@@ -46,7 +45,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
-
+        services.AddScoped<IChangeEmailService, ChangeEmailService>();
         services.AddScoped<IChangeUserNameService, ChangeUserNameService>();
         services.AddScoped<IChangePasswordService, ChangePasswordService>();
         services.AddScoped<IChangePhoneNumberService, ChangePhoneNumberService>();
@@ -57,8 +56,7 @@ public static class NuagesIdentityConfigExtensions
         
         services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
         
-        services.AddScoped<IAdminChangePasswordService, AdminChangePasswordService>();
-        services.AddScoped<IAdminChangeEmailService, AdminChangeEmailService>();
+        
         return builder;
     }
 }

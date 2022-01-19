@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
-using Nuages.Identity.Services.Manage.Admin;
 using Nuages.Web;
 
 namespace Nuages.Identity.API.Endpoints;
@@ -25,7 +24,7 @@ public class ProfileController : Controller
     private readonly IWebHostEnvironment _env;
     private readonly ILogger<AdminController> _logger;
     private readonly IChangePasswordService _changePasswordService;
-    private readonly IAdminChangeEmailService _adminChangeEmailService;
+    private readonly IChangeEmailService _changeEmailService;
     private readonly IChangePhoneNumberService _changePhoneNumberService;
     private readonly IChangeUserNameService _changeUserNameService;
     private readonly IPasswordlessService _passwordlessService;
@@ -35,7 +34,7 @@ public class ProfileController : Controller
     public ProfileController(IHttpContextAccessor contextAccessor, NuagesUserManager userManager, RoleManager<NuagesApplicationRole> roleManager,
         IWebHostEnvironment env, ILogger<AdminController> logger,
        
-        IAdminChangeEmailService adminChangeEmailService,
+        IChangeEmailService changeEmailService,
         
         IChangePasswordService changePasswordService,
         IChangePhoneNumberService changePhoneNumberService,
@@ -51,7 +50,7 @@ public class ProfileController : Controller
         _env = env;
         _logger = logger;
         _changePasswordService = changePasswordService;
-        _adminChangeEmailService = adminChangeEmailService;
+        _changeEmailService = changeEmailService;
         _changePhoneNumberService = changePhoneNumberService;
         _changeUserNameService = changeUserNameService;
         _passwordlessService = passwordlessService;
@@ -59,14 +58,14 @@ public class ProfileController : Controller
     }
     
     [HttpPost("changeEmail")]
-    public async Task<AdminChangeEmailResultModel> ChangeEmailAsync([FromBody] AdminChangeEmailModel model)
+    public async Task<ChangeEmailResultModel> ChangeEmailAsync([FromBody] ChangeEmailModel model)
     {
         try
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("ProfileController.ChangeEmailAsync");
 
-            return await _adminChangeEmailService.ChangeEmailAsync(User.Sub()!, model);
+            return await _changeEmailService.ChangeEmailAsync(User.Sub()!, model.Email, null);
         }
         catch (Exception e)
         {
@@ -114,7 +113,7 @@ public class ProfileController : Controller
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChengePhoneNumberAsync");
 
-            return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model);
+            return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, null);
         }
         catch (Exception e)
         {
@@ -138,7 +137,7 @@ public class ProfileController : Controller
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("AdminController.SetPasswordAsync");
 
-            return await _changePasswordService.ChangePasswordAsync(User.Sub()!, model);
+            return await _changePasswordService.ChangePasswordAsync(User.Sub()!, model.CurrentPassword, model.NewPassword, model.NewPasswordConfirm);
         }
         catch (Exception e)
         {

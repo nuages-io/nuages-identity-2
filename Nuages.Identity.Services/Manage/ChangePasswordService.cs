@@ -19,15 +19,65 @@ public class ChangePasswordService : IChangePasswordService
         _signInManager = signInManager;
         _localizer = localizer;
     }
+
+    public async Task<ChangePasswordResultModel> AddPasswordAsync(string userid, string newPassword,
+        string newPasswordConfirmation)
+    {
+        return await ChangePasswordAsync(userid, "no_password", newPassword, newPasswordConfirmation);
+    }
     
-    public async Task<ChangePasswordResultModel> ChangePasswordAsync(string userId, ChangePasswordModel model)
+    public async Task<ChangePasswordResultModel> ChangePasswordAsync(string userid, string currentPassword, string newPassword,
+        string newPasswordConfirmation)
+    {
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userid);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(currentPassword);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(newPassword);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(newPasswordConfirmation);
+
+        if (newPassword != newPasswordConfirmation)
+        {
+            return new ChangePasswordResultModel
+            {
+                Errors = new List<string>
+                {
+                    _localizer["resetPassword.passwordConfirmDoesNotMatch"]
+                }
+            };
+        }
+        
+        var user = await _userManager.FindByIdAsync(userid);
+        if (user == null)
+            throw new NotFoundException("UserNotFound");
+
+        IdentityResult res;
+
+        if (await _userManager.HasPasswordAsync(user))
+        {
+            res = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+        else
+        {
+            res = await _userManager.AddPasswordAsync(user, newPassword);
+        }
+        
+        if (res.Succeeded)
+        {
+            await _signInManager.RefreshSignInAsync(user);
+        }
+        
+        return new ChangePasswordResultModel
+        {
+            Success = res.Succeeded,
+            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+        };
+    }
+    
+    public async Task<ChangePasswordResultModel> AdminChangePasswordAsync(string userId, string newPassword, string newPasswordConfirmation, bool mustChangePassword, bool sendByEmail, string? token)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.CurrentPassword);
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPassword);
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.NewPasswordConfirm);
-
-        if (model.NewPassword != model.NewPasswordConfirm)
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(newPassword);
+        
+        if (newPassword != newPasswordConfirmation)
         {
             return new ChangePasswordResultModel
             {
@@ -43,20 +93,27 @@ public class ChangePasswordService : IChangePasswordService
             throw new NotFoundException("UserNotFound");
 
         IdentityResult res;
-
+        
         if (await _userManager.HasPasswordAsync(user))
         {
-            res = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (string.IsNullOrEmpty(token))
+                token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
+            res = await _userManager.ResetPasswordAsync(user, token, newPassword);
         }
         else
         {
-            res = await _userManager.AddPasswordAsync(user, model.NewPassword);
+            res = await _userManager.AddPasswordAsync(user, newPassword);
         }
         
         if (res.Succeeded)
         {
-            await _signInManager.RefreshSignInAsync(user);
+            user.UserMustChangePassword = mustChangePassword;
+        }
+
+        if (sendByEmail)
+        {
+            //TODO
         }
         
         return new ChangePasswordResultModel
@@ -69,15 +126,25 @@ public class ChangePasswordService : IChangePasswordService
 
 public interface IChangePasswordService
 {
-    Task<ChangePasswordResultModel> ChangePasswordAsync(string userid, ChangePasswordModel model);
+    Task<ChangePasswordResultModel> AddPasswordAsync(string userid, string newPassword,
+        string newPasswordConfirmation);
+    
+    Task<ChangePasswordResultModel> ChangePasswordAsync(string userid, string currentPassword, string newPassword,
+        string newPasswordConfirmation);
+
+    Task<ChangePasswordResultModel> AdminChangePasswordAsync(string userId, string newPassword,
+        string newPasswordConfirmation, bool mustChangePassword, bool sendByEmail, string? token);
 }
 
 public class ChangePasswordModel
 {
+    public string CurrentPassword { get; set; } = string.Empty;
     
     public string NewPassword { get; set; } = string.Empty;
-    public string CurrentPassword { get; set; } = string.Empty;
     public string NewPasswordConfirm { get; set; } = string.Empty;
+    
+    public bool MustChangePassword { get; set; }
+    public bool SendByEmail { get; set; }
 }
 
 public class ChangePasswordResultModel

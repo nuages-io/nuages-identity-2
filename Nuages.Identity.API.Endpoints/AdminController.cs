@@ -3,7 +3,8 @@ using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.Manage;
-using Nuages.Identity.Services.Manage.Admin;
+using Nuages.Web;
+
 // ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.API.Endpoints;
@@ -11,24 +12,15 @@ namespace Nuages.Identity.API.Endpoints;
 [ExcludeFromCodeCoverage]
 [Authorize(Roles = "Admin")]
 [Route("api/admin")]
-public class AdminController
+public class AdminController : Controller
 {
     private readonly IWebHostEnvironment _env;
-    private readonly ILogger<AdminController> _logger;
-    private readonly IAdminChangePasswordService _changePasswordService;
+    private readonly IChangePasswordService _changePasswordService;
   
-    private readonly IMFAService _mfaService;
-
-    public AdminController(IWebHostEnvironment env, ILogger<AdminController> logger,
-        IAdminChangePasswordService changePasswordService,
-       
-        IMFAService mfaService)
+    public AdminController(IWebHostEnvironment env, IChangePasswordService changePasswordService)
     {
         _env = env;
-        _logger = logger;
         _changePasswordService = changePasswordService;
-      
-        _mfaService = mfaService;
     }
     
     [HttpDelete("removeMfa")]
@@ -56,14 +48,14 @@ public class AdminController
     }
     
     [HttpPost("setPassword")]
-    public async Task<AdminChangePasswordResultModel> AdminSetPasswordAsync([FromBody] AdminChangePasswordModel model)
+    public async Task<ChangePasswordResultModel> AdminSetPasswordAsync([FromBody] ChangePasswordModel model)
     {
         try
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPasswordAsync");
 
-            return await _changePasswordService.AdminSetPasswordAsync(model);
+            return await _changePasswordService.AdminChangePasswordAsync(User.Sub()!, model.NewPassword, model.NewPasswordConfirm, model.MustChangePassword, model.SendByEmail, null);
         }
         catch (Exception e)
         {
