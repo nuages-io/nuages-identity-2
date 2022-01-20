@@ -16,17 +16,19 @@ public class ManageController : Controller
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
     private readonly ISendEmailChangedConfirmationService _sendEmailChangedConfirmationService;
+    private readonly IChangeUserNameService _changeUserNameService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
-        ISendEmailChangedConfirmationService sendEmailChangedConfirmationService,
+        ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
         IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger)
     {
         _changePasswordService = changePasswordService;
         _userManager = userManager;
         _signInManager = signInManager;
         _sendEmailChangedConfirmationService = sendEmailChangedConfirmationService;
+        _changeUserNameService = changeUserNameService;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
     }
@@ -121,5 +123,41 @@ public class ManageController : Controller
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.EndSubsegment();
         }
+    }
+    
+    
+    [HttpPost("changeUsername")]
+    [AllowAnonymous]
+    public async Task<ChangeUserNameResultModel> ChangeUsernameAsync([FromBody] ChangeUserNameModel model)
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ChangeUsernameAsync");
+            
+            var res = await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
+
+            if (res.Success)
+            {
+                var user = await _userManager.FindByIdAsync(User.Sub()!);
+                await _signInManager.RefreshSignInAsync(user);
+            }
+            
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
     }
 }

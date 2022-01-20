@@ -324,7 +324,92 @@
                 <name>changeUsername</name>
                 <children>
                     <concept_node>
+                        <name>currentUsername</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>instructions</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>mustNotBeAnEmail</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>newUserName</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>submit</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>success</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -2290,6 +2375,23 @@
                     </concept_node>
                 </children>
             </folder_node>
+            <concept_node>
+                <name>username</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>en-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
             <concept_node>
                 <name>warning</name>
                 <definition_loaded>false</definition_loaded>

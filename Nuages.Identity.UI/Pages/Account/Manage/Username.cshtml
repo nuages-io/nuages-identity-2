@@ -1,0 +1,45 @@
+﻿@page
+@model Nuages.Identity.UI.Pages.Account.Manage.UsernameModel
+
+@{
+    ViewData["Title"] = Localizer["changeUsername:title"];
+    Layout = "Shared/_LayoutSettings";
+}
+
+<div id="app">
+
+    <div class="flex justify-center mt-6">
+        <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+        <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
+            <i class="fa fa-check-circle text-green-700 fa-3x text-center"></i>
+            <span class="mt-4">@Localizer["changeUsername:success"]</span>
+        </div>
+    </div>
+
+    
+    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="changeUsername" id="formChangeUsername" v-if="status == ''">
+        <span>@Localizer["changeUsername:instructions"]</span>
+        <div>
+            <strong>@Localizer["changeUsername:currentUsername"]</strong>&nbsp;
+            <span>@Model.Username</span>
+        </div>
+                
+        <partial name="Shared/ErrorList"/>
+       
+        <input id="username" name="username" type="text" autofocus="" v-model="username" placeholder="@Localizer["changeUsername:newUserName"]" required class="text-box">
+        <button v-on:click.prevent="changeUsername" class="btn btn-primary">
+            @Localizer["changeUsername:submit"]
+        </button>
+    </form>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+        var usernameRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["username"])";  
+        
+    </script>
+    <script src="/js/pages/manage/username.js"></script>
+}

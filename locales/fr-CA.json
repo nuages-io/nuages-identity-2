@@ -23,7 +23,12 @@
 		"title": "Changer votre no. de téléphone"
 	},
 	"changeUsername": {
+		"currentUsername": "Nom d'utilisateur actuel",
+		"instructions": "Entrez le nom d'utilisateur désiré. Afin de changer pour un autre courriel, vous devez utiliser la fonction 'Changer mon courriel'.",
 		"mustNotBeAnEmail": "Le nouveau nom d'utilisateur ne peut être un courriel. Utilisez 'Changer votre courriel' afin de sélectionner un nouveau courriel en tant que nom d'utilisateur.",
+		"newUserName": "Nouveau nom d'utilisateur",
+		"submit": "Change le nom d'utilisateur",
+		"success": "Nom d'utilisateur changé avec succès.",
 		"title": "Changer votre nom d'utilisateur"
 	},
 	"confirmEmail": {
@@ -172,6 +177,7 @@
 		"success": "Votre mot de passe a été changé avec succès.",
 		"title": "Ré-initialisation du mot de passe"
 	},
+	"username": "Nom d'utilisateur",
 	"warning": "Attention!",
 	"yourEmail": "Votre courriel"
 }

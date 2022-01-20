@@ -23,7 +23,12 @@
 		"title": "Change your phone #"
 	},
 	"changeUsername": {
+		"currentUsername": "Current Username",
+		"instructions": "Enter the desired username. In order to change to another email, you must use the 'Change my email' function.",
 		"mustNotBeAnEmail": "The new username cannot be an email. Use 'Change your email' to select a new email as the username.",
+		"newUserName": "New Username",
+		"submit": "Change Username",
+		"success": "Username changed successfully.",
 		"title": "Change your username"
 	},
 	"confirmEmail": {
@@ -172,6 +177,7 @@
 		"success": "Your password has been successfully changed.",
 		"title": "Reset password"
 	},
+	"username": "Username",
 	"warning": "Warning!",
 	"yourEmail": "Your email"
 }

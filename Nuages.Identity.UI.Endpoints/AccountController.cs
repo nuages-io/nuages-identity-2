@@ -8,8 +8,10 @@ using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.Manage;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
+using Nuages.Web;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
@@ -419,6 +421,7 @@ public class AccountController : Controller
      
       
     }
+    
     
     [HttpPost("loginSMS")]
     [AllowAnonymous]
