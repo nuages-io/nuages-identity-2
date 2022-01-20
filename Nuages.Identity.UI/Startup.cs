@@ -72,7 +72,6 @@ public class Startup
                     ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
                     ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
                     AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider
-                    //AuthenticatorIssuer =  "Nuages" NOT USED
                 };
 
                 identity.Password = options.Password;
@@ -95,8 +94,8 @@ public class Startup
                 identity.SignIn = new SignInOptions
                 {
                     RequireConfirmedEmail = options.RequireConfirmedEmail,
-                    RequireConfirmedPhoneNumber = options.RequireConfirmedPhoneNumber,
-                    RequireConfirmedAccount = false
+                    RequireConfirmedPhoneNumber = false, //MUST be false
+                    RequireConfirmedAccount = false //MUST be false
                 };
                 
             },
