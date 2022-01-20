@@ -37,7 +37,12 @@ var App =
                                 self.status = "done";
                             } else
                                 self.status = "";
-                                self.errors.push({message: res.errors[0]});
+
+                            res.errors.forEach((element) => {
+                                this.errors.push({ message : element});
+                            });                              
+                            
+                            //self.errors.push({message: res.errors[0]});
                         });
 
                 },

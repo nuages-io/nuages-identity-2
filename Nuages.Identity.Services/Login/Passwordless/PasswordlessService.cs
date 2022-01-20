@@ -100,7 +100,7 @@ public class PasswordlessService : IPasswordlessService
         return new StartPasswordlessResultModel
         {
             Success = false,
-            ErrorMessage = res.ErrorMessage
+            Message = res.Message
         };
     }
 }
@@ -126,12 +126,12 @@ public class StartPasswordlessModel
 public class StartPasswordlessResultModel
 {
     public bool Success { get; set; }
-    public string? ErrorMessage { get; set; }
+    public string? Message { get; set; }
 }
 
 public class GetPasswordlessUrlResultModel
 {
     public bool Success { get; set; }
     public string Url { get; set; } = string.Empty;
-    public string? ErrorMessage { get; set; }
+    public string? Message { get; set; }
 }

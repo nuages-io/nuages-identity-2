@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
@@ -68,4 +69,5 @@ public class SendEmailConfirmationModel
 public class SendEmailConfirmationResultModel
 {
     public bool Success { get; set; }
+    public string? Message { get; set; }
 }

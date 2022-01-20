@@ -44,6 +44,7 @@
 		"title": "Courriel non confirmé"
 	},
 	"errorMessage": {
+		"exception": "Une erreur innatendue est survenue",
 		"invalidEmail": "Le courriel est invalide",
 		"no_access": {
 			"AccountNotConfirmed": "Votre compte n'est pas confirmé",

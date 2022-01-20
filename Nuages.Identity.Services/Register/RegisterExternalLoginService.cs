@@ -40,7 +40,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             return new RegisterExternalLoginResultModel
             {
                 Success = false,
-                ErrorMessage = "Error loading external login information during confirmation."
+                Errors = new List<string> { "Error loading external login information during confirmation."}
             };
         }
 
@@ -50,7 +50,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             return new RegisterExternalLoginResultModel
             {
                 Success = false,
-                ErrorMessage = "Email claim not found"
+                Errors = new List<string> { "Email claim not found"}
             };
         }
         
@@ -100,7 +100,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         return new RegisterExternalLoginResultModel
         {
             Success = false,
-            ErrorMessage = _stringLocalizer[$"identity.{result.Errors.FirstOrDefault()?.Code}"]
+            Errors = result.Errors.Select( e=> _stringLocalizer[$"identity.{e.Code}"].Value).ToList()
         };
     }
 }
@@ -120,6 +120,6 @@ public class RegisterExternalLoginModel
 public class RegisterExternalLoginResultModel
 {
     public bool Success { get; set; }
-    public string? ErrorMessage { get; set; }
+    public List<string> Errors { get; set; } = new();
     public bool ShowConfirmationMessage { get; set; }
 }

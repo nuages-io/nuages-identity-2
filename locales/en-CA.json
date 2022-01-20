@@ -44,6 +44,7 @@
 		"title": "Unconfirmed email"
 	},
 	"errorMessage": {
+		"exception": "An unexpected error has occurred",
 		"invalidEmail": "Email is invalid",
 		"no_access": {
 			"AccountNotConfirmed": "You account is not confirmed",

@@ -96,7 +96,12 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new LoginResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
+
         }
         finally
         {
@@ -140,7 +145,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new LoginResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -184,7 +193,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new LoginResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -216,7 +229,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new RegisterResultModel
+            {
+                Success = false,
+                Errors =new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -247,7 +264,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new RegisterExternalLoginResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -278,7 +299,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new ForgotPasswordResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -314,7 +339,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new SendEmailConfirmationResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -347,7 +376,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new ResetPasswordResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -378,7 +411,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new StartPasswordlessResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -411,7 +448,12 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            
+            return new SendSMSCodeResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -458,7 +500,11 @@ public class AccountController : Controller
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new LoginResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {

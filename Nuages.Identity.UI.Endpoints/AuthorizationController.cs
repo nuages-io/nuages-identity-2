@@ -46,17 +46,6 @@ public partial class AuthorizationController : Controller
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> Authorize()
     {
-
-        var usr = await _userManager.FindByNameAsync("martin");
-        if (usr == null)
-        {
-            var res = await _userManager.CreateAsync(new NuagesApplicationUser
-            {
-                Email = "m@nuages.org"
-            }, "123");
-            
-            Console.WriteLine(JsonSerializer.Serialize(res));
-        }
         
         var request = HttpContext.GetOpenIddictServerRequest() ??
                       throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
@@ -179,23 +168,6 @@ public partial class AuthorizationController : Controller
     [HttpPost("~/connect/token"), Produces("application/json")]
     public async Task<IActionResult> Exchange()
     {
-        var usr = await _userManager.FindByNameAsync("martin");
-        if (usr == null)
-        {
-            var result = await _userManager.CreateAsync(new NuagesApplicationUser
-            {
-                Id = ObjectId.GenerateNewId().ToString(),
-                Email = "m@nuages.org",
-                UserName = "martin"
-                
-            }, "123");
-
-            if (!result.Succeeded)
-            {
-                throw new Exception(result.Errors.First().ToString());
-            }
-        }
-        
         var request = HttpContext.GetOpenIddictServerRequest() ??
                       throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 

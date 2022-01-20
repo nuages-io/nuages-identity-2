@@ -34,7 +34,7 @@ public class RegisterService : IRegisterService
             return new RegisterResultModel
             {
                 Success = false,
-                Message = _localizer["register.passwordDoesNotMatch"]
+                Errors =new List<string>{ _localizer["register.passwordDoesNotMatch"]}
             };
         }
 
@@ -44,7 +44,7 @@ public class RegisterService : IRegisterService
             return new RegisterResultModel
             {
                 Success = false,
-                Message = _localizer["register.userEmailAlreadyExists"]
+                Errors =new List<string> {_localizer["register.userEmailAlreadyExists"]}
             };
         }
 
@@ -89,7 +89,7 @@ public class RegisterService : IRegisterService
         return new RegisterResultModel
         {
             Success = false,
-            Message = _localizer[$"identity.{res.Errors.First().Code}"]
+            Errors = res.Errors.Select( e=> _localizer[$"identity.{e.Code}"].Value).ToList()
         };
     }
 }
@@ -110,6 +110,6 @@ public class RegisterModel
 public class RegisterResultModel
 {
     public bool Success { get; set; }
-    public string? Message { get; set; }
+    public List<string> Errors { get; set; } = new();
     public bool ShowConfirmationMessage { get; set; }
 }

@@ -1,6 +1,7 @@
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
@@ -19,10 +20,11 @@ public class ManageController : Controller
     private readonly IChangeUserNameService _changeUserNameService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
+    private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
         ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
-        IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger)
+        IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
         _changePasswordService = changePasswordService;
         _userManager = userManager;
@@ -31,6 +33,7 @@ public class ManageController : Controller
         _changeUserNameService = changeUserNameService;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
+        _stringLocalizer = stringLocalizer;
     }
     
     [HttpPost("changePassword")]
@@ -60,7 +63,11 @@ public class ManageController : Controller
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new ChangePasswordResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -90,7 +97,11 @@ public class ManageController : Controller
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new ChangePasswordResultModel
+            {
+                Success = false,
+                Message = _stringLocalizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -116,7 +127,11 @@ public class ManageController : Controller
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new SendEmailChangeResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -150,7 +165,11 @@ public class ManageController : Controller
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
 
-            throw;
+            return new ChangeUserNameResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
         }
         finally
         {

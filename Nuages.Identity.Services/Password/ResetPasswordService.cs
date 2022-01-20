@@ -58,10 +58,7 @@ public class ResetPasswordService : IResetPasswordService
             Success = false
         };
 
-        foreach (var error in result.Errors)
-        {
-            res.Errors.Add(_localizer.GetString($"identity.{error.Code}"));
-        }
+        res.Errors = result.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList();
 
         return res;
     }
@@ -84,6 +81,7 @@ public class ResetPasswordModel
 public class ResetPasswordResultModel
 {
     public bool Success { get; set; }
+    public string? Message { get; set; }
     // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
 }

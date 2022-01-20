@@ -50,7 +50,12 @@ var App =
                             else
                             {
                                 self.status = "";
-                                self.errors.push({message: res.message});
+
+                                res.errors.forEach((element) => {
+                                    self.errors.push({ message : element});
+                                });
+                                
+                                //self.errors.push({message: res.message});
                             }
                                
                         });
