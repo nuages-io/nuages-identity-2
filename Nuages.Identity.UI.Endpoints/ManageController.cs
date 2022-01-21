@@ -65,7 +65,11 @@ public class ManageController : Controller
         {
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new ChangePasswordResultModel
             {
                 Success = false,
@@ -99,7 +103,11 @@ public class ManageController : Controller
         {
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new ChangePasswordResultModel
             {
                 Success = false,
@@ -129,7 +137,11 @@ public class ManageController : Controller
         {
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new SendEmailChangeResultModel
             {
                 Success = false,
@@ -167,7 +179,11 @@ public class ManageController : Controller
         {
             if (!_webHostEnvironment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new ChangeUserNameResultModel
             {
                 Success = false,
@@ -183,14 +199,53 @@ public class ManageController : Controller
       
     }
     
-    [HttpPost("verify2FACode")]
+    [HttpPost("disable2Fa")]
     [AllowAnonymous]
-    public async Task<MFAResultModel> Verify2FaCodeAsync([FromBody] EnableMFAModel model)
+    public async Task<DisableMFAResultModel> Disable2FaAsync([FromBody] EnableMFAModel model)
     {
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Verify2FaCodeAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Disable2FaAsync");
+            
+            var res = await _mfaService.DisableMFAAsync(User.Sub()!);
+
+            
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
+            return new DisableMFAResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
+    }
+    
+     
+    [HttpPost("enable2FA")]
+    [AllowAnonymous]
+    public async Task<MFAResultModel> Enable2FaAsync([FromBody] EnableMFAModel model)
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Enable2FaAsync");
             
             var res = await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
 
@@ -208,7 +263,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                throw;
+                _logger.LogError(e, "");
             }
             
             return new MFAResultModel

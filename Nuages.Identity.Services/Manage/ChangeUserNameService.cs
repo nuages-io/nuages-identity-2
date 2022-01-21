@@ -30,7 +30,7 @@ public class ChangeUserNameService : IChangeUserNameService
             return new ChangeUserNameResultModel
             {
                 Success = false,
-                Errors = new List<string>() { _localizer["changeUsername:mustNotBeAnEmail"] }
+                Errors = new List<string> { _localizer["changeUsername:mustNotBeAnEmail"] }
             };
         }
 
@@ -42,14 +42,14 @@ public class ChangeUserNameService : IChangeUserNameService
                 return new ChangeUserNameResultModel
                 {
                     Success = false,
-                    Errors = new List<string>() { _localizer["changeUsername:isNotChanged"]}
+                    Errors = new List<string> { _localizer["changeUsername:isNotChanged"]}
                 };
             }
            
             return new ChangeUserNameResultModel
             {
                 Success = false,
-                Errors = new List<string>() { _localizer["changeUsername:nameAlreadyUsed"]}
+                Errors = new List<string> { _localizer["changeUsername:nameAlreadyUsed"]}
 
             };
         }

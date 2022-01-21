@@ -1,7 +1,6 @@
 // ReSharper disable InconsistentNaming
 
 using System.Globalization;
-using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -163,6 +162,7 @@ public class GetMFAUrlResultModel
     public bool Success { get; set; }
     public string Key { get; set; } = string.Empty;
     public string Url { get; set; } = string.Empty;
+    public List<string> Errors { get; set; } = new();
 }
 
 

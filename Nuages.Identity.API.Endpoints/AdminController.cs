@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
 
@@ -20,9 +21,12 @@ public class AdminController : Controller
     private readonly IChangeEmailService _changeEmailService;
     private readonly IMFAService _mfaService;
     private readonly IChangeUserNameService _changeUserNameService;
+    private readonly ILogger<AdminController> _logger;
+    private readonly IStringLocalizer _localizer;
 
     public AdminController(IWebHostEnvironment env, IChangePasswordService changePasswordService, 
-        IChangePhoneNumberService changePhoneNumberService, IChangeEmailService changeEmailService, IMFAService mfaService, IChangeUserNameService changeUserNameService)
+        IChangePhoneNumberService changePhoneNumberService, IChangeEmailService changeEmailService, IMFAService mfaService, IChangeUserNameService changeUserNameService,
+        ILogger<AdminController> logger, IStringLocalizer localizer)
     {
         _env = env;
         _changePasswordService = changePasswordService;
@@ -30,6 +34,8 @@ public class AdminController : Controller
         _changeEmailService = changeEmailService;
         _mfaService = mfaService;
         _changeUserNameService = changeUserNameService;
+        _logger = logger;
+        _localizer = localizer;
     }
     
     [HttpDelete("removeMfa")]
@@ -46,8 +52,16 @@ public class AdminController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-        
-            throw;
+            else
+            {
+                _logger.LogError(e, "");
+            }
+
+            return new DisableMFAResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -70,8 +84,16 @@ public class AdminController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-        
-            throw;
+            else
+            {
+                _logger.LogError(e, "");
+            }
+
+            return new ChangeEmailResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -95,8 +117,16 @@ public class AdminController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-        
-            throw;
+            else
+            {
+                _logger.LogError(e, "");
+            }
+
+            return new ChangeUserNameResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -120,8 +150,16 @@ public class AdminController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-        
-            throw;
+            else
+            {
+                _logger.LogError(e, "");
+            }
+
+            return new ChangePhoneNumberResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -145,8 +183,16 @@ public class AdminController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new ChangePasswordResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {

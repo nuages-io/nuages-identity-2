@@ -10,13 +10,11 @@ namespace Nuages.Identity.Services.Manage;
 public class ChangePasswordService : IChangePasswordService
 {
     private readonly NuagesUserManager _userManager;
-    private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _localizer;
 
-    public ChangePasswordService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer)
+    public ChangePasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
         _localizer = localizer;
     }
 

@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
@@ -15,20 +14,16 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _stringLocalizer;
-    private readonly IHttpContextAccessor _contextAccessor;
     private readonly IMessageSender _messageSender;
-    private readonly IWebHostEnvironment _env;
     private readonly NuagesIdentityOptions _options;
 
     public RegisterExternalLoginService(NuagesSignInManager signInManager, NuagesUserManager userManager, IOptions<NuagesIdentityOptions> options,
-            IStringLocalizer stringLocalizer, IHttpContextAccessor contextAccessor, IMessageSender messageSender, IWebHostEnvironment env)
+            IStringLocalizer stringLocalizer, IMessageSender messageSender)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _stringLocalizer = stringLocalizer;
-        _contextAccessor = contextAccessor;
-        _messageSender = messageSender;
-        _env = env;
+       _messageSender = messageSender;
         _options = options.Value;
     }
     

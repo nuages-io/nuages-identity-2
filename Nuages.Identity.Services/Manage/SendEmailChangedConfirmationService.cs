@@ -1,5 +1,4 @@
 using System.Text;
-using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -38,14 +37,14 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
                 return new SendEmailChangeResultModel
                 {
                     Success = false,
-                    Errors = new List<string>() { _localizer["changeEmail:isNotChanged"]}
+                    Errors = new List<string> { _localizer["changeEmail:isNotChanged"]}
                 };
             }
            
             return new SendEmailChangeResultModel
             {
                 Success = false,
-                Errors = new List<string>() { _localizer["changeEmail:emailAlreadyUsed"]}
+                Errors = new List<string> { _localizer["changeEmail:emailAlreadyUsed"]}
 
             };
         }

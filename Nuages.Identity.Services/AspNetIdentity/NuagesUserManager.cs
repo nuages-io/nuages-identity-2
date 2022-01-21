@@ -103,6 +103,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
             user = await FindByNameAsync(userNameOrEmail);
         }
 
+        // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
         if (user == null)
             user = await FindByEmailAsync(userNameOrEmail);
 

@@ -55,10 +55,9 @@ public class ResetPasswordService : IResetPasswordService
         
         var res = new ResetPasswordResultModel
         {
-            Success = false
+            Success = false,
+            Errors = result.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
         };
-
-        res.Errors = result.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList();
 
         return res;
     }

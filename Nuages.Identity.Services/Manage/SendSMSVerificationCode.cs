@@ -11,15 +11,13 @@ namespace Nuages.Identity.Services.Manage;
 public class SendSMSVerificationCode : ISendSMSVerificationCode
 {
     private readonly NuagesUserManager _userManager;
-    private readonly NuagesSignInManager _signInManager;
     private readonly IMessageSender _sender;
     private readonly IStringLocalizer _localizer;
     private readonly ILogger<SendSMSVerificationCode> _logger;
 
-    public SendSMSVerificationCode(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageSender sender, IStringLocalizer localizer, ILogger<SendSMSVerificationCode> logger)
+    public SendSMSVerificationCode(NuagesUserManager userManager, IMessageSender sender, IStringLocalizer localizer, ILogger<SendSMSVerificationCode> logger)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
         _sender = sender;
         _localizer = localizer;
         _logger = logger;

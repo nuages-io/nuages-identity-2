@@ -95,7 +95,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new LoginResultModel
             {
                 Success = false,
@@ -144,7 +148,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new LoginResultModel
             {
                 Success = false,
@@ -192,7 +200,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new LoginResultModel
             {
                 Success = false,
@@ -228,7 +240,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new RegisterResultModel
             {
                 Success = false,
@@ -263,7 +279,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new RegisterExternalLoginResultModel
             {
                 Success = false,
@@ -298,7 +318,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new ForgotPasswordResultModel
             {
                 Success = false,
@@ -338,7 +362,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new SendEmailConfirmationResultModel
             {
                 Success = false,
@@ -375,7 +403,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new ResetPasswordResultModel
             {
                 Success = false,
@@ -410,7 +442,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new StartPasswordlessResultModel
             {
                 Success = false,
@@ -447,7 +483,10 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
             
             return new SendSMSCodeResultModel
             {
@@ -499,7 +538,11 @@ public class AccountController : Controller
         {
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
             return new LoginResultModel
             {
                 Success = false,

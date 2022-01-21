@@ -30,14 +30,14 @@ public class ChangeEmailService : IChangeEmailService
                 return new ChangeEmailResultModel
                 {
                     Success = false,
-                    Errors = new List<string>() { _localizer["changeEmail:isNotChanged"]}
+                    Errors = new List<string> { _localizer["changeEmail:isNotChanged"]}
                 };
             }
            
             return new ChangeEmailResultModel
             {
                 Success = false,
-                Errors = new List<string>() { _localizer["changeEmail:emailAlreadyUsed"]}
+                Errors = new List<string> { _localizer["changeEmail:emailAlreadyUsed"]}
 
             };
         }
@@ -46,7 +46,7 @@ public class ChangeEmailService : IChangeEmailService
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        bool changeUserName = user.NormalizedEmail == user.NormalizedUserName;
+        var changeUserName = user.NormalizedEmail == user.NormalizedUserName;
         
         if (string.IsNullOrEmpty(token))
             token = await _userManager.GenerateChangeEmailTokenAsync(user, email);

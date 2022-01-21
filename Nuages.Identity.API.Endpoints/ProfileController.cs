@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
@@ -21,6 +22,7 @@ public class ProfileController : Controller
     private readonly IChangePasswordService _changePasswordService;
     private readonly IChangePhoneNumberService _changePhoneNumberService;
     private readonly IChangeUserNameService _changeUserNameService;
+    private readonly IStringLocalizer _localizer;
     private readonly IPasswordlessService _passwordlessService;
     private readonly IMFAService _mfaService;
 
@@ -30,7 +32,7 @@ public class ProfileController : Controller
         IChangePasswordService changePasswordService,
         IChangePhoneNumberService changePhoneNumberService,
         IChangeUserNameService changeUserNameService,
-        
+        IStringLocalizer localizer,
         IPasswordlessService passwordlessService,
         IMFAService mfaService)
     {
@@ -39,6 +41,7 @@ public class ProfileController : Controller
         _changePasswordService = changePasswordService;
         _changePhoneNumberService = changePhoneNumberService;
         _changeUserNameService = changeUserNameService;
+        _localizer = localizer;
         _passwordlessService = passwordlessService;
         _mfaService = mfaService;
     }
@@ -57,8 +60,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new ChangeUserNameResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -82,8 +93,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new ChangePasswordResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -107,8 +126,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new MFAResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -131,8 +158,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new DisableMFAResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -155,8 +190,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new MFAResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -179,8 +222,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new GetMFAUrlResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
@@ -203,8 +254,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
 
-            throw;
+            return new GetPasswordlessUrlResultModel
+            {
+                Success = false,
+                Message = _localizer["errorMessage:exception"]
+            };
         }
         finally
         {
@@ -227,8 +286,16 @@ public class ProfileController : Controller
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.AddException(e);
-        
-            throw;
+            else
+            {
+                _logger.LogError(e, "");
+            }
+
+            return new ChangePhoneNumberResultModel
+            {
+                Success = false,
+                Errors =new List<string> { _localizer["errorMessage:exception"]}
+            };
         }
         finally
         {
