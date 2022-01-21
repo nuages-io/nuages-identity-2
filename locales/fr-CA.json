@@ -1,4 +1,14 @@
 {
+	"2fa": {
+		"activate": "Activer",
+		"active": "L'authentification à deux facteurs est activée.",
+		"codesRemaining": "codes restants.",
+		"deactivate": "Désactiver",
+		"forgetMachine": "Oubliez cet appareil. Un code à deux facteurs vous sera demandé lors de la prochaine connexion.",
+		"inactive": "L'authentification à deux facteurs est inactive",
+		"instructions": "L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire à votre compte en exigeant plus qu'un simple mot de passe pour vous connecter",
+		"title": "Authentication à deux facteurs"
+	},
 	"changeEmail": {
 		"currentEmail": "Courriel actuel",
 		"error": "Le changement de courriel a échoué.",

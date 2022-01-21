@@ -13,21 +13,27 @@
         @apply appearance-none block w-full px-3 py-2 border  border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
     }
     
-    .btn{
+    .btn {
         @apply w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2
     }
+    
     .btn-primary
     {
         @apply text-white bg-indigo-600 hover:bg-indigo-700  focus:ring-indigo-500
     }
     
-    a{
+    a {
         @apply font-medium text-indigo-600 hover:text-indigo-500
     }
     
     .btn-simple
     {
         @apply  inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+    }
+    
+    .page-header
+    {
+        @apply text-3xl font-extrabold text-gray-900;
     }
 
 }

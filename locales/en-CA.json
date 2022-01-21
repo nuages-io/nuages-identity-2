@@ -1,4 +1,14 @@
 {
+	"2fa": {
+		"activate": "Activate",
+		"active": "Two-factor authentication is enabled.",
+		"codesRemaining": "codes remaining.",
+		"deactivate": "Deactivate",
+		"forgetMachine": "Forget this device. You will be asked for a two-factor code at next login.",
+		"inactive": "Two-factor authentication is inactive",
+		"instructions": "Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in",
+		"title": "Two-factor authentication"
+	},
 	"changeEmail": {
 		"currentEmail": "Current email",
 		"error": "Email change failed.",

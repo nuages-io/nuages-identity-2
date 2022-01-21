@@ -5,67 +5,32 @@
     ViewData["Title"] = Localizer["2fa:title"];
 }
 
-@* <h3>@ViewData["Title"]</h3> *@
-@* @{ *@
-@*     var consentFeature = HttpContext.Features.Get<ITrackingConsentFeature>(); *@
-@*     @if (consentFeature?.CanTrack ?? true) *@
-@*     { *@
-@*         @if (Model.Is2faEnabled) *@
-@*         { *@
-@*             if (Model.RecoveryCodesLeft == 0) *@
-@*             { *@
-@*                 <div class="alert alert-danger"> *@
-@*                     <strong>You have no recovery codes left.</strong> *@
-@*                     <p>You must <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a> before you can log in with a recovery code.</p> *@
-@*                 </div> *@
-@*             } *@
-@*             else if (Model.RecoveryCodesLeft == 1) *@
-@*             { *@
-@*                 <div class="alert alert-danger"> *@
-@*                     <strong>You have 1 recovery code left.</strong> *@
-@*                     <p>You can <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p> *@
-@*                 </div> *@
-@*             } *@
-@*             else if (Model.RecoveryCodesLeft <= 3) *@
-@*             { *@
-@*                 <div class="alert alert-warning"> *@
-@*                     <strong>You have @Model.RecoveryCodesLeft recovery codes left.</strong> *@
-@*                     <p>You should <a asp-page="./GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p> *@
-@*                 </div> *@
-@*             } *@
-@* *@
-@*             if (Model.IsMachineRemembered) *@
-@*             { *@
-@*                 <form method="post" style="display: inline-block"> *@
-@*                     <button type="submit" class="btn btn-primary">Forget this browser</button> *@
-@*                 </form> *@
-@*             } *@
-@*             <a asp-page="./Disable2fa" class="btn btn-primary">Disable 2FA</a> *@
-@*             <a asp-page="./GenerateRecoveryCodes" class="btn btn-primary">Reset recovery codes</a> *@
-@*         } *@
-@* *@
-@*         <h4>Authenticator app</h4> *@
-@*         @if (!Model.HasAuthenticator) *@
-@*         { *@
-@*             <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Add authenticator app</a> *@
-@*         } *@
-@*         else *@
-@*         { *@
-@*             <a id="enable-authenticator" asp-page="./EnableAuthenticator" class="btn btn-primary">Set up authenticator app</a> *@
-@*             <a id="reset-authenticator" asp-page="./ResetAuthenticator" class="btn btn-primary">Reset authenticator app</a> *@
-@*         } *@
-@*     } *@
-@*     else *@
-@*     { *@
-@*         <div class="alert alert-danger"> *@
-@*             <strong>Privacy and cookie policy have not been accepted.</strong> *@
-@*             <p>You must accept the policy before you can enable two factor authentication.</p> *@
-@*         </div> *@
-@*     } *@
-@* } *@
-
-<div id="app">
+<div id="app" class="flex flex-col space-y-6">
+    <h2 class="page-header">@Localizer["2fa.title"]</h2>
     
+    <span>@Localizer["2fa.instructions"]</span>
+    @if (Model.Is2FaEnabled)
+    {
+        <div>
+            <span>@Localizer["2fa.active"]</span>&nbsp;<a class="btn btn-primary">@Localizer["2fa.deactivate"]</a>
+        </div>
+        
+        
+        @if (Model.IsMachineRemembered)
+        {
+            <a>@Localizer["2fa.forgetMachine"]</a>
+        }
+       
+        
+        <span>@Model.RecoveryCodesLeft @Localizer["2fa.codesRemaining"]</span>
+    }
+    else
+    {
+        <div>
+            <span>@Localizer["2fa.inactive"]&nbsp;</span> <a>@Localizer["2fa.activate"]</a>
+        </div>
+    }
+   
 </div>
 
 @section Scripts {
