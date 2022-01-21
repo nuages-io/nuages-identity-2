@@ -10,6 +10,8 @@
     
   <span>@Localizer["2fa.instructions"]</span>
   
+  <partial name="Shared/ErrorList"/>
+  
   @if (Model.Is2FaEnabled)
     {
         <div>
@@ -23,7 +25,18 @@
         }
        
         
-        <span>@Model.RecoveryCodesLeft @Localizer["2fa.codesRemaining"]</span>
+      <span>@Model.RecoveryCodesLeft @Localizer["2fa.codesRemaining"]</span>
+      <a v-if="showCodes == false" v-show="showCodes==false" v-on:click="showCodes=true">Show Codes</a>
+      <a v-if="showCodes == true" v-show="showCodes==true" v-on:click="showCodes=false" style="display: none">Hide Codes</a>                                                             
+     
+        <div class="grid grid-cols-3 gap-2"  v-if="showCodes" v-show="showCodes" style="display: none">
+          @foreach (var c in Model.RecoveryCodes)
+          {
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
+              <code class="recovery-code">@c</code>
+            </span>
+          }
+        </div>
     }
     else
     {

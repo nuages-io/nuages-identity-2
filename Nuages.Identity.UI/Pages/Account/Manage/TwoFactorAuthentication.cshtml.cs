@@ -45,9 +45,11 @@ namespace Nuages.Identity.UI.Pages.Account.Manage
             IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
             RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
+            RecoveryCodes = await _userManager.GetRecoveryCodes(user);
             return Page();
         }
 
+        public List<string> RecoveryCodes { get; set; } = new();
         // public async Task<IActionResult> OnPostAsync()
         // {
         //     var user = await _userManager.GetUserAsync(User);

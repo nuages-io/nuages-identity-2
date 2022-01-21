@@ -199,9 +199,9 @@ public class ManageController : Controller
       
     }
     
-    [HttpPost("disable2Fa")]
+    [HttpDelete("disable2Fa")]
     [AllowAnonymous]
-    public async Task<DisableMFAResultModel> Disable2FaAsync([FromBody] EnableMFAModel model)
+    public async Task<DisableMFAResultModel> Disable2FaAsync()
     {
         try
         {
@@ -280,4 +280,6 @@ public class ManageController : Controller
      
       
     }
+    
+   
 }

@@ -32,7 +32,7 @@ var App =
                         .then(res => {
 
                             if (res.success) {
-                                self.status = "done";
+                                window.location = "/account/manage/TwoFactorAuthentication";
                             } else
                                 self.status = "";
 
