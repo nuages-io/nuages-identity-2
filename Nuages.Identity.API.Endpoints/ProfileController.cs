@@ -214,14 +214,14 @@ public class ProfileController : Controller
     }
     
     [HttpPost("changePhoneNumber")]
-    public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync(string userId, string phoneNumber, string token)
+    public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync([FromBody] ChangePhoneNumberModel model)
     {
         try
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("ProfilenController.ChangePhoneNumberAsync");
         
-            return await _changePhoneNumberService.ChangePhoneNumberAsync(userId, phoneNumber, token);
+            return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
         }
         catch (Exception e)
         {

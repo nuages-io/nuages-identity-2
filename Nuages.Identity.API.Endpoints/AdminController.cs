@@ -132,14 +132,14 @@ public class AdminController : Controller
     }
     
     [HttpPost("setPassword")]
-    public async Task<ChangePasswordResultModel> AdminSetPasswordAsync([FromBody] ChangePasswordModel model)
+    public async Task<ChangePasswordResultModel> AdminSetPasswordAsync(string userId, [FromBody] ChangePasswordModel model)
     {
         try
         {
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPasswordAsync");
 
-            return await _changePasswordService.AdminChangePasswordAsync(User.Sub()!, model.NewPassword, model.NewPasswordConfirm, model.MustChangePassword, model.SendByEmail, null);
+            return await _changePasswordService.AdminChangePasswordAsync(userId, model.NewPassword, model.NewPasswordConfirm, model.MustChangePassword, model.SendByEmail, null);
         }
         catch (Exception e)
         {

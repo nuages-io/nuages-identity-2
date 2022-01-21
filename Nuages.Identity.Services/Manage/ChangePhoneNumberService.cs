@@ -53,4 +53,5 @@ public class ChangePhoneNumberResultModel
 public class ChangePhoneNumberModel
 {
     public string PhoneNumber { get; set; } = string.Empty;
+    public string Token { get; set; } = string.Empty;
 }
