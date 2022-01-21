@@ -2,10 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -30,7 +28,10 @@ namespace Nuages.Identity.UI.Pages.Account.Manage
         public int RecoveryCodesLeft { get; set; }
         public bool Is2FaEnabled { get; set; }
         public bool IsMachineRemembered { get; set; }
-
+        
+        public List<string> RecoveryCodes { get; set; } = new();
+        public string FallbackNumber { get; set; }
+        
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -46,10 +47,16 @@ namespace Nuages.Identity.UI.Pages.Account.Manage
             RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
             RecoveryCodes = await _userManager.GetRecoveryCodes(user);
+
+            if (user.PhoneNumberConfirmed)
+            {
+                FallbackNumber = user.PhoneNumber;
+            }
+            
             return Page();
         }
 
-        public List<string> RecoveryCodes { get; set; } = new();
+        
         // public async Task<IActionResult> OnPostAsync()
         // {
         //     var user = await _userManager.GetUserAsync(User);
