@@ -3,7 +3,7 @@ var App =
         data() {
             return {
                 
-                
+                showDeactivate: false,
                 errors: [],
                 status: ""
             }
@@ -16,21 +16,20 @@ var App =
                
                 forgetBrowser()
                 {
-                    
+                    //Call API
                 },
                 disable2Fa()
                 {
-                    
+                    //Call API
                 },
                 addFallbackPhone()
                 {
-                    
+                    //Call API
                 },
                 removeFallbackPhone()
                 {
-                    
-                }
-                
+                    //Call API
+                }               
                 
             }
     };

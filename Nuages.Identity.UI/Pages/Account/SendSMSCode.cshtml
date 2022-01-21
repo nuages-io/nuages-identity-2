@@ -18,7 +18,7 @@
 <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="loginSMS" id="formLoginSMS" v-if="status == ''">
     <span>@Localizer["loginWithSMS:instructions"]</span>
     <partial name="Shared/ErrorList"/>
-    <button v-on:click.prevent="loginSMS" class="btn btn-primary">
+    <button v-on:click.prevent="loginSMS" class="primary full">
         @Localizer["loginWithSMS:send"]
     </button>
 </form>

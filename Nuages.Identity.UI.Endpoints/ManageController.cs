@@ -18,12 +18,14 @@ public class ManageController : Controller
     private readonly NuagesSignInManager _signInManager;
     private readonly ISendEmailChangedConfirmationService _sendEmailChangedConfirmationService;
     private readonly IChangeUserNameService _changeUserNameService;
+    private readonly IMFAService _mfaService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
     private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
         ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
+        IMFAService mfaService,
         IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
         _changePasswordService = changePasswordService;
@@ -31,6 +33,7 @@ public class ManageController : Controller
         _signInManager = signInManager;
         _sendEmailChangedConfirmationService = sendEmailChangedConfirmationService;
         _changeUserNameService = changeUserNameService;
+        _mfaService = mfaService;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
         _stringLocalizer = stringLocalizer;
@@ -166,6 +169,49 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
 
             return new ChangeUserNameResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
+    }
+    
+    [HttpPost("verify2FACode")]
+    [AllowAnonymous]
+    public async Task<MFAResultModel> Verify2FaCodeAsync([FromBody] EnableMFAModel model)
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Verify2FaCodeAsync");
+            
+            var res = await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
+
+            if (res.Success)
+            {
+                var user = await _userManager.FindByIdAsync(User.Sub()!);
+                await _signInManager.RefreshSignInAsync(user);
+            }
+            
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                throw;
+            }
+            
+            return new MFAResultModel
             {
                 Success = false,
                 Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}

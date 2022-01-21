@@ -1,0 +1,64 @@
+﻿@page
+@model EnableAuthenticatorModel
+@{
+    ViewData["Title"] = "Configure authenticator app";
+}
+
+<div class="space-y-4" id="app">
+    
+    <div class="flex justify-center mt-6">
+        <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+        <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
+            <i class="fa fa-check-circle text-green-700 fa-3x text-center"></i>
+        </div>
+    </div>
+    
+    <div>To use an authenticator app go through the following steps:</div>
+    <div>
+        Download a two-factor authenticator app like
+
+        <ul class="list-disc ml-4 mt-2">
+            <li>Microsoft Authenticator</li>
+            <li>Google Authenticator</li>
+            <li>Authy</li>
+            <li>LastPass Authenticator</li>
+            <li>Duo Mobile</li>
+        </ul>
+    </div>
+    <div class="space-y-2">
+        <p>Scan the QR Code </p>
+        <div id="qrCode"></div>
+        <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+    </div>
+    <div class="space-y-2">
+        <span> or enter this key</span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800">
+            @Model.SharedKey
+        </span>
+    </div>
+    <p>
+        Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
+        with a unique code. Enter the code in the confirmation box below.
+    </p>
+    <div>
+          <partial name="Shared/ErrorList"/>
+          <form class="mt-4 w-72 flex space-x-2" id="formCode" method="post" v-on:submit.prevent="verifyCode" v-if="status != 'sending' && status != 'done'">
+             <input id="code" name="code" required class="text-box " v-model="code"/>
+            <button type="button" class="primary" v-on:click.prevent="verifyCode">Verify</button>
+          
+          </form>
+    </div>
+  
+</div>
+
+@section Scripts {
+
+    <script>
+      var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["code"])";
+    </script>
+  
+    
+    <script src="/js/pages/manage/enableAuthenticator.js"></script>
+    <script src="/lib/qrcode.js"></script>
+    <script src="/js/qr.js"></script>
+}

@@ -52,16 +52,16 @@ public class MFAService : IMFAService
         };
     }
 
-    public async Task<MFAResultModel> EnableMFAAsync(string userId, EnableMFAModel model)
+    public async Task<MFAResultModel> EnableMFAAsync(string userId, string code)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Code);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(code);
 
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
             
-        var verificationCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
+        var verificationCode = code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
         var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
             user, _userManager.Options.Tokens.AuthenticatorTokenProvider, verificationCode);
@@ -123,38 +123,21 @@ public class MFAService : IMFAService
     private async Task<(string Key, string Url)> GetSharedKeyAndQrCodeUriAsync(NuagesApplicationUser user)
     {
         // Load the authenticator key & QR code URI to display on the form
-        var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
-        if (string.IsNullOrEmpty(unformattedKey))
+        var key = await _userManager.GetAuthenticatorKeyAsync(user);
+        if (string.IsNullOrEmpty(key))
         {
             await _userManager.ResetAuthenticatorKeyAsync(user);
-            unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
+            key = await _userManager.GetAuthenticatorKeyAsync(user);
         }
-
-        var key = FormatKey(unformattedKey);
 
         var email = await _userManager.GetEmailAsync(user);
         
-        var url = GenerateQrCodeUri(email, unformattedKey);
+        var url = GenerateQrCodeUri(email, key);
 
         return (key, url);
     }
 
-    private static string FormatKey(string unformattedKey)
-    {
-        var result = new StringBuilder();
-        var currentPosition = 0;
-        while (currentPosition + 4 < unformattedKey.Length)
-        {
-            result.Append(unformattedKey.AsSpan(currentPosition, 4)).Append(' ');
-            currentPosition += 4;
-        }
-        if (currentPosition < unformattedKey.Length)
-        {
-            result.Append(unformattedKey.AsSpan(currentPosition));
-        }
-
-        return result.ToString().ToLowerInvariant();
-    }
+ 
 
     private string GenerateQrCodeUri(string email, string unformattedKey)
     {
@@ -170,7 +153,7 @@ public class MFAService : IMFAService
 public interface IMFAService
 {
     Task<DisableMFAResultModel> DisableMFAAsync(string userId);
-    Task<MFAResultModel> EnableMFAAsync(string userId, EnableMFAModel model);
+    Task<MFAResultModel> EnableMFAAsync(string userId, string code);
     Task<MFAResultModel> ResetRecoveryCodesAsync(string userId);
     Task<GetMFAUrlResultModel> GetMFAUrlAsync(string userId);
 }

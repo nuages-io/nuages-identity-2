@@ -101,7 +101,7 @@ public class ProfileController : Controller
             if (!_env.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("AdminController.EnableMfaAsync");
 
-            return await _mfaService.EnableMFAAsync(User.Sub()!, model);
+            return await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
         }
         catch (Exception e)
         {

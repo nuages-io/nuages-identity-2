@@ -26,7 +26,7 @@
     <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box" type="email">
     <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
     <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
-    <button v-on:click.prevent="register" class="btn btn-primary">
+    <button v-on:click.prevent="register" class="primary full">
         @Localizer["register:button"]
     </button>
     <partial name="Shared/PasswordRequirements"/>

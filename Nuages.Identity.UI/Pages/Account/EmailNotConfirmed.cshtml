@@ -19,7 +19,7 @@
 
 <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status == ''">
     <h4>@Localizer["emailNotConfirmed:message"]</h4>
-    <button v-on:click.prevent="send" class="btn btn-primary">
+    <button v-on:click.prevent="send" class="primary full">
         @Localizer["emailNotConfirmed:sendAgain"]
     </button>
 </form>

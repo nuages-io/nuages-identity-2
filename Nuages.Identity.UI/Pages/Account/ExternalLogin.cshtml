@@ -25,7 +25,7 @@
         <span> @Localizer["externalLogin:instructions"]</span> <strong>@Model.ProviderDisplayName.</strong>
         <span class="mt-2"> @Localizer["externalLogin:instructions2"]</span>
         <input id="email" name="email" type="hidden" autofocus="" v-model="email" placeholder="@Localizer["email"]" required class="text-box">
-        <button v-on:click.prevent="externalLogin" class="btn btn-primary">@Localizer["externalLogin:button"]</button>
+        <button v-on:click.prevent="externalLogin" class="primary full">@Localizer["externalLogin:button"]</button>
     </form> 
 }
 else
