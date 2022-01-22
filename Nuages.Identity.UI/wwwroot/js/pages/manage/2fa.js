@@ -4,6 +4,7 @@ var App =
             return {
                 
                 showDeactivate: false,
+                showRemovePhone: false,
                 showCodes: false,
                 errors: [],
                 status: ""
@@ -41,17 +42,31 @@ var App =
                             res.errors.forEach((element) => {
                                 self.errors.push({ message : element});
                             });
-
-                            //self.errors.push({message: res.errors[0]});
                         });
                 },
-                addFallbackPhone()
+                removePhone()
                 {
                     //Call API
-                },
-                removeFallbackPhone()
-                {
-                    //Call API
+                    this.status = "sending";
+
+                    fetch("/api/manage/removePhone", {
+                        method: "DELETE",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(res => {
+
+                            if (res.success) {
+                                window.location = "/account/manage/TwoFactorAuthentication";
+                            } else
+                                self.status = "";
+
+                            res.errors.forEach((element) => {
+                                self.errors.push({ message : element});
+                            });
+                        });
                 }               
                 
             }

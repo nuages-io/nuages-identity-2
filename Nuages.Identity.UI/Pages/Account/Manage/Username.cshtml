@@ -6,7 +6,8 @@
 }
 
 <div id="app" >
-
+ <h2 class="page-header">@Localizer["changeUsername.title"]</h2>
+    
     <div class="flex justify-center">
         <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
         <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
@@ -17,7 +18,7 @@
 
     
     <form class="space-y-4" method="POST" v-on:submit.prevent="changeUsername" id="formChangeUsername" v-if="status == ''">
-        <span>@Localizer["changeUsername:instructions"]</span>
+        <span class="text-gray-500">@Localizer["changeUsername:instructions"]</span>
         <div>
             <strong>@Localizer["changeUsername:currentUsername"]</strong>&nbsp;
             <span>@Model.Username</span>

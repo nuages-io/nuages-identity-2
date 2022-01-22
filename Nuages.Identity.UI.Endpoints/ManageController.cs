@@ -19,13 +19,14 @@ public class ManageController : Controller
     private readonly ISendEmailChangedConfirmationService _sendEmailChangedConfirmationService;
     private readonly IChangeUserNameService _changeUserNameService;
     private readonly IMFAService _mfaService;
+    private readonly IChangePhoneNumberService _phoneNumberService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
     private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
         ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
-        IMFAService mfaService,
+        IMFAService mfaService, IChangePhoneNumberService phoneNumberService,
         IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
         _changePasswordService = changePasswordService;
@@ -34,6 +35,7 @@ public class ManageController : Controller
         _sendEmailChangedConfirmationService = sendEmailChangedConfirmationService;
         _changeUserNameService = changeUserNameService;
         _mfaService = mfaService;
+        _phoneNumberService = phoneNumberService;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
         _stringLocalizer = stringLocalizer;
@@ -281,5 +283,46 @@ public class ManageController : Controller
       
     }
     
-   
+    [HttpDelete("removePhone")]
+    [AllowAnonymous]
+    public async Task<ChangePhoneNumberResultModel> RemovePhoneAsync()
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.RemovePhoneAsync");
+            
+            var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, "", null);
+
+            if (res.Success)
+            {
+                var user = await _userManager.FindByIdAsync(User.Sub()!);
+                await _signInManager.RefreshSignInAsync(user);
+            }
+            
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
+            return new ChangePhoneNumberResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
+    }
 }

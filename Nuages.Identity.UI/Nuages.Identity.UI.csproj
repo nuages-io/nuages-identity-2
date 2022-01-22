@@ -46,6 +46,11 @@
     </ItemGroup>
     <ItemGroup>
       <_ContentIncludedByDefault Remove="Pages\Account\Manage\Shared\_ViewStart.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Account\_Manage\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Account\_Manage\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Account\_Manage\_ManageNav.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Account\_Manage\_StatusMessage.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Account\_Manage\_ViewImports.cshtml" />
     </ItemGroup>
    
 </Project>

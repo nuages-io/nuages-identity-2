@@ -4,8 +4,8 @@
     ViewData["Title"] = "Configure authenticator app";
 }
 
-<div class="space-y-4" id="app">
-    
+<div  id="app">
+    <h2 class="page-header">Configure authenticator app</h2>
     <div class="flex justify-center">
         <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
         <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
@@ -13,21 +13,20 @@
         </div>
     </div>
     
-    <div v-if="status == ''" v-show="status == ''" >
-         <div>To use an authenticator app go through the following steps:</div>
+    <div v-if="status == ''" v-show="status == ''" class="space-y-4 flex flex-col" >
+         <div class="text-gray-500">To use an authenticator app go through the following steps:</div>
             
             <div class="space-y-2">
-                <p>Scan the QR Code </p>
-                <div id="qrCode"></div>
+                <STRONG>Scan the QR Code </STRONG>
+                <div id="qrCode" class="justify-center"></div>
                 <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
             </div>
-            <div class="space-y-2">
-                <span> or enter this key</span>
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800">
-                    @Model.SharedKey
-                </span>
-            </div>
-            <p>
+    
+         <span class="text-gray-500"> or enter this key</span>
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800">
+                @Model.SharedKey
+            </span>
+            <p class="text-gray-500">
                 Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
                 with a unique code. Enter the code in the confirmation box below.
             </p>
@@ -46,8 +45,8 @@
 
 @section RightNav
 {
-    <div>
-                    Download a two-factor authenticator app like
+    <div><strong> Download a two-factor authenticator app like</strong>
+                   
             
                     <ul class="list-disc ml-4 mt-2">
                         <li>Microsoft Authenticator</li>
@@ -61,7 +60,7 @@
 @section Scripts {
 
     <script>
-      var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["code"])";
+      var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
     </script>
   
     

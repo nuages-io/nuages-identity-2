@@ -2,6 +2,7 @@
 	"2fa": {
 		"activate": "Activate",
 		"active": "Two-factor authentication is enabled.",
+		"addPhone": "Add falback phone number",
 		"codesRemaining": "codes remaining.",
 		"deactivate": "Deactivate",
 		"forgetMachine": "Forget this device. You will be asked for a two-factor code at next login.",
@@ -187,6 +188,14 @@
 		"reset": "Reset",
 		"success": "Your password has been successfully changed.",
 		"title": "Reset password"
+	},
+	"setPassword": {
+		"instructions": "Enter the desired password.",
+		"password": "Password",
+		"passwordConfirm": "Password confirmation",
+		"submit": "Update",
+		"success": "Your password has been successfully added",
+		"title": "Add a password"
 	},
 	"username": "Username",
 	"warning": "Warning!",

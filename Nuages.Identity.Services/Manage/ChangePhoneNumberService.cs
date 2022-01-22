@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
@@ -20,16 +21,23 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
     public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync(string userId, string phoneNumber, string? token)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
-        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(phoneNumber);
-        
+       
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        if (string.IsNullOrEmpty(token))
-            token = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
+        IdentityResult res;
         
-        var res = await _userManager.ChangePhoneNumberAsync(user, phoneNumber, token);
+        if (string.IsNullOrEmpty(token))
+        {
+            res = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
+        }
+        else
+        {
+            ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(phoneNumber);
+
+            res = await _userManager.ChangePhoneNumberAsync(user, phoneNumber, token);
+        }
 
         return new ChangePhoneNumberResultModel
         {

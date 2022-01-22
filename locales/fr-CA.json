@@ -2,6 +2,7 @@
 	"2fa": {
 		"activate": "Activer",
 		"active": "L'authentification à deux facteurs est activée.",
+		"addPhone": "Ajouter un no. de téléphone de secours",
 		"codesRemaining": "codes restants.",
 		"deactivate": "Désactiver",
 		"forgetMachine": "Oubliez cet appareil. Un code à deux facteurs vous sera demandé lors de la prochaine connexion.",
@@ -187,6 +188,14 @@
 		"reset": "Réinitialiser",
 		"success": "Votre mot de passe a été changé avec succès.",
 		"title": "Ré-initialisation du mot de passe"
+	},
+	"setPassword": {
+		"instructions": "Entrez le mot de passe désiré.",
+		"password": "Mot de passe",
+		"passwordConfirm": "Confirmation du mot de passe",
+		"submit": "Changer",
+		"success": "Votre mot de passe a été ajouté avec succès",
+		"title": "Ajout d'un mot de passe"
 	},
 	"username": "Nom d'utilisateur",
 	"warning": "Attention!",
