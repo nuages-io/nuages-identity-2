@@ -20,13 +20,14 @@ public class ManageController : Controller
     private readonly IChangeUserNameService _changeUserNameService;
     private readonly IMFAService _mfaService;
     private readonly IChangePhoneNumberService _phoneNumberService;
+    private readonly ISendSMSVerificationCode _sendSmsVerificationCode;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
     private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
         ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
-        IMFAService mfaService, IChangePhoneNumberService phoneNumberService,
+        IMFAService mfaService, IChangePhoneNumberService phoneNumberService, ISendSMSVerificationCode sendSmsVerificationCode,
         IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
         _changePasswordService = changePasswordService;
@@ -36,6 +37,7 @@ public class ManageController : Controller
         _changeUserNameService = changeUserNameService;
         _mfaService = mfaService;
         _phoneNumberService = phoneNumberService;
+        _sendSmsVerificationCode = sendSmsVerificationCode;
         _webHostEnvironment = webHostEnvironment;
         _logger = logger;
         _stringLocalizer = stringLocalizer;
@@ -47,7 +49,7 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ChangePasswordAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePasswordAsync");
 
             _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
@@ -91,7 +93,7 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SetPasswordAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SetPasswordAsync");
 
             _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
@@ -129,7 +131,7 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendEmailChangeMessageAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendEmailChangeMessageAsync");
 
             var res = await _sendEmailChangedConfirmationService.SendEmailChangeConfirmation(User.Sub()!, model.Email);
 
@@ -165,7 +167,7 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ChangeUsernameAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangeUsernameAsync");
             
             var res = await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
 
@@ -208,7 +210,7 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Disable2FaAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Disable2FaAsync");
             
             var res = await _mfaService.DisableMFAAsync(User.Sub()!);
 
@@ -247,7 +249,7 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Enable2FaAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Enable2FaAsync");
             
             var res = await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
 
@@ -290,7 +292,7 @@ public class ManageController : Controller
         try
         {
             if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.RemovePhoneAsync");
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.RemovePhoneAsync");
             
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, "", null);
 
@@ -312,6 +314,43 @@ public class ManageController : Controller
             }
             
             return new ChangePhoneNumberResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
+    }
+    
+    [HttpPost("sendPhoneChangeMessage")]
+    [AllowAnonymous]
+    public async Task<SendSMSVerificationCodeResultModel> SendPhoneChangeVerificationAsync([FromBody] SendSMSVerificationCodeModel model)
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
+            
+            var res = await _sendSmsVerificationCode.SendCode(User.Sub()!, model.PhoneNumber);
+
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
+            return new SendSMSVerificationCodeResultModel
             {
                 Success = false,
                 Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}

@@ -23,7 +23,7 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
         _logger = logger;
     }
 
-    public async Task<endSMSVerificationCodeResultModel> SendCode(string userId, string phoneNumber)
+    public async Task<SendSMSVerificationCodeResultModel> SendCode(string userId, string phoneNumber)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(phoneNumber);
@@ -31,9 +31,19 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            return new endSMSVerificationCodeResultModel
+            return new SendSMSVerificationCodeResultModel
             {
                 Success = true //Fake success
+            };
+        }
+
+        var res = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
+        if (!res.Succeeded)
+        {
+            return new SendSMSVerificationCodeResultModel
+            {
+                Success = false,
+                Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
             };
         }
 
@@ -45,7 +55,7 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
         
         await _sender.SendSmsAsync(user.PhoneNumber, message);
         
-        return new endSMSVerificationCodeResultModel
+        return new SendSMSVerificationCodeResultModel
         {
             Success = true
         };
@@ -55,11 +65,16 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
 public interface ISendSMSVerificationCode
 {
     // ReSharper disable once UnusedMemberInSuper.Global
-    Task<endSMSVerificationCodeResultModel> SendCode(string userId, string phoneNumber);
+    Task<SendSMSVerificationCodeResultModel> SendCode(string userId, string phoneNumber);
 }
 
-public class endSMSVerificationCodeResultModel
+public class SendSMSVerificationCodeResultModel
 {
     public bool Success { get; set; }
-    public string? ErrorMessage { get; set; }
+    public List<string> Errors { get; set; } = new();
+}
+
+public class SendSMSVerificationCodeModel
+{
+    public string PhoneNumber { get; set; } = string.Empty;
 }

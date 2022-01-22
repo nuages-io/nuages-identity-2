@@ -27,9 +27,6 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-
-                            console.log(res);
-                            
                             self.status = "done";
                             
                             if (res.success) {
