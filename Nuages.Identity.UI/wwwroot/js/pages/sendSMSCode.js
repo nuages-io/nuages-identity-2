@@ -32,7 +32,9 @@ var App =
                             if (res.success) {
                                window.location = "/Account/SMSLogin?returnUrl=" + returnUrl;
                             } else
-                                self.errors.push({message: res.message});
+                                self.errors = res.errors.map(function(m) {
+                                    return { message : m}
+                                });
                         });
 
                 },

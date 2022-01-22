@@ -33,7 +33,6 @@ var App =
                                 {
                                     window.location = returnUrl;
                                 }
-
                             }
                             else
                             {
@@ -42,10 +41,7 @@ var App =
                                 res.errors.forEach((element) => {
                                     self.errors.push({ message : element});
                                 });
-                                
-                                //self.errors.push({message: res.message});
                             }
-
                         });
 
                 },

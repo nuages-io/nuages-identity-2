@@ -39,8 +39,6 @@ var App =
                             res.errors.forEach((element) => {
                                 self.errors.push({ message : element});
                             });
-                            
-                            //self.errors.push({message: res.errors[0]});
                         });
 
                 },
@@ -66,7 +64,6 @@ var App =
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});
                         });
-
                     }
                 }
             },

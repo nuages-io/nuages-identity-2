@@ -4,24 +4,24 @@ var App =
             return {
                 currentPassword: "",
                 password: "",
-                confirmPassword : "",
+                confirmPassword: "",
                 errors: [],
                 status: ""
             }
         },
-        mounted() {          
-                currentPassword.focus();              
+        mounted() {
+            currentPassword.focus();
         },
         methods:
             {
                 doChangePassword: function () {
-                    var self = this;                    
-                    
+                    var self = this;
+
                     var cp = self.currentPassword;
                     var p = self.password;
                     var c = self.passwordConfirm;
-                                       
-                    
+
+
                     fetch("/api/manage/changePassword", {
                         method: "POST",
                         headers: {
@@ -36,39 +36,31 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-                            
+
                             if (res.success) {
                                 self.status = "done";
                                 self.errors = [];
-                            }
-                            else
-                            {
+                            } else {
                                 self.status = "error";
-                                var err = res.errors.map(function(m) {
-                                    return { message : m}
+                                self.errors = res.errors.map(function (m) {
+                                    return {message: m}
                                 });
-                                self.errors = err;
-                                if (res.message)
-                                {
-                                    self.errors.push({message: res.message});
-                                }
                             }
-                                
                         });
 
                 },
                 changePassword: function () {
-                   
+
                     var self = this;
-                    
+
                     this.errors = [];
                     formChangePassword.classList.remove("was-validated");
 
                     currentPassword.setCustomValidity("");
-                    
+
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
-                    
+
                     var res = formChangePassword.checkValidity();
                     if (res) {
 
@@ -95,7 +87,7 @@ var App =
 
                         list.forEach((element) => {
 
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }
@@ -104,21 +96,21 @@ var App =
         watch: {
             currentPassword(value) {
 
-                this.errors.splice(this.errors.findIndex( a => a.id === "currentPassword"), 1);
-               
+                this.errors.splice(this.errors.findIndex(a => a.id === "currentPassword"), 1);
+
                 this.status = "";
 
                 currentPassword.setCustomValidity("");
             },
             password(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
-                
+                this.errors.splice(this.errors.findIndex(a => a.id === "password"), 1);
+
                 this.status = "";
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "passwordConfirm"), 1);
-                
+                this.errors.splice(this.errors.findIndex(a => a.id === "passwordConfirm"), 1);
+
                 this.status = "";
                 passwordCustom.setCustomValidity("");
             }

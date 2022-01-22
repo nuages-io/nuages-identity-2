@@ -80,7 +80,7 @@ public interface ISMSLoginService
 public class SendSMSCodeResultModel
 {
     public bool Success { get; set; }
-    public string? Message { get; set; }
+    public List<string> Errors { get; set; } = new();
 }
 
 public class SendSMSCodeModel

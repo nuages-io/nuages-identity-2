@@ -34,9 +34,7 @@ var App =
 
                             self.status = "done";
                             
-                            if (res.success) {
-                               
-                            } else
+                            if (!res.success) 
                                 self.errors.push({message: res.message});
                         });
 

@@ -17,7 +17,7 @@ var App =
                     var e = self.email;
 
                     this.status = "sending";
-                    
+
                     fetch("/api/manage/sendEmailChange", {
                         method: "POST",
                         headers: {
@@ -30,32 +30,25 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-
-                            
-                            
                             if (res.success) {
                                 self.status = "done";
                             } else
                                 self.status = "";
 
                             res.errors.forEach((element) => {
-                                this.errors.push({ message : element});
-                            });                              
-                            
-                            //self.errors.push({message: res.errors[0]});
+                                this.errors.push({message: element});
+                            });
                         });
-
                 },
                 changeEmail: function () {
-
                     this.errors = [];
                     formChangeEmail.classList.remove("was-validated");
 
                     email.setCustomValidity("");
-                    
+
                     var res = formChangeEmail.checkValidity();
                     if (res) {
-                       this.doChangeEmail();
+                        this.doChangeEmail();
                     } else {
                         formChangeEmail.classList.add("was-validated");
 
@@ -70,9 +63,8 @@ var App =
                         var list = formChangeEmail.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
-
                     }
                 }
             },

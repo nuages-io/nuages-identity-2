@@ -44,14 +44,8 @@ var App =
                                     return { message : m}
                                 });
                                 self.errors = err;
-                                if (res.message)
-                                {
-                                    self.errors.push({message: res.message});
-                                }
                             }
-                                
                         });
-
                 },
                 setPassword: function () {
                    
@@ -65,9 +59,7 @@ var App =
                     
                     var res = formSetPassword.checkValidity();
                     if (res) {
-
                         this.status = "sending";
-
                         self.doSetPassword();
                     } else {
 
@@ -87,7 +79,6 @@ var App =
 
                             this.errors.push({ message : element.validationMessage, id : element.id});
                         });
-
                     }
                 }
             },

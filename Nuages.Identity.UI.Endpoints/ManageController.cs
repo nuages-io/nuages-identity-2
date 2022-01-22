@@ -77,7 +77,7 @@ public class ManageController : Controller
             return new ChangePasswordResultModel
             {
                 Success = false,
-                Message = _stringLocalizer["errorMessage:exception"]
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
             };
         }
         finally
@@ -115,7 +115,7 @@ public class ManageController : Controller
             return new ChangePasswordResultModel
             {
                 Success = false,
-                Message = _stringLocalizer["errorMessage:exception"]
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
             };
         }
         finally

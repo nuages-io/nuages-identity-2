@@ -408,7 +408,7 @@ public class AccountController : Controller
             return new ResetPasswordResultModel
             {
                 Success = false,
-                Message = _stringLocalizer["errorMessage:exception"]
+                Errors = new List<string>{ _stringLocalizer["errorMessage:exception"]}
             };
         }
         finally
@@ -488,7 +488,7 @@ public class AccountController : Controller
             return new SendSMSCodeResultModel
             {
                 Success = false,
-                Message = _stringLocalizer["errorMessage:exception"]
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
             };
         }
         finally

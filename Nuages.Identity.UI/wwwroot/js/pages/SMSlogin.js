@@ -2,16 +2,15 @@ var App =
     {
         data() {
             return {
-                code: "",               
-                errors: [],              
+                code: "",
+                errors: [],
                 action: "",
-                status : ""
+                status: ""
             }
         },
         mounted() {
             code.focus();
-            setTimeout(function()
-            {
+            setTimeout(function () {
                 code.value = "";
             })
         },
@@ -20,7 +19,7 @@ var App =
                 doLogin: function (token) {
                     var self = this;
                     var c = self.code;
-                                   
+
                     fetch("/api/account/loginSMS", {
                         method: "POST",
                         headers: {
@@ -28,36 +27,19 @@ var App =
                         },
                         body: JSON.stringify({
                                 code: c,
-                                                              recaptchaToken: token
+                                recaptchaToken: token
                             }
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
-                                
+
                             if (res.success) {
                                 window.location = returnUrl;
                             } else
-                                
+
                                 switch (res.reason) {
-                                    // case "PasswordExpired":
-                                    // case "PasswordMustBeChanged": 
-                                    // {
-                                    //     window.location = "/account/resetpassword?expired=true";
-                                    //     break;
-                                    // }
-                                    // case "MfaRequired": {
-                                    //     window.location = "/account/loginwith2fa";
-                                    //     break;
-                                    // }
-                                    // case "EmailNotConfirmed": {
-                                    //     window.location = "/account/emailnotconfirmed";
-                                    //     break;
-                                    // }
-                                    // case "PhoneNotConfirmed": {
-                                    //     window.location = "/account/phonenotconfirmed";
-                                    //     break;
-                                    // }                                   
+                                                             
                                     default: {
                                         this.status = "";
                                         //NotWithinDateRange,
@@ -73,7 +55,7 @@ var App =
 
                 },
                 login: function () {
-                    
+
                     this.errors = [];
                     formLogin.classList.remove("was-validated");
 
@@ -92,7 +74,7 @@ var App =
                         });
                     } else {
 
-                        
+
                         formLogin.classList.add("was-validated");
 
                         if (!code.validity.valid) {
@@ -102,18 +84,18 @@ var App =
                         var list = formLogin.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
                     }
                 }
             },
         watch: {
             code(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "code"), 1);
+                this.errors.splice(this.errors.findIndex(a => a.id === "code"), 1);
                 this.action = "";
                 code.setCustomValidity("");
             },
-           
+
         }
     };
 

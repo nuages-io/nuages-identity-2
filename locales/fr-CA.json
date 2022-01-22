@@ -3,13 +3,31 @@
 		"activate": "Activer",
 		"active": "L'authentification à deux facteurs est activée.",
 		"addPhone": "Ajouter un no. de téléphone de secours",
+		"clearPhoneConfirm": "Voulez-vous vraiment effacer le numéro de téléphone ?",
+		"clearPhoneTitle": "Effacer le numéro de téléphone",
 		"codesRemaining": "codes restants.",
 		"deactivate": "Désactiver",
+		"deactivateConfirmation": "Voulez-vous vraiment désactiver l'authentification à deux facteurs ?",
+		"deactivateTitle": "Désactiver l'authentification à deux facteurs",
+		"fallback": "No. SMS de secours",
 		"forgetMachine": "Oubliez cet appareil. Un code à deux facteurs vous sera demandé lors de la prochaine connexion.",
+		"hideCodes": "Masquer les codes",
 		"inactive": "L'authentification à deux facteurs est inactive",
 		"instructions": "L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire à votre compte en exigeant plus qu'un simple mot de passe pour vous connecter",
+		"showCodes": "Afficher les codes",
 		"title": "Authentication à deux facteurs"
 	},
+	"addPhone": {
+		"code": "Code de vérification",
+		"instructions": "Fournir un numéro SMS de secours nous permettra d'envoyer vos codes d'authentification à deux facteurs à un autre appareil si vous perdez votre appareil principal.",
+		"instructions2": "Entrez le code de vérification que nous vous avons envoyé.",
+		"newPhoneNumber": "Numéro de téléphone SMS",
+		"sendMessage": "Ajouter # de secours",
+		"submit": "Vérifier le code",
+		"success": "Numéro de SMS de secours ajouté avec succès.",
+		"title": "Ajout d'un numéro de SMS de secours"
+	},
+	"cancel": "Annuler",
 	"changeEmail": {
 		"currentEmail": "Courriel actuel",
 		"error": "Le changement de courriel a échoué.",
@@ -42,6 +60,7 @@
 		"success": "Nom d'utilisateur changé avec succès.",
 		"title": "Changer votre nom d'utilisateur"
 	},
+	"clear": "Effacer",
 	"confirmEmail": {
 		"error": "Erreur lors de la confirmation de votre courriel.",
 		"success": "Merci d'avoir confirmé votre courriel.",
@@ -74,6 +93,7 @@
 		"instructions": "Vous êtes authentifié avec",
 		"instructions2": "Cliquez le bouton \"Créer le compte\" afin de créer votre compte et continuer avec la connexion.",
 		"lockout": "Le compte est vérouillé",
+		"shortTitle": "Conn. externes",
 		"title": "Enregistrement avec un compte externe"
 	},
 	"forgotPassword": {

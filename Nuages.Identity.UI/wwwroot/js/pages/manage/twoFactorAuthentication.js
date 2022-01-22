@@ -14,7 +14,6 @@ var App =
         },
         methods:
             {
-               
                 forgetBrowser()
                 {
                     //Call API
@@ -32,7 +31,6 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-
                             if (res.success) {
                                 window.location = "/account/manage/TwoFactorAuthentication";
                             } else
@@ -56,7 +54,6 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-
                             if (res.success) {
                                 window.location = "/account/manage/TwoFactorAuthentication";
                             } else

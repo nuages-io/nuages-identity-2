@@ -45,36 +45,33 @@ var App =
                             res.errors.forEach((element) => {
                                 self.errors.push({ message : element});
                             });
-                            
                         });
-
                 },
                 sendPhoneChangeMessage: function () {
 
                     this.errors = [];
-                    formChangePhone.classList.remove("was-validated");
+                    formAddPhone.classList.remove("was-validated");
 
                     phone.setCustomValidity("");
                     
-                    var res = formChangePhone.checkValidity();
+                    var res = formAddPhone.checkValidity();
                     if (res) {
                        this.doSendPhoneChangeMessage();
                     } else {
-                        formChangePhone.classList.add("was-validated");
+                        formAddPhone.classList.add("was-validated");
 
                         if (!phone.validity.valid) {
                             phone.setCustomValidity(phoneRequiredMessage);
                         }
 
-                        var list = formChangePhone.querySelectorAll(":invalid");
+                        var list = formAddPhone.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});
                         });
-
                     }
                 },
-                doChangePhone: function () {
+                doAddPhone: function () {
                     var self = this;
                     var p = self.phone;
                     var c = self.code;
@@ -94,47 +91,39 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-
                             if (res.success) {
-                                self.status = "done";
+                                //self.status = "done";
+                                window.location = "/account/manage/twoFactorAuthentication";
                             } else
                                 self.status = "sent";
 
                             res.errors.forEach((element) => {
                                 self.errors.push({ message : element});
                             });
-
                         });
-
                 },
-                changePhone: function () {
+                addPhone: function () {
 
                     this.errors = [];
-                    formChangePhone.classList.remove("was-validated");
+                    formAddPhone.classList.remove("was-validated");
 
-                    phone.setCustomValidity("");
                     code.setCustomValidity("");
                     
-                    var res = formChangePhone.checkValidity();
+                    var res = formAddPhone.checkValidity();
                     if (res) {
-                        this.doChangePhone();
+                        this.doAddPhone();
                     } else {
-                        formChangePhone.classList.add("was-validated");
-
-                        if (!phone.validity.valid) {
-                            phone.setCustomValidity(phoneRequiredMessage);
-                        }
+                        formAddPhone.classList.add("was-validated");
 
                         if (!code.validity.valid) {
                             code.setCustomValidity(codeRequiredMessage);
                         }
 
-                        var list = formChangePhone.querySelectorAll(":invalid");
+                        var list = formAddPhone.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});
                         });
-
                     }
                 }
             },

@@ -53,10 +53,6 @@ var App =
                                         window.location = "/account/resetpassword?expired=true";
                                         break;
                                     }
-                                    // case "MfaRequired": {
-                                    //     window.location = "/account/loginwith2fa";
-                                    //     break;
-                                    // }
                                     case "EmailNotConfirmed": {
                                         window.location = "/account/emailnotconfirmed";
                                         break;

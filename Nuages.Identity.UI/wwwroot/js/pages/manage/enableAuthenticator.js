@@ -37,12 +37,9 @@ var App =
                                 self.status = "";
 
                             res.errors.forEach((element) => {
-                                self.errors.push({ message : element});
+                                self.errors.push({message: element});
                             });
-
-                            //self.errors.push({message: res.errors[0]});
                         });
-
                 },
                 verifyCode: function () {
 
@@ -64,7 +61,7 @@ var App =
                         var list = formCode.querySelectorAll(":invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }

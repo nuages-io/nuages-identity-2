@@ -3,13 +3,31 @@
 		"activate": "Activate",
 		"active": "Two-factor authentication is enabled.",
 		"addPhone": "Add falback phone number",
+		"clearPhoneConfirm": "Are you sure you want to clera the phone number?",
+		"clearPhoneTitle": "Clear phone number",
 		"codesRemaining": "codes remaining.",
 		"deactivate": "Deactivate",
+		"deactivateConfirmation": "Are you sure you want to deactivate Two Factor Authentication?",
+		"deactivateTitle": "Deactivate Two Factor Authentication",
+		"fallback": "Fallback SMS snumber",
 		"forgetMachine": "Forget this device. You will be asked for a two-factor code at next login.",
+		"hideCodes": "Hide codes",
 		"inactive": "Two-factor authentication is inactive",
 		"instructions": "Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in",
+		"showCodes": "Show codes",
 		"title": "Two-factor authentication"
 	},
+	"addPhone": {
+		"code": "Verification code",
+		"instructions": "Providing a fallback SMS number will allow us to send your two-factor authentication codes to an alternate device if you lose your primary device.",
+		"instructions2": "Enter the verification code we sent you.",
+		"newPhoneNumber": "SMS phone number",
+		"sendMessage": "Add fallback #",
+		"submit": "Verify code",
+		"success": "Fallback SMS number added with success.",
+		"title": "Add a falback SMS number"
+	},
+	"cancel": "Cancel",
 	"changeEmail": {
 		"currentEmail": "Current email",
 		"error": "Email change failed.",
@@ -42,6 +60,7 @@
 		"success": "Username changed successfully.",
 		"title": "Change your username"
 	},
+	"clear": "Clear",
 	"confirmEmail": {
 		"error": "Error confirming your email.",
 		"success": "Thank you for confirming your email.",
@@ -74,6 +93,7 @@
 		"instructions": "You've successfully authenticated with",
 		"instructions2": "Click the \"Register\" button to create your account and continue the login process.",
 		"lockout": "The account is locked",
+		"shortTitle": "External logins",
 		"title": "Register using an external account"
 	},
 	"forgotPassword": {

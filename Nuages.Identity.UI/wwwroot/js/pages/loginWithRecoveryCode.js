@@ -40,24 +40,7 @@ var App =
                             } else
                                 
                                 switch (res.reason) {
-                                    // case "PasswordExpired":
-                                    // case "PasswordMustBeChanged": 
-                                    // {
-                                    //     window.location = "/account/resetpassword?expired=true";
-                                    //     break;
-                                    // }
-                                    // case "MfaRequired": {
-                                    //     window.location = "/account/loginwith2fa";
-                                    //     break;
-                                    // }
-                                    // case "EmailNotConfirmed": {
-                                    //     window.location = "/account/emailnotconfirmed";
-                                    //     break;
-                                    // }
-                                    // case "PhoneNotConfirmed": {
-                                    //     window.location = "/account/phonenotconfirmed";
-                                    //     break;
-                                    // }                                   
+                                                           
                                     default: {
                                         this.status = "";
                                         //NotWithinDateRange,
