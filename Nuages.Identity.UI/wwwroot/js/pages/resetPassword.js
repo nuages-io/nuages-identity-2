@@ -53,10 +53,12 @@ var App =
                             else
                             {
                                 self.status = "error";
+                                
                                 var err = res.errors.map(function(m) {
                                     return { message : m}
                                 });
                                 self.errors = err;
+                                
                                 if (res.message)
                                 {
                                     self.errors.push({message: res.message});

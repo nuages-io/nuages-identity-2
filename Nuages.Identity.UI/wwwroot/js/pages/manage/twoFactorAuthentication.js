@@ -1,8 +1,7 @@
 var App =
     {
         data() {
-            return {
-                
+            return {                
                 showDeactivate: false,
                 showRemovePhone: false,
                 showCodes: false,

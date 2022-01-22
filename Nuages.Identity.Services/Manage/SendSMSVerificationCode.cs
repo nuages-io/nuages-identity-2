@@ -37,23 +37,23 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
             };
         }
 
-        var res = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
-        if (!res.Succeeded)
-        {
-            return new SendSMSVerificationCodeResultModel
-            {
-                Success = false,
-                Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
-            };
-        }
+        // var res = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
+        // if (!res.Succeeded)
+        // {
+        //     return new SendSMSVerificationCodeResultModel
+        //     {
+        //         Success = false,
+        //         Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+        //     };
+        // }
 
-        var code = await _userManager.GenerateTwoFactorTokenAsync(user, "Phone");
+        var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
 
         var message = _localizer["changePhoneNumber:smsMessage", code];
 
         _logger.LogInformation($"Message : {message} No: {phoneNumber}");
         
-        await _sender.SendSmsAsync(user.PhoneNumber, message);
+        await _sender.SendSmsAsync(phoneNumber, message);
         
         return new SendSMSVerificationCodeResultModel
         {

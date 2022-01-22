@@ -81,14 +81,14 @@ var App =
                     
                     this.status = "sending";
 
-                    fetch("/api/manage/sendPhoneChangeMessage", {
+                    fetch("/api/manage/changePhoneNumber", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             phoneNumber: p,
-                            cdoe: c
+                            token: c
                             }
                         )
                     })
@@ -98,7 +98,7 @@ var App =
                             if (res.success) {
                                 self.status = "done";
                             } else
-                                self.status = "";
+                                self.status = "sent";
 
                             res.errors.forEach((element) => {
                                 self.errors.push({ message : element});
@@ -146,7 +146,7 @@ var App =
             },
             code(value) {
                 this.errors = [];
-                this.status = "";
+                //this.status = "";
                 code.setCustomValidity("");
             }
         }

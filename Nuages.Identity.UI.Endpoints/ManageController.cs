@@ -364,4 +364,41 @@ public class ManageController : Controller
      
       
     }
+    
+    [HttpPost("changePhoneNumber")]
+    [AllowAnonymous]
+    public async Task<ChangePhoneNumberResultModel> ChangePhoneNUmberAsync([FromBody] ChangePhoneNumberModel model)
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
+            
+            var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
+
+            return res;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
+            
+            return new ChangePhoneNumberResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+     
+      
+    }
 }
