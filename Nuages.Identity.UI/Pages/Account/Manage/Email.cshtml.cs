@@ -10,31 +10,30 @@ using Nuages.Web;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
-namespace Nuages.Identity.UI.Pages.Account.Manage
+namespace Nuages.Identity.UI.Pages.Account.Manage;
+
+[Authorize]
+public class EmailModel : PageModel
 {
-    [Authorize]
-    public class EmailModel : PageModel
+    private readonly NuagesUserManager _userManager;
+
+    public EmailModel(NuagesUserManager userManager)
     {
-        private readonly NuagesUserManager _userManager;
+        _userManager = userManager;
+    }
 
-        public EmailModel(NuagesUserManager userManager)
-        {
-            _userManager = userManager;
-        }
+    [TempData] 
+    public string Email { get; set; } = string.Empty;
 
-        [TempData] 
-        public string Email { get; set; } = string.Empty;
+    [TempData]
+    public bool EmailVerified { get; set; }
 
-        [TempData]
-        public bool EmailVerified { get; set; }
+    public async Task<IActionResult> OnGetAsync()
+    {
+        var user = await _userManager.FindByIdAsync(User.Sub()!);
+        Email = user.Email;
+        EmailVerified = user.EmailConfirmed;
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            var user = await _userManager.FindByIdAsync(User.Sub()!);
-            Email = user.Email;
-            EmailVerified = user.EmailConfirmed;
-
-            return Page();
-        }
+        return Page();
     }
 }

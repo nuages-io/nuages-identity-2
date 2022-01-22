@@ -1,13 +1,11 @@
 using System.Collections.Immutable;
 using System.Security.Claims;
-using System.Text.Json;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using MongoDB.Bson;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;

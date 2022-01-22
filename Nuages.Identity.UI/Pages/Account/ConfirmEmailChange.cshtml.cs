@@ -3,63 +3,61 @@
 #nullable disable
 
 using System.Text;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 // ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
-namespace Nuages.Identity.UI.Pages.Account
+namespace Nuages.Identity.UI.Pages.Account;
+
+public class ConfirmEmailChangeModel : PageModel
 {
-    public class ConfirmEmailChangeModel : PageModel
-    {
-        private readonly NuagesUserManager _userManager;
-        private readonly NuagesSignInManager _signInManager;
-        private readonly IChangeEmailService _changeEmailService;
+    private readonly NuagesUserManager _userManager;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly IChangeEmailService _changeEmailService;
 
-        public ConfirmEmailChangeModel(NuagesUserManager userManager, NuagesSignInManager signInManager, IChangeEmailService changeEmailService)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _changeEmailService = changeEmailService;
-        }
+    public ConfirmEmailChangeModel(NuagesUserManager userManager, NuagesSignInManager signInManager, IChangeEmailService changeEmailService)
+    {
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _changeEmailService = changeEmailService;
+    }
 
         
-        [TempData]
-        public bool Success { get; set; }
+    [TempData]
+    public bool Success { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
+    public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
+    {
+        if (userId == null || email == null || code == null)
         {
-            if (userId == null || email == null || code == null)
-            {
-                return RedirectToPage("/Index");
-            }
+            return RedirectToPage("/Index");
+        }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return NotFound($"Unable to load user with ID '{userId}'.");
-            }
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return NotFound($"Unable to load user with ID '{userId}'.");
+        }
 
-            code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-            email = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(email));
+        code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        email = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(email));
             
-            var res = await _changeEmailService.ChangeEmailAsync(userId, email, code);
+        var res = await _changeEmailService.ChangeEmailAsync(userId, email, code);
             
-            if (!res.Success)
-            {
-                Success = false;
-                return Page();
-            }
-
-            await _signInManager.RefreshSignInAsync(user);
-            
-            Success = true;
-            
+        if (!res.Success)
+        {
+            Success = false;
             return Page();
         }
+
+        await _signInManager.RefreshSignInAsync(user);
+            
+        Success = true;
+            
+        return Page();
     }
 }

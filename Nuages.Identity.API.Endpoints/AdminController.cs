@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.Manage;
-using Nuages.Web;
 
 // ReSharper disable UnusedMember.Global
 

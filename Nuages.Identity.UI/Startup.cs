@@ -131,7 +131,7 @@ public class Startup
 
        // var openIdDictOptions = _configuration.GetSection("Nuages:OpenIdDict").Get<OpenIdDictOptions>();
             
-        services.AddNuagesOpenIdDict(_configuration, (configure) => {
+        services.AddNuagesOpenIdDict(_configuration, configure => {
             
         });
 

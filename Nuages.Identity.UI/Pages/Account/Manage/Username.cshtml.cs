@@ -5,29 +5,20 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Web;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
 
-namespace Nuages.Identity.UI.Pages.Account.Manage
+namespace Nuages.Identity.UI.Pages.Account.Manage;
+
+[Authorize]
+public class UsernameModel : PageModel
 {
-    [Authorize]
-    public class UsernameModel : PageModel
+    [TempData] 
+    public string Username { get; set; } = string.Empty;
+
+    public void OnGetAsync()
     {
-        private readonly NuagesUserManager _userManager;
-
-        public UsernameModel(NuagesUserManager userManager)
-        {
-            _userManager = userManager;
-        }
-
-        [TempData] 
-        public string Username { get; set; } = string.Empty;
-
-        public void OnGetAsync()
-        {
-            Username = User.Identity!.Name;
-        }
+        Username = User.Identity!.Name;
     }
 }

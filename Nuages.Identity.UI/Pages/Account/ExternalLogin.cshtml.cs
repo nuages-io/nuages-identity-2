@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Login;
 // ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Nuages.Identity.UI.Pages.Account;
 
@@ -45,7 +45,7 @@ public class ExternalLoginModel : PageModel
 
     public IActionResult OnPost(string provider, string returnUrl = null)
     {
-        var redirectUrl = Url.Page("./ExternalLogin", pageHandler: "Callback", values: new { returnUrl });
+        var redirectUrl = Url.Page("./ExternalLogin",  "Callback",  new { returnUrl });
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
         return new ChallengeResult(provider, properties);
     }
@@ -94,6 +94,7 @@ public class ExternalLoginModel : PageModel
                 {
                     if (result.IsNotAllowed)
                     {
+                        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
                         switch (user.LastFailedLoginReason)
                         {
                             case FailedLoginReason.EmailNotConfirmed:

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.Login.Passwordless;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Pages.Account;
 
@@ -18,9 +19,7 @@ public class PasswordlessLogin : PageModel
 
         if (res.Success)
             return Redirect("/");
-        else
-        {
-            return Unauthorized();
-        }
+       
+        return Unauthorized();
     }
 }
