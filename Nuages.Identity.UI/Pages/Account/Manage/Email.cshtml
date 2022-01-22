@@ -6,9 +6,9 @@
     ViewData["Title"] = Localizer["changeEmail:title"];
 }
 
-<div id="app">
+<div id="app" >
 
-    <div class="flex justify-center mt-6">
+    <div class="flex justify-center">
         <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
         <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
             <i class="fa fa-check-circle text-green-700 fa-3x text-center"></i>
@@ -17,7 +17,7 @@
     </div>
 
     
-    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="changeEmail" id="formChangeEmail" v-if="status == ''">
+    <form class="space-y-4" method="POST" v-on:submit.prevent="changeEmail" id="formChangeEmail" v-if="status == ''">
         <span>@Localizer["changeEmail:instructions"]</span>
         <div>
             <strong>@Localizer["changeEmail:currentEmail"]</strong>&nbsp;

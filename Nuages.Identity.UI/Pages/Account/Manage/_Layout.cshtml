@@ -14,23 +14,29 @@
 </head>
 <body class="w-full">
 
-<div class="min-h-screen flex flex-col justify-start sm:px-6 lg:px-8 max-w-xl">
-    <div class="mt-8 ">
+<partial name="_NavBar"/>
+<div class="min-h-screen flex flex-col justify-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mt-4">
          
        
        <div class="flex flex-row">
            <div class="basis-1/4">
                
                <ul class="list-disc">
-                   <li> <a href="~/account/logout">@Localizer["logout:title"]</a></li>
+                  
                    <li> <a href="~/account/manage/changePassword">@Localizer["changePassword:title"]</a></li>
                    <li> <a href="~/account/manage/email">@Localizer["changeEmail:title"]</a></li>
                    <li> <a href="~/account/manage/username">@Localizer["changeUsername:title"]</a></li>
                    <li> <a href="~/account/manage/twoFactorAuthentication">@Localizer["mfa:title"]</a></li>
                    <li> <a href="~/account/manage/profile">@Localizer["profile:title"]</a></li>
                </ul>
+               @RenderSection("LeftNav", false)
            </div>
-           <div >@RenderBody()</div>
+           <div class="basis-1/2"> @RenderBody()</div>
+          
+           <div class="basis-1/4">
+               @RenderSection("RightNav", false)
+           </div>
        </div>
         
     </div>

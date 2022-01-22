@@ -126,7 +126,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
     public async Task<List<string>> GetRecoveryCodes(NuagesApplicationUser user)
     {
         var recoveryCode = await GetAuthenticationTokenAsync(user, "[AspNetUserStore]", "RecoveryCodes");
-        return recoveryCode.Split(";").ToList();
+        return recoveryCode?.Split(";").ToList() ?? new List<string>();
     }
 }
 
