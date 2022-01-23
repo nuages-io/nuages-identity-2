@@ -95,6 +95,11 @@ public class PasswordlessService : IPasswordlessService
 
             
             Console.WriteLine(res.Url);
+
+            return new StartPasswordlessResultModel
+            {
+                Success = true
+            };
         }
        
         return new StartPasswordlessResultModel

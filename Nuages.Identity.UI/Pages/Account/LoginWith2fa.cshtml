@@ -6,26 +6,26 @@
     ViewData["Title"] = Localizer["mfa.title"];
 }
 
-<div class="flex justify-center mt-6">
-    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-</div>
 
-<div v-show="status != 'sending'">
-    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
-        <span>@Localizer["mfa.instructions"]</span>
-        <partial name="Shared/ErrorList"/>
-         <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="Code" required class="text-box" autocomplete=“off”>
-        <div class="flex items-center justify-between">
-            <div class="flex items-center">
-                <input id="rememberMachine" name="rememberMachine" v-model="rememberMachine" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                <label for="rememberMachine" class="ml-2 block text-sm text-gray-900">
-                    @Localizer["mfa:rememberMachine"]
-                </label>
+<div >
+    <form class=" mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
+        <fieldset class="space-y-4">
+            <span>@Localizer["mfa.instructions"]</span>
+            <partial name="Shared/ErrorList"/>
+            <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="Code" required class="text-box" autocomplete=“off”>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="rememberMachine" name="rememberMachine" v-model="rememberMachine" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="rememberMachine" class="ml-2 block text-sm text-gray-900">
+                        @Localizer["mfa:rememberMachine"]
+                    </label>
+                </div>
             </div>
-        </div>
-        <button v-on:click.prevent="login" class="primary full">
-            @Localizer["login:connect"]
-        </button>
+            <button v-on:click.prevent="login" class="primary full items-center" :disabled="status == 'sending'">
+                @Localizer["login:connect"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+            </button>
+        </fieldset>
+
     </form>
     <div class="text-sm mt-4">
         <span>@Localizer["mfa.appNotAvailable"]</span>

@@ -24,32 +24,31 @@
     }
 }
 
-<div class="flex justify-center mt-6">
-    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-</div>
-
-<div v-show="status != 'sending'">
-    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
-        <partial name="Shared/ErrorList"/>
-        <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>
-        <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
-                
-        <div class="flex items-center justify-between">
-            <div class="flex items-center">
-                <input id="remember-me" name="remember-me" v-model="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                    @Localizer["login:rememberMe"]
-                </label>
+<div >
+    <form class="mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
+        <fieldset class="space-y-4" :disabled="status == 'sending'">
+             <partial name="Shared/ErrorList"/>
+            <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>
+            <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+    
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" v-model="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-900">
+                        @Localizer["login:rememberMe"]
+                    </label>
+                </div>
+                <div class="text-sm">
+                    <a href="/account/forgotpassword">
+                        @Localizer["login:forgotPassword"]
+                    </a>
+                </div>
             </div>
-            <div class="text-sm">
-                <a href="/account/forgotpassword">
-                    @Localizer["login:forgotPassword"]
-                </a>
-            </div>
-        </div>
-        <button v-on:click.prevent="login" class="primary full">
-            @Localizer["login:connect"]
-        </button>
+            <button v-on:click.prevent="login" class="primary full items-center" :disabled="status == 'sending'">
+                @Localizer["login:connect"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+            </button>
+        </fieldset>
+       
     </form>
 
     @if (Model.ExternalLogins.Count > 0)

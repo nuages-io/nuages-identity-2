@@ -30,7 +30,7 @@ var App =
                             self.status = "done";
                             
                             if (res.success) {
-                               window.location = "/Account/SMSLogin?returnUrl=" + returnUrl;
+                               window.location = "/Account/LoginWithSMS?returnUrl=" + returnUrl;
                             } else
                                 self.errors = res.errors.map(function(m) {
                                     return { message : m}
