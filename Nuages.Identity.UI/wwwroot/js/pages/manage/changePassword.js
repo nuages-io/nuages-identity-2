@@ -38,8 +38,19 @@ var App =
                         .then(res => {
 
                             if (res.success) {
+                                
+                                
+                                self.currentPassword = null;
+                                self.password = null;
+                                self.passwordConfirm = null;
+
                                 self.status = "done";
                                 self.errors = [];
+                                
+                                setTimeout(function()
+                                {
+                                    currentPassword.focus();
+                                });
                             } else {
                                 self.status = "error";
                                 self.errors = res.errors.map(function (m) {
@@ -52,7 +63,8 @@ var App =
                 changePassword: function () {
 
                     var self = this;
-
+                    this.status = "";
+                    
                     this.errors = [];
                     formChangePassword.classList.remove("was-validated");
 
@@ -98,20 +110,25 @@ var App =
 
                 this.errors.splice(this.errors.findIndex(a => a.id === "currentPassword"), 1);
 
-                this.status = "";
+                if (value != null)
+                    this.status = "";
 
                 currentPassword.setCustomValidity("");
             },
             password(value) {
                 this.errors.splice(this.errors.findIndex(a => a.id === "password"), 1);
 
-                this.status = "";
+                if (value != null)
+                    this.status = "";
+                
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
                 this.errors.splice(this.errors.findIndex(a => a.id === "passwordConfirm"), 1);
 
-                this.status = "";
+                if (value != null)
+                    this.status = "";
+                
                 passwordCustom.setCustomValidity("");
             }
         }

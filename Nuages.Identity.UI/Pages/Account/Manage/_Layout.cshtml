@@ -22,20 +22,14 @@
        <div class="flex flex-row">
            <div class="basis-1/4">
                
-               <ul class="list-disc">
-                  
-                   <li> <a href="~/account/manage/changePassword">@Localizer["changePassword:title"]</a></li>
-                   <li> <a href="~/account/manage/email">@Localizer["changeEmail:title"]</a></li>
-                   <li> <a href="~/account/manage/username">@Localizer["changeUsername:title"]</a></li>
-                   <li> <a href="~/account/manage/twoFactorAuthentication">@Localizer["mfa:title"]</a></li>
-                   <li> <a href="~/account/manage/externalLogins">@Localizer["externalLogin:shortTitle"]</a></li>
-                   <li> <a href="~/account/manage/profile">@Localizer["profile:title"]</a></li>
-               </ul>
+              
+               
+               <partial name="_LeftMenu"/>
                @RenderSection("LeftNav", false)
            </div>
            <div class="basis-1/2"> @RenderBody()</div>
           
-           <div class="basis-1/4">
+           <div class="basis-1/4 pl-4">
                @RenderSection("RightNav", false)
            </div>
        </div>
