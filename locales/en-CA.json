@@ -75,7 +75,13 @@
 		"title": "Unconfirmed email"
 	},
 	"enableAuthenticator": {
-		"submit": "Verify"
+		"downloadApp": " Download a two-factor authenticator app like",
+		"enterKey": "or enter this key",
+		"instructions": "To use an authenticator app go through the following steps",
+		"instructions2": "Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.",
+		"scanCode": "Scan the QR Code ",
+		"submit": "Verify",
+		"title": "Configure authenticator"
 	},
 	"errorMessage": {
 		"exception": "An unexpected error has occurred",
@@ -149,6 +155,7 @@
 		"title": "Log in to your account"
 	},
 	"loginWithSMS": {
+		"connect": "Connection",
 		"instructions": "A text message will be sent to you containing a verification code. This function is only available if you have a verified phone number configured.",
 		"seeSMS": "Verify your text message for the code",
 		"send": "Send code",

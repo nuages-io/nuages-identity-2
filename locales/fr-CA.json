@@ -75,7 +75,13 @@
 		"title": "Courriel non confirmé"
 	},
 	"enableAuthenticator": {
-		"submit": "Vérifier"
+		"downloadApp": " Téléchargez une application d'authentification à deux facteurs comme",
+		"enterKey": "ou entrez cette clé",
+		"instructions": "Suivre les étapes suivants afin d'utiliser un authentificateur",
+		"instructions2": "Une fois que vous avez scanné le code QR ou saisi la clé ci-dessus, votre application d'authentification à deux facteurs vous fournira un code unique. Entrez le code dans la boîte de confirmation ci-dessous.",
+		"scanCode": "Numériser le code QR",
+		"submit": "Vérifier",
+		"title": "Configuration d'un authentificateur"
 	},
 	"errorMessage": {
 		"exception": "Une erreur innatendue est survenue",
@@ -149,6 +155,7 @@
 		"title": "Connection à votre compte"
 	},
 	"loginWithSMS": {
+		"connect": "Connection",
 		"instructions": "Un message texte vous sera transmis contenant un code de vérification. Cette fonction est disponible seulement si un no. de téléphone a été vérifié.",
 		"seeSMS": "Voir vos message textes pour le code",
 		"send": "Envoyer le code",

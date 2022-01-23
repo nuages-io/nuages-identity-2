@@ -32,6 +32,7 @@ var App =
                         .then(response => response.json())
                         .then(res => {
 
+                            self.email = null;
                             self.status = "done";
                             
                             if (!res.success) 
@@ -78,8 +79,13 @@ var App =
         watch: {
             email(value) {
                 this.errors = [];
-                this.status = "";
-                email.setCustomValidity("");
+                if (value != null)
+                {
+                    this.status = "";                    
+                }
+                
+                if (typeof(email) != "undefined")
+                    email.setCustomValidity("");
             }
         }
     };

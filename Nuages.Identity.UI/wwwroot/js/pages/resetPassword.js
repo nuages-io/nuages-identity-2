@@ -38,7 +38,7 @@ var App =
                                 email: e,
                                 password: p,
                                 passwordConfirm: c,
-                                 code : code,
+                                code : code,
                                 recaptchaToken: token
                             }
                         )
@@ -47,6 +47,7 @@ var App =
                         .then(res => {
                             
                             if (res.success) {
+                                
                                 self.status = "done";
                                 self.errors = [];
                             }

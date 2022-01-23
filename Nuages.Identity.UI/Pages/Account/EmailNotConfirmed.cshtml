@@ -9,18 +9,16 @@
 
 <partial name="Shared/ErrorList"/>
 
-<div class="flex justify-center mt-6">
-    <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-    <div class="flex flex-col " v-if="status == 'sent'" v-show="status == 'sent'" style="display: none">
-        <i class="fa fa-check-circle text-green-700 fa-3x text-center" ></i>
-        <span class="mt-4">@Localizer["emailNotConfirmed:seeEmail"]</span>
-    </div>
+<div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
+    <span class="text-green-700 font-medium">
+        <i class="fas fa-check"></i> @Localizer["emailNotConfirmed:seeEmail"]
+    </span>
 </div>
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status == ''">
+<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status != 'done'">
     <h4>@Localizer["emailNotConfirmed:message"]</h4>
-    <button v-on:click.prevent="send" class="primary full">
-        @Localizer["emailNotConfirmed:sendAgain"]
+    <button v-on:click.prevent="send" class="primary full items-center" :disabled="status == 'sending'">
+        @Localizer["emailNotConfirmed:sendAgain"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
     </button>
 </form>
 

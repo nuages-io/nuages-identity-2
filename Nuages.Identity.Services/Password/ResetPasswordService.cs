@@ -25,7 +25,7 @@ public class ResetPasswordService : IResetPasswordService
             return new ResetPasswordResultModel
             {
                 Success = false,
-                Errors = new List<string> { _localizer.GetString("resetPasswors:passwordConfirmDoesNotMatch") }
+                Errors = new List<string> { _localizer.GetString("resetPassword:passwordConfirmDoesNotMatch") }
             };
         }
         

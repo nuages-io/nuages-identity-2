@@ -182,9 +182,9 @@ public class LoginService : ILoginService
             case FailedLoginReason.PhoneNotConfirmed:
             case FailedLoginReason.AccountNotConfirmed:
             case FailedLoginReason.PasswordExpired:
-            {
-                throw new NotSupportedException("ValueNotSupportedHere");
-            }
+            // {
+            //     throw new NotSupportedException("ValueNotSupportedHere");
+            // }
             case null:
             {
                 return "";
