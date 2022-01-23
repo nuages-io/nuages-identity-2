@@ -86,7 +86,7 @@ var App =
                             code.setCustomValidity(codeRequiredMessage);
                         }
 
-                        var list = formLogin.querySelectorAll(":invalid");
+                        var list = formLogin.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});
@@ -96,7 +96,7 @@ var App =
             },
         watch: {
             code(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "code"), 1);
+                this.errors = this.errors.filter(a => a.id !== "code");
                 this.action = "";
                 code.setCustomValidity("");
             },

@@ -106,7 +106,7 @@ var App =
                             passwordConfirm.setCustomValidity(passwordConfirmRequiredMessage);
                         }
 
-                        var list = formResetPassword.querySelectorAll(":invalid");
+                        var list = formResetPassword.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
 
@@ -119,20 +119,19 @@ var App =
         watch: {
             email(value) {
 
-                this.errors.splice(this.errors.findIndex( a => a.id === "email"), 1);
+                this.errors = this.errors.filter(a => a.id !== "email");
                
                 this.status = "";
                 
                 email.setCustomValidity("");
             },
             password(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
-                
+                this.errors = this.errors.filter(a => a.id !== "password");
                 this.status = "";
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "passwordConfirm"), 1);
+                this.errors = this.errors.filter(a => a.id !== "passwordConfirm");
                 
                 this.status = "";
                 passwordCustom.setCustomValidity("");

@@ -57,7 +57,7 @@ var App =
                         formLoginSMS.classList.add("was-validated");
                       
 
-                        var list = formLoginSMS.querySelectorAll(":invalid");
+                        var list = formLoginSMS.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});

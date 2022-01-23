@@ -69,7 +69,7 @@ var App =
 
                         formExternalLogin.classList.add("was-validated");
 
-                        var list = formExternalLogin.querySelectorAll(":invalid");
+                        var list = formExternalLogin.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
 

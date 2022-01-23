@@ -4,7 +4,7 @@ var App =
             return {
                 currentPassword: "",
                 password: "",
-                confirmPassword: "",
+                passwordConfirm: "",
                 errors: [],
                 status: ""
             }
@@ -63,21 +63,18 @@ var App =
                 changePassword: function () {
 
                     var self = this;
-                    this.status = "";
-                    
+                    this.status = "";                    
                     this.errors = [];
+                    
                     formChangePassword.classList.remove("was-validated");
 
                     currentPassword.setCustomValidity("");
-
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
 
                     var res = formChangePassword.checkValidity();
                     if (res) {
-
                         this.status = "sending";
-
                         self.doChangePassword();
                     } else {
 
@@ -95,20 +92,18 @@ var App =
                             passwordConfirm.setCustomValidity(passwordConfirmRequiredMessage);
                         }
 
-                        var list = formChangePassword.querySelectorAll(":invalid");
+                        var list = formChangePassword.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-
                             this.errors.push({message: element.validationMessage, id: element.id});
                         });
-
                     }
                 }
             },
         watch: {
             currentPassword(value) {
 
-                this.errors.splice(this.errors.findIndex(a => a.id === "currentPassword"), 1);
+                this.errors = this.errors.filter(a => a.id !== "currentPassword");
 
                 if (value != null)
                     this.status = "";
@@ -116,20 +111,21 @@ var App =
                 currentPassword.setCustomValidity("");
             },
             password(value) {
-                this.errors.splice(this.errors.findIndex(a => a.id === "password"), 1);
-
+                this.errors = this.errors.filter(a => a.id !== "password");
+               
                 if (value != null)
                     this.status = "";
                 
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                this.errors.splice(this.errors.findIndex(a => a.id === "passwordConfirm"), 1);
-
+                
+                this.errors = this.errors.filter(a => a.id !== "passwordConfirm");
+               
                 if (value != null)
                     this.status = "";
-                
-                passwordCustom.setCustomValidity("");
+
+                passwordConfirm.setCustomValidity("");
             }
         }
     };

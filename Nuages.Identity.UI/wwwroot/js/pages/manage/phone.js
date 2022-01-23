@@ -64,7 +64,7 @@ var App =
                             phone.setCustomValidity(phoneRequiredMessage);
                         }
 
-                        var list = formAddPhone.querySelectorAll(":invalid");
+                        var list = formAddPhone.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});
@@ -119,7 +119,7 @@ var App =
                             code.setCustomValidity(codeRequiredMessage);
                         }
 
-                        var list = formAddPhone.querySelectorAll(":invalid");
+                        var list = formAddPhone.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});

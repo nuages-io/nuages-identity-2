@@ -58,7 +58,7 @@ var App =
                             code.setCustomValidity(codeRequiredMessage);
                         }
 
-                        var list = formCode.querySelectorAll(":invalid");
+                        var list = formCode.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({message: element.validationMessage, id: element.id});

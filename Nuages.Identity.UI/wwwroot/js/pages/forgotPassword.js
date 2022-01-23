@@ -66,7 +66,7 @@ var App =
                             }
                         }
 
-                        var list = formforgotPassword.querySelectorAll(":invalid");
+                        var list = formforgotPassword.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});

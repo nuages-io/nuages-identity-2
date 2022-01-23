@@ -61,7 +61,8 @@
         @*   </div> *@
         @* </div> *@
         <div class="ml-3 relative">
-          @User.Identity?.Name
+          <span id="identityUserName">@User.Identity?.Name</span>
+          
         </div>
         <div class="ml-3 relative">
           <a href="~/account/logout"><i class="fas fa-times"></i> </a>
@@ -97,3 +98,13 @@
   </div>
 
 </nav>
+
+<script>
+function updateUserName(value)
+{
+     var el = document.getElementById("identityUserName");
+    if (el != null)
+        el.innerText = value;
+                                    
+}
+</script>

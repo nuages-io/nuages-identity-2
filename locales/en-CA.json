@@ -3,7 +3,7 @@
 		"activate": "Activate",
 		"active": "Two-factor authentication is enabled.",
 		"addPhone": "Add falback phone number",
-		"clearPhoneConfirm": "Are you sure you want to clera the phone number?",
+		"clearPhoneConfirm": "Are you sure you want to clear the phone number?",
 		"clearPhoneTitle": "Clear phone number",
 		"codesRemaining": "codes remaining.",
 		"deactivate": "Deactivate",
@@ -32,6 +32,7 @@
 		"currentEmail": "Current email",
 		"error": "Email change failed.",
 		"instructions": "Enter the new email. A message will be emailed to your new address to complete the change.",
+		"isNotChanged": "The email has not been changed.",
 		"newEmail": "New email",
 		"seeEmail": "An email has been sent to your new address. You must click on the link included in the email to complete the change.",
 		"submit": "Change email",
@@ -43,7 +44,7 @@
 		"instructions": "Enter your current password and the new desired password.",
 		"password": "New password",
 		"passwordConfirm": "New password confirmation",
-		"submit": "Update",
+		"submit": "Change password",
 		"success": "Your password has been successfully changed",
 		"title": "Change your password"
 	},
@@ -72,6 +73,9 @@
 		"seeEmail": "See your email to find the verification messages",
 		"sendAgain": "Resend email",
 		"title": "Unconfirmed email"
+	},
+	"enableAuthenticator": {
+		"submit": "Verify"
 	},
 	"errorMessage": {
 		"exception": "An unexpected error has occurred",

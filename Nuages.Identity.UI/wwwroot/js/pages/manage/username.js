@@ -3,6 +3,7 @@ var App =
         data() {
             return {
                 username: "",
+                currentUserName: currentUserName,
                 errors: [],
                 status: ""
             }
@@ -32,7 +33,18 @@ var App =
                         .then(res => {
                             
                             if (res.success) {
+
+                                self.currentUserName = self.username;
+                               
+                                updateUserName(self.currentUserName);
+                                
+                                self.username = null;
                                 self.status = "done";
+
+                                setTimeout(function()
+                                {
+                                    username.focus();
+                                })
                             } else
                                 self.status = "";
 
@@ -59,7 +71,7 @@ var App =
                             username.setCustomValidity(usernameRequiredMessage);
                         }
 
-                        var list = formChangeUsername.querySelectorAll(":invalid");
+                        var list = formChangeUsername.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});
@@ -70,7 +82,9 @@ var App =
         watch: {
             username(value) {
                 this.errors = [];
-                this.status = "";
+                if (value != null)
+                    this.status = "";
+                
                 username.setCustomValidity("");
             }
         }

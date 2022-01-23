@@ -66,7 +66,7 @@ var App =
                             }
                         }
 
-                        var list = formPasswordless.querySelectorAll(":invalid");
+                        var list = formPasswordless.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});

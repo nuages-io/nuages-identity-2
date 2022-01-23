@@ -109,7 +109,7 @@ var App =
                                 passwordConfirm.setCustomValidity(passwordConfirmationRequiredMessage);
                         }
 
-                        var list = formRegister.querySelectorAll(":invalid");
+                        var list = formRegister.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
 
@@ -121,17 +121,17 @@ var App =
             },
         watch: {
             email(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "email"), 1);
+                this.errors = this.errors.filter(a => a.id !== "email");
                 this.action = "";
                 email.setCustomValidity("");
             },
             password(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
+                this.errors = this.errors.filter(a => a.id !== "password");
                 this.action = "";
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "passwordConfirm"), 1);
+                this.errors = this.errors.filter(a => a.id !== "passwordConfirm");
                 this.action = "";
                 passwordConfirm.setCustomValidity("");
             }

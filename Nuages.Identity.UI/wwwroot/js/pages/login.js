@@ -118,7 +118,7 @@ var App =
                             password.setCustomValidity(passwordRequiredMessage);
                         }
 
-                        var list = formLogin.querySelectorAll(":invalid");
+                        var list = formLogin.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({ message : element.validationMessage, id : element.id});
@@ -128,12 +128,12 @@ var App =
             },
         watch: {
             userNameOrEmail(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "userNameOrEmail"), 1);
+                this.errors = this.errors.filter(a => a.id !== "userNameOrEmail");
                 this.action = "";
                 userNameOrEmail.setCustomValidity("");
             },
             password(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
+                this.errors = this.errors.filter(a => a.id !== "password");
                 this.action = "";
                 password.setCustomValidity("");
             }

@@ -8,38 +8,34 @@
 <div id="app">
     <h2 class="page-header">@Localizer["addPhone.title"]</h2>
 
-    <div class="flex justify-center">
-        <i class="fas fa-spinner fa-spin fa-3x" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-        <div class="flex flex-col " v-if="status == 'done'" v-show="status == 'done'" style="display: none">
-            <i class="fa fa-check-circle text-green-700 fa-3x text-center"></i>
-            <span class="mt-4">@Localizer["addPhone:success"]</span>
-        </div>
-    </div>
+    <form method="POST" v-on:submit.prevent="addPhone" id="formAddPhone">
+        <fieldset :disabled="status == 'sending'" class="space-y-4">
+            <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
+                <span class="text-green-700 font-medium">
+                    <i class="fas fa-check"></i> @Localizer["addPhone:success"]
+                </span>
+            </div>
 
-    <form class="space-y-4" method="POST" v-on:submit.prevent="addPhone" id="formAddPhone" v-if="status != 'sending'">
+            <partial name="Shared/ErrorList"/>
 
-        <partial name="Shared/ErrorList"/>
+            <div v-if="status == '' || status == 'sending'" class="space-y-4">
+                <span class="text-gray-500">@Localizer["addPhone:instructions"]</span>
+                <input id="phone" name="phone" type="text" autofocus="" v-model="phone" placeholder="@Localizer["addPhone:newPhoneNumber"]" required class="text-box">
+                <button v-on:click.prevent="sendPhoneChangeMessage" class="primary full" :disabled="status == 'sending'">
+                    @Localizer["addPhone:sendMessage"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+                </button>
+            </div>
 
-        <div v-if="status == ''" class="space-y-4">
-            <span class="text-gray-500">@Localizer["addPhone:instructions"]</span>
-           
-            <input id="phone" name="phone" type="text" autofocus="" v-model="phone" placeholder="@Localizer["addPhone:newPhoneNumber"]" required class="text-box">
-            <button v-on:click.prevent="sendPhoneChangeMessage" class="primary full" v-if="status == ''">
-                @Localizer["addPhone:sendMessage"]
-            </button>
-        </div>
-
-        <div v-if="status == 'sent'" v-show="status == 'sent'" class="space-y-4" style="display: none">
-            <span class="text-gray-500 ">@Localizer["addPhone:instructions2"]</span>
-            <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="@Localizer["addPhone:code"]" required class="text-box">
-            <button v-on:click.prevent="addPhone" class="primary full">
-                @Localizer["addPhone:submit"]
-            </button>
-        </div>
-
+            <div v-if="status == 'sent'" v-show="status == 'sent'" class="space-y-4" style="display: none">
+                <span class="text-gray-500 ">@Localizer["addPhone:instructions2"]</span>
+                <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="@Localizer["addPhone:code"]" required class="text-box">
+                <button v-on:click.prevent="addPhone" class="primary full" :disabled="status == 'sending'">
+                    @Localizer["addPhone:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+                </button>
+            </div>
+        </fieldset>
 
     </form>
-
 </div>
 
 

@@ -34,8 +34,17 @@ var App =
                         .then(res => {
                             
                             if (res.success) {
+                                
+                                self.password = null;
+                                self.passwordConfirm = null;
+                                
                                 self.status = "done";
                                 self.errors = [];
+                                
+                                setTimeout(function()
+                                {
+                                    password.focus();
+                                })
                             }
                             else
                             {
@@ -73,7 +82,7 @@ var App =
                             passwordConfirm.setCustomValidity(passwordConfirmRequiredMessage);
                         }
 
-                        var list = formSetPassword.querySelectorAll(":invalid");
+                        var list = formSetPassword.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
 
@@ -85,15 +94,17 @@ var App =
         watch: {
           
             password(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "password"), 1);
-                
-                this.status = "";
+                this.errors = this.errors.filter(a => a.id !== "password");
+                if (value != null)
+                    this.status = "";
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                this.errors.splice(this.errors.findIndex( a => a.id === "passwordConfirm"), 1);
-                
-                this.status = "";
+
+                this.errors = this.errors.filter(a => a.id !== "passwordConfirm");
+
+                if (value != null)
+                    this.status = "";
                 passwordCustom.setCustomValidity("");
             }
         }

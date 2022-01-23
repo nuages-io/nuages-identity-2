@@ -32,6 +32,7 @@
 		"currentEmail": "Courriel actuel",
 		"error": "Le changement de courriel a échoué.",
 		"instructions": "Entrez le nouveau courriel. Un message vous sera tramis par courriel à votre nouvelle adresse afin de compléter le changement.",
+		"isNotChanged": "Le courriel n'a pas été changé.",
 		"newEmail": "Nouveau courriel",
 		"seeEmail": "Un courriel a été transmis à votre nouvelle adresse. Vous devez cliquer sur le lien inclus dans le courriel afin de compléter le changement.",
 		"submit": "Changer le courriel",
@@ -43,7 +44,7 @@
 		"instructions": "Entrez votre mot de passe actuel et le nouveau mot de passe désiré.",
 		"password": "Nouveau mot de passe",
 		"passwordConfirm": "Confirmation du nouveau mot de passe",
-		"submit": "Changer",
+		"submit": "Modifier le mot de passe",
 		"success": "Votre mot de passe a été changé avec succès",
 		"title": "Changer votre mot de passe"
 	},
@@ -72,6 +73,9 @@
 		"seeEmail": "Voir vos courriel afin de retrouver le messages de vérification",
 		"sendAgain": "Retransmettre le courriel",
 		"title": "Courriel non confirmé"
+	},
+	"enableAuthenticator": {
+		"submit": "Vérifier"
 	},
 	"errorMessage": {
 		"exception": "Une erreur innatendue est survenue",
