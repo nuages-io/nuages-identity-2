@@ -28,7 +28,8 @@ public class TwoFactorAuthenticationModel : PageModel
     public int RecoveryCodesLeft { get; set; }
     public bool Is2FaEnabled { get; set; }
     public bool IsMachineRemembered { get; set; }
-        
+    public string RecoveryCodesString { get; set; }
+    
     public List<string> RecoveryCodes { get; set; } = new();
     public string FallbackNumber { get; set; }
         
@@ -47,7 +48,8 @@ public class TwoFactorAuthenticationModel : PageModel
         RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
         RecoveryCodes = await _userManager.GetRecoveryCodes(user);
-
+        RecoveryCodesString = string.Join(",", RecoveryCodes);
+        
         if (user.PhoneNumberConfirmed)
         {
             FallbackNumber = user.PhoneNumber;
@@ -56,17 +58,4 @@ public class TwoFactorAuthenticationModel : PageModel
         return Page();
     }
 
-        
-    // public async Task<IActionResult> OnPostAsync()
-    // {
-    //     var user = await _userManager.GetUserAsync(User);
-    //     if (user == null)
-    //     {
-    //         return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-    //     }
-    //
-    //     await _signInManager.ForgetTwoFactorClientAsync();
-    //     StatusMessage = "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.";
-    //     return RedirectToPage();
-    // }
 }

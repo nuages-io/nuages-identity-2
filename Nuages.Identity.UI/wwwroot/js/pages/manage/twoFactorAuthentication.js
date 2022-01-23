@@ -5,6 +5,7 @@ var App =
                 showDeactivate: false,
                 showRemovePhone: false,
                 showCodes: false,
+                recoveryCodes: recoveryCodes,
                 errors: [],
                 status: ""
             }
@@ -14,6 +15,29 @@ var App =
         },
         methods:
             {
+                copy ()
+                {
+                    // var myTemporaryInputElement = document.createElement("input");
+                    // myTemporaryInputElement.type = "text";
+                    // myTemporaryInputElement.value = this.recoveryCodes;
+                    //
+                    // document.body.appendChild(myTemporaryInputElement);
+                    //
+                    // myTemporaryInputElement.select();
+                    // document.execCommand("Copy");
+                    //
+                    // document.body.removeChild(myTemporaryInputElement);
+
+                    navigator.clipboard.writeText(this.recoveryCodes).then(function() {
+                        /* clipboard successfully set */
+                    }, function() {
+                        /* clipboard write failed */
+                    });
+                },
+                resetCodes()
+                {
+                    
+                }, 
                 forgetBrowser()
                 {
                     //Call API

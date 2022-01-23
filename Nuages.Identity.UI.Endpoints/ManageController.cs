@@ -1,3 +1,4 @@
+using System.Text;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -400,5 +401,15 @@ public class ManageController : Controller
         }
      
       
+    }
+    
+    [HttpGet("downloadRecoveryCodes")]
+    public async Task<ActionResult> DownloadRecoveryCodesAsync()
+    {
+        var user = await _userManager.FindByIdAsync(User.Sub());
+        var codes = await _userManager.GetRecoveryCodes(user);
+
+        var recoveryCodesString = string.Join(",", codes);
+        return File(Encoding.Default.GetBytes(recoveryCodesString), "application/text", "recoveryCodes.txt");
     }
 }
