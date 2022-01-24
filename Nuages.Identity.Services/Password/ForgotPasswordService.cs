@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services.Password;
@@ -12,14 +13,14 @@ public class ForgotPasswordService : IForgotPasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly IMessageSender _messageSender;
+    private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
 
-    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IMessageSender messageSender,  IOptions<NuagesIdentityOptions> options)
+    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IMessageService messageService,  IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
-        _messageSender = messageSender;
+        _messageService = messageService;
 
         _options = options.Value;
     }
@@ -41,10 +42,9 @@ public class ForgotPasswordService : IForgotPasswordService
        
         var url = $"{_options.Authority}/Account/ResetPassword?code={code}";
 
-        await _messageSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
+        await _messageService.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
         {
-            { "Link", url },
-            { "AppName", _options.Name}
+            { "Link", url }
         });
 
         await _httpContextAccessor.HttpContext!.SignInAsync(NuagesIdentityConstants.ResetPasswordScheme, StorePasswordResetEmailInfo(user.Id, user.Email));

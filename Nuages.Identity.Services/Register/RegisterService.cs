@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services.Register;
@@ -13,17 +14,17 @@ public class RegisterService : IRegisterService
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _localizer;
-    private readonly IMessageSender _messageSender;
+    private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
 
     public RegisterService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer, 
-        IMessageSender messageSender, IOptions<NuagesIdentityOptions> options)
+        IMessageService messageService, IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _localizer = localizer;
      
-        _messageSender = messageSender;
+        _messageService = messageService;
         _options = options.Value;
     }
     
@@ -64,10 +65,9 @@ public class RegisterService : IRegisterService
 
             var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
 
-            await _messageSender.SendEmailUsingTemplateAsync(model.Email, "Confirm_Email", new Dictionary<string, string>
+            await _messageService.SendEmailUsingTemplateAsync(model.Email, "Confirm_Email", new Dictionary<string, string>
             {
-                { "Link", url },
-                { "AppName", _options.Name}
+                { "Link", url }
             });
         
             if (_userManager.Options.SignIn.RequireConfirmedEmail)

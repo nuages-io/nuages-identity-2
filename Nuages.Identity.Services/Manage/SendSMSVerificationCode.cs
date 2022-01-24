@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Sender.API.Sdk;
 using Nuages.Web.Exceptions;
 
@@ -11,11 +12,11 @@ namespace Nuages.Identity.Services.Manage;
 public class SendSMSVerificationCode : ISendSMSVerificationCode
 {
     private readonly NuagesUserManager _userManager;
-    private readonly IMessageSender _sender;
+    private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
     private readonly ILogger<SendSMSVerificationCode> _logger;
 
-    public SendSMSVerificationCode(NuagesUserManager userManager, IMessageSender sender, IStringLocalizer localizer, ILogger<SendSMSVerificationCode> logger)
+    public SendSMSVerificationCode(NuagesUserManager userManager, IMessageService sender, IStringLocalizer localizer, ILogger<SendSMSVerificationCode> logger)
     {
         _userManager = userManager;
         _sender = sender;

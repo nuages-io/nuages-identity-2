@@ -12,8 +12,8 @@ public class NuagesIdentityOptions
     
     public bool EnableAutoPasswordExpiration { get; set; }
     public int AutoExpirePasswordDelayInDays { get; set; }
-    
-    public bool EnableUserLockout { get; set; }
+
+    public bool EnableUserLockout { get; set; } = true;
 
     public int RequireConfirmedEmailGracePeriodInMinutes { get; set; } = 60;
     public int RequireConfirmedPhoneGracePeriodInMinutes { get; set; } = 60;
@@ -24,5 +24,6 @@ public class NuagesIdentityOptions
     public string Authority { get; set; } = string.Empty;
     
     public string Name { get; set; } = string.Empty;
+    
 
 }

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Sender.API.Sdk;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
@@ -12,12 +13,12 @@ public class SMSLoginService : ISMSLoginService
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
-    private readonly IMessageSender _sender;
+    private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
     private readonly ILogger<SMSLoginService> _logger;
     private readonly NuagesIdentityOptions _options;
 
-    public SMSLoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageSender sender, 
+    public SMSLoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageService sender, 
         IOptions<NuagesIdentityOptions> options,
                     IStringLocalizer localizer, ILogger<SMSLoginService> logger)
     {

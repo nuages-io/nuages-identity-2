@@ -34,9 +34,11 @@ public static class NuagesIdentityConfigExtensions
         if (configure != null)
             services.Configure(configure);
         
-        services.AddScoped(typeof(NuagesUserManager));
-        services.AddScoped(typeof(NuagesSignInManager));
+        //services.AddScoped(typeof(NuagesUserManager));
+       // services.AddScoped(typeof(NuagesSignInManager));
 
+        builder.AddUserManager<NuagesUserManager>().AddSignInManager<NuagesSignInManager>();
+            
         services.AddScoped<ILookupProtector, LookupProtector>();
         services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
 
@@ -63,7 +65,8 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<ISendSMSVerificationCode, SendSMSVerificationCode>();
         services.AddScoped<ISendEmailChangedConfirmationService, SendEmailChangedConfirmationService>();
         services.AddScoped<IMFAService, MFAService>();
-        
+
+        services.AddScoped<IMessageService, MessageService>();
         
         return builder;
     }

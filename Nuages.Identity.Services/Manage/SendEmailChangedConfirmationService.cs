@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Sender.API.Sdk;
 using Nuages.Web.Exceptions;
 
@@ -11,16 +12,16 @@ namespace Nuages.Identity.Services.Manage;
 public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmationService
 {
     private readonly NuagesUserManager _userManager;
-    private readonly IMessageSender _messageSender;
+    private readonly IMessageService _messageService;
     private readonly IStringLocalizer _localizer;
     private readonly NuagesIdentityOptions _options;
 
-    public SendEmailChangedConfirmationService(NuagesUserManager userManager, IMessageSender messageSender, 
+    public SendEmailChangedConfirmationService(NuagesUserManager userManager, IMessageService messageService, 
         IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer)
     {
         _userManager = userManager;
        
-        _messageSender = messageSender;
+        _messageService = messageService;
         _localizer = localizer;
         _options = options.Value;
     }
@@ -63,10 +64,9 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
         
         var url = $"{_options.Authority}/Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(email))}";
         
-        await _messageSender.SendEmailUsingTemplateAsync(email, "Confirm_Email_Change", new Dictionary<string, string>
+        await _messageService.SendEmailUsingTemplateAsync(email, "Confirm_Email_Change", new Dictionary<string, string>
         {
-            { "Link", url },
-            { "AppName", _options.Name}
+            { "Link", url }
         });
         
         return new SendEmailChangeResultModel

@@ -9,14 +9,14 @@ namespace Nuages.Identity.Services.Email;
 public class SendEmailConfirmationService : ISendEmailConfirmationService
 {
     private readonly NuagesUserManager _userManager;
-    private readonly IMessageSender _messageSender;
+    private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
 
-    public SendEmailConfirmationService(NuagesUserManager userManager, IMessageSender messageSender, IOptions<NuagesIdentityOptions> options)
+    public SendEmailConfirmationService(NuagesUserManager userManager, IMessageService messageService, IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
        
-        _messageSender = messageSender;
+        _messageService = messageService;
         _options = options.Value;
     }
     
@@ -41,10 +41,10 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         
         var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
         
-        await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
+        await _messageService.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
         {
-            { "Link", url },
-            { "AppName", _options.Name}
+            { "Link", url }
+            
         });
         
         return new SendEmailConfirmationResultModel

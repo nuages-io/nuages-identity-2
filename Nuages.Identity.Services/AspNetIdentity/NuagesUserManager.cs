@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using Nuages.Identity.Services.Email;
+using Nuages.Sender.API.Sdk;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -7,13 +9,17 @@ namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class NuagesUserManager : UserManager<NuagesApplicationUser> 
 {
+    private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _nuagesIdentityOptions;
 
     public NuagesUserManager(IUserStore<NuagesApplicationUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<NuagesApplicationUser> passwordHasher, 
         IEnumerable<IUserValidator<NuagesApplicationUser>> userValidators, IEnumerable<IPasswordValidator<NuagesApplicationUser>> passwordValidators, ILookupNormalizer keyNormalizer, 
+        IMessageService messageService, 
         // ReSharper disable once ContextualLoggerProblem
-        IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<NuagesApplicationUser>> logger, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+        IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<NuagesApplicationUser>> logger, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
+        base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
+        _messageService = messageService;
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
 
@@ -127,6 +133,22 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
     {
         var recoveryCode = await GetAuthenticationTokenAsync(user, "[AspNetUserStore]", "RecoveryCodes");
         return recoveryCode?.Split(";").ToList() ?? new List<string>();
+    }
+
+    public override async Task<IdentityResult> AccessFailedAsync(NuagesApplicationUser user)
+    {
+        var res = await base.AccessFailedAsync(user);
+        
+        if (await IsLockedOutAsync(user))
+        {
+            await _messageService.SendEmailUsingTemplateAsync(user.Email, "Login_LockedOut", new Dictionary<string, string>
+            {
+                { "Minutes", Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() },
+                
+            });
+        }
+
+        return res;
     }
 }
 

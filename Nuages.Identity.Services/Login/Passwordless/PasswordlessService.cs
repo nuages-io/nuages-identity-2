@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Sender.API.Sdk;
 using Nuages.Web.Exceptions;
 
@@ -9,16 +10,16 @@ public class PasswordlessService : IPasswordlessService
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signinManager;
-    private readonly IMessageSender _messageSender;
+    private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
 
     public PasswordlessService(NuagesUserManager userManager, NuagesSignInManager signinManager, 
-        IMessageSender messageSender,
+        IMessageService messageService,
         IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _signinManager = signinManager;
-        _messageSender = messageSender;
+        _messageService = messageService;
         _options = options.Value;
     }
     
@@ -86,10 +87,9 @@ public class PasswordlessService : IPasswordlessService
 
         if (res.Success)
         {
-            await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
+            await _messageService.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
             {
-                { "Link", res.Url },
-                { "AppName", _options.Name}
+                { "Link", res.Url }
             });
 
             
