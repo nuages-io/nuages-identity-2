@@ -48,7 +48,7 @@ public class TwoFactorAuthenticationModel : PageModel
         RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
         RecoveryCodes = await _userManager.GetRecoveryCodes(user);
-        RecoveryCodesString = string.Join(",", RecoveryCodes);
+        RecoveryCodesString = RecoveryCodes.Any() ? string.Join(",", RecoveryCodes) : "";
         
         if (user.PhoneNumberConfirmed)
         {

@@ -5,7 +5,9 @@ var App =
                 showDeactivate: false,
                 showRemovePhone: false,
                 showCodes: false,
+                recoveryCodesString: recoveryCodesString,
                 recoveryCodes: recoveryCodes,
+                isRemembered : isRemembered,
                 errors: [],
                 status: ""
             }
@@ -17,18 +19,7 @@ var App =
             {
                 copy ()
                 {
-                    // var myTemporaryInputElement = document.createElement("input");
-                    // myTemporaryInputElement.type = "text";
-                    // myTemporaryInputElement.value = this.recoveryCodes;
-                    //
-                    // document.body.appendChild(myTemporaryInputElement);
-                    //
-                    // myTemporaryInputElement.select();
-                    // document.execCommand("Copy");
-                    //
-                    // document.body.removeChild(myTemporaryInputElement);
-
-                    navigator.clipboard.writeText(this.recoveryCodes).then(function() {
+                    navigator.clipboard.writeText(this.recoveryCodesString).then(function() {
                         /* clipboard successfully set */
                     }, function() {
                         /* clipboard write failed */
@@ -36,11 +27,48 @@ var App =
                 },
                 resetCodes()
                 {
+                    var self = this;
                     
+                    fetch("/api/manage/resetRecoveryCodes", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(res => {
+                            if (res.success) {
+                                
+                                self.recoveryCodes = res.codes;
+                                self.showCodes = true;
+                            } 
+                            else
+                            {
+                                
+                            }
+                        });
                 }, 
                 forgetBrowser()
                 {
-                    //Call API
+                    var self = this;
+
+                    fetch("/api/manage/forgetBrowser", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(res => {
+                            self.isRemembered = false;
+                            // if (res) {
+                            //    
+                            // }
+                            // else
+                            // {
+                            //
+                            // }
+                        });
                 },
                 disable2Fa()
                 {

@@ -412,4 +412,66 @@ public class ManageController : Controller
         var recoveryCodesString = string.Join(",", codes);
         return File(Encoding.Default.GetBytes(recoveryCodesString), "application/text", "recoveryCodes.txt");
     }
+    
+    [HttpPost("resetRecoveryCodes")]
+    public async Task<MFAResultModel> ResetRecoveryCodesAsync()
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ResetRecoveryCodesAsync");
+
+            return await _mfaService.ResetRecoveryCodesAsync(User.Sub()!);
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
+
+            return new MFAResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpPost("forgetBrowser")]
+    public async Task<bool> ForgetBrowserAsync()
+    {
+        try
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ForgetBrowserAsync");
+
+            await _signInManager.ForgetTwoFactorClientAsync();
+            
+            return true;
+        }
+        catch (Exception e)
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.AddException(e);
+            else
+            {
+                _logger.LogError(e, "");
+            }
+
+            return false;
+        }
+        finally
+        {
+            if (!_webHostEnvironment.IsDevelopment())
+                AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
 }
