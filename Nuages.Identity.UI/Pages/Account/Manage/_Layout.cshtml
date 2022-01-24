@@ -1,11 +1,12 @@
 ﻿@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<Nuages.Identity.Services.NuagesIdentityOptions> IdentityOptions
 
 <!DOCTYPE html>
 <html lang="en" class="dark ">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Nuages.Identity.UI</title>
+    <title>@ViewData["Title"] - @IdentityOptions.Value.Name</title>
 
     <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/tailwind-output.css"/>
@@ -14,28 +15,32 @@
 </head>
 <body class="w-full">
 
-<partial name="_NavBar"/>
-<div class="min-h-screen flex flex-col justify-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="mt-4">
-         
-       
-       <div class="flex flex-row">
-           <div class="basis-1/4">
-               
-              
-               
-               <partial name="_LeftMenu"/>
-               @RenderSection("LeftNav", false)
-           </div>
-           <div class="basis-1/2"> @RenderBody()</div>
-          
-           <div class="basis-1/4 pl-4">
-               @RenderSection("RightNav", false)
-           </div>
-       </div>
-        
+<div class="w-full">
+     <partial name="_NavBar"/>
+    <div class="min-h-full flex flex-col justify-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="mt-4">
+
+
+            <div class="flex flex-row">
+                <div class="basis-1/4">
+
+
+
+                    <partial name="_LeftMenu"/>
+                    @RenderSection("LeftNav", false)
+                </div>
+                <div class="basis-1/2"> @RenderBody()</div>
+
+                <div class="basis-1/4 pl-4">
+                    @RenderSection("RightNav", false)
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
+
 
 <environment names="Production">
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>

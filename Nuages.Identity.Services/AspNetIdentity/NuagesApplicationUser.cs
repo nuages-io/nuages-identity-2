@@ -5,6 +5,7 @@ using Nuages.Identity.Services.Login;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
+[BsonIgnoreExtraElements]
 public class NuagesApplicationUser : MongoUser<string>
 {
     public DateTime? ValidFrom { get; set; }

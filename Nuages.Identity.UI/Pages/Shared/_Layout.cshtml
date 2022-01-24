@@ -1,11 +1,12 @@
 ﻿@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<Nuages.Identity.Services.NuagesIdentityOptions> IdentityOptions
 
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Nuages.Identity.UI</title>
+    <title>@ViewData["Title"] - @IdentityOptions.Value.Name</title>
 
     <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/tailwind-output.css"/>
