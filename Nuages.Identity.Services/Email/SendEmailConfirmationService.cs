@@ -43,7 +43,8 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         
         await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
         {
-            { "Link", url }
+            { "Link", url },
+            { "AppName", _options.Name}
         });
         
         return new SendEmailConfirmationResultModel

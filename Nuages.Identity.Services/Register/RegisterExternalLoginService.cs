@@ -71,7 +71,8 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
 
                 await _messageSender.SendEmailUsingTemplateAsync(email, "Confirm_Email", new Dictionary<string, string>
                 {
-                    { "Link", url }
+                    { "Link", url },
+                    { "AppName", _options.Name}
                 });
         
                 if (_userManager.Options.SignIn.RequireConfirmedEmail)

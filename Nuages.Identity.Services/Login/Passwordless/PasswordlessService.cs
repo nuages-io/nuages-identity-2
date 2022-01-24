@@ -90,7 +90,8 @@ public class PasswordlessService : IPasswordlessService
         {
             await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
             {
-                { "Link", res.Url }
+                { "Link", res.Url },
+                { "AppName", _options.Name}
             });
 
             

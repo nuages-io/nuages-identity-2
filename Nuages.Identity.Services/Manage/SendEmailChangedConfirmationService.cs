@@ -65,7 +65,8 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
         
         await _messageSender.SendEmailUsingTemplateAsync(email, "Confirm_Email_Change", new Dictionary<string, string>
         {
-            { "Link", url }
+            { "Link", url },
+            { "AppName", _options.Name}
         });
         
         return new SendEmailChangeResultModel

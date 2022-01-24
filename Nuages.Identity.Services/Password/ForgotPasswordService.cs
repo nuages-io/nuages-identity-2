@@ -43,7 +43,8 @@ public class ForgotPasswordService : IForgotPasswordService
 
         await _messageSender.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
         {
-            { "Link", url }
+            { "Link", url },
+            { "AppName", _options.Name}
         });
 
         await _httpContextAccessor.HttpContext!.SignInAsync(NuagesIdentityConstants.ResetPasswordScheme, StorePasswordResetEmailInfo(user.Id, user.Email));

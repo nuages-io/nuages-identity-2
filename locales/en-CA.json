@@ -197,7 +197,7 @@
 	},
 	"passwordless": {
 		"instructions": "You have requested to log in without a password. A log in link will be sent to you by email.",
-		"message": "Verification code is {0}",
+		"message": "[{1}] Verification code is {0}",
 		"seeEmail": "Check your emails to find the passwordless connection link",
 		"send": "Send Link",
 		"title": "Passwordless login"

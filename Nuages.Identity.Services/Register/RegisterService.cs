@@ -66,7 +66,8 @@ public class RegisterService : IRegisterService
 
             await _messageSender.SendEmailUsingTemplateAsync(model.Email, "Confirm_Email", new Dictionary<string, string>
             {
-                { "Link", url }
+                { "Link", url },
+                { "AppName", _options.Name}
             });
         
             if (_userManager.Options.SignIn.RequireConfirmedEmail)

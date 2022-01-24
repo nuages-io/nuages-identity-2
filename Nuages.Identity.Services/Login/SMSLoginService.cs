@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 
@@ -14,14 +15,18 @@ public class SMSLoginService : ISMSLoginService
     private readonly IMessageSender _sender;
     private readonly IStringLocalizer _localizer;
     private readonly ILogger<SMSLoginService> _logger;
+    private readonly NuagesIdentityOptions _options;
 
-    public SMSLoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageSender sender, IStringLocalizer localizer, ILogger<SMSLoginService> logger)
+    public SMSLoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageSender sender, 
+        IOptions<NuagesIdentityOptions> options,
+                    IStringLocalizer localizer, ILogger<SMSLoginService> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _sender = sender;
         _localizer = localizer;
         _logger = logger;
+        _options = options.Value;
     }
 
     public async Task<SendSMSCodeResultModel> SendCode()
@@ -57,7 +62,7 @@ public class SMSLoginService : ISMSLoginService
 
         var code = await _userManager.GenerateTwoFactorTokenAsync(user, "Phone");
 
-        var message = _localizer["passwordless:message", code];
+        var message = _localizer["passwordless:message", code, _options.Name];
 
         _logger.LogInformation($"Message : {message} No: {user.PhoneNumber}");
         

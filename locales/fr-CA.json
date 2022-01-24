@@ -197,7 +197,7 @@
 	},
 	"passwordless": {
 		"instructions": "Vous avez demandé de vous connecter sans mot de passe. Un lien de connection vous sera transmis par courriel.",
-		"message": "Le code de vérification est {0}",
+		"message": "[{1}] Le code de vérification est {0}",
 		"seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",
 		"send": "Envoyer le lien",
 		"title": "Connection sans mot de passe"
