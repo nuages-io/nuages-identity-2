@@ -135,7 +135,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
             return false;
         }
 
-        if (_nuagesIdentityOptions.SupportsAutoPasswordExpiration)
+        if (_nuagesIdentityOptions.EnableAutoPasswordExpiration)
         {
             if (!user.LastPasswordChangedDate.HasValue)
             {

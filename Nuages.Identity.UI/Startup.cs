@@ -53,7 +53,7 @@ public class Startup
             {
                 identity.Lockout = new LockoutOptions
                 {
-                    AllowedForNewUsers = options.SupportsUserLockout,
+                    AllowedForNewUsers = options.EnableUserLockout,
                     MaxFailedAccessAttempts = 5,
                     DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
                 };

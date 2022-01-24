@@ -118,6 +118,7 @@ public class AccountController : Controller
     {
         try
         {
+            
             if (!_environment.IsDevelopment())
                 AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Login2FAAsync");
 

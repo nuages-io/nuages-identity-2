@@ -71,7 +71,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         {
             ThrowIfDisposed();
 
-            if (!_nuagesIdentityOptions.SupportsUserLockout)
+            if (!_nuagesIdentityOptions.EnableUserLockout)
                 return false;
             
             return Store is IUserLockoutStore<NuagesApplicationUser>;

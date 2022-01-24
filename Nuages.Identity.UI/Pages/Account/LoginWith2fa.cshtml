@@ -1,6 +1,7 @@
 ﻿@page
 @model LoginWith2faModel
 @inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<UIOptions> UIOptions
 
 @{
     ViewData["Title"] = Localizer["mfa.title"];
@@ -13,14 +14,19 @@
             <span>@Localizer["mfa.instructions"]</span>
             <partial name="Shared/ErrorList"/>
             <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="Code" required class="text-box" autocomplete=“off”>
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input id="rememberMachine" name="rememberMachine" v-model="rememberMachine" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                    <label for="rememberMachine" class="ml-2 block text-sm text-gray-900">
-                        @Localizer["mfa:rememberMachine"]
-                    </label>
+            
+            @if (UIOptions.Value.Enable2FARememberDevice)
+            {
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="rememberMachine" name="rememberMachine" v-model="rememberMachine" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="rememberMachine" class="ml-2 block text-sm text-gray-900">
+                            @Localizer["mfa:rememberMachine"]
+                        </label>
+                    </div>
                 </div>
-            </div>
+            }
+            
             <button v-on:click.prevent="login" class="primary full items-center" :disabled="status == 'sending'">
                 @Localizer["login:connect"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
             </button>
@@ -33,9 +39,13 @@
             <li>
                 <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableRecoveryCodes"]</a>
             </li>
-            <li>
-                <a id="recovery-code-login" asp-page="./SendSMSCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableSMS"]</a>
-            </li>
+            @if (UIOptions.Value.EnablePhoneFallback)
+            {
+                <li>
+                    <a id="recovery-code-login" asp-page="./SendSMSCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableSMS"]</a>
+                </li>
+            }
+            
         </ul>
     </div>
 </div>

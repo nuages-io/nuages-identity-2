@@ -76,7 +76,7 @@ public class Startup
             {
                 identity.Lockout = new LockoutOptions
                 {
-                    AllowedForNewUsers = identityOptions.SupportsUserLockout,
+                    AllowedForNewUsers = identityOptions.EnableUserLockout,
                     MaxFailedAccessAttempts = 5,
                     DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
                 };
@@ -117,8 +117,8 @@ public class Startup
                 identity.SignIn = new SignInOptions
                 {
                     RequireConfirmedEmail = identityOptions.RequireConfirmedEmail,
-                    RequireConfirmedPhoneNumber = identityOptions.RequireConfirmedPhoneNumber,
-                    RequireConfirmedAccount = false
+                    RequireConfirmedPhoneNumber = false, //MUST be false
+                    RequireConfirmedAccount = false //MUST be false
                 };
                 
             },

@@ -13,6 +13,10 @@ public class UIOptions
     public string LogoUrl { get; set; } = string.Empty;
     public bool ExternalLoginAutoEnrollIfEmailExists { get; set; }
     public bool ExternalLoginPersistent { get; set; }
+
+    public bool EnablePasswordless { get; set; } = true;
+    public bool EnablePhoneFallback { get; set; } = true;
+    public bool Enable2FARememberDevice { get; set; } = true;
 }
 
 public static class UIConfigExtension
