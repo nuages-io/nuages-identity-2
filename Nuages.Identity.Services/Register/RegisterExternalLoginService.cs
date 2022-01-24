@@ -53,7 +53,8 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         {
             Id = ObjectId.GenerateNewId().ToString(),
             Email = email,
-            UserName = email
+            UserName = email,
+            EmailConfirmed = true
         };
         
         var result = await _userManager.CreateAsync(user);
