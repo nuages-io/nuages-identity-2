@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,6 +20,20 @@ public class PhoneModel : PageModel
 
     public void OnGetAsync()
     {
-        //Username = User.Identity!.Name;
+        using var file = System.IO.File.OpenText(@"wwwroot/data/countryCodes.json");
+        Codes = JsonSerializer.Deserialize<CountryCode[]>(file.BaseStream);
     }
+
+    public CountryCode[] Codes { get; set; }
+}
+
+// ReSharper disable once ClassNeverInstantiated.Global
+public class CountryCode
+{
+    // ReSharper disable once InconsistentNaming
+    public string name { get; set; }
+    // ReSharper disable once InconsistentNaming
+    public string dial_code { get; set; }
+
+    
 }

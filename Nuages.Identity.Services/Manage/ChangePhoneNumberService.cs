@@ -28,6 +28,8 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
 
         IdentityResult res;
         
+        phoneNumber = phoneNumber.Replace("+", "").Replace("+", " ").Replace("+", "-");
+        
         if (string.IsNullOrEmpty(token))
         {
             res = await _userManager.SetPhoneNumberAsync(user, phoneNumber);

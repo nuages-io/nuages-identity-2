@@ -18,7 +18,7 @@ public class ProfileController : Controller
 {
 
     private readonly IWebHostEnvironment _env;
-    private readonly ILogger<AdminController> _logger;
+    private readonly ILogger<ProfileController> _logger;
     private readonly IChangePasswordService _changePasswordService;
     private readonly IChangePhoneNumberService _changePhoneNumberService;
     private readonly IChangeUserNameService _changeUserNameService;
@@ -27,7 +27,7 @@ public class ProfileController : Controller
     private readonly IMFAService _mfaService;
 
     
-    public ProfileController(IWebHostEnvironment env, ILogger<AdminController> logger,
+    public ProfileController(IWebHostEnvironment env, ILogger<ProfileController> logger,
        
         IChangePasswordService changePasswordService,
         IChangePhoneNumberService changePhoneNumberService,

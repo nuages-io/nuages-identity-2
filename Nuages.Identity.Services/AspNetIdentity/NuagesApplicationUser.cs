@@ -7,15 +7,6 @@ namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class NuagesApplicationUser : MongoUser<string>
 {
-    public string? Language { get; set; }
-    public string? LastName { get; set; }
-    public string? FirstName { get; set; }
-    public string? UserAgreementVersion { get; set; }
-    public string? Country { get; set; }
-    public string? Bio { get; set; }
-    public string? Url { get; set; }
-    
-    
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }
     
@@ -23,8 +14,6 @@ public class NuagesApplicationUser : MongoUser<string>
     public int LoginCount { get; set; }
 
     public bool UserMustChangePassword { get; set; }
-
-    public string? PasswordHistory { get; set; }
     
     public DateTime CreatedOn { get; set; }
     

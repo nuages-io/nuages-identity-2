@@ -14,14 +14,12 @@ public class TwoFactorAuthenticationModel : PageModel
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
-    private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
     public TwoFactorAuthenticationModel(
-        NuagesUserManager userManager, NuagesSignInManager signInManager, ILogger<TwoFactorAuthenticationModel> logger)
+        NuagesUserManager userManager, NuagesSignInManager signInManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _logger = logger;
     }
 
     public bool HasAuthenticator { get; set; }

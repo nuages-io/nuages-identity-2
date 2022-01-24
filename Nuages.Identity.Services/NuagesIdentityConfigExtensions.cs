@@ -65,8 +65,6 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IMFAService, MFAService>();
         
         
-        
-        
         return builder;
     }
 }

@@ -76,8 +76,3 @@ public class ChangeEmailResultModel
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();
 }
-
-public class ChangeEmailModel
-{
-    public string Email { get; set; } = string.Empty;
-}

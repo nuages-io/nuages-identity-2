@@ -80,7 +80,6 @@ public class ResetPasswordModel
 public class ResetPasswordResultModel
 {
     public bool Success { get; set; }
-    public string? Message { get; set; }
     // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
 }

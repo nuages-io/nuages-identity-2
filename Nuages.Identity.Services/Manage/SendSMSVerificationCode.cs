@@ -37,6 +37,8 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
             };
         }
 
+        phoneNumber = phoneNumber.Replace("+", "").Replace("+", " ").Replace("+", "-");
+        
         // var res = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
         // if (!res.Succeeded)
         // {

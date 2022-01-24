@@ -3,6 +3,7 @@ var App =
         data() {
             return {
                 phone: "",
+                dialCode: "+1",
                 code: "",
                 errors: [],
                 status: ""
@@ -15,8 +16,8 @@ var App =
             {
                 doSendPhoneChangeMessage: function () {
                     var self = this;
-                    var p = self.phone;
-
+                    var p = self.dialCode + self.phone;
+            
                     this.status = "sending";
                     
                     fetch("/api/manage/sendPhoneChangeMessage", {
@@ -73,7 +74,7 @@ var App =
                 },
                 doAddPhone: function () {
                     var self = this;
-                    var p = self.phone;
+                    var p = self.dialCode + self.phone;
                     var c = self.code;
                     
                     this.status = "sending";
