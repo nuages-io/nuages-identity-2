@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <!-- Roll forward to future major versions of the netcoreapp as needed -->
+    <RollForward>Major</RollForward>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- CDK Construct Library dependencies -->
+    <PackageReference Include="Amazon.CDK.Lib" Version="2.3.0" />
+    <PackageReference Include="Constructs" Version="10.0.17" />
+
+    <!-- jsii Roslyn analyzers (un-comment to obtain compile-time checks for missing required props
+    <PackageReference Include="Amazon.Jsii.Analyzers" Version="*" PrivateAssets="all" />
+    -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+    <Content Include="appsettings.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="appsettings.prod.json" />
+    <Content Include="appsettings.prod.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nuages.Identity.Cdk\Nuages.Identity.Cdk.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+
+        <Title>Nuages.Sender.Cdk</Title>
+        <Authors>Nuages.io</Authors>
+        <Description>Nuages.Sender.Cdk</Description>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageIcon>nuages.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <RepositoryUrl>https://github.com/nuages-io/nuages-sender</RepositoryUrl>
+        <RepositoryType>GitHub</RepositoryType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- CDK Construct Library dependencies -->
+        <PackageReference Include="Amazon.CDK.Lib" Version="2.3.0" />
+        <PackageReference Include="Constructs" Version="10.0.17" />
+
+        <!-- jsii Roslyn analyzers (un-comment to obtain compile-time checks for missing required props
+        <PackageReference Include="Amazon.Jsii.Analyzers" Version="*" PrivateAssets="all" />
+        -->
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="../README.md" Pack="true" PackagePath="\" />
+        <None Include="../LICENSE">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+        <None Include="../nuages.png">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </None>
+    </ItemGroup>
+</Project>

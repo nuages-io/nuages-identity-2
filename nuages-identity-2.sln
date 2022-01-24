@@ -14,6 +14,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{F54C8597-E82
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{981F29AA-58E5-4B07-91C6-120D72BAAE58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Cdk.Deploy", "Nuages.Identity.Cdk.Deploy\Nuages.Identity.Cdk.Deploy.csproj", "{2EF13705-D8E2-4004-B746-9119D7C819B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".CDK", ".CDK", "{63171AB3-F1FD-45B7-9C72-DB083963F2C9}"
+	ProjectSection(SolutionItems) = preProject
+		cdk.json = cdk.json
+		build.sh = build.sh
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Cdk", "Nuages.Identity.Cdk\Nuages.Identity.Cdk.csproj", "{A64933C4-E4EA-4022-A5D0-4230D08C8E31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +50,14 @@ Global
 		{3CE9C9E6-B8CD-4ECB-A84E-9F16C435A45C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CE9C9E6-B8CD-4ECB-A84E-9F16C435A45C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CE9C9E6-B8CD-4ECB-A84E-9F16C435A45C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF13705-D8E2-4004-B746-9119D7C819B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF13705-D8E2-4004-B746-9119D7C819B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF13705-D8E2-4004-B746-9119D7C819B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF13705-D8E2-4004-B746-9119D7C819B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A64933C4-E4EA-4022-A5D0-4230D08C8E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A64933C4-E4EA-4022-A5D0-4230D08C8E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A64933C4-E4EA-4022-A5D0-4230D08C8E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A64933C4-E4EA-4022-A5D0-4230D08C8E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{69FD621D-03BD-42EC-A740-052A92D977A9} = {F54C8597-E828-4E91-9E78-05BE089C96D3}
