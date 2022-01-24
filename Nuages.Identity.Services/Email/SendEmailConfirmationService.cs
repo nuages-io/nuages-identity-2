@@ -39,7 +39,7 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         
-        var url = $"{_options.Authority}Account/ConfirmEmail?code={code}&userId={user.Id}";
+        var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
         
         await _messageSender.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
         {

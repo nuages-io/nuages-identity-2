@@ -61,7 +61,7 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
         var code = await _userManager.GenerateChangeEmailTokenAsync(user, email);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         
-        var url = $"{_options.Authority}Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(email))}";
+        var url = $"{_options.Authority}/Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(email))}";
         
         await _messageSender.SendEmailUsingTemplateAsync(email, "Confirm_Email_Change", new Dictionary<string, string>
         {
