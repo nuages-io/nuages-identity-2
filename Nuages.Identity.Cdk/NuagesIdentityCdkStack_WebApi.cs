@@ -18,12 +18,11 @@ public partial class NuagesIdentityCdkStack
 {
     private void CreateWebApi()
     {
-
         var role = CreateWebApiRole();
 
         if (string.IsNullOrEmpty(AssetApi))
         {
-            throw new Exception("WebApiAsset must be assigned");
+            throw new Exception("AssetApi must be assigned");
         }
 
         // ReSharper disable once UnusedVariable
@@ -43,12 +42,9 @@ public partial class NuagesIdentityCdkStack
         });
 
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));
-
         func.AddEventSource(new ApiEventSource("ANY", "/"));
-        
 
         var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("WebAPI"));
-
         
         //var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
         //var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
@@ -125,8 +121,6 @@ public partial class NuagesIdentityCdkStack
             throw new Exception("DomainName must be provided");
         }
     }
-    
-  
 
     private Role CreateWebApiRole()
     {

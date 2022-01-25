@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Web.Exceptions;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -11,11 +12,13 @@ public class ChangePasswordService : IChangePasswordService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
+    private readonly IMessageService _messageService;
 
-    public ChangePasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public ChangePasswordService(NuagesUserManager userManager, IStringLocalizer localizer, IMessageService messageService)
     {
         _userManager = userManager;
         _localizer = localizer;
+        _messageService = messageService;
     }
 
     public async Task<ChangePasswordResultModel> AddPasswordAsync(string userid, string newPassword,
@@ -52,10 +55,26 @@ public class ChangePasswordService : IChangePasswordService
         if (await _userManager.HasPasswordAsync(user))
         {
             res = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+            if (res.Succeeded)
+            {
+                await _messageService.SendEmailUsingTemplateAsync(user.Email, "Password_Was_Changed", new Dictionary<string, string>
+                {
+                   // { "PhoneNumber", phoneNumber }
+                });
+            }
         }
         else
         {
             res = await _userManager.AddPasswordAsync(user, newPassword);
+            
+            if (res.Succeeded)
+            {
+                await _messageService.SendEmailUsingTemplateAsync(user.Email, "Password_Was_Added", new Dictionary<string, string>
+                {
+                   // { "PhoneNumber", phoneNumber }
+                });
+            }
         }
         
 

@@ -20,7 +20,7 @@ public partial class NuagesIdentityCdkStack
 
         if (string.IsNullOrEmpty(AssetUi))
         {
-            throw new Exception("WebUIAsset must be assigned");
+            throw new Exception("AssetUi must be assigned");
         }
 
         // ReSharper disable once UnusedVariable
@@ -47,23 +47,23 @@ public partial class NuagesIdentityCdkStack
 
         var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("WebUI"));
 
-        var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
-        var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
-
-         var hc = new CfnHealthCheck(this, MakeId("HealthCheck"), new CfnHealthCheckProps
-         {
-             HealthCheckConfig = new CfnHealthCheck.HealthCheckConfigProperty
-             {
-                 EnableSni = true,
-                 FailureThreshold = 3,
-                 FullyQualifiedDomainName = apiDomain,
-                 Port = 443,
-                 RequestInterval = 30,
-                 ResourcePath = apiCheckPath,
-                 Type = "HTTPS"
-             },
-             //©©HealthCheckTags = null
-         });
+        // var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
+        // var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
+        //
+        //  var hc = new CfnHealthCheck(this, MakeId("HealthCheck"), new CfnHealthCheckProps
+        //  {
+        //      HealthCheckConfig = new CfnHealthCheck.HealthCheckConfigProperty
+        //      {
+        //          EnableSni = true,
+        //          FailureThreshold = 3,
+        //          FullyQualifiedDomainName = apiDomain,
+        //          Port = 443,
+        //          RequestInterval = 30,
+        //          ResourcePath = apiCheckPath,
+        //          Type = "HTTPS"
+        //      },
+        //      //©©HealthCheckTags = null
+        //  });
         
         var domainName = (string)Node.TryGetContext("DomainName");
 
