@@ -34,7 +34,6 @@ public class AccountController : Controller
     private readonly IPasswordlessService _passwordlessService;
     private readonly ISMSLoginService _smsLoginService;
     private readonly ILogger<AccountController> _logger;
-    private readonly IHostEnvironment _environment;
     private readonly IHttpContextAccessor _contextAccessor;
 
     public AccountController(
@@ -42,7 +41,7 @@ public class AccountController : Controller
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
         ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService, IRegisterExternalLoginService registerExternalLoginService,
         IPasswordlessService passwordlessService, ISMSLoginService smsLoginService,
-        ILogger<AccountController> logger, IHostEnvironment environment, IHttpContextAccessor contextAccessor)
+        ILogger<AccountController> logger, IHttpContextAccessor contextAccessor)
     {
         _recaptchaValidator = recaptchaValidator;
         _stringLocalizer = stringLocalizer;
@@ -55,7 +54,6 @@ public class AccountController : Controller
         _passwordlessService = passwordlessService;
         _smsLoginService = smsLoginService;
         _logger = logger;
-        _environment = environment;
         _contextAccessor = contextAccessor;
     }
     
@@ -65,8 +63,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginAsync");
 
             var id = Guid.NewGuid().ToString();
             
@@ -90,13 +87,9 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-            
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+           
             return new LoginResultModel
             {
                 Success = false,
@@ -106,8 +99,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -118,9 +110,7 @@ public class AccountController : Controller
     {
         try
         {
-            
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Login2FAAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Login2FAAsync");
 
             var id = Guid.NewGuid().ToString();
             
@@ -144,12 +134,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new LoginResultModel
             {
@@ -159,8 +145,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -171,8 +156,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginRecoveryCodeAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginRecoveryCodeAsync");
 
             var id = Guid.NewGuid().ToString();
             
@@ -196,12 +180,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new LoginResultModel
             {
@@ -211,8 +191,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -223,8 +202,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
                 return new RegisterResultModel
@@ -236,12 +214,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new RegisterResultModel
             {
@@ -251,8 +225,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -262,8 +235,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
                 return new RegisterExternalLoginResultModel
@@ -275,12 +247,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new RegisterExternalLoginResultModel
             {
@@ -290,8 +258,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -301,8 +268,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
                 return new ForgotPasswordResultModel
@@ -314,12 +280,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new ForgotPasswordResultModel
             {
@@ -329,11 +291,8 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     [HttpPost("sendEmailConfirmation")]
@@ -342,8 +301,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendEmailConfirmationAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendEmailConfirmationAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
                 return new SendEmailConfirmationResultModel
@@ -358,12 +316,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new SendEmailConfirmationResultModel
             {
@@ -373,8 +327,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
         
        
@@ -386,8 +339,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ResetPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ResetPasswordAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
                 return new ResetPasswordResultModel
@@ -399,12 +351,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new ResetPasswordResultModel
             {
@@ -414,8 +362,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -425,8 +372,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.PasswordLoginAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.PasswordLoginAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
                 return new StartPasswordlessResultModel
@@ -438,12 +384,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new StartPasswordlessResultModel
             {
@@ -453,11 +395,8 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     [HttpPost("sendSMSCode")]
@@ -466,8 +405,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendSMSCodeAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendSMSCodeAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
                 return new SendSMSCodeResultModel
@@ -479,12 +417,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new SendSMSCodeResultModel
             {
@@ -494,11 +428,8 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     
@@ -509,8 +440,7 @@ public class AccountController : Controller
     {
         try
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginSMSAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginSMSAsync");
 
             var id = Guid.NewGuid().ToString();
             
@@ -534,12 +464,8 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new LoginResultModel
             {
@@ -549,8 +475,7 @@ public class AccountController : Controller
         }
         finally
         {
-            if (!_environment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 

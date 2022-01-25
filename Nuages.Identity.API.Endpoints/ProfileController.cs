@@ -16,8 +16,6 @@ namespace Nuages.Identity.API.Endpoints;
 [Authorize]
 public class ProfileController : Controller
 {
-
-    private readonly IWebHostEnvironment _env;
     private readonly ILogger<ProfileController> _logger;
     private readonly IChangePasswordService _changePasswordService;
     private readonly IChangePhoneNumberService _changePhoneNumberService;
@@ -25,18 +23,13 @@ public class ProfileController : Controller
     private readonly IStringLocalizer _localizer;
     private readonly IPasswordlessService _passwordlessService;
     private readonly IMFAService _mfaService;
-
     
-    public ProfileController(IWebHostEnvironment env, ILogger<ProfileController> logger,
+    public ProfileController(ILogger<ProfileController> logger,
        
-        IChangePasswordService changePasswordService,
-        IChangePhoneNumberService changePhoneNumberService,
-        IChangeUserNameService changeUserNameService,
-        IStringLocalizer localizer,
-        IPasswordlessService passwordlessService,
-        IMFAService mfaService)
+        IChangePasswordService changePasswordService, IChangePhoneNumberService changePhoneNumberService,
+        IChangeUserNameService changeUserNameService, IStringLocalizer localizer,
+        IPasswordlessService passwordlessService, IMFAService mfaService)
     {
-        _env = env;
         _logger = logger;
         _changePasswordService = changePasswordService;
         _changePhoneNumberService = changePhoneNumberService;
@@ -51,20 +44,15 @@ public class ProfileController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChangeUserNameAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ChangeUserNameAsync");
 
             return await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new ChangeUserNameResultModel
             {
                 Success = false,
@@ -73,8 +61,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -84,20 +71,15 @@ public class ProfileController : Controller
     { 
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.SetPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.SetPasswordAsync");
 
             return await _changePasswordService.ChangePasswordAsync(User.Sub()!, model.CurrentPassword, model.NewPassword, model.NewPasswordConfirm);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new ChangePasswordResultModel
             {
                 Success = false,
@@ -106,8 +88,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
         
     }
@@ -117,20 +98,15 @@ public class ProfileController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.EnableMfaAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.EnableMfaAsync");
 
             return await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new MFAResultModel
             {
                 Success = false,
@@ -139,8 +115,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -149,20 +124,15 @@ public class ProfileController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.DisableMfaAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.DisableMfaAsync");
 
             return await _mfaService.DisableMFAAsync(User.Sub()!);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new DisableMFAResultModel
             {
                 Success = false,
@@ -171,8 +141,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -181,20 +150,15 @@ public class ProfileController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ResetRecoveryCodesAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.ResetRecoveryCodesAsync");
 
             return await _mfaService.ResetRecoveryCodesAsync(User.Sub()!);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new MFAResultModel
             {
                 Success = false,
@@ -203,8 +167,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -213,20 +176,15 @@ public class ProfileController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetMfaUrlAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetMfaUrlAsync");
 
             return await _mfaService.GetMFAUrlAsync(User.Sub()!);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new GetMFAUrlResultModel
             {
                 Success = false,
@@ -235,8 +193,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -245,20 +202,15 @@ public class ProfileController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetPasswordlessUrlAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetPasswordlessUrlAsync");
 
             return await _passwordlessService.GetPasswordlessUrl(User.Sub()!);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new GetPasswordlessUrlResultModel
             {
                 Success = false,
@@ -267,8 +219,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -277,20 +228,15 @@ public class ProfileController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ProfilenController.ChangePhoneNumberAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ProfilenController.ChangePhoneNumberAsync");
         
             return await _changePhoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new ChangePhoneNumberResultModel
             {
                 Success = false,
@@ -299,8 +245,7 @@ public class ProfileController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

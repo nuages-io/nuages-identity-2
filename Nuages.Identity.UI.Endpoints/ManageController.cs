@@ -22,14 +22,13 @@ public class ManageController : Controller
     private readonly IMFAService _mfaService;
     private readonly IChangePhoneNumberService _phoneNumberService;
     private readonly ISendSMSVerificationCode _sendSmsVerificationCode;
-    private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly ILogger<ManageController> _logger;
     private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
         ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
         IMFAService mfaService, IChangePhoneNumberService phoneNumberService, ISendSMSVerificationCode sendSmsVerificationCode,
-        IWebHostEnvironment webHostEnvironment, ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
+        ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
         _changePasswordService = changePasswordService;
         _userManager = userManager;
@@ -39,7 +38,6 @@ public class ManageController : Controller
         _mfaService = mfaService;
         _phoneNumberService = phoneNumberService;
         _sendSmsVerificationCode = sendSmsVerificationCode;
-        _webHostEnvironment = webHostEnvironment;
         _logger = logger;
         _stringLocalizer = stringLocalizer;
     }
@@ -87,8 +85,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SetPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SetPasswordAsync");
 
             _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
@@ -100,12 +97,10 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+           
+            _logger.LogError(e, e.Message);
+            
             
             return new ChangePasswordResultModel
             {
@@ -115,8 +110,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -125,8 +119,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendEmailChangeMessageAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendEmailChangeMessageAsync");
 
             var res = await _sendEmailChangedConfirmationService.SendEmailChangeConfirmation(User.Sub()!, model.Email);
 
@@ -134,12 +127,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new SendEmailChangeResultModel
             {
@@ -149,8 +138,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -161,8 +149,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangeUsernameAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangeUsernameAsync");
             
             var res = await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
 
@@ -176,12 +163,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new ChangeUserNameResultModel
             {
@@ -191,8 +174,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
      
       
@@ -204,8 +186,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Disable2FaAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Disable2FaAsync");
             
             var res = await _mfaService.DisableMFAAsync(User.Sub()!);
 
@@ -214,12 +195,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new DisableMFAResultModel
             {
@@ -229,8 +206,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+           AWSXRayRecorder.Instance.EndSubsegment();
         }
      
       
@@ -243,8 +219,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Enable2FaAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Enable2FaAsync");
             
             var res = await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
 
@@ -258,12 +233,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+           AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new MFAResultModel
             {
@@ -273,8 +244,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
      
       
@@ -286,8 +256,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.RemovePhoneAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.RemovePhoneAsync");
             
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, "", null);
 
@@ -301,12 +270,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new ChangePhoneNumberResultModel
             {
@@ -316,8 +281,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
      
       
@@ -329,8 +293,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
             
             var res = await _sendSmsVerificationCode.SendCode(User.Sub()!, model.PhoneNumber);
 
@@ -338,12 +301,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new SendSMSVerificationCodeResultModel
             {
@@ -353,8 +312,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
      
       
@@ -366,8 +324,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
             
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
 
@@ -375,12 +332,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new ChangePhoneNumberResultModel
             {
@@ -390,8 +343,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
      
       
@@ -412,20 +364,15 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ResetRecoveryCodesAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ResetRecoveryCodesAsync");
 
             return await _mfaService.ResetRecoveryCodesAsync(User.Sub()!);
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new MFAResultModel
             {
                 Success = false,
@@ -434,8 +381,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -444,8 +390,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ForgetBrowserAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ForgetBrowserAsync");
 
             await _signInManager.ForgetTwoFactorClientAsync();
             
@@ -453,19 +398,14 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return false;
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

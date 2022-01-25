@@ -83,49 +83,47 @@ public class ExternalLoginModel : PageModel
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
         
-        if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
+        if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email) && _options.ExternalLoginAutoEnrollIfEmailExists)
         {
             Email = info.Principal.FindFirstValue(ClaimTypes.Email);
 
-            if (_options.ExternalLoginAutoEnrollIfEmailExists)
+            var user = await _userManager.FindByEmailAsync(Email);
+            if (user != null)
             {
-                var user = await _userManager.FindByEmailAsync(Email);
-                if (user != null)
+                if (result.IsNotAllowed)
                 {
-                    if (result.IsNotAllowed)
+                    // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+                    switch (user.LastFailedLoginReason)
                     {
-                        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-                        switch (user.LastFailedLoginReason)
+                        case FailedLoginReason.EmailNotConfirmed:
                         {
-                            case FailedLoginReason.EmailNotConfirmed:
-                            {
-                                return RedirectToPage("./EmailNotConfirmed");
-                            }
-                            case FailedLoginReason.PhoneNotConfirmed:
-                            {
-                                return RedirectToPage("./PhoneNotConfirmed");
-                            }
-                            case FailedLoginReason.NotWithinDateRange:
-                            {
-                                ErrorMessage = _localizer[$"errorMessage:no_access:{user.LastFailedLoginReason}"];
-                                return Page();
-                            }
-                            default:
-                            {
-                                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
-                            }
+                            return RedirectToPage("./EmailNotConfirmed");
+                        }
+                        case FailedLoginReason.PhoneNotConfirmed:
+                        {
+                            return RedirectToPage("./PhoneNotConfirmed");
+                        }
+                        case FailedLoginReason.NotWithinDateRange:
+                        {
+                            ErrorMessage = _localizer[$"errorMessage:no_access:{user.LastFailedLoginReason}"];
+                            return Page();
+                        }
+                        default:
+                        {
+                            return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
                         }
                     }
-   
-                    var res = await _userManager.AddLoginAsync(user, info);
-                    if (res.Succeeded)
-                    {
-                        _logger.LogInformation("{Name} auto enrolled and logged in with {LoginProvider} provider.", info.Principal.Identity!.Name, info.LoginProvider);
-                        await _signInManager.SignInAsync(user, _options.ExternalLoginPersistent, info.LoginProvider);
-                        return LocalRedirect(returnUrl);
-                    }
+                }
+
+                var res = await _userManager.AddLoginAsync(user, info);
+                if (res.Succeeded)
+                {
+                    _logger.LogInformation("{Name} auto enrolled and logged in with {LoginProvider} provider.", info.Principal.Identity!.Name, info.LoginProvider);
+                    await _signInManager.SignInAsync(user, _options.ExternalLoginPersistent, info.LoginProvider);
+                    return LocalRedirect(returnUrl);
                 }
             }
+         
         }
         else
         {

@@ -14,7 +14,6 @@ namespace Nuages.Identity.API.Endpoints;
 [Route("api/admin")]
 public class AdminController : Controller
 {
-    private readonly IWebHostEnvironment _env;
     private readonly IChangePasswordService _changePasswordService;
     private readonly IChangePhoneNumberService _changePhoneNumberService;
     private readonly IChangeEmailService _changeEmailService;
@@ -23,11 +22,10 @@ public class AdminController : Controller
     private readonly ILogger<AdminController> _logger;
     private readonly IStringLocalizer _localizer;
 
-    public AdminController(IWebHostEnvironment env, IChangePasswordService changePasswordService, 
-        IChangePhoneNumberService changePhoneNumberService, IChangeEmailService changeEmailService, IMFAService mfaService, IChangeUserNameService changeUserNameService,
+    public AdminController(IChangePasswordService changePasswordService, IChangePhoneNumberService changePhoneNumberService, 
+        IChangeEmailService changeEmailService, IMFAService mfaService, IChangeUserNameService changeUserNameService,
         ILogger<AdminController> logger, IStringLocalizer localizer)
     {
-        _env = env;
         _changePasswordService = changePasswordService;
         _changePhoneNumberService = changePhoneNumberService;
         _changeEmailService = changeEmailService;
@@ -42,20 +40,15 @@ public class AdminController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminRemoveMfaAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminRemoveMfaAsync");
         
             return await _mfaService.DisableMFAAsync(userId);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new DisableMFAResultModel
             {
                 Success = false,
@@ -64,8 +57,7 @@ public class AdminController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -74,20 +66,15 @@ public class AdminController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetEmailAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetEmailAsync");
         
             return await _changeEmailService.ChangeEmailAsync(userId, email, null);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new ChangeEmailResultModel
             {
                 Success = false,
@@ -96,8 +83,7 @@ public class AdminController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
         
     }
@@ -107,20 +93,15 @@ public class AdminController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetUserNameAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetUserNameAsync");
         
             return await _changeUserNameService.ChangeUserNameAsync(userId, userName);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+           
             return new ChangeUserNameResultModel
             {
                 Success = false,
@@ -129,8 +110,7 @@ public class AdminController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
 
     }
@@ -140,20 +120,15 @@ public class AdminController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPhoneNumberAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPhoneNumberAsync");
         
             return await _changePhoneNumberService.ChangePhoneNumberAsync(userId, phoneNumber, null);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new ChangePhoneNumberResultModel
             {
                 Success = false,
@@ -162,8 +137,7 @@ public class AdminController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
         
     }
@@ -173,20 +147,15 @@ public class AdminController : Controller
     {
         try
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AdminController.AdminSetPasswordAsync");
 
             return await _changePasswordService.AdminChangePasswordAsync(userId, model.NewPassword, model.NewPasswordConfirm, model.MustChangePassword, model.SendByEmail, null);
         }
         catch (Exception e)
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, e.Message);
-            }
-
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
             return new ChangePasswordResultModel
             {
                 Success = false,
@@ -195,8 +164,7 @@ public class AdminController : Controller
         }
         finally
         {
-            if (!_env.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }
