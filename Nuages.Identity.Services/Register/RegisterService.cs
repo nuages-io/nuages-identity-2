@@ -65,7 +65,7 @@ public class RegisterService : IRegisterService
 
             var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
 
-            await _messageService.SendEmailUsingTemplateAsync(model.Email, "Confirm_Email", new Dictionary<string, string>
+            _messageService.SendEmailUsingTemplate(model.Email, "Confirm_Email", new Dictionary<string, string>
             {
                 { "Link", url }
             });

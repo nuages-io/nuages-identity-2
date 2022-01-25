@@ -141,7 +141,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         
         if (await IsLockedOutAsync(user))
         {
-            await _messageService.SendEmailUsingTemplateAsync(user.Email, "Login_LockedOut", new Dictionary<string, string>
+            _messageService.SendEmailUsingTemplate(user.Email, "Login_LockedOut", new Dictionary<string, string>
             {
                 { "Minutes", Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() },
                 

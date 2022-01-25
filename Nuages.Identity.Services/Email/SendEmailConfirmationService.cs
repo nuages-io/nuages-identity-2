@@ -41,7 +41,7 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         
         var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
         
-        await _messageService.SendEmailUsingTemplateAsync(user.Email, "Confirm_Email", new Dictionary<string, string>
+        _messageService.SendEmailUsingTemplate(user.Email, "Confirm_Email", new Dictionary<string, string>
         {
             { "Link", url }
             

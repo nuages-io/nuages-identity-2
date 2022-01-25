@@ -70,7 +70,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
                
                 var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
 
-                await _messageService.SendEmailUsingTemplateAsync(email, "Confirm_Email", new Dictionary<string, string>
+                _messageService.SendEmailUsingTemplate(email, "Confirm_Email", new Dictionary<string, string>
                 {
                     { "Link", url }
                 });

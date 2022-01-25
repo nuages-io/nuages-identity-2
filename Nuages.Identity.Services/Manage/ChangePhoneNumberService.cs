@@ -49,14 +49,14 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
         {
             if (string.IsNullOrEmpty(phoneNumber))
             {
-                await _messageService.SendEmailUsingTemplateAsync(user.Email, "Fallback_Phone_Removed", new Dictionary<string, string>
+                _messageService.SendEmailUsingTemplate(user.Email, "Fallback_Phone_Removed", new Dictionary<string, string>
                 {
                     { "PhoneNumber", previousPhoneNumber }
                 });
             }
             else
             {
-                await _messageService.SendEmailUsingTemplateAsync(user.Email, "Fallback_Phone_Added", new Dictionary<string, string>
+                _messageService.SendEmailUsingTemplate(user.Email, "Fallback_Phone_Added", new Dictionary<string, string>
                 {
                     { "PhoneNumber", phoneNumber }
                 });

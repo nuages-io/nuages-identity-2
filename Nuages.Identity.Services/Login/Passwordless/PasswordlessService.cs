@@ -87,7 +87,7 @@ public class PasswordlessService : IPasswordlessService
 
         if (res.Success)
         {
-            await _messageService.SendEmailUsingTemplateAsync(user.Email, "Passwordless_Login", new Dictionary<string, string>
+            _messageService.SendEmailUsingTemplate(user.Email, "Passwordless_Login", new Dictionary<string, string>
             {
                 { "Link", res.Url }
             });

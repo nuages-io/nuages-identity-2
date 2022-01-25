@@ -64,7 +64,7 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
         
         var url = $"{_options.Authority}/Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(email))}";
         
-        await _messageService.SendEmailUsingTemplateAsync(email, "Confirm_Email_Change", new Dictionary<string, string>
+        _messageService.SendEmailUsingTemplate(email, "Confirm_Email_Change", new Dictionary<string, string>
         {
             { "Link", url }
         });

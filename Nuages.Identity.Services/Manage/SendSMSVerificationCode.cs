@@ -56,7 +56,7 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
 
         _logger.LogInformation($"Message : {message} No: {phoneNumber}");
         
-        await _sender.SendSmsAsync(phoneNumber, message);
+        _sender.SendSms(phoneNumber, message);
         
         return new SendSMSVerificationCodeResultModel
         {

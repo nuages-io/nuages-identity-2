@@ -67,7 +67,7 @@ public class SMSLoginService : ISMSLoginService
 
         _logger.LogInformation($"Message : {message} No: {user.PhoneNumber}");
         
-        await _sender.SendSmsAsync(user.PhoneNumber, message);
+        _sender.SendSms(user.PhoneNumber, message);
         
         return new SendSMSCodeResultModel
         {

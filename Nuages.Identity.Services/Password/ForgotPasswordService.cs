@@ -42,7 +42,7 @@ public class ForgotPasswordService : IForgotPasswordService
        
         var url = $"{_options.Authority}/Account/ResetPassword?code={code}";
 
-        await _messageService.SendEmailUsingTemplateAsync(model.Email, "Password_Reset", new Dictionary<string, string>
+        _messageService.SendEmailUsingTemplate(model.Email, "Password_Reset", new Dictionary<string, string>
         {
             { "Link", url }
         });
