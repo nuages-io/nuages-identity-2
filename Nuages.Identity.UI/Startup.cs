@@ -30,15 +30,15 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDataProtection()
-            .PersistKeysToAWSSystemsManager($"{_configuration["Nuages:IdentityUI:StackName"]}/DataProtection");
+            .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
 
         services.AddHttpClient();
 
-        var awsOptions = _configuration.GetAWSOptions();
+        //var awsOptions = _configuration.GetAWSOptions();
 
-        if (!_env.IsDevelopment()) awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
+        //if (!_env.IsDevelopment()) awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
 
-        services.AddDefaultAWSOptions(awsOptions);
+        //services.AddDefaultAWSOptions(awsOptions);
 
         if (!_env.IsDevelopment())
         {
@@ -118,7 +118,7 @@ public class Startup
         services.AddWebOptimizer(enableOptimizer, enableOptimizer);
         
         services.AddUI(_configuration);
-        
+
         services.AddAuthentication()
             .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
             .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
@@ -151,6 +151,7 @@ public class Startup
         else
         {
             app.UseExceptionHandler("/Error");
+            //app.UseDeveloperExceptionPage();
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }

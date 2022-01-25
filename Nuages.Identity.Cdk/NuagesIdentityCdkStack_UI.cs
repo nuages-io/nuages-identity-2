@@ -24,9 +24,9 @@ public partial class NuagesIdentityCdkStack
         }
 
         // ReSharper disable once UnusedVariable
-        var func = new Function(this, "AspNetCoreFunctionUI", new FunctionProps
+        var func = new Function(this, "WebUI", new FunctionProps
         {
-            FunctionName = MakeId("AspNetCoreFunctionUI"),
+            FunctionName = MakeId("WebUI"),
             Code = Code.FromAsset(AssetUi),
             Handler = "Nuages.Identity.UI::Nuages.Identity.UI.LambdaEntryPoint::FunctionHandlerAsync",
             Runtime = Runtime.DOTNET_CORE_3_1,
@@ -36,7 +36,8 @@ public partial class NuagesIdentityCdkStack
             {
                 { "Nuages__Identity__StackName", StackName }
             },
-            Tracing = Tracing.ACTIVE
+            Tracing = Tracing.ACTIVE,
+            MemorySize = 1024
         });
 
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));
@@ -44,7 +45,7 @@ public partial class NuagesIdentityCdkStack
         func.AddEventSource(new ApiEventSource("ANY", "/"));
         
 
-        var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("AspNetCoreFunctionUI"));
+        var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("WebUI"));
 
         //var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
         //var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
@@ -137,6 +138,7 @@ public partial class NuagesIdentityCdkStack
         role.AddManagedPolicy(CreateS3RolePolicy("UI"));
         role.AddManagedPolicy(CreateSESRolePolicy("UI"));
         role.AddManagedPolicy(CreateSnsRolePolicy("UI"));
+        role.AddManagedPolicy(CreateXrayRolePolicy("UI"));
         return role;
     }
 

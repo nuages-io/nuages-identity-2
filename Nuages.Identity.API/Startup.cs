@@ -35,7 +35,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddDataProtection()
-            .PersistKeysToAWSSystemsManager($"{Configuration["Nuages:IdentityAPI:StackName"]}/DataProtection");
+            .PersistKeysToAWSSystemsManager("Nuages.Identity.API/DataProtection");
         
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         
@@ -199,8 +199,7 @@ public class Startup
             );
 
         
-        services.AddDataProtection()
-            .PersistKeysToAWSSystemsManager($"{Configuration["Nuages:Sender:StackName"]}/DataProtection");
+       
         
         services.AddHealthChecks();
         

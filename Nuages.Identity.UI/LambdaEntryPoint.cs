@@ -47,7 +47,9 @@ public class LambdaEntryPoint :
         builder.ConfigureAppConfiguration((_, configBuilder) =>
         {
             configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
-            configBuilder.AddJsonFile("appsettings.prod.json", true, true);
+            #if !DEBUG
+            configBuilder.AddJsonFile("appsettings.prod.json", false, true);
+            #endif
 
             configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
             configBuilder.AddJsonFileTranslation("/locales/en-CA.json");

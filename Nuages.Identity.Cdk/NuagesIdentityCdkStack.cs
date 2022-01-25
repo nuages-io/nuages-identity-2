@@ -124,6 +124,22 @@ public partial class NuagesIdentityCdkStack : Stack
         });
     }
     
+    private ManagedPolicy CreateXrayRolePolicy(string suffix)
+    {
+        return new ManagedPolicy(this, MakeId("Xray" + suffix), new ManagedPolicyProps
+        {
+            Document = new PolicyDocument(new PolicyDocumentProps
+            {
+                Statements = new []{ new PolicyStatement(new PolicyStatementProps
+                {
+                    Effect = Effect.ALLOW,
+                    Actions = new []{"xray:*"},
+                    Resources = new []{"*"}
+                })}
+            })
+        });
+    }
+    
     private IManagedPolicy CreateLambdaFullAccessRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("LambdaFullAccessRole" + suffix), new ManagedPolicyProps

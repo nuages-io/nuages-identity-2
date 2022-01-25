@@ -27,9 +27,9 @@ public partial class NuagesIdentityCdkStack
         }
 
         // ReSharper disable once UnusedVariable
-        var func = new Function(this, "AspNetCoreFunctionAPI", new FunctionProps
+        var func = new Function(this, "WebAPI", new FunctionProps
         {
-            FunctionName = MakeId("AspNetCoreFunctionAPI"),
+            FunctionName = MakeId("WebAPI"),
             Code = Code.FromAsset(AssetApi),
             Handler = "Nuages.Identity.API::Nuages.Identity.API.LambdaEntryPoint::FunctionHandlerAsync",
             Runtime = Runtime.DOTNET_CORE_3_1,
@@ -47,7 +47,7 @@ public partial class NuagesIdentityCdkStack
         func.AddEventSource(new ApiEventSource("ANY", "/"));
         
 
-        var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("AspNetCoreFunctionAPI"));
+        var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("WebAPI"));
 
         
         //var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
@@ -141,6 +141,7 @@ public partial class NuagesIdentityCdkStack
         role.AddManagedPolicy(CreateS3RolePolicy("API"));
         role.AddManagedPolicy(CreateSESRolePolicy("API"));
         role.AddManagedPolicy(CreateSnsRolePolicy("API"));
+        role.AddManagedPolicy(CreateXrayRolePolicy("API"));
         
         return role;
     }

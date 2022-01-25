@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using Nuages.Localization.CultureProvider;
 using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services.Email;
@@ -7,11 +8,11 @@ namespace Nuages.Identity.Services.Email;
 public class MessageService : IMessageService
 {
     private readonly IMessageSender _messageSender;
-    private readonly IRequestCultureProvider _cultureProvider;
+    private readonly ICultureProvider _cultureProvider;
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly NuagesIdentityOptions _options;
 
-    public MessageService(IMessageSender messageSender, IOptions<NuagesIdentityOptions> options, IRequestCultureProvider cultureProvider, IHttpContextAccessor contextAccessor)
+    public MessageService(IMessageSender messageSender, IOptions<NuagesIdentityOptions> options, ICultureProvider cultureProvider, IHttpContextAccessor contextAccessor)
     {
         _messageSender = messageSender;
         _cultureProvider = cultureProvider;
@@ -30,7 +31,7 @@ public class MessageService : IMessageService
 
         if (string.IsNullOrEmpty(language))
         {
-            language = ((await _cultureProvider.DetermineProviderCultureResult(_contextAccessor.HttpContext!))!).UICultures.First().Value;
+            language = _cultureProvider.GetCulture();
         }
         
         return await _messageSender.SendEmailUsingTemplateAsync(to, template, fields, language);
