@@ -53,7 +53,7 @@ public class AdminController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new DisableMFAResultModel
@@ -85,7 +85,7 @@ public class AdminController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new ChangeEmailResultModel
@@ -118,7 +118,7 @@ public class AdminController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new ChangeUserNameResultModel
@@ -151,7 +151,7 @@ public class AdminController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new ChangePhoneNumberResultModel
@@ -184,7 +184,7 @@ public class AdminController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new ChangePasswordResultModel

@@ -46,10 +46,12 @@ public static class OpenIdDictConfigExtensions
                     .AllowPasswordFlow()
                     .AllowClientCredentialsFlow();
 
+#if DEBUG
                 // Register the signing and encryption credentials.
-                // options.AddDevelopmentEncryptionCertificate()
-                //     .AddDevelopmentSigningCertificate();
-
+                options.AddDevelopmentEncryptionCertificate()
+                    .AddDevelopmentSigningCertificate();
+#endif
+                
                 // options.AddEphemeralSigningKey();
                 // options.AddEphemeralEncryptionKey();
 

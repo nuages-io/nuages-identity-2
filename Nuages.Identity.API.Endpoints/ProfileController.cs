@@ -62,7 +62,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new ChangeUserNameResultModel
@@ -95,7 +95,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new ChangePasswordResultModel
@@ -128,7 +128,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new MFAResultModel
@@ -160,7 +160,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new DisableMFAResultModel
@@ -192,7 +192,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new MFAResultModel
@@ -224,7 +224,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new GetMFAUrlResultModel
@@ -256,7 +256,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new GetPasswordlessUrlResultModel
@@ -288,7 +288,7 @@ public class ProfileController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new ChangePhoneNumberResultModel

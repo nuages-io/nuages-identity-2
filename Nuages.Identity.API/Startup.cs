@@ -40,17 +40,23 @@ public class Startup
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         
         services.AddHttpClient();
+        
         services.AddEndpointsApiExplorer();
         
         services.AddSingleton(Configuration);
             
         services.AddHttpContextAccessor();
             
+        AWSXRayRecorder.InitializeInstance(Configuration);
+        
         if (!_env.IsDevelopment())
         {
-            AWSXRayRecorder.InitializeInstance(Configuration);
-            AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
             AWSSDKHandler.RegisterXRayForAllServices();
+            AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
+        }
+        else
+        {
+            AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
         }
         
         services.AddControllers().AddJsonOptions(options =>

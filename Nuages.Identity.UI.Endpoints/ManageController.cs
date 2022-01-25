@@ -49,8 +49,7 @@ public class ManageController : Controller
     {
         try
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePasswordAsync");
 
             _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
@@ -68,12 +67,8 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.AddException(e);
-            else
-            {
-                _logger.LogError(e, "");
-            }
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
             
             return new ChangePasswordResultModel
             {
@@ -83,8 +78,7 @@ public class ManageController : Controller
         }
         finally
         {
-            if (!_webHostEnvironment.IsDevelopment())
-                AWSXRayRecorder.Instance.EndSubsegment();
+           AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -110,7 +104,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new ChangePasswordResultModel
@@ -144,7 +138,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new SendEmailChangeResultModel
@@ -186,7 +180,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new ChangeUserNameResultModel
@@ -224,7 +218,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new DisableMFAResultModel
@@ -268,7 +262,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new MFAResultModel
@@ -311,7 +305,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new ChangePhoneNumberResultModel
@@ -348,7 +342,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new SendSMSVerificationCodeResultModel
@@ -385,7 +379,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new ChangePhoneNumberResultModel
@@ -429,7 +423,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return new MFAResultModel
@@ -463,7 +457,7 @@ public class ManageController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
 
             return false;

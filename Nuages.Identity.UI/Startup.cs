@@ -34,19 +34,18 @@ public class Startup
 
         services.AddHttpClient();
 
-        //var awsOptions = _configuration.GetAWSOptions();
-
-        //if (!_env.IsDevelopment()) awsOptions.Credentials = new EnvironmentVariablesAWSCredentials();
-
-        //services.AddDefaultAWSOptions(awsOptions);
-
+        AWSXRayRecorder.InitializeInstance(_configuration);
+        
         if (!_env.IsDevelopment())
         {
-            AWSXRayRecorder.InitializeInstance(_configuration);
-            AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
             AWSSDKHandler.RegisterXRayForAllServices();
+            AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
         }
-
+        else
+        {
+            AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
+        }
+        
         var options = _configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
         
         services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>

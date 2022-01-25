@@ -94,7 +94,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new LoginResultModel
@@ -148,7 +148,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new LoginResultModel
@@ -200,7 +200,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new LoginResultModel
@@ -240,7 +240,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new RegisterResultModel
@@ -279,7 +279,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new RegisterExternalLoginResultModel
@@ -318,7 +318,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new ForgotPasswordResultModel
@@ -362,7 +362,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new SendEmailConfirmationResultModel
@@ -403,7 +403,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new ResetPasswordResultModel
@@ -442,7 +442,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new StartPasswordlessResultModel
@@ -483,7 +483,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new SendSMSCodeResultModel
@@ -538,7 +538,7 @@ public class AccountController : Controller
                 AWSXRayRecorder.Instance.AddException(e);
             else
             {
-                _logger.LogError(e, "");
+                _logger.LogError(e, e.Message);
             }
             
             return new LoginResultModel
