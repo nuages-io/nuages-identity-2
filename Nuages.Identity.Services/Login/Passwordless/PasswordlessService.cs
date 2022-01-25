@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
-using Nuages.Sender.API.Sdk;
 using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Login.Passwordless;

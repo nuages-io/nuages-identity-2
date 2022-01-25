@@ -8,6 +8,7 @@ using Nuages.Identity.Services.Login;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 {
     private readonly IUserConfirmation<NuagesApplicationUser> _confirmation;

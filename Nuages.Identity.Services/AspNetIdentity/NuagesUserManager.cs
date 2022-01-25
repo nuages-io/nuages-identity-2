@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.Email;
-using Nuages.Sender.API.Sdk;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -143,8 +142,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         {
             _messageService.SendEmailUsingTemplate(user.Email, "Login_LockedOut", new Dictionary<string, string>
             {
-                { "Minutes", Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() },
-                
+                { "Minutes", Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() }
             });
         }
 

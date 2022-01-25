@@ -5,10 +5,8 @@ using Amazon.CDK.AWS.IAM;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.Lambda.EventSources;
 using Amazon.CDK.AWS.Route53;
-using Newtonsoft.Json;
 using CfnDomainName = Amazon.CDK.AWS.Apigatewayv2.CfnDomainName;
 using CfnDomainNameProps = Amazon.CDK.AWS.Apigatewayv2.CfnDomainNameProps;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 // ReSharper disable VirtualMemberNeverOverridden.Global
 

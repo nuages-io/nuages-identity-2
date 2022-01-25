@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Amazon;
-using Amazon.Runtime;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AspNetCore.Identity.Mongo;

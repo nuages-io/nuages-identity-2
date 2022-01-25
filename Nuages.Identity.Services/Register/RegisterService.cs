@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
-using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services.Register;
 

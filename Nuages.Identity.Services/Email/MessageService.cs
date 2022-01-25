@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Localization.CultureProvider;
 using Nuages.Sender.API.Sdk;
@@ -40,7 +39,7 @@ public class MessageService : IMessageService
         });
     }
 
-    string? GetLanguage()
+    private string? GetLanguage()
     {
         var cultureProviders = _provider.GetServices<ICultureProvider>();
 
