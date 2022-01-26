@@ -27,4 +27,7 @@ public class NuagesApplicationUser : MongoUser<string>
 
     [BsonRepresentation(BsonType.String)]
     public FailedLoginReason? LastFailedLoginReason { get; set; }
+    
+    public string? LastName { get; set; }
+    public string? FirstName { get; set; }
 }

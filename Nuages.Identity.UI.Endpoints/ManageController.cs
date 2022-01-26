@@ -22,12 +22,14 @@ public class ManageController : Controller
     private readonly IMFAService _mfaService;
     private readonly IChangePhoneNumberService _phoneNumberService;
     private readonly ISendSMSVerificationCode _sendSmsVerificationCode;
+    private readonly IProfileService _profileService;
     private readonly ILogger<ManageController> _logger;
     private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
         ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
         IMFAService mfaService, IChangePhoneNumberService phoneNumberService, ISendSMSVerificationCode sendSmsVerificationCode,
+        IProfileService profileService,
         ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
         _changePasswordService = changePasswordService;
@@ -38,6 +40,7 @@ public class ManageController : Controller
         _mfaService = mfaService;
         _phoneNumberService = phoneNumberService;
         _sendSmsVerificationCode = sendSmsVerificationCode;
+        _profileService = profileService;
         _logger = logger;
         _stringLocalizer = stringLocalizer;
     }
@@ -402,6 +405,32 @@ public class ManageController : Controller
             _logger.LogError(e, e.Message);
             
             return false;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpPost("saveProfile")]
+    public async Task<SaveProfileResultModel> SaveProfileAsync([FromBody] SaveProfileModel model)
+    {
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SaveProfileAsync");
+            
+            return await _profileService.SaveProfile(User.Sub()!, model);
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+            
+            return new SaveProfileResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+            };
         }
         finally
         {

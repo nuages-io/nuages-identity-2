@@ -5,6 +5,7 @@ using System.Text.Encodings.Web;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage;
@@ -14,6 +15,7 @@ public class MFAService : IMFAService
     private readonly NuagesUserManager _userManager;
     private readonly UrlEncoder _urlEncoder;
     private readonly IStringLocalizer _localizer;
+    private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
 
     private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -21,11 +23,12 @@ public class MFAService : IMFAService
     private const string AuthenticatorKey = "AuthenticatorKey";
     private const string RecoveryCodes = "RecoveryCodes";
 
-    public MFAService(NuagesUserManager userManager, UrlEncoder urlEncoder, IStringLocalizer localizer, IOptions<NuagesIdentityOptions> options)
+    public MFAService(NuagesUserManager userManager, UrlEncoder urlEncoder, IStringLocalizer localizer, IOptions<NuagesIdentityOptions> options, IMessageService messageService)
     {
         _userManager = userManager;
         _urlEncoder = urlEncoder;
         _localizer = localizer;
+        _messageService = messageService;
         _options = options.Value;
     }
     public async Task<DisableMFAResultModel> DisableMFAAsync(string userId)
@@ -43,6 +46,13 @@ public class MFAService : IMFAService
         
         await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
             RecoveryCodes);
+        
+        var url = $"{_options.Authority}/account/manage/twoFactorAuthentication";
+
+        _messageService.SendEmailUsingTemplate(user.Email, "2FA_Disabled", new Dictionary<string, string>
+        {
+            { "Link", url }
+        });
         
         return new DisableMFAResultModel
         {
@@ -77,6 +87,13 @@ public class MFAService : IMFAService
         
         var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
 
+        var url = $"{_options.Authority}/account/manage/twoFactorAuthentication";
+
+        _messageService.SendEmailUsingTemplate(user.Email, "2FA_Enabled", new Dictionary<string, string>
+        {
+            { "Link", url }
+        });
+        
         return new MFAResultModel
         {
             Success = true,
