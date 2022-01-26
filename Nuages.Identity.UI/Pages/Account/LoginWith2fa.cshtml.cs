@@ -28,6 +28,9 @@ public class LoginWith2faModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
     {
+        if (string.IsNullOrEmpty(returnUrl))
+            returnUrl = "~/";
+        
         // Ensure the user has gone through the username & password screen first
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 

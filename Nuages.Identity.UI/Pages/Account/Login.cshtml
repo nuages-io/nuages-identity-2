@@ -27,7 +27,8 @@
 <div >
     <form class="mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
         <fieldset class="space-y-4" :disabled="status == 'sending'">
-             <partial name="Shared/ErrorList"/>
+            <partial name="Shared/ErrorList"/>
+
             <input id="userNameOrEmail" name="userNameOrEmail" type="text" autofocus="" v-model="userNameOrEmail" placeholder="@Model.UserNamePlaceHolder" required class="text-box" autocomplete=“off”>
             <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
     

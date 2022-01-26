@@ -34,8 +34,11 @@ var App =
 
                             self.status = "done";
                             
-                            if (!res.success) 
+                            if (!res.success)
+                            {
                                 self.errors.push({message: res.message});
+                            }
+                               
                         });
 
                 },

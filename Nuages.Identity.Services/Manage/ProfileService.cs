@@ -9,10 +9,10 @@ public class ProfileService : IProfileService
     private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
 
-    public ProfileService(NuagesUserManager userManager, IStringLocalizer _localizer)
+    public ProfileService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
-        this._localizer = _localizer;
+        _localizer = localizer;
     }
     
     public async Task<SaveProfileResultModel> SaveProfile(string id, SaveProfileModel model)

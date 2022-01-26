@@ -1,11 +1,11 @@
 @page
 @model Nuages.Identity.UI.Pages.Account.Manage.Profile
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = @Localizer["profile:title"];
 }
 
 <div id="app">
-    <h2 class="page-header">Profile</h2>
+    <h2 class="page-header">@Localizer["profile:title"]</h2>
     
     <form class="space-y-4" method="POST" v-on:submit.prevent="saveProfile" id="formProfile">
         @* <span class="text-gray-500">@Localizer["setPassword:instructions"]</span> *@
@@ -31,8 +31,8 @@
 @section Scripts
 {
     <script>
-       var lastNameValue = "@Model.CurrentUser.LastName";
-       var firstNameValue = "@Model.CurrentUser.FirstName";
+       var lastNameValue = "@Model.CurrentUser!.LastName";
+       var firstNameValue = "@Model.CurrentUser!.FirstName";
         
     </script>
 

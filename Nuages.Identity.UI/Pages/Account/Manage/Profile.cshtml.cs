@@ -20,13 +20,12 @@ public class Profile : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.FindByIdAsync(User.Sub()!);
-        if (user == null)
-            throw new NotFoundException("UserNotFound");
 
-        CurrentUser = user;
+        CurrentUser = user ?? throw new NotFoundException("UserNotFound");
 
         return Page();
     }
 
-    public NuagesApplicationUser CurrentUser { get; set; }
+    // ReSharper disable once MemberCanBePrivate.Global
+    public NuagesApplicationUser? CurrentUser { get; set; }
 }

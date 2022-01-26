@@ -19,7 +19,12 @@ public class PasswordlessLogin : PageModel
 
         if (res.Success)
             return Redirect("/");
-       
+
+        if (res.Result.RequiresTwoFactor)
+        {
+            return Redirect("/account/loginwith2fa?returnUrl=/");
+        }
+        
         return Unauthorized();
     }
 }

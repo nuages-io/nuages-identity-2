@@ -187,6 +187,7 @@
 		"title": "Authentification à deux facteurs"
 	},
 	"or": "ou",
+	"password": "Mot de passe",
 	"passwordExpired": {
 		"instructions": "Votre mnot de passe est expiré ou doit être modifié. Choisissez un nouveau mot de passe.",
 		"submit": "Changer mon mot de passe",
@@ -209,6 +210,10 @@
 		"title": "Connection sans mot de passe"
 	},
 	"profile": {
+		"firstName": "Prénom",
+		"lastName": "Nom de famille",
+		"save": "Sauvegarder",
+		"success": "Le profil a été sauvegardé avec succès.",
 		"title": "Profile"
 	},
 	"recoveryCode": {

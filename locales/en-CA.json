@@ -187,6 +187,7 @@
 		"title": "Two-factor authentication"
 	},
 	"or": "or",
+	"password": "Password",
 	"passwordExpired": {
 		"instructions": "Your password has expired or needs to be changed. Choose a new password.",
 		"submit": "Change my password",
@@ -209,6 +210,10 @@
 		"title": "Passwordless login"
 	},
 	"profile": {
+		"firstName": "First Name",
+		"lastName": "Last Name",
+		"save": "Save",
+		"success": "The profile has been saved successfully.",
 		"title": "Profile"
 	},
 	"recoveryCode": {

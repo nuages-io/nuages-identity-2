@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
@@ -63,11 +64,12 @@ public class PasswordlessService : IPasswordlessService
 
         await _userManager.UpdateSecurityStampAsync(user);
 
-        await _signinManager.SignInAsync(user, false);
+        var result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
 
         return new PasswordlessResultModel
         {
-            Success = true
+            Success = result.Succeeded,
+            Result = result
         };
     }
 
@@ -111,6 +113,7 @@ public class PasswordlessService : IPasswordlessService
 public class PasswordlessResultModel
 {
     public bool Success { get; set; }
+    public SignInResult Result { get; set; } = null!;
 }
 
 public interface IPasswordlessService
