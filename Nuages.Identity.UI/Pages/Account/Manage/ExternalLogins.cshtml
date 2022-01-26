@@ -1,51 +1,49 @@
 ﻿@page
 @model ExternalLoginsModel
 @{
-    ViewData["Title"] = "Manage your external logins";
+    ViewData["Title"] = @Localizer["externalLogins.title"];
 }
+
+<h2 class="page-header mb-6">@Localizer["externalLogins.title"]</h2>
 
 @if (Model.CurrentLogins?.Count > 0)
 {
-    <h3>Registered Logins</h3>
-    <table class="table">
-        <tbody>
+    <div class="space-y-6">
+        <h3 class="text-xl font-extrabold text-gray-900 space-y-4">@Localizer["externalLogins.registeredConnections"]</h3>
+            
             @foreach (var login in Model.CurrentLogins)
             {
-                <tr>
-                    <td id="@($"login-provider-{login.LoginProvider}")">@login.ProviderDisplayName</td>
-                    <td>
+                <div class="flex flex-row justify-between">
+                    <span id="@($"login-provider-{login.LoginProvider}")"><i class="@("fab fa-" + login.ProviderDisplayName!.ToLower())"></i> @login.ProviderDisplayName</span>
+                    <div>
                         @if (Model.ShowRemoveButton)
                         {
                             <form id="@($"remove-login-{login.LoginProvider}")" asp-page-handler="RemoveLogin" method="post">
                                 <div>
                                     <input asp-for="@login.LoginProvider" name="LoginProvider" type="hidden" />
                                     <input asp-for="@login.ProviderKey" name="ProviderKey" type="hidden" />
-                                    <button type="submit" class="primary full" title="Remove this @login.ProviderDisplayName login from your account">Remove</button>
+                                    <button type="submit" class="link" >@Localizer["externalLogins.remove"]  <i class="fas fa-trash ml-2"></i></button>
                                 </div>
                             </form>
                         }
-                        else
-                        {
-                            @: &nbsp;
-                        }
-                    </td>
-                </tr>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+    </div>
+    
 }
 @if (Model.OtherLogins?.Count > 0)
 {
-    <h4>Add another service to log in.</h4>
-    <hr />
+    <h3 class="text-xl font-extrabold text-gray-900 mb-4">@Localizer["externalLogins.addAnotherService"]</h3>
+    
     <form id="link-login-form" asp-page-handler="LinkLogin" method="post" class="form-horizontal">
-        <div id="socialLoginList">
-            <p>
-                @foreach (var provider in Model.OtherLogins)
+        <div id="socialLoginList" class="grid grid-cols-5 gap-2">
+            @foreach (var provider in Model.OtherLogins)
                 {
-                    <button id="@($"link-login-button-{provider.Name}")" type="submit" class="primary full" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                    <button id="@($"link-login-button-{provider.Name}")" type="submit"class="btn-simple" name="provider" value="@provider.Name">
+                        <i class="mr-2 @("fab fa-" + provider.DisplayName!.ToLower())"></i> @provider.DisplayName
+                    </button>
                 }
-            </p>
         </div>
     </form>
 }

@@ -111,8 +111,14 @@
 		"instructions": "You've successfully authenticated with",
 		"instructions2": "Click the \"Register\" button to create your account and continue the login process.",
 		"lockout": "The account is locked",
-		"shortTitle": "External logins",
 		"title": "Register using an external account"
+	},
+	"externalLogins": {
+		"addAnotherService": "Add another service to log in.",
+		"registeredConnections": "Registered connections",
+		"remove": "Remove",
+		"shortTitle": "External logins",
+		"title": "External logins"
 	},
 	"forgotPassword": {
 		"instructions": "Enter the email associated with your account. An email message will be sent to you allowing you to choose a new password.",

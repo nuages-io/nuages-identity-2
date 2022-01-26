@@ -111,8 +111,14 @@
 		"instructions": "Vous êtes authentifié avec",
 		"instructions2": "Cliquez le bouton \"Créer le compte\" afin de créer votre compte et continuer avec la connexion.",
 		"lockout": "Le compte est vérouillé",
-		"shortTitle": "Conn. externes",
 		"title": "Enregistrement avec un compte externe"
+	},
+	"externalLogins": {
+		"addAnotherService": "Ajouter une autre connexion.",
+		"registeredConnections": "Connexions enregistrées",
+		"remove": "Supprimer",
+		"shortTitle": "Conn. externes",
+		"title": "Connexions externes"
 	},
 	"forgotPassword": {
 		"instructions": "Entrez le courriel associé à votre compte. Un courriel vous sera envoyé afin de vous permettre de choisir un nouveau mot de passe.",

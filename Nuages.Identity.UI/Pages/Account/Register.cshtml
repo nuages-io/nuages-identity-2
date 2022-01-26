@@ -53,7 +53,7 @@
             @foreach (var provider in Model.ExternalLogins)
             {
                 <li>
-                    <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
+                    <button type="submit" name="provider" value="@provider.Name"  class="btn-simple">
                         <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
                         @provider.DisplayName
                     </button>

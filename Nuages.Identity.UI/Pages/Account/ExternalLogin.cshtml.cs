@@ -3,6 +3,7 @@
 #nullable disable
 
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,8 @@ public class ExternalLoginModel : PageModel
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
         return new ChallengeResult(provider, properties);
     }
+    
+
 
     public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
     {
@@ -83,10 +86,11 @@ public class ExternalLoginModel : PageModel
         ReturnUrl = returnUrl;
         ProviderDisplayName = info.ProviderDisplayName;
         
+        
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email) && _options.ExternalLoginAutoEnrollIfEmailExists)
         {
             Email = info.Principal.FindFirstValue(ClaimTypes.Email);
-
+        
             var user = await _userManager.FindByEmailAsync(Email);
             if (user != null)
             {
@@ -114,7 +118,7 @@ public class ExternalLoginModel : PageModel
                         }
                     }
                 }
-
+        
                 var res = await _userManager.AddLoginAsync(user, info);
                 if (res.Succeeded)
                 {
@@ -129,6 +133,9 @@ public class ExternalLoginModel : PageModel
         {
             ErrorMessage = _localizer["externalLogin:emailNotAvailable"];
         }
+        
+        
+        //ErrorMessage = _localizer["externalLogin:emailNotAvailable"];
         
         return Page();
     }
