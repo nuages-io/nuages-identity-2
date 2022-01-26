@@ -53,7 +53,8 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         {
             Id = ObjectId.GenerateNewId().ToString(),
             Email = email,
-            UserName = email
+            UserName = email,
+            EmailConfirmed = _options.AutoConfirmExternalLogin
         };
         
         var result = await _userManager.CreateAsync(user);
@@ -63,18 +64,18 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             result = await _userManager.AddLoginAsync(user, info);
             if (result.Succeeded)
             {
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-               
-                var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
-
-                _messageService.SendEmailUsingTemplate(email, "Confirm_Email", new Dictionary<string, string>
+                if (_userManager.Options.SignIn.RequireConfirmedEmail && !user.EmailConfirmed)
                 {
-                    { "Link", url }
-                });
-        
-                if (_userManager.Options.SignIn.RequireConfirmedEmail)
-                {
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                
+                    var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
+                
+                    _messageService.SendEmailUsingTemplate(email, "Confirm_Email", new Dictionary<string, string>
+                    {
+                        { "Link", url }
+                    });
+                    
                     return new RegisterExternalLoginResultModel
                     {
                         ShowConfirmationMessage = true,

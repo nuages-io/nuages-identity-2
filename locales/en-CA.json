@@ -216,7 +216,7 @@
 		"title": "Recovery code verification"
 	},
 	"register": {
-		"accountCreated": "Your account was created. Please check your emails to find the confirmation message for your email address.",
+		"accountCreated": "Your account was created. Please check your emails to find the email address confirmation message.",
 		"button": "Register",
 		"continueWith": "Or register with ",
 		"instructions": "Enter your email and choose a password.",

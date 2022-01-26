@@ -21,6 +21,8 @@ public class NuagesIdentityOptions
     public bool SupportsUserName { get; set; } = true;
     public bool RequireConfirmedEmail { get; set; }
 
+    public bool AutoConfirmExternalLogin { get; set; }
+
     public string Authority { get; set; } = string.Empty;
     
     public string Name { get; set; } = string.Empty;
