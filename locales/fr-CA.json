@@ -96,6 +96,7 @@
 		"invalidEmail": "Le courriel est invalide",
 		"no_access": {
 			"AccountNotConfirmed": "Votre compte n'est pas confirmé",
+			"emailNotConfirmed": "Votre courriel n'a pas été confirmé.",
 			"error": "Accès refusé",
 			"lockedOut": "Votre compte est vérouillé",
 			"notWithinDateRange": "Votre compte utilisateur est inactif en ce moment"

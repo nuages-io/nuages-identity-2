@@ -23,11 +23,9 @@ public class RegisterModel : PageModel
 
     public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-       
     public async Task OnGetAsync(string returnUrl = null)
     {
         ReturnUrl = returnUrl;
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
     }
-
 }

@@ -153,7 +153,7 @@ public class LoginService : ILoginService
     }
 
     
-    private string? GetMessage(FailedLoginReason? failedLoginReason)
+    public string? GetMessage(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once ConvertIfStatementToReturnStatement
         if (failedLoginReason == null)
@@ -161,13 +161,15 @@ public class LoginService : ILoginService
         
         return _stringLocalizer[GetMessageKey(failedLoginReason)];
     }
-    private static string GetMessageKey(FailedLoginReason? failedLoginReason)
+    public static string GetMessageKey(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (failedLoginReason)
         {
             case FailedLoginReason.LockedOut:
             case FailedLoginReason.NotWithinDateRange:
+            case FailedLoginReason.EmailNotConfirmed:
+            case FailedLoginReason.AccountNotConfirmed:
             {
                 return $"errorMessage:no_access:{failedLoginReason}";
             }
@@ -177,18 +179,16 @@ public class LoginService : ILoginService
                 return $"errorMessage:{failedLoginReason}";
             }
             
-            case FailedLoginReason.PasswordMustBeChanged:
-            case FailedLoginReason.EmailNotConfirmed:
-            case FailedLoginReason.PhoneNotConfirmed:
-            case FailedLoginReason.AccountNotConfirmed:
-            case FailedLoginReason.PasswordExpired:
+            // case FailedLoginReason.PasswordMustBeChanged:
+            // case FailedLoginReason.PhoneNotConfirmed:
+            // case FailedLoginReason.PasswordExpired:
             // {
             //     throw new NotSupportedException("ValueNotSupportedHere");
             // }
-            case null:
-            {
-                return "";
-            }
+            // case null:
+            // {
+            //     return "";
+            // }
             default:
             {
                 return "errorMessage.no_access.error";

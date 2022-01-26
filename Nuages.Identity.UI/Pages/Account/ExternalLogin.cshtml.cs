@@ -133,9 +133,6 @@ public class ExternalLoginModel : PageModel
             ErrorMessage = _localizer["externalLogin:emailNotAvailable"];
         }
         
-        
-        //ErrorMessage = _localizer["externalLogin:emailNotAvailable"];
-        
         return Page();
     }
 }

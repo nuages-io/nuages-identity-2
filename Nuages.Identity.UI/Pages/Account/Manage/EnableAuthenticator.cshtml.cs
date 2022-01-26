@@ -28,7 +28,6 @@ public class EnableAuthenticatorModel : PageModel
     public string SharedKey { get; set; }
     public string AuthenticatorUri { get; set; }
 
-
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.GetUserAsync(User);

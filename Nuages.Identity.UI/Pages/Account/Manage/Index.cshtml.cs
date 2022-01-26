@@ -12,12 +12,6 @@ namespace Nuages.Identity.UI.Pages.Account.Manage;
 
 public class IndexModel : PageModel
 {
-    public IndexModel()
-    {
-   
-    }
-
-
     public IActionResult OnGet()
     {
         return Redirect("/account/manage/profile");

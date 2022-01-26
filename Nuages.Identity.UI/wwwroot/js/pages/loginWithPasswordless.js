@@ -32,12 +32,14 @@ var App =
                         .then(response => response.json())
                         .then(res => {
 
+
                             self.status = "done";
                             
                             if (!res.success)
                             {
                                 self.errors.push({message: res.message});
                             }
+                            
                                
                         });
 

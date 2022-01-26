@@ -96,6 +96,7 @@
 		"invalidEmail": "Email is invalid",
 		"no_access": {
 			"AccountNotConfirmed": "You account is not confirmed",
+			"emailNotConfirmed": "Email not confirmed.",
 			"error": "Access denied",
 			"lockedOut": "Your account is locked",
 			"notWithinDateRange": "Your user account is currently inactive "

@@ -224,6 +224,11 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
     }
 
+    public virtual async Task<SignInResult> CustomPreSignInCheck(NuagesApplicationUser user)
+    {
+        return await PreSignInCheck(user);
+    }
+
     public override async Task SignOutAsync()
     {
         await Context.SignOutAsync(NuagesIdentityConstants.EmailNotVerifiedScheme);

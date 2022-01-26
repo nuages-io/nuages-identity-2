@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
@@ -11,15 +12,17 @@ public class PasswordlessService : IPasswordlessService
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signinManager;
     private readonly IMessageService _messageService;
+    private readonly IStringLocalizer _localizer;
     private readonly NuagesIdentityOptions _options;
 
     public PasswordlessService(NuagesUserManager userManager, NuagesSignInManager signinManager, 
-        IMessageService messageService,
+        IMessageService messageService, IStringLocalizer localizer,
         IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _signinManager = signinManager;
         _messageService = messageService;
+        _localizer = localizer;
         _options = options.Value;
     }
     
@@ -62,9 +65,21 @@ public class PasswordlessService : IPasswordlessService
             };
         }
 
+        var result = await _signinManager.CustomPreSignInCheck(user);
+        if (!result.Succeeded)
+        {
+            return new PasswordlessResultModel
+            {
+                Result = result,
+                Reason = user.LastFailedLoginReason,
+                Message = _localizer[LoginService.GetMessageKey(user.LastFailedLoginReason)],
+                Success = false
+            };
+        }
+        
         await _userManager.UpdateSecurityStampAsync(user);
 
-        var result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
+        result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
 
         return new PasswordlessResultModel
         {
@@ -84,6 +99,18 @@ public class PasswordlessService : IPasswordlessService
             };
         }
 
+        var result = await _signinManager.CustomPreSignInCheck(user);
+        if (!result.Succeeded)
+        {
+            return new StartPasswordlessResultModel
+            {
+                Result = result,
+                Reason = user.LastFailedLoginReason,
+                Message = _localizer[LoginService.GetMessageKey(user.LastFailedLoginReason)],
+                Success = false
+            };
+        }
+        
         var res = await GetPasswordlessUrl(user);
 
         if (res.Success)
@@ -114,6 +141,8 @@ public class PasswordlessResultModel
 {
     public bool Success { get; set; }
     public SignInResult Result { get; set; } = null!;
+    public FailedLoginReason? Reason { get; set; }
+    public string? Message { get; set; }
 }
 
 public interface IPasswordlessService
@@ -133,6 +162,8 @@ public class StartPasswordlessResultModel
 {
     public bool Success { get; set; }
     public string? Message { get; set; }
+    public SignInResult Result { get; set; } = null!;
+    public FailedLoginReason? Reason { get; set; }
 }
 
 public class GetPasswordlessUrlResultModel
