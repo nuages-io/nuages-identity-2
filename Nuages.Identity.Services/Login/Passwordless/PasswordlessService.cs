@@ -100,7 +100,8 @@ public class PasswordlessService : IPasswordlessService
         }
 
         var result = await _signinManager.CustomPreSignInCheck(user);
-        if (!result.Succeeded)
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+        if (result is { Succeeded: false })
         {
             return new StartPasswordlessResultModel
             {

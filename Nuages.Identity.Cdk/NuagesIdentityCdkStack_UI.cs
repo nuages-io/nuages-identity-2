@@ -37,7 +37,7 @@ public partial class NuagesIdentityCdkStack
                 { "Nuages__Identity__StackName", StackName }
             },
             Tracing = Tracing.ACTIVE,
-            MemorySize = 512
+            MemorySize = 2048
         });
 
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));
