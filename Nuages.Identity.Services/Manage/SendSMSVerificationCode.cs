@@ -38,16 +38,6 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
         }
 
         phoneNumber = phoneNumber.Replace("+", "").Replace("+", " ").Replace("+", "-");
-        
-        // var res = await _userManager.SetPhoneNumberAsync(user, phoneNumber);
-        // if (!res.Succeeded)
-        // {
-        //     return new SendSMSVerificationCodeResultModel
-        //     {
-        //         Success = false,
-        //         Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
-        //     };
-        // }
 
         var code = await _userManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
 

@@ -153,7 +153,7 @@ public class LoginService : ILoginService
     }
 
     
-    public string? GetMessage(FailedLoginReason? failedLoginReason)
+    private string? GetMessage(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once ConvertIfStatementToReturnStatement
         if (failedLoginReason == null)
@@ -161,6 +161,7 @@ public class LoginService : ILoginService
         
         return _stringLocalizer[GetMessageKey(failedLoginReason)];
     }
+    
     public static string GetMessageKey(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
@@ -185,10 +186,10 @@ public class LoginService : ILoginService
             // {
             //     throw new NotSupportedException("ValueNotSupportedHere");
             // }
-            // case null:
-            // {
-            //     return "";
-            // }
+            case null:
+            {
+                return "";
+            }
             default:
             {
                 return "errorMessage.no_access.error";

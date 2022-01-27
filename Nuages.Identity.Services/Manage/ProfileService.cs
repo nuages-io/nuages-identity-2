@@ -47,7 +47,6 @@ public class SaveProfileModel
     public string? FirstName { get; set; }
 }
 
-
 public class SaveProfileResultModel
 {
     public bool Success { get; set; }

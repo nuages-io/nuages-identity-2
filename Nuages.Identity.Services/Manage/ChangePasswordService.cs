@@ -77,8 +77,6 @@ public class ChangePasswordService : IChangePasswordService
             }
         }
         
-
-        
         return new ChangePasswordResultModel
         {
             Success = res.Succeeded,
