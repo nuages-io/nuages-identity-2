@@ -39,6 +39,7 @@ public static class MockHelpers
             mockIdentity.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Success );
         
             mockIdentity.UserEmaiLStore.Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => user);
+            mockIdentity.UserEmaiLStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.EmailConfirmed);
 
         }
       
@@ -76,10 +77,10 @@ public static class MockHelpers
         var twoFactorTokenProvider = new Mock<IUserTwoFactorTokenProvider<NuagesApplicationUser>>();
 
         twoFactorTokenProvider.Setup(c =>
-                c.GenerateAsync(NuagesUserManager.ConfirmEmailTokenPurpose, mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
+                c.GenerateAsync(It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
             .ReturnsAsync(() => token);
         twoFactorTokenProvider.Setup(c =>
-                c.ValidateAsync(NuagesUserManager.ConfirmEmailTokenPurpose, token, mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
+                c.ValidateAsync(It.IsAny<string>(), token, mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
             .ReturnsAsync(() => true);
         mockIdentity.UserManager.RegisterTokenProvider("Default", twoFactorTokenProvider.Object);
      

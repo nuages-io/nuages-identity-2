@@ -1,11 +1,7 @@
 using System;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Xunit;

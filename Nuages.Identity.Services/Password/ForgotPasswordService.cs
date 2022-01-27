@@ -24,7 +24,7 @@ public class ForgotPasswordService : IForgotPasswordService
         _options = options.Value;
     }
     
-    public async Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model)
+    public async Task<ForgotPasswordResultModel> StartForgotPassword(ForgotPasswordModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
@@ -64,7 +64,7 @@ public class ForgotPasswordService : IForgotPasswordService
 
 public interface IForgotPasswordService
 {
-    Task<ForgotPasswordResultModel> ForgotPassword(ForgotPasswordModel model);
+    Task<ForgotPasswordResultModel> StartForgotPassword(ForgotPasswordModel model);
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global

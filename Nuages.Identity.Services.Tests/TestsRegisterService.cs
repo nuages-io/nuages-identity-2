@@ -191,14 +191,7 @@ public class TestsRegisterService
     {
         var password = "password";
         var email = "test@nuages.org";
-        
-        // var user = new NuagesApplicationUser
-        // {
-        //     Id = Guid.NewGuid().ToString(),
-        //     Email = "test@nuages.org",
-        //     NormalizedEmail = "TEST@NUAGES.ORG"
-        // };
-        
+
         var options = new NuagesIdentityOptions();
 
         var identityStuff = MockHelpers.MockIdentityStuff(null, options);

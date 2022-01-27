@@ -276,7 +276,7 @@ public class AccountController : Controller
                     Success = false
                 };
         
-            return await _forgotPasswordService.ForgotPassword(model);
+            return await _forgotPasswordService.StartForgotPassword(model);
         }
         catch (Exception e)
         {
