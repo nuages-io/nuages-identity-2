@@ -18,15 +18,9 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithSuccess()
     {
-        var email = "test@nuages.org";
-        var password = "Password123*#";
+        const string email = "test@nuages.org";
+        const string password = "Password123*#";
 
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email
-        };
-        
         var options = new NuagesIdentityOptions();
 
         var identityStuff = MockHelpers.MockIdentityStuff(null, options);
@@ -35,7 +29,7 @@ public class TestsRegisterService
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(email, It.IsAny<string>(),
@@ -60,14 +54,9 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithSuccessDoesNotLogin()
     {
-        var email = "test@nuages.org";
-        var password = "Password123*#";
-
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email
-        };
+        const string email = "test@nuages.org";
+        const string password = "Password123*#";
+        
 
         var options = new NuagesIdentityOptions
         {
@@ -80,7 +69,7 @@ public class TestsRegisterService
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(email, It.IsAny<string>(),
@@ -105,7 +94,7 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithErrorAlreadyExists()
     {
-        var password = "Password123*#";
+        const string password = "Password123*#";
 
         var user = new NuagesApplicationUser
         {
@@ -122,7 +111,7 @@ public class TestsRegisterService
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
@@ -147,7 +136,7 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithErrorPasswordDoesNotMatch()
     {
-        var password = "Password123*#";
+        const string password = "Password123*#";
 
         var user = new NuagesApplicationUser
         {
@@ -164,7 +153,7 @@ public class TestsRegisterService
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
@@ -189,8 +178,8 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithErrorPasswordNotStrongEnough()
     {
-        var password = "password";
-        var email = "test@nuages.org";
+        const string password = "password";
+        const string email = "test@nuages.org";
 
         var options = new NuagesIdentityOptions();
 
@@ -200,7 +189,7 @@ public class TestsRegisterService
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(email, It.IsAny<string>(),

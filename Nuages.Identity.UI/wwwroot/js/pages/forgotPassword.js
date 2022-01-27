@@ -21,11 +21,11 @@ var App =
                     fetch("/api/account/forgotPassword", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-Custom-RecaptchaToken' : token
                         },
                         body: JSON.stringify({
-                                email: e,
-                                recaptchaToken: token
+                                email: e
                             }
                         )
                     })

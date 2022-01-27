@@ -20,10 +20,10 @@ var App =
                                 {
                                     method: "POST",
                                     headers: {
-                                        'Content-Type': 'application/json'
+                                        'Content-Type': 'application/json',
+                                        'X-Custom-RecaptchaToken' : token
                                     },
                                     body: JSON.stringify({
-                                            recaptchaToken: token,
                                         }
                                     )
                                 }).then(response => response.json())

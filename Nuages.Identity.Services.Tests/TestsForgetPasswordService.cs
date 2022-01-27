@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -29,7 +27,7 @@ public class TestsForgetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
         
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
@@ -62,7 +60,7 @@ public class TestsForgetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
         
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),

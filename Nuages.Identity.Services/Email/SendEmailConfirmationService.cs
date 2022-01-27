@@ -61,7 +61,6 @@ public interface ISendEmailConfirmationService
 // ReSharper disable once ClassNeverInstantiated.Global
 public class SendEmailConfirmationModel
 {
-    public string? RecaptchaToken { get; set; }
     public string? Email { get; set; }
 }
 

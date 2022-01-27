@@ -90,5 +90,5 @@ public class SendSMSCodeResultModel
 
 public class SendSMSCodeModel
 {
-    public string? RecaptchaToken { get; set; }
+    
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using Nuages.Identity.Services.Email;
 
 // ReSharper disable ClassNeverInstantiated.Global
 

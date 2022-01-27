@@ -25,7 +25,7 @@ public class TestsSendEmailConfirmationService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
 
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
@@ -57,7 +57,7 @@ public class TestsSendEmailConfirmationService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user,  options);
 
-        bool sendCalled = false;
+        var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),

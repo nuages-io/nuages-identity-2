@@ -32,14 +32,14 @@ var App =
                     fetch("/api/account/resetPassword", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-Custom-RecaptchaToken' : token
                         },
                         body: JSON.stringify({
                                 email: e,
                                 password: p,
                                 passwordConfirm: c,
-                                code : code,
-                                recaptchaToken: token
+                                code : code
                             }
                         )
                     })

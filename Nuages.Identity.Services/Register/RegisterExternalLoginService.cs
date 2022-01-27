@@ -110,7 +110,7 @@ public interface IRegisterExternalLoginService
 // ReSharper disable once ClassNeverInstantiated.Global
 public class RegisterExternalLoginModel
 {
-    public string? RecaptchaToken { get; set; }
+    
 }
 
 public class RegisterExternalLoginResultModel

@@ -71,7 +71,6 @@ public interface IForgotPasswordService
 public class ForgotPasswordModel
 {
     public string Email { get; set; } = string.Empty;
-    public string? RecaptchaToken { get; set; }
 }
 
 public class ForgotPasswordResultModel

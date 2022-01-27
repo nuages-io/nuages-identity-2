@@ -74,7 +74,6 @@ public class ResetPasswordModel
     public string Password { get; set; } = string.Empty;
     public string PasswordConfirm { get; set; } = string.Empty;
     public string Code { get; set; } = string.Empty;
-    public string? RecaptchaToken { get; set; }
 }
 
 public class ResetPasswordResultModel

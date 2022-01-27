@@ -23,11 +23,11 @@ var App =
                     fetch("/api/account/loginSMS", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-Custom-RecaptchaToken' : token
                         },
                         body: JSON.stringify({
-                                code: c,
-                                recaptchaToken: token
+                                code: c
                             }
                         )
                     })

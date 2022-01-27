@@ -14,6 +14,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
     private readonly IUserConfirmation<NuagesApplicationUser> _confirmation;
     private readonly NuagesIdentityOptions _nuagesIdentityOptions;
 
+    // ReSharper disable once MemberCanBeProtected.Global
     public NuagesSignInManager(UserManager<NuagesApplicationUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<NuagesApplicationUser> claimsFactory, 
         // ReSharper disable once ContextualLoggerProblem
         IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<NuagesApplicationUser>> logger, IAuthenticationSchemeProvider schemes, 
@@ -225,7 +226,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
     }
 
-    public virtual async Task<SignInResult> CustomPreSignInCheck(NuagesApplicationUser user)
+    public async Task<SignInResult> CustomPreSignInCheck(NuagesApplicationUser user)
     {
         return await PreSignInCheck(user);
     }

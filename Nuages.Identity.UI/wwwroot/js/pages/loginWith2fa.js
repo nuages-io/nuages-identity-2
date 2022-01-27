@@ -28,13 +28,13 @@ var App =
                     fetch("/api/account/login2fa", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-Custom-RecaptchaToken' : token
                         },
                         body: JSON.stringify({
                                 code: c,
                                 rememberMe: r,
-                                rememberMachine: m,
-                                recaptchaToken: token
+                                rememberMachine: m
                             }
                         )
                     })

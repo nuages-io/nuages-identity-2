@@ -237,7 +237,6 @@ public class LoginModel
 
     public bool RememberMe { get; set; }
 
-    public string? RecaptchaToken { get; set; } = null!;
 }
 
 public class Login2FAModel
@@ -247,21 +246,18 @@ public class Login2FAModel
     public bool RememberMe { get; set; }
     public bool RememberMachine { get; set; }
     
-    public string? RecaptchaToken { get; set; } = null!;
 }
 
 public class LoginRecoveryCodeModel
 {
     public string Code { get; set; } = null!;
     
-    public string? RecaptchaToken { get; set; } = null!;
 }
 
 public class LoginSMSModel
 {
     public string Code { get; set; } = null!;
     
-    public string? RecaptchaToken { get; set; } = null!;
 }
 
 public class LoginResultModel

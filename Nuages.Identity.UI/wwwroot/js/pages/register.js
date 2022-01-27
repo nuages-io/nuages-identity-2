@@ -24,13 +24,13 @@ var App =
                     fetch("/api/account/register", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-Custom-RecaptchaToken' : token
                         },
                         body: JSON.stringify({
                                 email: e,
                                 password: p,
-                                passwordConfirm: pc,
-                                recaptchaToken: token
+                                passwordConfirm: pc
                             }
                         )
                     })

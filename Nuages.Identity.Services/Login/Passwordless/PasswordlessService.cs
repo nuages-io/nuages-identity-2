@@ -156,7 +156,6 @@ public interface IPasswordlessService
 public class StartPasswordlessModel
 {
     public string Email { get; set; } = string.Empty;
-    public string? RecaptchaToken { get; set; }
 }
 
 public class StartPasswordlessResultModel

@@ -14,7 +14,7 @@ public class TestsResetPasswordService
     [Fact]
     public async Task ShouldResetPasswordWithSuccess()
     {
-        var password = "Password123*#";
+        const string password = "Password123*#";
         
         var user = new NuagesApplicationUser
         {
@@ -47,7 +47,7 @@ public class TestsResetPasswordService
     [Fact]
     public async Task ShouldResetPasswordWithError()
     {
-        var password = "Password123*#";
+        const string password = "Password123*#";
         
         var user = new NuagesApplicationUser
         {
@@ -81,7 +81,7 @@ public class TestsResetPasswordService
     [Fact]
     public async Task ShouldResetPasswordWithErrorNotCOmplexEnough()
     {
-        var password = "password";
+        const string password = "password";
         
         var user = new NuagesApplicationUser
         {
@@ -117,7 +117,7 @@ public class TestsResetPasswordService
     [Fact]
     public async Task ShouldResetPasswordWithErrorPasswordDoesnotMatch()
     {
-        var password = "Password123*#";
+        const string password = "Password123*#";
         
         var user = new NuagesApplicationUser
         {

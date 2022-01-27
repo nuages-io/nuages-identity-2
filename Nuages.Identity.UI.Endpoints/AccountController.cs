@@ -59,7 +59,7 @@ public class AccountController : Controller
     
     [HttpPost("login")]
     [AllowAnonymous]
-    public async Task<ActionResult<LoginResultModel>> LoginAsync([FromBody] LoginModel model)
+    public async Task<ActionResult<LoginResultModel>> LoginAsync([FromBody] LoginModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
@@ -67,9 +67,9 @@ public class AccountController : Controller
 
             var id = Guid.NewGuid().ToString();
             
-            _logger.LogInformation($"Initiate login : ID = {id} {model.UserNameOrEmail} RememberMe = {model.RememberMe} RecaptchaToken = {model.RecaptchaToken}");
+            _logger.LogInformation($"Initiate login : ID = {id} {model.UserNameOrEmail} RememberMe = {model.RememberMe} RecaptchaToken = {recaptchaToken}");
         
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
                 {
                     Success = false,
@@ -106,7 +106,7 @@ public class AccountController : Controller
     [HttpPost("login2fa")]
     [AllowAnonymous]
     // ReSharper disable once InconsistentNaming
-    public async Task<ActionResult<LoginResultModel>> Login2FAAsync([FromBody] Login2FAModel model)
+    public async Task<ActionResult<LoginResultModel>> Login2FAAsync([FromBody] Login2FAModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
@@ -114,9 +114,9 @@ public class AccountController : Controller
 
             var id = Guid.NewGuid().ToString();
             
-            _logger.LogInformation($"Initiate login 2FA : ID = {id} {model.Code} RememberMe = {model.RememberMe} RecaptchaToken = {model.RecaptchaToken}");
+            _logger.LogInformation($"Initiate login 2FA : ID = {id} {model.Code} RememberMe = {model.RememberMe} RecaptchaToken = {recaptchaToken}");
         
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
                 {
                     Success = false,
@@ -152,7 +152,7 @@ public class AccountController : Controller
     [HttpPost("loginRecoveryCOde")]
     [AllowAnonymous]
     // ReSharper disable once InconsistentNaming
-    public async Task<ActionResult<LoginResultModel>> LoginRecoveryCodeAsync([FromBody] LoginRecoveryCodeModel model)
+    public async Task<ActionResult<LoginResultModel>> LoginRecoveryCodeAsync([FromBody] LoginRecoveryCodeModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
@@ -160,9 +160,9 @@ public class AccountController : Controller
 
             var id = Guid.NewGuid().ToString();
             
-            _logger.LogInformation($"Initiate login Recovery Code : ID = {id} {model.Code} RecaptchaToken = {model.RecaptchaToken}");
+            _logger.LogInformation($"Initiate login Recovery Code : ID = {id} {model.Code} RecaptchaToken = {recaptchaToken}");
         
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
                 {
                     Success = false,
@@ -198,13 +198,13 @@ public class AccountController : Controller
     
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<RegisterResultModel> Register([FromBody] RegisterModel model)
+    public async Task<RegisterResultModel> Register([FromBody] RegisterModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterResultModel
                 {
                     Success = false
@@ -231,13 +231,13 @@ public class AccountController : Controller
     
     [HttpPost("registerExternalLogin")]
     [AllowAnonymous]
-    public async Task<RegisterExternalLoginResultModel> RegisterExternalLogin([FromBody] RegisterExternalLoginModel model)
+    public async Task<RegisterExternalLoginResultModel> RegisterExternalLogin([FromBody] RegisterExternalLoginModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterExternalLoginResultModel
                 {
                     Success = false
@@ -264,13 +264,13 @@ public class AccountController : Controller
     
     [HttpPost("forgotPassword")]
     [AllowAnonymous]
-    public async Task<ForgotPasswordResultModel> PasswordLoginAsync([FromBody] ForgotPasswordModel model)
+    public async Task<ForgotPasswordResultModel> PasswordLoginAsync([FromBody] ForgotPasswordModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
             
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ForgotPasswordResultModel
                 {
                     Success = false
@@ -297,13 +297,13 @@ public class AccountController : Controller
     
     [HttpPost("sendEmailConfirmation")]
     [Authorize(AuthenticationSchemes = NuagesIdentityConstants.EmailNotVerifiedScheme)]
-    public async Task<SendEmailConfirmationResultModel> SendEmailConfirmationAsync([FromBody] SendEmailConfirmationModel model)
+    public async Task<SendEmailConfirmationResultModel> SendEmailConfirmationAsync([FromBody] SendEmailConfirmationModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendEmailConfirmationAsync");
             
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new SendEmailConfirmationResultModel
                 {
                     Success = false
@@ -335,13 +335,13 @@ public class AccountController : Controller
     
     [HttpPost("resetPassword")]
     [AllowAnonymous]
-    public async Task<ResetPasswordResultModel> ResetPasswordAsync([FromBody] ResetPasswordModel model)
+    public async Task<ResetPasswordResultModel> ResetPasswordAsync([FromBody] ResetPasswordModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ResetPasswordAsync");
             
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ResetPasswordResultModel
                 {
                     Success = false
@@ -368,13 +368,13 @@ public class AccountController : Controller
 
     [HttpPost("passwordlessLogin")]
     [AllowAnonymous]
-    public async Task<StartPasswordlessResultModel> PasswordLoginAsync([FromBody] StartPasswordlessModel model)
+    public async Task<StartPasswordlessResultModel> PasswordLoginAsync([FromBody] StartPasswordlessModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AccountController.PasswordLoginAsync");
             
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new StartPasswordlessResultModel
                 {
                     Success = false
@@ -401,13 +401,13 @@ public class AccountController : Controller
     
     [HttpPost("sendSMSCode")]
     [AllowAnonymous]
-    public async Task<SendSMSCodeResultModel> SendSMSCodeAsync([FromBody] SendSMSCodeModel model)
+    public async Task<SendSMSCodeResultModel> SendSMSCodeAsync([FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendSMSCodeAsync");
             
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new SendSMSCodeResultModel
                 {
                     Success = false
@@ -436,7 +436,7 @@ public class AccountController : Controller
     [HttpPost("loginSMS")]
     [AllowAnonymous]
     // ReSharper disable once InconsistentNaming
-    public async Task<ActionResult<LoginResultModel>> LoginSMSAsync([FromBody] LoginSMSModel model)
+    public async Task<ActionResult<LoginResultModel>> LoginSMSAsync([FromBody] LoginSMSModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
@@ -444,9 +444,9 @@ public class AccountController : Controller
 
             var id = Guid.NewGuid().ToString();
             
-            _logger.LogInformation($"Initiate login SMS : ID = {id} {model.Code} RecaptchaToken = {model.RecaptchaToken}");
+            _logger.LogInformation($"Initiate login SMS : ID = {id} {model.Code} RecaptchaToken = {recaptchaToken}");
         
-            if (!await _recaptchaValidator.ValidateAsync(model.RecaptchaToken))
+            if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
                 {
                     Success = false,

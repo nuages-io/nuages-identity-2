@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -12,7 +11,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Login.Passwordless;
 
 namespace Nuages.Identity.Services.Tests;
 
@@ -20,16 +18,18 @@ public static class MockHelpers
 {
     public class MockIdentity
     {
-        public NuagesUserManager UserManager { get; set; }
-        public Mock<IUserStore<NuagesApplicationUser>> UserStore { get; set; }
-        public Mock<IUserEmailStore<NuagesApplicationUser>> UserEmaiLStore { get; set; }
-        public Mock<IUserPasswordStore<NuagesApplicationUser>> UserPasswordStore { get; set; }
+        public NuagesUserManager UserManager { get; set; } = null!;
+        public Mock<IUserStore<NuagesApplicationUser>> UserStore { get; set; } = null!;
+        public Mock<IUserEmailStore<NuagesApplicationUser>> UserEmaiLStore { get; set; } = null!;
+        public Mock<IUserPasswordStore<NuagesApplicationUser>> UserPasswordStore { get; set; } = null!;
     }
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {
-        var mockIdentity = new MockIdentity();
-        
-        mockIdentity.UserStore = new Mock<IUserStore<NuagesApplicationUser>>();
+        var mockIdentity = new MockIdentity
+        {
+            UserStore = new Mock<IUserStore<NuagesApplicationUser>>()
+        };
+
         mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
         
@@ -94,17 +94,17 @@ public static class MockHelpers
 
     private static ILookupNormalizer MockLookupNormalizer()
     {
-        var normalizerFunc = new Func<string, string>(i =>
+        var normalizerFunc = new Func<string?, string>(i =>
         {
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+           
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            // ReSharper disable once UseNullPropagation
             if (i == null)
             {
                 return null!;
             }
-            else
-            {
-                return i.ToUpperInvariant();
-            }
+
+            return i.ToUpperInvariant();
         });
         var lookupNormalizer = new Mock<ILookupNormalizer>();
         lookupNormalizer.Setup(i => i.NormalizeName(It.IsAny<string>())).Returns(normalizerFunc);
@@ -117,12 +117,9 @@ public static class MockHelpers
     {
         var authServiceMock = new Mock<IAuthenticationService>();
         authServiceMock
-            .Setup(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
-            .Returns(Task.FromResult("ok_signed_in"))
-            .Callback((HttpContext context, string? scheme, ClaimsPrincipal principal, AuthenticationProperties? properties) =>
-            {
-                
-            });
+            .Setup(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(),
+                It.IsAny<AuthenticationProperties>()))
+            .Returns(Task.FromResult("ok_signed_in"));
 
         var serviceProviderMock = new Mock<IServiceProvider>();
         serviceProviderMock
