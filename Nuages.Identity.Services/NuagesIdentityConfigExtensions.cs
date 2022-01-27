@@ -34,17 +34,9 @@ public static class NuagesIdentityConfigExtensions
         if (configure != null)
             services.Configure(configure);
         
-        //services.AddScoped(typeof(NuagesUserManager));
-       // services.AddScoped(typeof(NuagesSignInManager));
-
         builder.AddUserManager<NuagesUserManager>().AddSignInManager<NuagesSignInManager>();
-            
-        services.AddScoped<ILookupProtector, LookupProtector>();
-        services.AddScoped<ILookupProtectorKeyRing, LookupProtectorKeyRing>();
 
         services.AddScoped<IEmailValidator, EmailValidator>();
-        
-        services.AddScoped<ICurrentBaseUrlProvider, CurrentBaseUrlProvider>();
         
         //Anonymous
         services.AddScoped<ILoginService, LoginService>();

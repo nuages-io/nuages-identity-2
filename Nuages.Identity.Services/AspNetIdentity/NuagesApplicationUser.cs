@@ -30,4 +30,6 @@ public class NuagesApplicationUser : MongoUser<string>
     
     public string? LastName { get; set; }
     public string? FirstName { get; set; }
+    
+    public bool LockoutMessageSent { get; set; }
 }

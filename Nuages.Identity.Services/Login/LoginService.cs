@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email;
 using Nuages.Web.Exceptions;
 // ReSharper disable InconsistentNaming
 
@@ -11,12 +12,14 @@ public class LoginService : ILoginService
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _stringLocalizer;
+    private readonly IMessageService _messageService;
 
-    public LoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer stringLocalizer)
+    public LoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer stringLocalizer, IMessageService messageService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _stringLocalizer = stringLocalizer;
+        _messageService = messageService;
     }
     
     public async Task<LoginResultModel> LoginAsync(LoginModel model)
@@ -37,6 +40,23 @@ public class LoginService : ILoginService
         if (result.Succeeded)
         {
             result = await _signInManager.CustomSignInOrTwoFactorAsync(user, model.RememberMe);
+        }
+        else
+        {
+            if (result.IsLockedOut)
+            {
+                if (!user.LockoutMessageSent)
+                {
+                    _messageService.SendEmailUsingTemplate(user.Email, "Login_LockedOut", new Dictionary<string, string>
+                    {
+                        { "Minutes", _userManager.Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() }
+                    });
+
+                    user.LockoutMessageSent = true;
+                    await _userManager.UpdateAsync(user);
+                }
+                
+            }
         }
         
         if (result == SignInResult.Success)

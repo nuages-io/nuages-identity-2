@@ -58,16 +58,12 @@ public class MessageService : IMessageService
 
     public void SendSms(string to, string text)
     {
-        
-#pragma warning disable CS4014
         Task.Run(async () =>
-#pragma warning restore CS4014
         {
             using var scope = _serviceScopeFactory.CreateScope();
             var messageSender = scope.ServiceProvider.GetRequiredService<IMessageSender>();
             await messageSender.SendSmsAsync(to, text);
         });
-        
     }
 }
 

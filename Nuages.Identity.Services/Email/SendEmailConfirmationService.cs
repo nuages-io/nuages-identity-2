@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Email;
 
@@ -21,8 +22,7 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
     
     public async Task<SendEmailConfirmationResultModel> SendEmailConfirmation(SendEmailConfirmationModel model)
     {
-        if (string.IsNullOrEmpty(model.Email))
-            throw new ArgumentNullException(model.Email);
+        ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(model.Email);
 
         var email = model.Email;
         
@@ -43,12 +43,12 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         _messageService.SendEmailUsingTemplate(user.Email, "Confirm_Email", new Dictionary<string, string>
         {
             { "Link", url }
-            
         });
         
         return new SendEmailConfirmationResultModel
         {
             Success = true // Fake success
+            
         };
     }
 }

@@ -203,6 +203,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         user.LastLogin = DateTime.UtcNow;
         user.LoginCount++;
         user.LockoutEnd = null;
+        user.LockoutMessageSent = false;
         user.AccessFailedCount = 0;
 
         await UserManager.UpdateAsync(user);
