@@ -66,7 +66,7 @@ public class PasswordlessService : IPasswordlessService
         }
 
         var result = await _signinManager.CustomPreSignInCheck(user);
-        if (!result.Succeeded)
+        if (result is { Succeeded: false })
         {
             return new PasswordlessResultModel
             {
