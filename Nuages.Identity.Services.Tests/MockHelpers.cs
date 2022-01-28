@@ -22,6 +22,7 @@ public static class MockHelpers
         public Mock<IUserStore<NuagesApplicationUser>> UserStore { get; set; } = null!;
         public Mock<IUserEmailStore<NuagesApplicationUser>> UserEmaiLStore { get; set; } = null!;
         public Mock<IUserPasswordStore<NuagesApplicationUser>> UserPasswordStore { get; set; } = null!;
+        public Mock<IUserLockoutStore<NuagesApplicationUser>> UserLockoutStore { get; set; }
     }
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {
@@ -32,6 +33,7 @@ public static class MockHelpers
 
         mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
+        mockIdentity.UserLockoutStore =  mockIdentity.UserStore.As<IUserLockoutStore<NuagesApplicationUser>>();
         
         if (user != null)
         {
@@ -43,6 +45,18 @@ public static class MockHelpers
 
             mockIdentity.UserPasswordStore.Setup(p => p.GetPasswordHashAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.PasswordHash);
+
+            mockIdentity.UserLockoutStore.Setup(u => u.GetLockoutEnabledAsync(user, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => user.LockoutEnabled);
+            
+            mockIdentity.UserLockoutStore.Setup(u => u.GetLockoutEndDateAsync(user, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => user.LockoutEnd);
+            
+            mockIdentity.UserLockoutStore.Setup(u => u.GetAccessFailedCountAsync(user, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => user.AccessFailedCount);
+                
+            mockIdentity.UserLockoutStore.Setup(u => u.IncrementAccessFailedCountAsync(user, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => ++user.AccessFailedCount);
         }
       
         var options = new Mock<IOptions<IdentityOptions>>();
@@ -73,7 +87,7 @@ public static class MockHelpers
             new Mock<ILogger<NuagesUserManager>>().Object, nuagesOptionsMock.Object);
 
         mockIdentity.UserManager.Options.SignIn.RequireConfirmedEmail = nuagesOptions.RequireConfirmedEmail;
-       
+
         var token = Guid.NewGuid().ToString();
 
         var twoFactorTokenProvider = new Mock<IUserTwoFactorTokenProvider<NuagesApplicationUser>>();
