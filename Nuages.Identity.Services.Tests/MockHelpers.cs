@@ -41,6 +41,8 @@ public static class MockHelpers
             mockIdentity.UserEmaiLStore.Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => user);
             mockIdentity.UserEmaiLStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.EmailConfirmed);
 
+            mockIdentity.UserPasswordStore.Setup(p => p.GetPasswordHashAsync(user, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => user.PasswordHash);
         }
       
         var options = new Mock<IOptions<IdentityOptions>>();
@@ -119,8 +121,9 @@ public static class MockHelpers
         authServiceMock
             .Setup(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(),
                 It.IsAny<AuthenticationProperties>()))
-            .Returns(Task.FromResult("ok_signed_in"));
+            .Returns(Task.FromResult((object?)null));
 
+        
         var serviceProviderMock = new Mock<IServiceProvider>();
         serviceProviderMock
             .Setup(_ => _.GetService(typeof(IAuthenticationService)))
@@ -148,4 +151,5 @@ public class FakeStringLocalizer : IStringLocalizer
     public LocalizedString this[string name] => new (name, name);
 
     public LocalizedString this[string name, params object[] arguments] => new (name, name);
+    
 }
