@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
+// ReSharper disable UnusedParameter.Local
 
 namespace Nuages.Identity.Services.Tests;
 

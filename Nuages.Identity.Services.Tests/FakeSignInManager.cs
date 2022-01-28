@@ -25,10 +25,10 @@ public class FakeSignInManager : NuagesSignInManager
     { }
 
 
-    public async override Task SignInWithClaimsAsync(NuagesApplicationUser user, AuthenticationProperties authenticationProperties,
+    public override async  Task SignInWithClaimsAsync(NuagesApplicationUser user, AuthenticationProperties authenticationProperties,
         IEnumerable<Claim> additionalClaims)
     {
-        
+        await Task.FromResult(0);
     }
 
     public override async Task<SignInResult> TwoFactorAuthenticatorSignInAsync(string code, bool isPersistent,
@@ -40,9 +40,12 @@ public class FakeSignInManager : NuagesSignInManager
         return await Task.FromResult(SignInResult.Failed);
     }
 
-    public NuagesApplicationUser CurrentUser { get; set; }
+    public NuagesApplicationUser? CurrentUser { get; set; }
     public override async Task<NuagesApplicationUser> GetTwoFactorAuthenticationUserAsync()
     {
+        if (CurrentUser == null)
+            return (await Task.FromResult((NuagesApplicationUser?)null))!;
+        
         return await Task.FromResult(CurrentUser);
     }
 }

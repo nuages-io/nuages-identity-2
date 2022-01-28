@@ -15,8 +15,8 @@ public class TestLoginService
     [Fact]
     public async Task ShouldLoginWithSuccess()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
+        const string email = "TEST@NUAGES.ORG";
+        const string password = "Nuages123*$";
         
         var user = new NuagesApplicationUser
         {
@@ -54,8 +54,8 @@ public class TestLoginService
     [Fact]
     public async Task ShouldLoginWithFailureWrongPassword()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
+        const string email = "TEST@NUAGES.ORG";
+        const string password = "Nuages123*$";
         
         var user = new NuagesApplicationUser
         {
@@ -94,8 +94,8 @@ public class TestLoginService
     [Fact]
     public async Task ShouldLoginWithFailureWrongUsername()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
+        const string email = "TEST@NUAGES.ORG";
+        const string password = "Nuages123*$";
         
         var user = new NuagesApplicationUser
         {
@@ -135,8 +135,8 @@ public class TestLoginService
     [Fact]
     public async Task ShouldLoginWithFailureLockedOut()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
+        const string email = "TEST@NUAGES.ORG";
+        const string password = "Nuages123*$";
         
         var user = new NuagesApplicationUser
         {
@@ -178,8 +178,8 @@ public class TestLoginService
     [Fact]
     public async Task ShouldLoginWithFailureBadPasswordThenLockedOut()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
+        const string email = "TEST@NUAGES.ORG";
+        const string password = "Nuages123*$";
         
         var user = new NuagesApplicationUser
         {
@@ -220,9 +220,8 @@ public class TestLoginService
     [Fact]
     public async Task ShoudLogin2FaWithSuccess()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
-        
+        const string email = "TEST@NUAGES.ORG";
+
         var user = new NuagesApplicationUser
         {
             Id = Guid.NewGuid().ToString(),
@@ -240,9 +239,11 @@ public class TestLoginService
     
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
-        fakeSignInManager.CurrentUser = user;
-        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+            {
+                CurrentUser = user
+            };
+
         var messageService = new Mock<IMessageService>();
     
         var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
@@ -261,9 +262,8 @@ public class TestLoginService
     [Fact]
     public async Task ShoudLogin2FaWithError()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
-        
+        const string email = "TEST@NUAGES.ORG";
+
         var user = new NuagesApplicationUser
         {
             Id = Guid.NewGuid().ToString(),
@@ -281,9 +281,11 @@ public class TestLoginService
     
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
-        fakeSignInManager.CurrentUser = user;
-        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+            {
+                CurrentUser = user
+            };
+
         var messageService = new Mock<IMessageService>();
     
         var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
@@ -303,9 +305,8 @@ public class TestLoginService
     [Fact]
     public async Task ShoudLogin2FaWithErrorUserNotFOund()
     {
-        var email = "TEST@NUAGES.ORG";
-        var password = "Nuages123*$";
-        
+        const string email = "TEST@NUAGES.ORG";
+
         var user = new NuagesApplicationUser
         {
             Id = Guid.NewGuid().ToString(),
@@ -333,7 +334,7 @@ public class TestLoginService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            var res = await loginService.Login2FAAsync(new Login2FAModel
+            await loginService.Login2FAAsync(new Login2FAModel
             {
                 Code = "bad_code",
                 RememberMachine = false,
