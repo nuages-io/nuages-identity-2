@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,7 @@ namespace Nuages.Identity.UI.Endpoints;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
+[ExcludeFromCodeCoverage]
 public class ManageController : Controller
 {
     private readonly IChangePasswordService _changePasswordService;

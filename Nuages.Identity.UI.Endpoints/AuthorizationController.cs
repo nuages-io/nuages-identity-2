@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
@@ -14,6 +15,7 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Nuages.Identity.UI.Endpoints;
 
+[ExcludeFromCodeCoverage]
 public partial class AuthorizationController : Controller
 {
     private readonly IOpenIddictApplicationManager _applicationManager;

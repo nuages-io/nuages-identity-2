@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
@@ -14,6 +15,7 @@ using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI;
 
+[ExcludeFromCodeCoverage]
 public class Startup
 {
     private readonly IWebHostEnvironment _env;

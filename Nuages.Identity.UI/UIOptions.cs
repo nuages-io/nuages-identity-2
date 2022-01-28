@@ -1,9 +1,11 @@
 // ReSharper disable InconsistentNaming
 
+using System.Diagnostics.CodeAnalysis;
 using Nuages.Web.Recaptcha;
 
 namespace Nuages.Identity.UI;
 
+[ExcludeFromCodeCoverage]
 public class UIOptions
 {
     public string SupportEmail { get; set; } = string.Empty;
@@ -20,6 +22,7 @@ public class UIOptions
     public bool Enable2FARememberDevice { get; set; } = true;
 }
 
+[ExcludeFromCodeCoverage]
 public static class UIConfigExtension
 {
     public static void AddUI(this IServiceCollection services, IConfiguration configuration)

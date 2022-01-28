@@ -1,4 +1,5 @@
-﻿using Nuages.Localization.Storage.Config.Sources;
+﻿using System.Diagnostics.CodeAnalysis;
+using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.UI;
 
@@ -6,6 +7,7 @@ namespace Nuages.Identity.UI;
 /// The Main function can be used to run the ASP.NET Core application locally using the Kestrel webserver.
 /// </summary>
 // ReSharper disable once ClassNeverInstantiated.Global
+[ExcludeFromCodeCoverage]
 public class LocalEntryPoint
 {
     public static void Main(string[] args)

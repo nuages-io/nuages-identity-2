@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +22,7 @@ namespace Nuages.Identity.UI.Endpoints;
 // ReSharper disable once UnusedType.Global
 [ApiController]
 [Route("api/[controller]")]
+[ExcludeFromCodeCoverage]
 public class AccountController : Controller
 {
     private readonly IRecaptchaValidator _recaptchaValidator;
@@ -32,7 +34,7 @@ public class AccountController : Controller
     private readonly IRegisterService _registerService;
     private readonly IRegisterExternalLoginService _registerExternalLoginService;
     private readonly IPasswordlessService _passwordlessService;
-    private readonly ISMSLoginService _smsLoginService;
+    private readonly ISMSCodeService _smsLoginService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHttpContextAccessor _contextAccessor;
 
@@ -40,7 +42,7 @@ public class AccountController : Controller
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
         ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService, IRegisterExternalLoginService registerExternalLoginService,
-        IPasswordlessService passwordlessService, ISMSLoginService smsLoginService,
+        IPasswordlessService passwordlessService, ISMSCodeService smsLoginService,
         ILogger<AccountController> logger, IHttpContextAccessor contextAccessor)
     {
         _recaptchaValidator = recaptchaValidator;
@@ -210,7 +212,7 @@ public class AccountController : Controller
                     Success = false
                 };
         
-            return await _registerService.Register(model);
+            return await _registerService.Register(model); //SEUL LIGNE QUI CHANGE
         }
         catch (Exception e)
         {
