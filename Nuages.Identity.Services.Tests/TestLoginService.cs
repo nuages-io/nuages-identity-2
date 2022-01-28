@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
+using Nuages.Web.Exceptions;
 using Xunit;
 
 namespace Nuages.Identity.Services.Tests;
@@ -37,8 +35,6 @@ public class TestLoginService
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
         var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var messageService = new Mock<IMessageService>();
 
@@ -79,8 +75,6 @@ public class TestLoginService
         
         var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
-        
         var messageService = new Mock<IMessageService>();
 
         var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
@@ -96,6 +90,47 @@ public class TestLoginService
         Assert.False(res.Success);
         Assert.Equal(FailedLoginReason.UserNameOrPasswordInvalid, res.Reason);
     }
+    
+    [Fact]
+    public async Task ShouldLoginWithFailureWrongUsername()
+    {
+        var email = "TEST@NUAGES.ORG";
+        var password = "Nuages123*$";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true
+        };
+        
+        var options = new NuagesIdentityOptions();
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
+        
+        var messageService = new Mock<IMessageService>();
+
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        var res = await loginService.LoginAsync(new LoginModel
+        {
+            UserNameOrEmail = "bad_username",
+            Password = password,
+            RememberMe = false
+        });
+        
+        Assert.False(res.Success);
+        Assert.Equal(FailedLoginReason.UserNameOrPasswordInvalid, res.Reason);
+    }
+
     
     [Fact]
     public async Task ShouldLoginWithFailureLockedOut()
@@ -123,8 +158,6 @@ public class TestLoginService
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
         var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var messageService = new Mock<IMessageService>();
 
@@ -167,10 +200,7 @@ public class TestLoginService
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
-        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
         var messageService = new Mock<IMessageService>();
 
         var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
@@ -185,5 +215,132 @@ public class TestLoginService
         
         Assert.False(res.Success);
         Assert.Equal(FailedLoginReason.LockedOut, res.Reason);
+    }
+
+    [Fact]
+    public async Task ShoudLogin2FaWithSuccess()
+    {
+        var email = "TEST@NUAGES.ORG";
+        var password = "Nuages123*$";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
+        fakeSignInManager.CurrentUser = user;
+        
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+    
+        var res = await loginService.Login2FAAsync(new Login2FAModel
+        {
+            Code = "ok",
+            RememberMachine = false,
+            RememberMe = false
+        });
+        
+        Assert.True(res.Success);
+    }
+    
+    [Fact]
+    public async Task ShoudLogin2FaWithError()
+    {
+        var email = "TEST@NUAGES.ORG";
+        var password = "Nuages123*$";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
+        fakeSignInManager.CurrentUser = user;
+        
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+    
+        var res = await loginService.Login2FAAsync(new Login2FAModel
+        {
+            Code = "bad_code",
+            RememberMachine = false,
+            RememberMe = false
+        });
+        
+        Assert.False(res.Success);
+        Assert.Equal(FailedLoginReason.FailedMfa, res.Reason);
+    }
+    
+    [Fact]
+    public async Task ShoudLogin2FaWithErrorUserNotFOund()
+    {
+        var email = "TEST@NUAGES.ORG";
+        var password = "Nuages123*$";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
+        //fakeSignInManager.CurrentUser = user;
+        
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        await Assert.ThrowsAsync<NotFoundException>(async () =>
+        {
+            var res = await loginService.Login2FAAsync(new Login2FAModel
+            {
+                Code = "bad_code",
+                RememberMachine = false,
+                RememberMe = false
+            });
+            
+        });
+        
     }
 }

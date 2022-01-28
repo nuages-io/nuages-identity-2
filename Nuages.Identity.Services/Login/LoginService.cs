@@ -30,6 +30,7 @@ public class LoginService : ILoginService
             return new LoginResultModel
             {
                 Result = SignInResult.Failed,
+                Reason = FailedLoginReason.UserNameOrPasswordInvalid,
                 Message = _stringLocalizer["errorMessage:userNameOrPasswordInvalid"]
             };
         }

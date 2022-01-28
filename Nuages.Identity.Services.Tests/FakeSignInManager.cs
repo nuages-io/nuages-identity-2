@@ -30,4 +30,19 @@ public class FakeSignInManager : NuagesSignInManager
     {
         
     }
+
+    public override async Task<SignInResult> TwoFactorAuthenticatorSignInAsync(string code, bool isPersistent,
+        bool rememberClient)
+    {
+        if (code == "ok")
+            return await Task.FromResult(SignInResult.Success);
+        
+        return await Task.FromResult(SignInResult.Failed);
+    }
+
+    public NuagesApplicationUser CurrentUser { get; set; }
+    public override async Task<NuagesApplicationUser> GetTwoFactorAuthenticationUserAsync()
+    {
+        return await Task.FromResult(CurrentUser);
+    }
 }

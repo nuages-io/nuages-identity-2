@@ -56,7 +56,14 @@ public static class MockHelpers
                 .ReturnsAsync(() => user.AccessFailedCount);
                 
             mockIdentity.UserLockoutStore.Setup(u => u.IncrementAccessFailedCountAsync(user, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(() => ++user.AccessFailedCount);
+                .Callback( (NuagesApplicationUser user2, CancellationToken cancellationToken) => ++user2.AccessFailedCount)
+                .ReturnsAsync(() => user.AccessFailedCount);
+            
+            mockIdentity.UserLockoutStore.Setup(u => u.SetLockoutEndDateAsync(user, It.IsAny<DateTimeOffset>(), It.IsAny<CancellationToken>()))
+                .Callback((NuagesApplicationUser user2, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken) => user2.LockoutEnd = lockoutEnd);
+            
+            mockIdentity.UserLockoutStore.Setup(u => u.ResetAccessFailedCountAsync(user,  It.IsAny<CancellationToken>()))
+                .Callback((NuagesApplicationUser user2,  CancellationToken cancellationToken) => user2.AccessFailedCount = 0);
         }
       
         var options = new Mock<IOptions<IdentityOptions>>();
