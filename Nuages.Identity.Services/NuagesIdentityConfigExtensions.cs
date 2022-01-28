@@ -47,7 +47,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
         services.AddScoped<IPasswordlessService, PasswordlessService>();
-        services.AddScoped<ISMSLoginService, SMSLoginService>();
+        services.AddScoped<ISMSCodeService, SMSCodeService>();
         
         //Manage
         services.AddScoped<IChangeEmailService, ChangeEmailService>();

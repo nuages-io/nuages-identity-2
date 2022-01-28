@@ -48,4 +48,15 @@ public class FakeSignInManager : NuagesSignInManager
         
         return await Task.FromResult(CurrentUser);
     }
+
+    public override async Task<SignInResult> TwoFactorRecoveryCodeSignInAsync(string recoveryCode)
+    {
+        return await Task.FromResult(recoveryCode == "123456" ? SignInResult.Success : SignInResult.Failed);
+    }
+
+    public override async Task<SignInResult> TwoFactorSignInAsync(string provider, string code, bool isPersistent,
+        bool rememberClient)
+    {
+        return await Task.FromResult(code == "123456" ? SignInResult.Success : SignInResult.Failed);
+    }
 }

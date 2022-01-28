@@ -1,5 +1,7 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -336,7 +338,7 @@ public class TestLoginService
         {
             await loginService.Login2FAAsync(new Login2FAModel
             {
-                Code = "bad_code",
+                Code = "ok",
                 RememberMachine = false,
                 RememberMe = false
             });
@@ -344,4 +346,258 @@ public class TestLoginService
         });
         
     }
+    
+    [Fact]
+    public async Task ShoudLoginRecoveryCodeWithSuccess()
+    {
+        const string email = "TEST@NUAGES.ORG";
+
+        var code = "123456";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+        {
+            CurrentUser = user
+        };
+
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        var res = await loginService.LoginRecoveryCodeAsync(new LoginRecoveryCodeModel
+        {
+            Code = code
+        });
+        
+        Assert.True(res.Success);
+    }
+    
+    [Fact]
+    public async Task ShoudLoginRecoveryCodeWithFailureBadCode()
+    {
+        const string email = "TEST@NUAGES.ORG";
+
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+        {
+            CurrentUser = user
+        };
+
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        var res = await loginService.LoginRecoveryCodeAsync(new LoginRecoveryCodeModel
+        {
+            Code = "654321" //Bad code
+        });
+        
+        Assert.False(res.Success);
+    }
+
+    
+    [Fact]
+    public async Task ShoudLoginRecoveryCodeWithFailuerUserDoesNotExists()
+    {
+        const string email = "TEST@NUAGES.ORG";
+
+        var code = "123456";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+        {
+            //CurrentUser = user
+        };
+
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        await Assert.ThrowsAsync<NotFoundException>(async () =>
+        {
+            await loginService.LoginRecoveryCodeAsync(new LoginRecoveryCodeModel
+            {
+                Code = code
+            });
+            
+        });
+        
+    }
+    
+    [Fact]
+    public async Task ShoudLoginSmsWithSuccess()
+    {
+        const string email = "TEST@NUAGES.ORG";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+        {
+            CurrentUser = user
+        };
+
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        var res = await loginService.LoginSMSAsync(new LoginSMSModel
+        {
+            Code = "123456"
+        });
+        
+        Assert.True(res.Success);
+    }
+    
+    [Fact]
+    public async Task ShoudLoginSmsWithFailureUserNotFound()
+    {
+        const string email = "TEST@NUAGES.ORG";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+        {
+           // CurrentUser = user
+        };
+
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        await Assert.ThrowsAsync<NotFoundException>(async () =>
+        {
+           
+            var res = await loginService.LoginSMSAsync(new LoginSMSModel
+            {
+                Code = "123456"
+            });
+            
+        });
+
+       
+    }
+    
+    [Fact]
+    public async Task ShoudLoginSmsWithFailureBadCode()
+    {
+        const string email = "TEST@NUAGES.ORG";
+        
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = email,
+            NormalizedEmail = email,
+            UserName = email,
+            NormalizedUserName = email,
+            EmailConfirmed = true,
+            AccessFailedCount = 5,
+            LockoutEnabled = true,
+            LockoutEnd = null
+        };
+        
+        var options = new NuagesIdentityOptions();
+    
+        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        
+        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
+        {
+            CurrentUser = user
+        };
+
+        var messageService = new Mock<IMessageService>();
+    
+        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        var res = await loginService.LoginSMSAsync(new LoginSMSModel
+        {
+            Code = "654321"
+        });
+        
+        Assert.False(res.Success);
+    }
+
 }

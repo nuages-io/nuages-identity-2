@@ -8,18 +8,18 @@ using Nuages.Identity.Services.Email;
 
 namespace Nuages.Identity.Services.Login;
 
-public class SMSLoginService : ISMSLoginService
+public class SMSCodeService : ISMSCodeService
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
     private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
-    private readonly ILogger<SMSLoginService> _logger;
+    private readonly ILogger<SMSCodeService> _logger;
     private readonly NuagesIdentityOptions _options;
 
-    public SMSLoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageService sender, 
+    public SMSCodeService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageService sender, 
         IOptions<NuagesIdentityOptions> options,
-                    IStringLocalizer localizer, ILogger<SMSLoginService> logger)
+                    IStringLocalizer localizer, ILogger<SMSCodeService> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -75,7 +75,7 @@ public class SMSLoginService : ISMSLoginService
     }
 }
 
-public interface ISMSLoginService
+public interface ISMSCodeService
 {
     // ReSharper disable once UnusedMemberInSuper.Global
     Task<SendSMSCodeResultModel> SendCode(string userId);

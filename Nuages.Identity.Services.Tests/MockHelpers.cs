@@ -24,6 +24,7 @@ public static class MockHelpers
         public Mock<IUserEmailStore<NuagesApplicationUser>> UserEmaiLStore { get; set; } = null!;
         public Mock<IUserPasswordStore<NuagesApplicationUser>> UserPasswordStore { get; set; } = null!;
         public Mock<IUserLockoutStore<NuagesApplicationUser>> UserLockoutStore { get; set; } = null!;
+        public Mock<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>> UserRecoveryCodeStore { get; set; } = null!;
     }
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {
@@ -35,6 +36,8 @@ public static class MockHelpers
         mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
         mockIdentity.UserLockoutStore =  mockIdentity.UserStore.As<IUserLockoutStore<NuagesApplicationUser>>();
+        mockIdentity.UserRecoveryCodeStore =
+            mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
         
         if (user != null)
         {
@@ -65,6 +68,10 @@ public static class MockHelpers
             
             mockIdentity.UserLockoutStore.Setup(u => u.ResetAccessFailedCountAsync(user,  It.IsAny<CancellationToken>()))
                 .Callback((NuagesApplicationUser user2,  CancellationToken cancellationToken) => user2.AccessFailedCount = 0);
+
+            mockIdentity.UserRecoveryCodeStore
+                .Setup(r => r.RedeemCodeAsync(user, It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => true);
         }
       
         var options = new Mock<IOptions<IdentityOptions>>();
