@@ -22,7 +22,7 @@ public static class MockHelpers
         public Mock<IUserStore<NuagesApplicationUser>> UserStore { get; set; } = null!;
         public Mock<IUserEmailStore<NuagesApplicationUser>> UserEmaiLStore { get; set; } = null!;
         public Mock<IUserPasswordStore<NuagesApplicationUser>> UserPasswordStore { get; set; } = null!;
-        public Mock<IUserLockoutStore<NuagesApplicationUser>> UserLockoutStore { get; set; }
+        public Mock<IUserLockoutStore<NuagesApplicationUser>> UserLockoutStore { get; set; } = null!;
     }
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {

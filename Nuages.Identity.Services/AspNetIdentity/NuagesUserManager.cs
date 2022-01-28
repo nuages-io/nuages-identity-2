@@ -72,7 +72,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         get
         {
             ThrowIfDisposed();
-
+    
             if (!_nuagesIdentityOptions.EnableUserLockout)
                 return false;
             
