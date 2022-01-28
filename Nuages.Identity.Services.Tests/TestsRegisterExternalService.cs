@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Nuages.Identity.Services.Tests;
 
-public class TestRegisterExternalService
+public class TestsRegisterExternalService
 {
     [Fact]
     public async Task ShouldRegisterWithSuccess()

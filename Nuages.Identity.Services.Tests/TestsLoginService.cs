@@ -1,8 +1,5 @@
 using System;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -14,7 +11,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Nuages.Identity.Services.Tests;
 
-public class TestLoginService
+public class TestsLoginService
 {
     [Fact]
     public async Task ShouldLoginWithSuccess()
