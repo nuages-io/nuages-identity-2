@@ -33,6 +33,9 @@ public static class MockHelpers
             UserStore = new Mock<IUserStore<NuagesApplicationUser>>()
         };
 
+        if (nuagesOptions == null)
+            nuagesOptions = new NuagesIdentityOptions();
+        
         mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
         mockIdentity.UserLockoutStore =  mockIdentity.UserStore.As<IUserLockoutStore<NuagesApplicationUser>>();
@@ -49,6 +52,9 @@ public static class MockHelpers
 
             mockIdentity.UserPasswordStore.Setup(p => p.GetPasswordHashAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.PasswordHash);
+            
+            mockIdentity.UserPasswordStore.Setup(p => p.HasPasswordAsync(user, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => !string.IsNullOrEmpty(user.PasswordHash));
 
             mockIdentity.UserLockoutStore.Setup(u => u.GetLockoutEnabledAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.LockoutEnabled);
@@ -58,6 +64,7 @@ public static class MockHelpers
             
             mockIdentity.UserLockoutStore.Setup(u => u.GetAccessFailedCountAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.AccessFailedCount);
+            
                 
             mockIdentity.UserLockoutStore.Setup(u => u.IncrementAccessFailedCountAsync(user, It.IsAny<CancellationToken>()))
                 .Callback( (NuagesApplicationUser user2, CancellationToken cancellationToken) => ++user2.AccessFailedCount)
