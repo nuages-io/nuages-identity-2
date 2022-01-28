@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -9,6 +10,7 @@ using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Web.Exceptions;
 using Xunit;
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Nuages.Identity.Services.Tests;
 
@@ -91,6 +93,8 @@ public class TestLoginService
         
         Assert.False(res.Success);
         Assert.Equal(FailedLoginReason.UserNameOrPasswordInvalid, res.Reason);
+        Assert.Equal(SignInResult.Failed, res.Result);
+        Assert.NotStrictEqual("errorMessage:userNameOrPasswordInvalid", res.Message);
     }
     
     [Fact]
