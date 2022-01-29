@@ -21,15 +21,11 @@ public class TestsRegisterExternalService
         var options = new NuagesIdentityOptions();
 
         var identityStuff = MockHelpers.MockIdentityStuff(null, options);
+        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
+        {
+            Email = email
+        };
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options))
-         {
-             CurrentUser = new NuagesApplicationUser
-             {
-                 Email = email
-             }
-         };
-
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
@@ -39,7 +35,7 @@ public class TestsRegisterExternalService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
 
-        var registerService = new RegisterExternalLoginService(fakeSignInManager, identityStuff.UserManager,
+        var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
             Options.Create(options), new FakeStringLocalizer(), messageService.Object);
 
         var res = await registerService.Register();

@@ -25,6 +25,8 @@ public static class MockHelpers
         public Mock<IUserPasswordStore<NuagesApplicationUser>> UserPasswordStore { get; set; } = null!;
         public Mock<IUserLockoutStore<NuagesApplicationUser>> UserLockoutStore { get; set; } = null!;
         public Mock<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>> UserRecoveryCodeStore { get; set; } = null!;
+        public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
+        public FakeSignInManager SignInManager { get; set; }  = null!;
     }
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {
@@ -33,7 +35,8 @@ public static class MockHelpers
             UserStore = new Mock<IUserStore<NuagesApplicationUser>>()
         };
 
-        nuagesOptions ??= new NuagesIdentityOptions();
+        if (nuagesOptions != null)
+            mockIdentity.NuagesOptions = nuagesOptions;
         
         mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
@@ -92,7 +95,7 @@ public static class MockHelpers
 
         var nuagesOptionsMock = new Mock<IOptions<NuagesIdentityOptions>>();
 
-        nuagesOptionsMock.Setup(o => o.Value).Returns(nuagesOptions);
+        nuagesOptionsMock.Setup(o => o.Value).Returns(mockIdentity.NuagesOptions);
       
         
         var userValidators = new List<IUserValidator<NuagesApplicationUser>>();
@@ -105,8 +108,10 @@ public static class MockHelpers
             new IdentityErrorDescriber(), null!,
             new Mock<ILogger<NuagesUserManager>>().Object, nuagesOptionsMock.Object);
 
-        mockIdentity.UserManager.Options.SignIn.RequireConfirmedEmail = nuagesOptions.RequireConfirmedEmail;
+        mockIdentity.UserManager.Options.SignIn.RequireConfirmedEmail = mockIdentity.NuagesOptions.RequireConfirmedEmail;
 
+        mockIdentity.SignInManager = new FakeSignInManager(mockIdentity.UserManager, Options.Create(mockIdentity.NuagesOptions), null, user);
+        
         var token = Guid.NewGuid().ToString();
 
         var twoFactorTokenProvider = new Mock<IUserTwoFactorTokenProvider<NuagesApplicationUser>>();
@@ -125,6 +130,7 @@ public static class MockHelpers
         return mockIdentity;
     }
 
+   
 
 
     private static ILookupNormalizer MockLookupNormalizer()

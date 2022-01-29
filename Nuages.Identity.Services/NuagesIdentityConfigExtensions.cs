@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
@@ -11,6 +12,7 @@ using Nuages.Web.Utilities;
 
 namespace Nuages.Identity.Services;
 
+[ExcludeFromCodeCoverage]
 public static class NuagesIdentityConfigExtensions
 {
     // ReSharper disable once UnusedMember.Global

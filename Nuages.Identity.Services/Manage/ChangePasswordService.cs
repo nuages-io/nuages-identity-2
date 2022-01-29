@@ -125,7 +125,12 @@ public class ChangePasswordService : IChangePasswordService
 
         if (sendByEmail)
         {
-            //TODO
+            _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Changed_ByAdmin", new Dictionary<string, string>
+            {
+                { "UserName", user.UserName },
+                { "Password", newPassword },
+                { "MustCHangePassword", mustChangePassword.ToString()}
+            });
         }
         
         return new ChangePasswordResultModel

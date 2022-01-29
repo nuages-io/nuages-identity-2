@@ -25,8 +25,6 @@ public class TestsRegisterService
 
         var identityStuff = MockHelpers.MockIdentityStuff(null, options);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
@@ -36,7 +34,7 @@ public class TestsRegisterService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var registerService = new RegisterService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
             messageService.Object, Options.Create(options));
 
         var res = await registerService.Register(new RegisterModel
@@ -65,8 +63,6 @@ public class TestsRegisterService
 
         var identityStuff = MockHelpers.MockIdentityStuff(null, options);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
@@ -76,7 +72,7 @@ public class TestsRegisterService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var registerService = new RegisterService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
             messageService.Object, Options.Create(options));
 
         var res = await registerService.Register(new RegisterModel
@@ -103,11 +99,7 @@ public class TestsRegisterService
             NormalizedEmail = "TEST@NUAGES.ORG"
         };
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
@@ -118,8 +110,8 @@ public class TestsRegisterService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var registerService = new RegisterService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object, Options.Create(options));
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
         {
@@ -145,11 +137,7 @@ public class TestsRegisterService
             NormalizedEmail = "TEST@NUAGES.ORG"
         };
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
@@ -160,8 +148,8 @@ public class TestsRegisterService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var registerService = new RegisterService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object, Options.Create(options));
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
         {
@@ -181,11 +169,7 @@ public class TestsRegisterService
         const string password = "password";
         const string email = "test@nuages.org";
 
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(null, options);
-        
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
+        var identityStuff = MockHelpers.MockIdentityStuff(null);
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
@@ -196,8 +180,8 @@ public class TestsRegisterService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var registerService = new RegisterService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object, Options.Create(options));
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
         {

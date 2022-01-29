@@ -20,15 +20,14 @@ public class TestsChangePasswordService
         {
             Id = Guid.NewGuid().ToString(),
             Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            PasswordHash = "password_hash"
+            NormalizedEmail = "TEST@NUAGES.ORG"
         };
 
-        const string currentPssword = "Current789*$";
+        const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
         
         var sendCalled = false;
         
@@ -40,7 +39,7 @@ public class TestsChangePasswordService
         var changePasswordService =
             new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object);
 
-        var res = await changePasswordService.ChangePasswordAsync(user.Id, currentPssword, newPassword, newPassword);
+        var res = await changePasswordService.ChangePasswordAsync(user.Id, currentPassword, newPassword, newPassword);
         
         Assert.True(res.Success);
         Assert.True(sendCalled);
@@ -83,15 +82,14 @@ public class TestsChangePasswordService
         {
             Id = Guid.NewGuid().ToString(),
             Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            PasswordHash = "password_hash"
+            NormalizedEmail = "TEST@NUAGES.ORG"
         };
 
-        const string currentPssword = "Current789*$";
+        const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
         
         var changePasswordService =
             new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IMessageService>().Object);
@@ -109,22 +107,21 @@ public class TestsChangePasswordService
         {
             Id = Guid.NewGuid().ToString(),
             Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            PasswordHash = "password_hash"
+            NormalizedEmail = "TEST@NUAGES.ORG"
         };
 
-        const string currentPssword = "Current789*$";
+        const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
 
         var messageService = new Mock<IMessageService>();
 
         var changePasswordService =
             new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object);
 
-        var res = await changePasswordService.ChangePasswordAsync(user.Id, currentPssword, newPassword, "bad_confirm");
+        var res = await changePasswordService.ChangePasswordAsync(user.Id, currentPassword, newPassword, "bad_confirm");
         
         Assert.False(res.Success);
         Assert.Equal("resetPassword.passwordConfirmDoesNotMatch", res.Errors.First());
@@ -137,15 +134,14 @@ public class TestsChangePasswordService
         {
             Id = Guid.NewGuid().ToString(),
             Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            PasswordHash = "password_hash"
+            NormalizedEmail = "TEST@NUAGES.ORG"
         };
 
-        const string currentPssword = "Current789*$";
+        const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
 
         var messageService = new Mock<IMessageService>();
 
@@ -154,7 +150,189 @@ public class TestsChangePasswordService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await changePasswordService.ChangePasswordAsync("bad_id", currentPssword, newPassword, newPassword);
+            await changePasswordService.ChangePasswordAsync("bad_id", currentPassword, newPassword, newPassword);
         });
+    }
+    
+    [Fact]
+    public async Task ShouldAdminChangePasswordWithSuccess()
+    {
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = "test@nuages.org",
+            NormalizedEmail = "TEST@NUAGES.ORG"
+        };
+
+        const string currentPassword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
+        
+        var sendCalled = false;
+        
+        var messageService = new Mock<IMessageService>();
+        messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
+                It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
+            .Callback(() => sendCalled = true);
+
+        var changePasswordService =
+            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object);
+
+        var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
+        
+        var res = await changePasswordService.AdminChangePasswordAsync(user.Id,  
+            newPassword, newPassword, false, true, code);
+        
+        Assert.True(res.Success);
+        Assert.True(sendCalled);
+    }
+    
+    [Fact]
+    public async Task ShouldAdminAddPasswordWithSuccess()
+    {
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = "test@nuages.org",
+            NormalizedEmail = "TEST@NUAGES.ORG"
+        };
+
+        const string newPassword = "NewPassword789*$";
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+       
+        var sendCalled = false;
+        
+        var messageService = new Mock<IMessageService>();
+        messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
+                It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
+            .Callback(() => sendCalled = true);
+
+        var changePasswordService =
+            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object);
+
+        var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
+        
+        var res = await changePasswordService.AdminChangePasswordAsync(user.Id,  
+            newPassword, newPassword, false, true, code);
+        
+        Assert.True(res.Success);
+        Assert.True(sendCalled);
+    }
+
+    
+    [Fact]
+    public async Task ShouldAdminChangePasswordWithoutTokenWithSuccess()
+    {
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = "test@nuages.org",
+            NormalizedEmail = "TEST@NUAGES.ORG"
+        };
+
+        const string currentPassword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
+        
+        var sendCalled = false;
+        
+        var messageService = new Mock<IMessageService>();
+        messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
+                It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
+            .Callback(() => sendCalled = true);
+
+        var changePasswordService =
+            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object);
+        
+        var res = await changePasswordService.AdminChangePasswordAsync(user.Id,  
+            newPassword, newPassword, false, true, null);
+        
+        Assert.True(res.Success);
+        Assert.True(sendCalled);
+    }
+    
+    [Fact]
+    public async Task ShouldAdminChangePasswordWithFailurePasswordDoesNotMatch()
+    {
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = "test@nuages.org",
+            NormalizedEmail = "TEST@NUAGES.ORG"
+        };
+
+        const string currentPassword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
+
+        var changePasswordService =
+            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+
+        var res = await changePasswordService.AdminChangePasswordAsync(user.Id,  
+            newPassword, "bad_confirm", false, true, null);
+        
+        Assert.False(res.Success);
+        Assert.Equal("resetPassword.passwordConfirmDoesNotMatch",res.Errors.First());
+        //Assert.True(sendCalled);
+    }
+    
+    [Fact]
+    public async Task ShouldAdminChangePasswordWithFailureThrowException()
+    {
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = "test@nuages.org",
+            NormalizedEmail = "TEST@NUAGES.ORG"
+        };
+
+        const string currentPassword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
+
+        var changePasswordService =
+            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+
+        await Assert.ThrowsAsync<NotFoundException>(async () =>
+        {
+            await changePasswordService.AdminChangePasswordAsync("bad_id",  
+                newPassword, newPassword, false, true, null);
+
+        });
+    }
+    
+    [Fact]
+    public async Task ShouldAdminChangePasswordWithFailurePasswordNotStrongEnough()
+    {
+        var user = new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = "test@nuages.org",
+            NormalizedEmail = "TEST@NUAGES.ORG"
+        };
+
+        const string newPassword = "wpassword";
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+
+        var changePasswordService =
+            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+
+        var res = await changePasswordService.AdminChangePasswordAsync(user.Id,  
+            newPassword, newPassword, false, true, null);
+        
+        Assert.False(res.Success);
+        Assert.Equal("identity.PasswordRequiresNonAlphanumeric", res.Errors[0]);
+        Assert.Equal("identity.PasswordRequiresDigit", res.Errors[1]);
+        Assert.Equal("identity.PasswordRequiresUpper", res.Errors[2]);
     }
 }

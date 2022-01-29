@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
@@ -35,11 +34,10 @@ public class TestsLoginService
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
         
         var messageService = new Mock<IMessageService>();
 
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
             messageService.Object);
 
         var res = await loginService.LoginAsync(new LoginModel
@@ -74,12 +72,8 @@ public class TestsLoginService
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
-        var messageService = new Mock<IMessageService>();
-
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -116,11 +110,9 @@ public class TestsLoginService
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
         var messageService = new Mock<IMessageService>();
 
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
             messageService.Object);
 
         var res = await loginService.LoginAsync(new LoginModel
@@ -160,11 +152,9 @@ public class TestsLoginService
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(options));
-        
         var messageService = new Mock<IMessageService>();
 
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
             messageService.Object);
 
         var res = await loginService.LoginAsync(new LoginModel
@@ -203,11 +193,8 @@ public class TestsLoginService
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
-        var messageService = new Mock<IMessageService>();
-
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -238,19 +225,10 @@ public class TestsLoginService
             LockoutEnd = null
         };
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-            {
-                CurrentUser = user
-            };
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
     
         var res = await loginService.Login2FAAsync(new Login2FAModel
         {
@@ -280,19 +258,10 @@ public class TestsLoginService
             LockoutEnd = null
         };
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-            {
-                CurrentUser = user
-            };
-
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
     
         var res = await loginService.Login2FAAsync(new Login2FAModel
         {
@@ -323,17 +292,11 @@ public class TestsLoginService
             LockoutEnd = null
         };
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        identityStuff.SignInManager.CurrentUser = null;
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()));
-        //fakeSignInManager.CurrentUser = user;
-        
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -367,19 +330,12 @@ public class TestsLoginService
             LockoutEnabled = true,
             LockoutEnd = null
         };
+            
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-        {
-            CurrentUser = user
-        };
-
         var messageService = new Mock<IMessageService>();
     
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
             messageService.Object);
 
         var res = await loginService.LoginRecoveryCodeAsync(new LoginRecoveryCodeModel
@@ -407,20 +363,11 @@ public class TestsLoginService
             LockoutEnabled = true,
             LockoutEnd = null
         };
+            
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-        {
-            CurrentUser = user
-        };
-
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         var res = await loginService.LoginRecoveryCodeAsync(new LoginRecoveryCodeModel
         {
@@ -451,19 +398,11 @@ public class TestsLoginService
             LockoutEnd = null
         };
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        identityStuff.SignInManager.CurrentUser = null;
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-        {
-            //CurrentUser = user
-        };
-
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -493,20 +432,11 @@ public class TestsLoginService
             LockoutEnabled = true,
             LockoutEnd = null
         };
-        
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-        {
-            CurrentUser = user
-        };
-
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+            
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+                 
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         var res = await loginService.LoginSMSAsync(new LoginSMSModel
         {
@@ -534,19 +464,11 @@ public class TestsLoginService
             LockoutEnd = null
         };
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        identityStuff.SignInManager.CurrentUser = null;
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-        {
-           // CurrentUser = user
-        };
-
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -575,19 +497,10 @@ public class TestsLoginService
             LockoutEnd = null
         };
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
-        var fakeSignInManager = new FakeSignInManager(identityStuff.UserManager, Options.Create(new NuagesIdentityOptions()))
-        {
-            CurrentUser = user
-        };
-
-        var messageService = new Mock<IMessageService>();
-    
-        var loginService = new LoginService(identityStuff.UserManager, fakeSignInManager, new FakeStringLocalizer(),
-            messageService.Object);
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object);
 
         var res = await loginService.LoginSMSAsync(new LoginSMSModel
         {

@@ -13,7 +13,8 @@ namespace Nuages.Identity.Services.Tests;
 
 public class FakeSignInManager : NuagesSignInManager
 {
-    public FakeSignInManager(NuagesUserManager userManager, IOptions<NuagesIdentityOptions> options, IHttpContextAccessor? contextAccessor = null)
+    public FakeSignInManager(NuagesUserManager userManager, IOptions<NuagesIdentityOptions> options,
+        IHttpContextAccessor? contextAccessor = null, NuagesApplicationUser? user = null)
         : base(userManager,
             contextAccessor ?? MockHelpers.MockHttpContextAccessor().Object,
             new Mock<IUserClaimsPrincipalFactory<NuagesApplicationUser>>().Object,
@@ -22,7 +23,10 @@ public class FakeSignInManager : NuagesSignInManager
             new Mock<IAuthenticationSchemeProvider>().Object,
             new Mock<IUserConfirmation<NuagesApplicationUser>>().Object,
             options)
-    { }
+    {
+
+        CurrentUser = user;
+    }
 
 
     public override async  Task SignInWithClaimsAsync(NuagesApplicationUser user, AuthenticationProperties authenticationProperties,
