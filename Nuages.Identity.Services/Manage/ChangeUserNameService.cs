@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Web.Exceptions;
@@ -73,6 +74,7 @@ public interface IChangeUserNameService
     Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, string newUserName);
 }
 
+[ExcludeFromCodeCoverage]
 public class ChangeUserNameModel
 {
     public string NewUserName { get; set; } = string.Empty;

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -82,6 +83,7 @@ public class ChangePhoneNumberResultModel
     public List<string> Errors { get; set; } = new();
 }
 
+[ExcludeFromCodeCoverage]
 public class ChangePhoneNumberModel
 {
     public string PhoneNumber { get; set; } = string.Empty;

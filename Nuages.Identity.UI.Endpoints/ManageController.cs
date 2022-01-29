@@ -23,14 +23,14 @@ public class ManageController : Controller
     private readonly IChangeUserNameService _changeUserNameService;
     private readonly IMFAService _mfaService;
     private readonly IChangePhoneNumberService _phoneNumberService;
-    private readonly ISendSMSVerificationCode _sendSmsVerificationCode;
+    private readonly ISendSMSVerificationCodeService _sendSmsVerificationCode;
     private readonly IProfileService _profileService;
     private readonly ILogger<ManageController> _logger;
     private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
         ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
-        IMFAService mfaService, IChangePhoneNumberService phoneNumberService, ISendSMSVerificationCode sendSmsVerificationCode,
+        IMFAService mfaService, IChangePhoneNumberService phoneNumberService, ISendSMSVerificationCodeService sendSmsVerificationCode,
         IProfileService profileService,
         ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
@@ -48,7 +48,7 @@ public class ManageController : Controller
     }
     
     [HttpPost("changePassword")]
-    public async Task<ChangePasswordResultModel> ChangePasswordAsync(ChangePasswordModel model)
+    public async Task<ChangePasswordResultModel> ChangePasswordAsync([FromBody] ChangePasswordModel model)
     {
         try
         {
@@ -86,7 +86,7 @@ public class ManageController : Controller
     }
     
     [HttpPost("setPassword")]
-    public async Task<ChangePasswordResultModel> SetPasswordAsync(ChangePasswordModel model)
+    public async Task<ChangePasswordResultModel> SetPasswordAsync([FromBody] ChangePasswordModel model)
     {
         try
         {

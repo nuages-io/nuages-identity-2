@@ -8,14 +8,14 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage;
 
-public class SendSMSVerificationCode : ISendSMSVerificationCode
+public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
-    private readonly ILogger<SendSMSVerificationCode> _logger;
+    private readonly ILogger<SendSMSVerificationCodeService> _logger;
 
-    public SendSMSVerificationCode(NuagesUserManager userManager, IMessageService sender, IStringLocalizer localizer, ILogger<SendSMSVerificationCode> logger)
+    public SendSMSVerificationCodeService(NuagesUserManager userManager, IMessageService sender, IStringLocalizer localizer, ILogger<SendSMSVerificationCodeService> logger)
     {
         _userManager = userManager;
         _sender = sender;
@@ -54,7 +54,7 @@ public class SendSMSVerificationCode : ISendSMSVerificationCode
     }
 }
 
-public interface ISendSMSVerificationCode
+public interface ISendSMSVerificationCodeService
 {
     // ReSharper disable once UnusedMemberInSuper.Global
     Task<SendSMSVerificationCodeResultModel> SendCode(string userId, string phoneNumber);
