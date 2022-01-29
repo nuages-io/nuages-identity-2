@@ -28,10 +28,7 @@ public class TestsChangeUserNameService
             NormalizedUserName = email,
             EmailConfirmed = true
         };
-        
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var changeUserNameSrvice =
             new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
@@ -56,9 +53,7 @@ public class TestsChangeUserNameService
             EmailConfirmed = true
         };
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var changeUserNameSrvice =
             new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
@@ -84,10 +79,8 @@ public class TestsChangeUserNameService
             NormalizedUserName = email,
             EmailConfirmed = true
         };
-        
-        var options = new NuagesIdentityOptions();
 
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
 
         var changeUserNameSrvice =
@@ -114,9 +107,7 @@ public class TestsChangeUserNameService
             EmailConfirmed = true
         };
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
 
         var changeUserNameSrvice =
@@ -143,9 +134,7 @@ public class TestsChangeUserNameService
             EmailConfirmed = true
         };
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.FindByNameAsync(user.UserName, It.IsAny<CancellationToken>())).ReturnsAsync( () => user );
 
         var changeUserNameSrvice =
@@ -171,10 +160,8 @@ public class TestsChangeUserNameService
             NormalizedUserName = "USERNAME",
             EmailConfirmed = true
         };
-        
-        var options = new NuagesIdentityOptions();
 
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.FindByNameAsync("EXISTING", It.IsAny<CancellationToken>())).ReturnsAsync( () => new NuagesApplicationUser
         {
             Id = Guid.NewGuid().ToString()

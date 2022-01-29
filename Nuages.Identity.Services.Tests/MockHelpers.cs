@@ -27,6 +27,7 @@ public static class MockHelpers
         public Mock<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>> UserRecoveryCodeStore { get; set; } = null!;
         public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
         public FakeSignInManager SignInManager { get; set; }  = null!;
+        public Mock<IUserPhoneNumberStore<NuagesApplicationUser>> UserPhoneNumberStore { get; set; } = null!;
     }
     
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
@@ -42,8 +43,8 @@ public static class MockHelpers
         mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
         mockIdentity.UserLockoutStore =  mockIdentity.UserStore.As<IUserLockoutStore<NuagesApplicationUser>>();
-        mockIdentity.UserRecoveryCodeStore =
-            mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
+        mockIdentity.UserRecoveryCodeStore = mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
+        mockIdentity.UserPhoneNumberStore = mockIdentity.UserStore.As<IUserPhoneNumberStore<NuagesApplicationUser>>();
         
         if (user != null)
         {
@@ -124,7 +125,8 @@ public static class MockHelpers
                 c.ValidateAsync(It.IsAny<string>(), token, mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
             .ReturnsAsync(() => true);
         mockIdentity.UserManager.RegisterTokenProvider("Default", twoFactorTokenProvider.Object);
-     
+        mockIdentity.UserManager.RegisterTokenProvider("Phone", twoFactorTokenProvider.Object);
+        
         validator.Setup(v => v.ValidateAsync(mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
             .Returns(Task.FromResult(IdentityResult.Success)).Verifiable();
         
