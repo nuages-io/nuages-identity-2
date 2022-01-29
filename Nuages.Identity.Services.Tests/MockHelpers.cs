@@ -28,6 +28,7 @@ public static class MockHelpers
         public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
         public FakeSignInManager SignInManager { get; set; }  = null!;
         public Mock<IUserPhoneNumberStore<NuagesApplicationUser>> UserPhoneNumberStore { get; set; } = null!;
+        public Mock<IUserLoginStore<NuagesApplicationUser>> UserLoginStore { get; set; }
     }
     
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
@@ -45,11 +46,12 @@ public static class MockHelpers
         mockIdentity.UserLockoutStore =  mockIdentity.UserStore.As<IUserLockoutStore<NuagesApplicationUser>>();
         mockIdentity.UserRecoveryCodeStore = mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
         mockIdentity.UserPhoneNumberStore = mockIdentity.UserStore.As<IUserPhoneNumberStore<NuagesApplicationUser>>();
+        mockIdentity.UserLoginStore = mockIdentity.UserStore.As<IUserLoginStore<NuagesApplicationUser>>();
         
         if (user != null)
         {
             mockIdentity.UserStore.Setup(u => u.FindByIdAsync(user.Id, It.IsAny<CancellationToken>())).ReturnsAsync( () => user );
-            mockIdentity.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Success );
+            mockIdentity.UserStore.Setup(u => u.UpdateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Success );
         
             mockIdentity.UserEmaiLStore.Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => user);
             mockIdentity.UserEmaiLStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.EmailConfirmed);
@@ -83,6 +85,13 @@ public static class MockHelpers
             mockIdentity.UserRecoveryCodeStore
                 .Setup(r => r.RedeemCodeAsync(user, It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => true);
+
+            mockIdentity.UserLoginStore
+                .Setup(u => u.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => null!);
+
+            mockIdentity.UserLoginStore
+                .Setup(u => u.AddLoginAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<UserLoginInfo>(), It.IsAny<CancellationToken>()));
         }
       
         var options = new Mock<IOptions<IdentityOptions>>();
