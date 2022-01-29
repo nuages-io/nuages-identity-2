@@ -145,6 +145,6 @@ public class TestsResetPasswordService
         });
         
         Assert.False(res.Success);
-        Assert.Equal("resetPassword:passwordConfirmDoesNotMatch", res.Errors.First());
+        Assert.Equal("resetPassword:passwordConfirmDoesNotMatch", res.Errors.Single());
     }
 }

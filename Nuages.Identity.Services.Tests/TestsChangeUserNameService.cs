@@ -96,7 +96,7 @@ public class TestsChangeUserNameService
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, "new_user_name");
         
         Assert.False(res.Success);
-        Assert.Equal("identity.error", res.Errors.First());
+        Assert.Equal("identity.error", res.Errors.Single());
     }
     
     [Fact]
@@ -125,7 +125,7 @@ public class TestsChangeUserNameService
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, "TEST2@NUAGES.ORG");
         
         Assert.False(res.Success);
-        Assert.Equal("changeUsername:mustNotBeAnEmail", res.Errors.First());
+        Assert.Equal("changeUsername:mustNotBeAnEmail", res.Errors.Single());
     }
     
     [Fact]
@@ -154,7 +154,7 @@ public class TestsChangeUserNameService
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, user.UserName);
         
         Assert.False(res.Success);
-        Assert.Equal("changeUsername:isNotChanged", res.Errors.First());
+        Assert.Equal("changeUsername:isNotChanged", res.Errors.Single());
     }
     
     [Fact]
@@ -186,6 +186,6 @@ public class TestsChangeUserNameService
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, "EXISTING");
         
         Assert.False(res.Success);
-        Assert.Equal("changeUsername:nameAlreadyUsed", res.Errors.First());
+        Assert.Equal("changeUsername:nameAlreadyUsed", res.Errors.Single());
     }
 }

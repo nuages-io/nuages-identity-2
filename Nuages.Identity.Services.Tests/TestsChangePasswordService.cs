@@ -16,12 +16,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldChangePasswordWithSuccess()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -48,12 +43,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldAddPasswordWithSuccess()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string newPassword = "NewPassword789*$";
         
@@ -78,12 +68,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldChangePasswordWithErrorCurrentDoesNotMatch()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -97,18 +82,13 @@ public class TestsChangePasswordService
         var res = await changePasswordService.ChangePasswordAsync(user.Id, "bad_current", newPassword, newPassword);
         
         Assert.False(res.Success);
-        Assert.Equal("identity.PasswordMismatch", res.Errors.First());
+        Assert.Equal("identity.PasswordMismatch", res.Errors.Single());
     }
     
     [Fact]
     public async Task ShouldChangePasswordWithErrorConfirmationDoesNotMatch()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -124,18 +104,13 @@ public class TestsChangePasswordService
         var res = await changePasswordService.ChangePasswordAsync(user.Id, currentPassword, newPassword, "bad_confirm");
         
         Assert.False(res.Success);
-        Assert.Equal("resetPassword.passwordConfirmDoesNotMatch", res.Errors.First());
+        Assert.Equal("resetPassword.passwordConfirmDoesNotMatch", res.Errors.Single());
     }
     
     [Fact]
     public async Task ShouldChangePasswordWitExceptionUserNotFound()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -157,12 +132,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldAdminChangePasswordWithSuccess()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -192,12 +162,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldAdminAddPasswordWithSuccess()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string newPassword = "NewPassword789*$";
 
@@ -226,12 +191,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldAdminChangePasswordWithoutTokenWithSuccess()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -259,12 +219,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldAdminChangePasswordWithFailurePasswordDoesNotMatch()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -279,19 +234,14 @@ public class TestsChangePasswordService
             newPassword, "bad_confirm", false, true, null);
         
         Assert.False(res.Success);
-        Assert.Equal("resetPassword.passwordConfirmDoesNotMatch",res.Errors.First());
+        Assert.Equal("resetPassword.passwordConfirmDoesNotMatch",res.Errors.Single());
         //Assert.True(sendCalled);
     }
     
     [Fact]
     public async Task ShouldAdminChangePasswordWithFailureThrowException()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string currentPassword = "Current789*$";
         const string newPassword = "NewPassword789*$";
@@ -313,12 +263,7 @@ public class TestsChangePasswordService
     [Fact]
     public async Task ShouldAdminChangePasswordWithFailurePasswordNotStrongEnough()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         const string newPassword = "wpassword";
 

@@ -121,7 +121,7 @@ public class TestsRegisterService
         });
         
         Assert.False(res.Success);
-        Assert.Equal("register.userEmailAlreadyExists", res.Errors.First());
+        Assert.Equal("register.userEmailAlreadyExists", res.Errors.Single());
         Assert.False(sendCalled);
     }
     
@@ -159,7 +159,7 @@ public class TestsRegisterService
         });
         
         Assert.False(res.Success);
-        Assert.Equal("register.passwordDoesNotMatch", res.Errors.First());
+        Assert.Equal("register.passwordDoesNotMatch", res.Errors.Single());
         Assert.False(sendCalled);
     }
     

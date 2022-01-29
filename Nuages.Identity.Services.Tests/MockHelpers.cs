@@ -28,6 +28,7 @@ public static class MockHelpers
         public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
         public FakeSignInManager SignInManager { get; set; }  = null!;
     }
+    
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {
         var mockIdentity = new MockIdentity
@@ -130,7 +131,15 @@ public static class MockHelpers
         return mockIdentity;
     }
 
-   
+    public static NuagesApplicationUser CreateDefaultUser()
+    {
+        return new NuagesApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            Email = "test@nuages.org",
+            NormalizedEmail = "TEST@NUAGES.ORG"
+        };
+    }
 
 
     private static ILookupNormalizer MockLookupNormalizer()

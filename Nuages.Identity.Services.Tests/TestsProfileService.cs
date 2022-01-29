@@ -100,7 +100,7 @@ public class TestsProfileService
         });
         
         Assert.False(res.Success);
-        Assert.Equal("identity.error", res.Errors.First());
+        Assert.Equal("identity.error", res.Errors.Single());
 
     }
 }
