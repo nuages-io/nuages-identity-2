@@ -17,7 +17,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithSuccess()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {
@@ -44,7 +44,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUserNameThrowsException()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {
@@ -73,7 +73,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrors()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {
@@ -88,7 +88,7 @@ public class TestsChangeUserNameService
         var options = new NuagesIdentityOptions();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new []{ new IdentityError { Code = "error", Description = "error"}}) );
+        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
 
         var changeUserNameSrvice =
             new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
@@ -102,7 +102,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrorsInvalidIsEmail()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {
@@ -117,7 +117,7 @@ public class TestsChangeUserNameService
         var options = new NuagesIdentityOptions();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new []{ new IdentityError { Code = "error", Description = "error"}}) );
+        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
 
         var changeUserNameSrvice =
             new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
@@ -131,7 +131,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrorsUsernameNotChanged()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {
@@ -160,7 +160,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrorsUsernameAlreadyUsed()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {

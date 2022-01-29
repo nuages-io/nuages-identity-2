@@ -60,17 +60,14 @@ public class FakeSignInManager : NuagesSignInManager
         return await Task.FromResult(code == "123456" ? SignInResult.Success : SignInResult.Failed);
     }
 
-    public override async Task<ExternalLoginInfo> GetExternalLoginInfoAsync(string expectedXsrf = null)
+    public override async Task<ExternalLoginInfo> GetExternalLoginInfoAsync(string? expectedXsrf = null)
     {
         var i = new ClaimsIdentity();
         i.AddClaim(new Claim(ClaimTypes.Email, CurrentUser!.Email));
         
         var p = new ClaimsPrincipal(i);
         
-        var info = new ExternalLoginInfo(p, "", "", "")
-        {
-
-        };
+        var info = new ExternalLoginInfo(p, "", "", "");
         
         return await Task.FromResult(info);
     }

@@ -16,7 +16,7 @@ public class TestsRegisterExternalService
     [Fact]
     public async Task ShouldRegisterWithSuccess()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var options = new NuagesIdentityOptions();
 
@@ -42,11 +42,9 @@ public class TestsRegisterExternalService
         var registerService = new RegisterExternalLoginService(fakeSignInManager, identityStuff.UserManager,
             Options.Create(options), new FakeStringLocalizer(), messageService.Object);
 
-        var res = await registerService.Register(new RegisterExternalLoginModel
-        {
-
-        });
+        var res = await registerService.Register();
         
         Assert.True(res.Success);
+        Assert.True(sendCalled);
     }
 }

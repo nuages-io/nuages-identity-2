@@ -233,7 +233,7 @@ public class AccountController : Controller
     
     [HttpPost("registerExternalLogin")]
     [AllowAnonymous]
-    public async Task<RegisterExternalLoginResultModel> RegisterExternalLogin([FromBody] RegisterExternalLoginModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
+    public async Task<RegisterExternalLoginResultModel> RegisterExternalLogin( [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
@@ -245,7 +245,7 @@ public class AccountController : Controller
                     Success = false
                 };
         
-            return await _registerExternalLoginService.Register(model);
+            return await _registerExternalLoginService.Register();
         }
         catch (Exception e)
         {

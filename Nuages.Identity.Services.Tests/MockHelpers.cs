@@ -33,8 +33,7 @@ public static class MockHelpers
             UserStore = new Mock<IUserStore<NuagesApplicationUser>>()
         };
 
-        if (nuagesOptions == null)
-            nuagesOptions = new NuagesIdentityOptions();
+        nuagesOptions ??= new NuagesIdentityOptions();
         
         mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
@@ -92,9 +91,7 @@ public static class MockHelpers
         options.Setup(o => o.Value).Returns(idOptions);
 
         var nuagesOptionsMock = new Mock<IOptions<NuagesIdentityOptions>>();
-        
-        nuagesOptions ??= new NuagesIdentityOptions();
-        
+
         nuagesOptionsMock.Setup(o => o.Value).Returns(nuagesOptions);
       
         

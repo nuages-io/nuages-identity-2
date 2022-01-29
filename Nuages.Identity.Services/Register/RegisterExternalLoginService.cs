@@ -27,7 +27,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         _options = options.Value;
     }
     
-    public async Task<RegisterExternalLoginResultModel> Register(RegisterExternalLoginModel model)
+    public async Task<RegisterExternalLoginResultModel> Register()
     {
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
@@ -104,14 +104,10 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
 public interface IRegisterExternalLoginService
 {
     // ReSharper disable once UnusedParameter.Global
-    Task<RegisterExternalLoginResultModel> Register(RegisterExternalLoginModel model);
+    Task<RegisterExternalLoginResultModel> Register();
 }
 
-// ReSharper disable once ClassNeverInstantiated.Global
-public class RegisterExternalLoginModel
-{
-    
-}
+
 
 public class RegisterExternalLoginResultModel
 {

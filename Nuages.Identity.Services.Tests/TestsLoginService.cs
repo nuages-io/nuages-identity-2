@@ -353,7 +353,7 @@ public class TestsLoginService
     {
         const string email = "TEST@NUAGES.ORG";
 
-        var code = "123456";
+        const string code = "123456";
         
         var user = new NuagesApplicationUser
         {
@@ -436,7 +436,7 @@ public class TestsLoginService
     {
         const string email = "TEST@NUAGES.ORG";
 
-        var code = "123456";
+        const string code = "123456";
         
         var user = new NuagesApplicationUser
         {
@@ -550,15 +550,11 @@ public class TestsLoginService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-           
-            var res = await loginService.LoginSMSAsync(new LoginSMSModel
+            await loginService.LoginSMSAsync(new LoginSMSModel
             {
                 Code = "123456"
             });
-            
         });
-
-       
     }
     
     [Fact]

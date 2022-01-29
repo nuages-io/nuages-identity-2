@@ -16,7 +16,7 @@ public class TestsProfileService
     [Fact]
     public async Task ShouldSaveProfileWithSuccess()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {
@@ -73,7 +73,7 @@ public class TestsProfileService
     [Fact]
     public async Task ShouldSaveProfileWithFailureAndErrors()
     {
-        var email = "TEST@NUAGES.ORG";
+        const string email = "TEST@NUAGES.ORG";
         
         var user = new NuagesApplicationUser
         {
@@ -88,7 +88,7 @@ public class TestsProfileService
         var options = new NuagesIdentityOptions();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new []{ new IdentityError { Code = "error", Description = "error"}}) );
+        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
 
         
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());

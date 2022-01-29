@@ -24,8 +24,8 @@ public class TestsChangePasswordService
             PasswordHash = "password_hash"
         };
 
-        var currentPssword = "Current789*$";
-        var newPassword = "NewPassword789*$";
+        const string currentPssword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
@@ -53,10 +53,10 @@ public class TestsChangePasswordService
         {
             Id = Guid.NewGuid().ToString(),
             Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG",
+            NormalizedEmail = "TEST@NUAGES.ORG"
         };
 
-        var newPassword = "NewPassword789*$";
+        const string newPassword = "NewPassword789*$";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
@@ -87,8 +87,8 @@ public class TestsChangePasswordService
             PasswordHash = "password_hash"
         };
 
-        var currentPssword = "Current789*$";
-        var newPassword = "NewPassword789*$";
+        const string currentPssword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
@@ -113,8 +113,8 @@ public class TestsChangePasswordService
             PasswordHash = "password_hash"
         };
 
-        var currentPssword = "Current789*$";
-        var newPassword = "NewPassword789*$";
+        const string currentPssword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
@@ -141,8 +141,8 @@ public class TestsChangePasswordService
             PasswordHash = "password_hash"
         };
 
-        var currentPssword = "Current789*$";
-        var newPassword = "NewPassword789*$";
+        const string currentPssword = "Current789*$";
+        const string newPassword = "NewPassword789*$";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPssword);
