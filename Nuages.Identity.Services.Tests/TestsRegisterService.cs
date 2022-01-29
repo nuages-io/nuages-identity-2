@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -21,9 +20,7 @@ public class TestsRegisterService
         const string email = "test@nuages.org";
         const string password = "Password123*#";
 
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(null, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(null);
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
@@ -35,7 +32,7 @@ public class TestsRegisterService
             .Callback(() => sendCalled = true);
         
         var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
-            messageService.Object, Options.Create(options));
+            messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
         {
@@ -92,12 +89,7 @@ public class TestsRegisterService
     {
         const string password = "Password123*#";
 
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
@@ -130,12 +122,7 @@ public class TestsRegisterService
     {
         const string password = "Password123*#";
 
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         

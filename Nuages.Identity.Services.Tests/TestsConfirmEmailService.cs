@@ -1,8 +1,6 @@
-using System;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
-using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Xunit;
 
@@ -13,10 +11,7 @@ public class TestsConfirmEmailService
     [Fact]
     public async Task ConfirmEmailWithSuccess()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString()
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         var mockUserManager = MockHelpers.MockIdentityStuff(user).UserManager;
       
@@ -31,10 +26,7 @@ public class TestsConfirmEmailService
     [Fact]
     public async Task ConfirmEmailWithError()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString()
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         var mockUserManager = MockHelpers.MockIdentityStuff(user).UserManager;
       

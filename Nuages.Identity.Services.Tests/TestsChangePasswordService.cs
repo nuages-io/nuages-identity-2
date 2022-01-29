@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
-using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web.Exceptions;

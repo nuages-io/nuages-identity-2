@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Moq;
-using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Xunit;
 
@@ -14,16 +12,8 @@ public class TestsSendEmailConfirmationService
     [Fact]
     public async Task SendEmailConfirmationWithSuccess()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
-        
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var user = MockHelpers.CreateDefaultUser();
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;
         
@@ -32,7 +22,7 @@ public class TestsSendEmailConfirmationService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(options));
+        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await service.SendEmailConfirmation(new SendEmailConfirmationModel
         {
@@ -46,16 +36,9 @@ public class TestsSendEmailConfirmationService
     [Fact]
     public async Task SendEmailConfirmationWithSuccessButMEssageNotSent()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user,  options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;
         
@@ -64,7 +47,7 @@ public class TestsSendEmailConfirmationService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(options));
+        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await service.SendEmailConfirmation(new SendEmailConfirmationModel
         {

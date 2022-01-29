@@ -21,7 +21,7 @@ public class TestsChangeEmailService
 
         var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
 
-        var newEmail = "newEmail@nuages.org";
+        const string newEmail = "newEmail@nuages.org";
         
         var token = await identityStuff.UserManager.GenerateChangeEmailTokenAsync(user, newEmail);
         
@@ -41,7 +41,7 @@ public class TestsChangeEmailService
 
         var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
 
-        var newEmail = "newEmail@nuages.org";
+        const string newEmail = "newEmail@nuages.org";
         
         var res = await changeEmailService.ChangeEmailAsync(user.Id, newEmail, null);
         

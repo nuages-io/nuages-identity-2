@@ -17,17 +17,8 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithSuccess()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
+            
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var changeUserNameSrvice =
@@ -41,17 +32,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUserNameThrowsException()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
@@ -68,17 +49,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrors()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
@@ -95,17 +66,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrorsInvalidIsEmail()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
@@ -122,18 +83,11 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrorsUsernameNotChanged()
     {
-        const string email = "TEST@NUAGES.ORG";
+        var user = MockHelpers.CreateDefaultUser();
+        user.UserName = "USERNAME";
+        user.NormalizedUserName = "USERNAME";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = "USERNAME",
-            NormalizedUserName = "USERNAME",
-            EmailConfirmed = true
-        };
-        
+       
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.FindByNameAsync(user.UserName, It.IsAny<CancellationToken>())).ReturnsAsync( () => user );
 
@@ -149,17 +103,7 @@ public class TestsChangeUserNameService
     [Fact]
     public async Task ShouldChangeUSerNameWithErrorsUsernameAlreadyUsed()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = "USERNAME",
-            NormalizedUserName = "USERNAME",
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.FindByNameAsync("EXISTING", It.IsAny<CancellationToken>())).ReturnsAsync( () => new NuagesApplicationUser

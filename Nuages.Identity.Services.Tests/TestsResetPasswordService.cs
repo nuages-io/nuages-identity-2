@@ -1,9 +1,7 @@
-using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
-using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Password;
 using Xunit;
 
@@ -16,17 +14,10 @@ public class TestsResetPasswordService
     {
         const string password = "Password123*#";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "TEST@NUAGES.ORG",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            EmailConfirmed = false
-        };
-        
-        var options = new NuagesIdentityOptions();
+        var user = MockHelpers.CreateDefaultUser();
+        user.EmailConfirmed = false;
 
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
 
@@ -49,17 +40,9 @@ public class TestsResetPasswordService
     {
         const string password = "Password123*#";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "TEST@NUAGES.ORG",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
 
@@ -83,17 +66,9 @@ public class TestsResetPasswordService
     {
         const string password = "password";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "TEST@NUAGES.ORG",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
 
@@ -119,17 +94,10 @@ public class TestsResetPasswordService
     {
         const string password = "Password123*#";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = "TEST@NUAGES.ORG",
-            NormalizedEmail = "TEST@NUAGES.ORG",
-            EmailConfirmed = false
-        };
+        var user = MockHelpers.CreateDefaultUser();
+        user.EmailConfirmed = false;
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
 

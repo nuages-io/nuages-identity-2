@@ -1,10 +1,8 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Moq;
-using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web.Exceptions;
 using Xunit;
@@ -16,22 +14,9 @@ public class TestsProfileService
     [Fact]
     public async Task ShouldSaveProfileWithSuccess()
     {
-        const string email = "TEST@NUAGES.ORG";
+        var user = MockHelpers.CreateDefaultUser();
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
-        
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
-
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
 
@@ -48,12 +33,9 @@ public class TestsProfileService
     [Fact]
     public async Task ShouldSaveProfileWithFailure()
     {
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString()
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
-        var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions());
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
 
@@ -73,21 +55,9 @@ public class TestsProfileService
     [Fact]
     public async Task ShouldSaveProfileWithFailureAndErrors()
     {
-        const string email = "TEST@NUAGES.ORG";
+        var user = MockHelpers.CreateDefaultUser();
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
-        
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
 
         

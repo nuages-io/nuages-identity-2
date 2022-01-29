@@ -85,8 +85,6 @@ public class LoginService : ILoginService
             throw new NotFoundException("UserNotFound");
         }
 
-        //var authenticatorCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
-
         var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, model.RememberMachine);
 
         if (result == SignInResult.Success)

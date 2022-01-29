@@ -18,9 +18,7 @@ public class TestsRegisterExternalService
     {
         const string email = "TEST@NUAGES.ORG";
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(null, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(null);
         identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
         {
             Email = email
@@ -36,7 +34,7 @@ public class TestsRegisterExternalService
             .Callback(() => sendCalled = true);
 
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
-            Options.Create(options), new FakeStringLocalizer(), messageService.Object);
+            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), messageService.Object);
 
         var res = await registerService.Register();
         

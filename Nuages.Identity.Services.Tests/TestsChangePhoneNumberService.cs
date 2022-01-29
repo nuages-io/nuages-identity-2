@@ -17,7 +17,7 @@ public class TestsChangePhoneNumberService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var phoneNumber = "9999999999";
+        const string phoneNumber = "9999999999";
         
         var token = await identityStuff.UserManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
 
@@ -43,7 +43,7 @@ public class TestsChangePhoneNumberService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var phoneNumber = "9999999999";
+        const string phoneNumber = "9999999999";
         
         var sendCalled = false;
         
@@ -67,7 +67,7 @@ public class TestsChangePhoneNumberService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var phoneNumber = "9999999999";
+        const string phoneNumber = "9999999999";
         
         var changePhoneNumberService = new ChangePhoneNumberService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IMessageService>().Object);
         
@@ -84,7 +84,7 @@ public class TestsChangePhoneNumberService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var phoneNumber = "";
+        const string phoneNumber = "";
         
         var sendCalled = false;
         

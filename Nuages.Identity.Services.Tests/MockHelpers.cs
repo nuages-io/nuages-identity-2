@@ -133,13 +133,16 @@ public static class MockHelpers
         return mockIdentity;
     }
 
-    public static NuagesApplicationUser CreateDefaultUser()
+    public static NuagesApplicationUser CreateDefaultUser(string email = "test@nuages.org")
     {
         return new NuagesApplicationUser
         {
             Id = Guid.NewGuid().ToString(),
-            Email = "test@nuages.org",
-            NormalizedEmail = "TEST@NUAGES.ORG"
+            Email = email,
+            NormalizedEmail = email.ToUpper(),
+            UserName = email,
+            NormalizedUserName = email.ToUpper(),
+            EmailConfirmed = true
         };
     }
 

@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Options;
 using Nuages.Localization.CultureProvider;
 using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Identity.Services.Email;
 
+[ExcludeFromCodeCoverage]
 public class MessageService : IMessageService
 {
     private readonly IServiceProvider _provider;

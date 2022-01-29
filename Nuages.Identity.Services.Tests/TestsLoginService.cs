@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Moq;
-using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Web.Exceptions;
@@ -15,22 +14,11 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithSuccess()
     {
-        const string email = "TEST@NUAGES.ORG";
+        var user = MockHelpers.CreateDefaultUser();
+        
         const string password = "Nuages123*$";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
-        
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
@@ -53,22 +41,11 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureWrongPassword()
     {
-        const string email = "TEST@NUAGES.ORG";
         const string password = "Nuages123*$";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
@@ -91,22 +68,11 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureWrongUsername()
     {
-        const string email = "TEST@NUAGES.ORG";
         const string password = "Nuages123*$";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
-        var options = new NuagesIdentityOptions();
-
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
@@ -130,25 +96,16 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureLockedOut()
     {
-        const string email = "TEST@NUAGES.ORG";
         const string password = "Nuages123*$";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 4,
-            LockoutEnabled = true,
-            LockoutEnd = DateTimeOffset.Now.AddDays(1)
-        };
+        var user = MockHelpers.CreateDefaultUser();
+        user.AccessFailedCount = 4;
+        user.LockoutEnabled = true;
+        user.LockoutEnd = DateTimeOffset.Now.AddDays(1);
+         
+      
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
@@ -171,25 +128,13 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureBadPasswordThenLockedOut()
     {
-        const string email = "TEST@NUAGES.ORG";
         const string password = "Nuages123*$";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
+        var user = MockHelpers.CreateDefaultUser();
+        user.AccessFailedCount = 5;
+        user.LockoutEnabled = true;
         
-        var options = new NuagesIdentityOptions();
-    
-        var identityStuff = MockHelpers.MockIdentityStuff(user, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         
@@ -210,20 +155,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLogin2FaWithSuccess()
     {
-        const string email = "TEST@NUAGES.ORG";
-
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
@@ -243,20 +175,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLogin2FaWithError()
     {
-        const string email = "TEST@NUAGES.ORG";
-
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
@@ -277,20 +196,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLogin2FaWithErrorUserNotFOund()
     {
-        const string email = "TEST@NUAGES.ORG";
-
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.CurrentUser = null;
@@ -314,23 +220,10 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginRecoveryCodeWithSuccess()
     {
-        const string email = "TEST@NUAGES.ORG";
-
         const string code = "123456";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
-            
+        var user = MockHelpers.CreateDefaultUser();
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
         var messageService = new Mock<IMessageService>();
@@ -349,21 +242,8 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginRecoveryCodeWithFailureBadCode()
     {
-        const string email = "TEST@NUAGES.ORG";
-
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
-            
+        var user = MockHelpers.CreateDefaultUser();
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
@@ -381,22 +261,9 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginRecoveryCodeWithFailuerUserDoesNotExists()
     {
-        const string email = "TEST@NUAGES.ORG";
-
         const string code = "123456";
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.CurrentUser = null;
@@ -418,21 +285,8 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginSmsWithSuccess()
     {
-        const string email = "TEST@NUAGES.ORG";
+        var user = MockHelpers.CreateDefaultUser();
         
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
-            
         var identityStuff = MockHelpers.MockIdentityStuff(user);
                  
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
@@ -449,20 +303,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginSmsWithFailureUserNotFound()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.CurrentUser = null;
@@ -482,20 +323,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginSmsWithFailureBadCode()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
-        var user = new NuagesApplicationUser
-        {
-            Id = Guid.NewGuid().ToString(),
-            Email = email,
-            NormalizedEmail = email,
-            UserName = email,
-            NormalizedUserName = email,
-            EmailConfirmed = true,
-            AccessFailedCount = 5,
-            LockoutEnabled = true,
-            LockoutEnd = null
-        };
+        var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
