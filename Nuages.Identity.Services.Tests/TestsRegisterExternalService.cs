@@ -13,6 +13,8 @@ namespace Nuages.Identity.Services.Tests;
 
 public class TestsRegisterExternalService
 {
+    
+    
     [Fact]
     public async Task ShouldRegisterWithSuccess()
     {

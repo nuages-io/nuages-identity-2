@@ -29,6 +29,7 @@ public static class MockHelpers
         public FakeSignInManager SignInManager { get; set; }  = null!;
         public Mock<IUserPhoneNumberStore<NuagesApplicationUser>> UserPhoneNumberStore { get; set; } = null!;
         public Mock<IUserLoginStore<NuagesApplicationUser>> UserLoginStore { get; set; }
+        public Mock<IUserSecurityStampStore<NuagesApplicationUser>> UserSecurytyStampStore { get; set; }
     }
     
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
@@ -47,6 +48,7 @@ public static class MockHelpers
         mockIdentity.UserRecoveryCodeStore = mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
         mockIdentity.UserPhoneNumberStore = mockIdentity.UserStore.As<IUserPhoneNumberStore<NuagesApplicationUser>>();
         mockIdentity.UserLoginStore = mockIdentity.UserStore.As<IUserLoginStore<NuagesApplicationUser>>();
+        mockIdentity.UserSecurytyStampStore =  mockIdentity.UserStore.As<IUserSecurityStampStore<NuagesApplicationUser>>();
         
         if (user != null)
         {
@@ -88,10 +90,17 @@ public static class MockHelpers
 
             mockIdentity.UserLoginStore
                 .Setup(u => u.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(() => null!);
+                .ReturnsAsync(() => (NuagesApplicationUser) null!);
 
             mockIdentity.UserLoginStore
-                .Setup(u => u.AddLoginAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<UserLoginInfo>(), It.IsAny<CancellationToken>()));
+                .Setup(u => u.AddLoginAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<UserLoginInfo>(),
+                    It.IsAny<CancellationToken>()));
+
+            mockIdentity.UserSecurytyStampStore.Setup(u => u.GetSecurityStampAsync(user, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => user.SecurityStamp);
+            
+            mockIdentity.UserSecurytyStampStore.Setup(u => u.SetSecurityStampAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Callback((NuagesApplicationUser user2, string stamp, CancellationToken cancellationToken) => user2.SecurityStamp = stamp);
         }
       
         var options = new Mock<IOptions<IdentityOptions>>();
