@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Web.Exceptions;
 using Xunit;
@@ -23,6 +25,7 @@ public class TestPasswordlessService
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
 
         var url = await service.GetPasswordlessUrl(user.Id);
+        
         
         Assert.True(url.Success);
     }
@@ -99,12 +102,12 @@ public class TestPasswordlessService
     [Fact]
     public async Task ShoudStartPasswordlessWithErrorCantLogin()
     {
-        
         var user = MockHelpers.CreateDefaultUser();
-        user.EmailConfirmed = false;
+      
         user.LockoutEnd = DateTimeOffset.Now.AddMinutes(10);
+        user.LockoutEnabled = true;
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        //identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = true;
         
         var sendCalled = false;
         
@@ -122,7 +125,68 @@ public class TestPasswordlessService
         });
 
         Assert.False(res.Success);
+        Assert.Equal("errorMessage:no_access:LockedOut", res.Message);
+        Assert.Equal(FailedLoginReason.LockedOut, res.Reason);
+        Assert.Equal(Microsoft.AspNetCore.Identity.SignInResult.LockedOut, res.Result);
+        
         Assert.False(sendCalled);
+    }
+
+    [Fact]
+    public async Task ShoudLoginPasswordlessWithSuccess()
+    {
+        var user = MockHelpers.CreateDefaultUser();
+        
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+
+        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+
+        var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
+            "passwordless-auth");
+        
+        var url = await service.LoginPasswordLess(token, user.Id);
+        
+        Assert.True(url.Success);
+    }
+    
+    [Fact]
+    public async Task ShoudLoginPasswordlessWithErrorBadToken()
+    {
+        var user = MockHelpers.CreateDefaultUser();
+        
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+
+        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+
+        
+        var url = await service.LoginPasswordLess("bad_token", user.Id);
+        
+        Assert.False(url.Success);
+    }
+    
+    [Fact]
+    public async Task ShoudLoginPasswordlessWithErrorCantLogin()
+    {
+        var user = MockHelpers.CreateDefaultUser();
+        user.LockoutEnabled = true;
+        user.LockoutEnd = DateTimeOffset.Now.AddMinutes(10);
+        
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+
+        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+
+        var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
+            "passwordless-auth");
+        
+        var res = await service.LoginPasswordLess(token, user.Id);
+        
+        Assert.False(res.Success);
+        Assert.Equal("errorMessage:no_access:LockedOut", res.Message);
+        Assert.Equal(FailedLoginReason.LockedOut, res.Reason);
+        Assert.Equal(Microsoft.AspNetCore.Identity.SignInResult.LockedOut, res.Result);
     }
 
 }

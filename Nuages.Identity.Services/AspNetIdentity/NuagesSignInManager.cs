@@ -272,7 +272,9 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
     public async Task<SignInResult> CustomPreSignInCheck(NuagesApplicationUser user)
     {
-        return await PreSignInCheck(user);
+        var res = await PreSignInCheck(user);
+
+        return res;
     }
 
     public override async Task SignOutAsync()

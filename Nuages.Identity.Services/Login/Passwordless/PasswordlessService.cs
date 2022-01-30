@@ -37,7 +37,6 @@ public class PasswordlessService : IPasswordlessService
     
     private async Task<GetPasswordlessUrlResultModel> GetPasswordlessUrl(NuagesApplicationUser user)
     {
-      
         var token = await _userManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
             "passwordless-auth");
 
@@ -77,7 +76,8 @@ public class PasswordlessService : IPasswordlessService
             };
         }
         
-        await _userManager.UpdateSecurityStampAsync(user);
+        if (_userManager.SupportsUserSecurityStamp)
+            await _userManager.UpdateSecurityStampAsync(user);
 
         result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
 

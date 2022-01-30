@@ -146,9 +146,12 @@ public static class MockHelpers
         twoFactorTokenProvider.Setup(c =>
                 c.GenerateAsync(It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
             .ReturnsAsync(() => token);
+        
+       
         twoFactorTokenProvider.Setup(c =>
                 c.ValidateAsync(It.IsAny<string>(), token, mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
-            .ReturnsAsync(() => true);
+            .ReturnsAsync(() => token != "bad_token");
+        
         mockIdentity.UserManager.RegisterTokenProvider("Default", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("Phone", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("PasswordlessLoginProvider", twoFactorTokenProvider.Object);
