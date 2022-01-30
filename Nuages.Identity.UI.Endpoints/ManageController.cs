@@ -19,7 +19,7 @@ public class ManageController : Controller
     private readonly IChangePasswordService _changePasswordService;
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
-    private readonly ISendEmailChangedConfirmationService _sendEmailChangedConfirmationService;
+    private readonly ISendEmailChangeConfirmationService _sendEmailChangedConfirmationService;
     private readonly IChangeUserNameService _changeUserNameService;
     private readonly IMFAService _mfaService;
     private readonly IChangePhoneNumberService _phoneNumberService;
@@ -29,7 +29,7 @@ public class ManageController : Controller
     private readonly IStringLocalizer _stringLocalizer;
 
     public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
-        ISendEmailChangedConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
+        ISendEmailChangeConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
         IMFAService mfaService, IChangePhoneNumberService phoneNumberService, ISendSMSVerificationCodeService sendSmsVerificationCode,
         IProfileService profileService,
         ILogger<ManageController> logger, IStringLocalizer stringLocalizer)

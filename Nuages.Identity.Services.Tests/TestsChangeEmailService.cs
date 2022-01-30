@@ -71,7 +71,7 @@ public class TestsChangeEmailService
         var newEmail = "newEmail@nuages.org".ToUpper();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        identityStuff.UserEmaiLStore.Setup(u => 
+        identityStuff.UserEmailStore.Setup(u => 
             u.FindByEmailAsync(newEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => new NuagesApplicationUser
         {
             Id = Guid.NewGuid().ToString()

@@ -9,14 +9,14 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage;
 
-public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmationService
+public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IMessageService _messageService;
     private readonly IStringLocalizer _localizer;
     private readonly NuagesIdentityOptions _options;
 
-    public SendEmailChangedConfirmationService(NuagesUserManager userManager, IMessageService messageService, 
+    public SendEmailChangeConfirmationService(NuagesUserManager userManager, IMessageService messageService, 
         IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer)
     {
         _userManager = userManager;
@@ -30,6 +30,13 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(email);
 
+           
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            throw new NotFoundException("UserNotFound");
+        }
+        
         var existing = await _userManager.FindByEmailAsync(email);
         if (existing != null)
         {
@@ -49,15 +56,7 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
 
             };
         }
-        
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-        {
-            return new SendEmailChangeResultModel
-            {
-                Success = true // Fake success
-            };
-        }
+     
        
         var code = await _userManager.GenerateChangeEmailTokenAsync(user, email);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -76,7 +75,7 @@ public class SendEmailChangedConfirmationService : ISendEmailChangedConfirmation
     }
 }
 
-public interface ISendEmailChangedConfirmationService
+public interface ISendEmailChangeConfirmationService
 {
     Task<SendEmailChangeResultModel> SendEmailChangeConfirmation(string userId, string email);
 }

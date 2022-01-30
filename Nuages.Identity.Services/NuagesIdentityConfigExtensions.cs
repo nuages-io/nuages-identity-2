@@ -57,7 +57,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IChangePasswordService, ChangePasswordService>();
         services.AddScoped<IChangePhoneNumberService, ChangePhoneNumberService>();
         services.AddScoped<ISendSMSVerificationCodeService, SendSMSVerificationCodeService>();
-        services.AddScoped<ISendEmailChangedConfirmationService, SendEmailChangedConfirmationService>();
+        services.AddScoped<ISendEmailChangeConfirmationService, SendEmailChangeConfirmationService>();
         services.AddScoped<IMFAService, MFAService>();
         services.AddScoped<IProfileService, ProfileService>();
         

@@ -21,14 +21,14 @@ public static class MockHelpers
     {
         public NuagesUserManager UserManager { get; set; } = null!;
         public Mock<IUserStore<NuagesApplicationUser>> UserStore { get; set; } = null!;
-        public Mock<IUserEmailStore<NuagesApplicationUser>> UserEmaiLStore { get; set; } = null!;
+        public Mock<IUserEmailStore<NuagesApplicationUser>> UserEmailStore { get; set; } = null!;
         public Mock<IUserPasswordStore<NuagesApplicationUser>> UserPasswordStore { get; set; } = null!;
         public Mock<IUserLockoutStore<NuagesApplicationUser>> UserLockoutStore { get; set; } = null!;
         public Mock<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>> UserRecoveryCodeStore { get; set; } = null!;
         public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
         public FakeSignInManager SignInManager { get; set; }  = null!;
         public Mock<IUserPhoneNumberStore<NuagesApplicationUser>> UserPhoneNumberStore { get; set; } = null!;
-        public Mock<IUserLoginStore<NuagesApplicationUser>> UserLoginStore { get; set; }
+        public Mock<IUserLoginStore<NuagesApplicationUser>> UserLoginStore { get; set; } = null!;
         //public Mock<IUserSecurityStampStore<NuagesApplicationUser>> UserSecurytyStampStore { get; set; }
     }
     
@@ -42,7 +42,7 @@ public static class MockHelpers
         if (nuagesOptions != null)
             mockIdentity.NuagesOptions = nuagesOptions;
         
-        mockIdentity.UserEmaiLStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
+        mockIdentity.UserEmailStore = mockIdentity.UserStore.As<IUserEmailStore<NuagesApplicationUser>>();
         mockIdentity.UserPasswordStore = mockIdentity.UserStore.As<IUserPasswordStore<NuagesApplicationUser>>();
         mockIdentity.UserLockoutStore =  mockIdentity.UserStore.As<IUserLockoutStore<NuagesApplicationUser>>();
         mockIdentity.UserRecoveryCodeStore = mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
@@ -56,8 +56,8 @@ public static class MockHelpers
             mockIdentity.UserStore.Setup(u => u.FindByIdAsync(user.Id, It.IsAny<CancellationToken>())).ReturnsAsync( () => user );
             mockIdentity.UserStore.Setup(u => u.UpdateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Success );
         
-            mockIdentity.UserEmaiLStore.Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => user);
-            mockIdentity.UserEmaiLStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.EmailConfirmed);
+            mockIdentity.UserEmailStore.Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => user);
+            mockIdentity.UserEmailStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.EmailConfirmed);
 
             mockIdentity.UserPasswordStore.Setup(p => p.GetPasswordHashAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.PasswordHash);

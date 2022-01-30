@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.Email;
@@ -12,7 +11,7 @@ using Xunit;
 
 namespace Nuages.Identity.Services.Tests;
 
-public class TestPasswordlessService
+public class TestsPasswordlessService
 {
     [Fact]
     public async Task ShoudGetPasswordLessUrlWithSuccess()
