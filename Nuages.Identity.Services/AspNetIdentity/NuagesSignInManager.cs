@@ -157,7 +157,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
             
             await UserManager.UpdateAsync(user);
             
-            await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email ));
+            //await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email ));
             
             return false;
         }
@@ -268,6 +268,11 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
     public  Task<SignInResult> CustomSignInOrTwoFactorAsync(NuagesApplicationUser user, bool isPersistent, string? loginProvider = null, bool bypassTwoFactor = false)
     {
         return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
+    }
+
+    public async Task SignInEmailNotVerified(NuagesApplicationUser user)
+    {
+        await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email ));
     }
 
     public async Task<SignInResult> CustomPreSignInCheck(NuagesApplicationUser user)

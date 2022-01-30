@@ -59,6 +59,13 @@ public class LoginService : ILoginService
                 }
                 
             }
+            else
+            {
+                if (user.LastFailedLoginReason == FailedLoginReason.EmailNotConfirmed)
+                {
+                    await _signInManager.SignInEmailNotVerified(user);
+                }
+            }
         }
         
         if (result == SignInResult.Success)
