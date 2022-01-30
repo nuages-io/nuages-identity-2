@@ -29,9 +29,9 @@ public class TestsSMSCodeService
         messageService.Setup(m => m.SendSms(user.PhoneNumber, It.IsAny<string>()))
             .Callback(() => sendCalled = true);
 
-        var service = new SMSCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
+        var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object);
 
         var res = await service.SendCode();
         
@@ -53,9 +53,9 @@ public class TestsSMSCodeService
         messageService.Setup(m => m.SendSms(user.PhoneNumber, It.IsAny<string>()))
             .Callback(() => sendCalled = true);
 
-        var service = new SMSCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
+        var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object);
 
         var res = await service.SendCode();
         
@@ -75,9 +75,9 @@ public class TestsSMSCodeService
 
         var messageService = new Mock<IMessageService>();
 
-        var service = new SMSCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
+        var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object);
 
         identityStuff.SignInManager.CurrentUser = null;
         
@@ -99,9 +99,9 @@ public class TestsSMSCodeService
 
         var messageService = new Mock<IMessageService>();
 
-        var service = new SMSCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
+        var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object);
 
         identityStuff.SignInManager.CurrentUser = null;
         

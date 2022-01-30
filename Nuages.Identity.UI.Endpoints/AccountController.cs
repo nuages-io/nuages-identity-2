@@ -34,7 +34,7 @@ public class AccountController : Controller
     private readonly IRegisterService _registerService;
     private readonly IRegisterExternalLoginService _registerExternalLoginService;
     private readonly IPasswordlessService _passwordlessService;
-    private readonly ISMSCodeService _smsLoginService;
+    private readonly ISMSSendCodeService _smsLoginService;
     private readonly ILogger<AccountController> _logger;
     private readonly IHttpContextAccessor _contextAccessor;
 
@@ -42,7 +42,7 @@ public class AccountController : Controller
         IRecaptchaValidator recaptchaValidator, IStringLocalizer stringLocalizer, 
         ILoginService loginService, IForgotPasswordService forgotPasswordService, IResetPasswordService resetPasswordService,
         ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService, IRegisterExternalLoginService registerExternalLoginService,
-        IPasswordlessService passwordlessService, ISMSCodeService smsLoginService,
+        IPasswordlessService passwordlessService, ISMSSendCodeService smsLoginService,
         ILogger<AccountController> logger, IHttpContextAccessor contextAccessor)
     {
         _recaptchaValidator = recaptchaValidator;

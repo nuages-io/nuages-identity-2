@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
@@ -31,10 +32,7 @@ public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            return new SendSMSVerificationCodeResultModel
-            {
-                Success = true //Fake success
-            };
+            throw new NotFoundException("UswerNotFound");
         }
 
         phoneNumber = phoneNumber.Replace("+", "").Replace("+", " ").Replace("+", "-");
@@ -63,6 +61,7 @@ public interface ISendSMSVerificationCodeService
 public class SendSMSVerificationCodeResultModel
 {
     public bool Success { get; set; }
+    [ExcludeFromCodeCoverage]
     public List<string> Errors { get; set; } = new();
 }
 

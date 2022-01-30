@@ -49,7 +49,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
         services.AddScoped<IPasswordlessService, PasswordlessService>();
-        services.AddScoped<ISMSCodeService, SMSCodeService>();
+        services.AddScoped<ISMSSendCodeService, SMSSendCodeService>();
         
         //Manage
         services.AddScoped<IChangeEmailService, ChangeEmailService>();

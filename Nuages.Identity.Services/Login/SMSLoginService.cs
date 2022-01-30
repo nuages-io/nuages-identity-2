@@ -10,18 +10,18 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Login;
 
-public class SMSCodeService : ISMSCodeService
+public class SMSSendCodeService : ISMSSendCodeService
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
     private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
-    private readonly ILogger<SMSCodeService> _logger;
+    private readonly ILogger<SMSSendCodeService> _logger;
     private readonly NuagesIdentityOptions _options;
 
-    public SMSCodeService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageService sender, 
+    public SMSSendCodeService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageService sender, 
         IOptions<NuagesIdentityOptions> options,
-                    IStringLocalizer localizer, ILogger<SMSCodeService> logger)
+                    IStringLocalizer localizer, ILogger<SMSSendCodeService> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -74,7 +74,7 @@ public class SMSCodeService : ISMSCodeService
     }
 }
 
-public interface ISMSCodeService
+public interface ISMSSendCodeService
 {
     // ReSharper disable once UnusedMemberInSuper.Global
     Task<SendSMSCodeResultModel> SendCode(string userId);
