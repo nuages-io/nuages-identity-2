@@ -18,7 +18,7 @@ public class TestsSendEmailChangeConfirmationService
     [Fact]
     public async Task ShouldSendSendEMailWithSuccess()
     {
-        var newEmail = "new_email@nuages.org";
+        const string newEmail = "new_email@nuages.org";
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -106,10 +106,7 @@ public class TestsSendEmailChangeConfirmationService
         var user = MockHelpers.CreateDefaultUser();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-
-        var sendCalled = false;
         
-
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, new Mock<IMessageService>().Object,
             Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer());
 
@@ -117,8 +114,5 @@ public class TestsSendEmailChangeConfirmationService
         {
             await service.SendEmailChangeConfirmation("bad_id", user.Email);
         });
-        
-        
-        
     }
 }

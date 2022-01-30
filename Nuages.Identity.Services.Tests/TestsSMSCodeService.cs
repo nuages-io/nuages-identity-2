@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Amazon.Runtime.Internal.Util;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -12,7 +10,7 @@ using Xunit;
 
 namespace Nuages.Identity.Services.Tests;
 
-public class TestsSMSCodeService
+public class TestsSmsCodeService
 {
     [Fact]
     public async Task ShouldSendCodeWithSuccess()

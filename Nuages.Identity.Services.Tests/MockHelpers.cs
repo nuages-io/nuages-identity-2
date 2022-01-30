@@ -91,7 +91,7 @@ public static class MockHelpers
 
             mockIdentity.UserLoginStore
                 .Setup(u => u.FindByLoginAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(() => (NuagesApplicationUser) null!);
+                .ReturnsAsync(() =>  null!);
 
             mockIdentity.UserLoginStore
                 .Setup(u => u.AddLoginAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<UserLoginInfo>(),

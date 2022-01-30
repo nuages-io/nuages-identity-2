@@ -65,6 +65,7 @@ public class SendSMSVerificationCodeResultModel
     public List<string> Errors { get; set; } = new();
 }
 
+[ExcludeFromCodeCoverage]
 public class SendSMSVerificationCodeModel
 {
     public string PhoneNumber { get; set; } = string.Empty;
