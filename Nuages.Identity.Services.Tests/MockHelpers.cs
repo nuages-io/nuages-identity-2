@@ -48,6 +48,7 @@ public static class MockHelpers
         mockIdentity.UserRecoveryCodeStore = mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
         mockIdentity.UserPhoneNumberStore = mockIdentity.UserStore.As<IUserPhoneNumberStore<NuagesApplicationUser>>();
         mockIdentity.UserLoginStore = mockIdentity.UserStore.As<IUserLoginStore<NuagesApplicationUser>>();
+     
         //mockIdentity.UserSecurytyStampStore =  mockIdentity.UserStore.As<IUserSecurityStampStore<NuagesApplicationUser>>();
         
         if (user != null)
@@ -131,7 +132,12 @@ public static class MockHelpers
 
         mockIdentity.UserManager.Options.SignIn.RequireConfirmedEmail = mockIdentity.NuagesOptions.RequireConfirmedEmail;
 
-        mockIdentity.SignInManager = new FakeSignInManager(mockIdentity.UserManager, Options.Create(mockIdentity.NuagesOptions), null, user);
+        var mockConfirmation = new Mock<IUserConfirmation<NuagesApplicationUser>>();
+        mockConfirmation.Setup(c =>
+                c.IsConfirmedAsync(It.IsAny<UserManager<NuagesApplicationUser>>(), It.IsAny<NuagesApplicationUser>()))
+            .ReturnsAsync(() => true);
+        
+        mockIdentity.SignInManager = new FakeSignInManager(mockIdentity.UserManager, Options.Create(mockIdentity.NuagesOptions), mockConfirmation.Object, null, user);
         
         var token = Guid.NewGuid().ToString();
 
@@ -145,7 +151,8 @@ public static class MockHelpers
             .ReturnsAsync(() => true);
         mockIdentity.UserManager.RegisterTokenProvider("Default", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("Phone", twoFactorTokenProvider.Object);
-        
+        mockIdentity.UserManager.RegisterTokenProvider("PasswordlessLoginProvider", twoFactorTokenProvider.Object);
+
         validator.Setup(v => v.ValidateAsync(mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
             .Returns(Task.FromResult(IdentityResult.Success)).Verifiable();
         

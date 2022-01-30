@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.Identity.Services.Login.Passwordless;
 
+[ExcludeFromCodeCoverage]
 public static class PasswordlessConfigExtension
 {
     // ReSharper disable once UnusedMethodReturnValue.Global

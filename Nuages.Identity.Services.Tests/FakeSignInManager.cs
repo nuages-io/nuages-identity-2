@@ -13,7 +13,7 @@ namespace Nuages.Identity.Services.Tests;
 
 public class FakeSignInManager : NuagesSignInManager
 {
-    public FakeSignInManager(NuagesUserManager userManager, IOptions<NuagesIdentityOptions> options,
+    public FakeSignInManager(NuagesUserManager userManager, IOptions<NuagesIdentityOptions> options, IUserConfirmation<NuagesApplicationUser> confirmation,
         IHttpContextAccessor? contextAccessor = null, NuagesApplicationUser? user = null)
         : base(userManager,
             contextAccessor ?? MockHelpers.MockHttpContextAccessor().Object,
@@ -21,11 +21,12 @@ public class FakeSignInManager : NuagesSignInManager
             new Mock<IOptions<IdentityOptions>>().Object,
             new Mock<ILogger<SignInManager<NuagesApplicationUser>>>().Object,
             new Mock<IAuthenticationSchemeProvider>().Object,
-            new Mock<IUserConfirmation<NuagesApplicationUser>>().Object,
+             confirmation,
             options)
     {
 
         CurrentUser = user;
+        
     }
 
 
