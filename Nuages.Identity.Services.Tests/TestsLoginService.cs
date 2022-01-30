@@ -320,22 +320,5 @@ public class TestsLoginService
         });
     }
     
-    [Fact]
-    public async Task ShoudLoginSmsWithFailureBadCode()
-    {
-        var user = MockHelpers.CreateDefaultUser();
-        
-        var identityStuff = MockHelpers.MockIdentityStuff(user);
-        
-        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
-
-        var res = await loginService.LoginSMSAsync(new LoginSMSModel
-        {
-            Code = "654321"
-        });
-        
-        Assert.False(res.Success);
-    }
 
 }

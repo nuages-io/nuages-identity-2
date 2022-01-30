@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
+using Nuages.Web.Exceptions;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 // ReSharper disable InconsistentNaming
@@ -46,10 +48,7 @@ public class SMSCodeService : ISMSCodeService
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
         {
-            return new SendSMSCodeResultModel
-            {
-                Success = true //Fake success
-            };
+            throw new NotFoundException("UserNotFounc");
         }
 
         if (string.IsNullOrEmpty(user.PhoneNumber) || !user.PhoneNumberConfirmed)
@@ -85,5 +84,6 @@ public interface ISMSCodeService
 public class SendSMSCodeResultModel
 {
     public bool Success { get; set; }
+    [ExcludeFromCodeCoverage]
     public List<string> Errors { get; set; } = new();
 }
