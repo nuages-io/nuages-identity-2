@@ -16,7 +16,14 @@ public class TestsLoginService
         
         const string password = MockHelpers.StrongPassword ;
         
-        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
+        {
+            EnableUserLockout = true,
+            SupportsUserName = true,
+            AutoExpirePasswordDelayInDays = 90,
+            AutoConfirmExternalLogin = true,
+            Name = "TestName"
+        });
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
         

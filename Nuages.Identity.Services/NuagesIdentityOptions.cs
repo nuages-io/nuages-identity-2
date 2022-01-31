@@ -1,9 +1,14 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.Identity.Services;
 
+[ExcludeFromCodeCoverage]
 public class NuagesIdentityOptions
 {
+    public string Name { get; set; } = string.Empty;
+    
+    public string Authority { get; set; } = string.Empty;
     public string[]? Audiences { get; set; } 
     
     public PasswordOptions Password { get; set; } = new ();
@@ -19,10 +24,4 @@ public class NuagesIdentityOptions
     public bool RequireConfirmedEmail { get; set; }
 
     public bool AutoConfirmExternalLogin { get; set; }
-
-    public string Authority { get; set; } = string.Empty;
-    
-    public string Name { get; set; } = string.Empty;
-    
-
 }
