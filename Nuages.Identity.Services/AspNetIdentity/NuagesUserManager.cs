@@ -19,53 +19,6 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
 
-    public override async Task<bool> IsEmailConfirmedAsync(NuagesApplicationUser user)
-    {
-        var confirmed = await base.IsEmailConfirmedAsync(user);
-        if (!confirmed)
-        {
-            if (user.EmailDateTime.HasValue)
-            {
-                var notVerifiedAfter = user.EmailDateTime.Value.AddMinutes(
-                    _nuagesIdentityOptions.RequireConfirmedEmailGracePeriodInMinutes);
-                                
-                if (notVerifiedAfter < DateTime.UtcNow)
-                {
-                    return confirmed;
-                }
-            }
-            else
-            {
-                return confirmed;
-            }
-        }
-
-        return confirmed;
-    }
-
-    public override async Task<bool> IsPhoneNumberConfirmedAsync (NuagesApplicationUser user)
-    {
-        var confirmed = await base.IsPhoneNumberConfirmedAsync(user);
-        if (!confirmed)
-        {
-            if (user.PhoneDateTime.HasValue)
-            {
-                var notVerifiedAfter = user.PhoneDateTime.Value.AddMinutes(
-                    _nuagesIdentityOptions.RequireConfirmedPhoneGracePeriodInMinutes);
-                                
-                if (notVerifiedAfter < DateTime.UtcNow)
-                {
-                    return confirmed;
-                }
-            }
-            else
-            {
-                return confirmed;
-            }
-        }
-
-        return confirmed;
-    }
     
     public override bool SupportsUserLockout
     {
@@ -88,7 +41,6 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         {
             user.CreatedOn = DateTime.UtcNow;
             user.LastPasswordChangedDate = user.CreatedOn;
-            user.EmailDateTime = user.CreatedOn;
             
             await UpdateAsync(user);
         }
@@ -130,20 +82,5 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         var recoveryCode = await GetAuthenticationTokenAsync(user, "[AspNetUserStore]", "RecoveryCodes");
         return recoveryCode?.Split(";").ToList() ?? new List<string>();
     }
-
-    // public override async Task<IdentityResult> AccessFailedAsync(NuagesApplicationUser user)
-    // {
-    //     var res = await base.AccessFailedAsync(user);
-    //     
-    //     if (await IsLockedOutAsync(user))
-    //     {
-    //         _messageService.SendEmailUsingTemplate(user.Email, "Login_LockedOut", new Dictionary<string, string>
-    //         {
-    //             { "Minutes", Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() }
-    //         });
-    //     }
-    //
-    //     return res;
-    // }
 }
 

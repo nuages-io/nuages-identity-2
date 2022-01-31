@@ -20,10 +20,6 @@ public class NuagesApplicationUser : MongoUser<string>
     
     public DateTime? LastPasswordChangedDate { get; set; }
     public bool EnableAutoExpirePassword { get; set; } = true;
-    
-    public DateTime? EmailDateTime { get; set; }
-    
-    public DateTime? PhoneDateTime { get; set; }
 
     [BsonRepresentation(BsonType.String)]
     public FailedLoginReason? LastFailedLoginReason { get; set; }

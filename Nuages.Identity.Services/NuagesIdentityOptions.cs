@@ -15,9 +15,6 @@ public class NuagesIdentityOptions
 
     public bool EnableUserLockout { get; set; } = true;
 
-    public int RequireConfirmedEmailGracePeriodInMinutes { get; set; } = 60;
-    public int RequireConfirmedPhoneGracePeriodInMinutes { get; set; } = 60;
-
     public bool SupportsUserName { get; set; } = true;
     public bool RequireConfirmedEmail { get; set; }
 
