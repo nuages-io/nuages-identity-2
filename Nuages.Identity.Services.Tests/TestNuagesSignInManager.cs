@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.Login;
 using Xunit;
 
@@ -45,7 +41,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthErrorMustChangePassword()
     {
-        var password = "Nuages789*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.UserMustChangePassword = true;
@@ -204,7 +200,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthErrorPasswordExpired()
     {
-        var password = "Nuages789*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.EnableAutoExpirePassword = true;
@@ -227,7 +223,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthExceptionPasswordDateNotProvided()
     {
-        var password = "Nuages789*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.EnableAutoExpirePassword = true;
@@ -250,7 +246,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthSuccessPasswordExpiredButNotEnabled()
     {
-        var password = "Nuages789*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.EnableAutoExpirePassword = false;
@@ -272,7 +268,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthSuccessPasswordNotExpired()
     {
-        var password = "Nuages789*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.EnableAutoExpirePassword = true;

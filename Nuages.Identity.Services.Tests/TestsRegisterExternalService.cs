@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -83,8 +79,6 @@ public class TestsRegisterExternalService
     [Fact]
     public async Task ShouldRegisterWithErrorNoEmailClaim()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
         {
@@ -107,8 +101,6 @@ public class TestsRegisterExternalService
     [Fact]
     public async Task ShouldRegisterWithErrorNoUser()
     {
-        const string email = "TEST@NUAGES.ORG";
-        
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;

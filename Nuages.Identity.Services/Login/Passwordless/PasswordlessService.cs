@@ -72,7 +72,7 @@ public class PasswordlessService : IPasswordlessService
             };
         }
         
-            await UpdateSecurityStampAsync(user);
+        await UpdateSecurityStampAsync(user);
 
         result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
 

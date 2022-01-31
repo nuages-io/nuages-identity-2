@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;

@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using Nuages.Identity.Services.Manage;
@@ -20,8 +17,8 @@ public class TestsProfileService
         
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
 
-        var newLastName = "LastName";
-        var newFirstName = "FirstName";
+        const string newLastName = "LastName";
+        const string newFirstName = "FirstName";
         
         var res = await profileService.SaveProfile(user.Id, new SaveProfileModel
         {

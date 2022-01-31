@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Moq;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Manage;

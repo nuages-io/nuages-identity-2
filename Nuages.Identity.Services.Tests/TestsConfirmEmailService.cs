@@ -1,5 +1,4 @@
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.Email;
 using Xunit;

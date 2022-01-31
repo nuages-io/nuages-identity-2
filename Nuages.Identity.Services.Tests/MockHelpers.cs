@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -35,6 +31,8 @@ public static class MockHelpers
         public Mock<IUserAuthenticationTokenStore<NuagesApplicationUser>> UserAuthenticationTokenStore { get; set; }= null!;
         //public Mock<IUserSecurityStampStore<NuagesApplicationUser>> UserSecurytyStampStore { get; set; }
     }
+
+    public const string StrongPassword = "ThisIsAStrongPassword789*$#$$$";
     
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {

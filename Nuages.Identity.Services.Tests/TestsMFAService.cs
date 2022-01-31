@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Encodings.Web;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
