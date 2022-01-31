@@ -10,7 +10,6 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckAccountWithSuccess()
     {
-
         var user = MockHelpers.CreateDefaultUser();
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.Options.SignIn.RequireConfirmedAccount = true;
@@ -18,13 +17,11 @@ public class TestNuagesSignInManager
         var res = await identityStuff.SignInManager.CheckAccountAsync(user);
         
         Assert.True(res);
-
     }
     
     [Fact]
     public async Task ShouldCheckAccountWithErrorNotConfirmed()
     {
-
         var user = MockHelpers.CreateDefaultUser();
         user.EmailConfirmed = false;
         
@@ -66,14 +63,13 @@ public class TestNuagesSignInManager
 
         await identityStuff.SignInManager.SignOutAsync();
     }
-
-
+    
     [Fact]
     public async Task ShouldCheckhoneNUmberWithSuccess()
     {
 
         var user = MockHelpers.CreateDefaultUser();
-        user.PhoneNumber = "9999999999";
+        user.PhoneNumber = MockHelpers.PhoneNumber;
         user.PhoneNumberConfirmed = true;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -90,7 +86,7 @@ public class TestNuagesSignInManager
     {
 
         var user = MockHelpers.CreateDefaultUser();
-        user.PhoneNumber = "9999999999";
+        user.PhoneNumber = MockHelpers.PhoneNumber;
         user.PhoneNumberConfirmed = false;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -107,7 +103,7 @@ public class TestNuagesSignInManager
     {
 
         var user = MockHelpers.CreateDefaultUser();
-        user.PhoneNumber = "9999999999";
+        user.PhoneNumber = MockHelpers.PhoneNumber;
         user.PhoneNumberConfirmed = true;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);

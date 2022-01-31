@@ -50,7 +50,7 @@ public class TestsMfaService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.GetMFAUrlAsync("bad_id");
+            await service.GetMFAUrlAsync(MockHelpers.BadId);
         });
     }
 
@@ -80,7 +80,7 @@ public class TestsMfaService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.ResetRecoveryCodesAsync("bad_id");
+            await service.ResetRecoveryCodesAsync(MockHelpers.BadId);
         });
     }
     
@@ -111,7 +111,7 @@ public class TestsMfaService
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
             Options.Create(identityStuff.NuagesOptions),messageService.Object);
 
-        var res = await service.EnableMFAAsync(user.Id, "ok");
+        var res = await service.EnableMFAAsync(user.Id, MockHelpers.ValidToken);
         
         Assert.True(res.Success);
         Assert.True(sendCalled);
@@ -147,7 +147,7 @@ public class TestsMfaService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.EnableMFAAsync("bad_id", "ok");
+            await service.EnableMFAAsync(MockHelpers.BadId, MockHelpers.ValidToken);
         });
     }
     
@@ -187,7 +187,7 @@ public class TestsMfaService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.DisableMFAAsync("bad_id");
+            await service.DisableMFAAsync(MockHelpers.BadId);
         });
     }
 }

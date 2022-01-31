@@ -17,7 +17,7 @@ public class TestsChangeEmailService
 
         var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
 
-        const string newEmail = "newEmail@nuages.org";
+        const string newEmail = MockHelpers.NewTestEmail;
         
         var token = await identityStuff.UserManager.GenerateChangeEmailTokenAsync(user, newEmail);
         
@@ -37,7 +37,7 @@ public class TestsChangeEmailService
 
         var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
 
-        const string newEmail = "newEmail@nuages.org";
+        const string newEmail = MockHelpers.NewTestEmail;
         
         var res = await changeEmailService.ChangeEmailAsync(user.Id, newEmail, null);
         
@@ -64,7 +64,7 @@ public class TestsChangeEmailService
     {
         var user = MockHelpers.CreateDefaultUser();
         
-        var newEmail = "newEmail@nuages.org".ToUpper();
+        var newEmail = MockHelpers.NewTestEmail.ToUpper();
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserEmailStore.Setup(u => 
@@ -92,7 +92,7 @@ public class TestsChangeEmailService
         
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await changeEmailService.ChangeEmailAsync("bad_id", "newEmail@nuages.org".ToUpper(), null);
+            await changeEmailService.ChangeEmailAsync(MockHelpers.BadId, MockHelpers.NewTestEmail.ToUpper(), null);
         });
         
     }

@@ -15,7 +15,7 @@ public class TestsChangePhoneNumberService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        const string phoneNumber = "9999999999";
+        const string phoneNumber = MockHelpers.PhoneNumber;
         
         var token = await identityStuff.UserManager.GenerateChangePhoneNumberTokenAsync(user, phoneNumber);
 
@@ -41,7 +41,7 @@ public class TestsChangePhoneNumberService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        const string phoneNumber = "9999999999";
+        const string phoneNumber = MockHelpers.PhoneNumber;
         
         var sendCalled = false;
         
@@ -65,13 +65,13 @@ public class TestsChangePhoneNumberService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        const string phoneNumber = "9999999999";
+        const string phoneNumber = MockHelpers.PhoneNumber;
         
         var changePhoneNumberService = new ChangePhoneNumberService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IMessageService>().Object);
         
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await changePhoneNumberService.ChangePhoneNumberAsync("bad_id", phoneNumber, null);
+            await changePhoneNumberService.ChangePhoneNumberAsync(MockHelpers.BadId, phoneNumber, null);
         });
     }
     

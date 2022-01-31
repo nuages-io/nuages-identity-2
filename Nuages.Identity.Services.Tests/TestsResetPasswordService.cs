@@ -10,7 +10,7 @@ public class TestsResetPasswordService
     [Fact]
     public async Task ShouldResetPasswordWithSuccess()
     {
-        const string password = "Password123*#";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.EmailConfirmed = false;
@@ -36,7 +36,7 @@ public class TestsResetPasswordService
     [Fact]
     public async Task ShouldResetPasswordWithError()
     {
-        const string password = "Password123*#";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -90,7 +90,7 @@ public class TestsResetPasswordService
     [Fact]
     public async Task ShouldResetPasswordWithErrorPasswordDoesnotMatch()
     {
-        const string password = "Password123*#";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.EmailConfirmed = false;

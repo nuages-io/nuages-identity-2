@@ -37,7 +37,7 @@ public class TestsChangeUserNameService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await changeUserNameSrvice.ChangeUserNameAsync("bad_id", "new_user_name");
+            await changeUserNameSrvice.ChangeUserNameAsync(MockHelpers.BadId, "new_user_name");
 
         });
     }

@@ -15,7 +15,7 @@ public class TestsRegisterExternalService
     [Fact]
     public async Task ShouldRegisterWithSuccess()
     {
-        const string email = "TEST@NUAGES.ORG";
+        const string email = MockHelpers.TestEmail;
         
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
@@ -47,7 +47,7 @@ public class TestsRegisterExternalService
     [Fact]
     public async Task ShouldRegisterWithSuccessRequireConfirmation()
     {
-        const string email = "TEST@NUAGES.ORG";
+        const string email = MockHelpers.TestEmail;
         
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
@@ -119,7 +119,7 @@ public class TestsRegisterExternalService
     [Fact]
     public async Task ShouldRegisterWithErrorCreateFailed()
     {
-        const string email = "TEST@NUAGES.ORG";
+        const string email = MockHelpers.TestEmail;
         
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser

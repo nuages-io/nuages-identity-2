@@ -33,6 +33,12 @@ public static class MockHelpers
     }
 
     public const string StrongPassword = "ThisIsAStrongPassword789*$#$$$";
+    public const string PhoneNumber = "9999999999";
+    public const string BadId = "bad_id";
+    public const string ValidToken = "ok";
+    public const string ValidRecoveryCode = "123456";
+    public const string TestEmail =  "TEST@NUAGES.ORG";
+    public const string NewTestEmail =  "NEWTEST@NUAGES.ORG";
     
     public static MockIdentity MockIdentityStuff(NuagesApplicationUser? user, NuagesIdentityOptions? nuagesOptions = null )
     {
@@ -181,7 +187,7 @@ public static class MockHelpers
         return mockIdentity;
     }
 
-    public static NuagesApplicationUser CreateDefaultUser(string email = "test@nuages.org")
+    public static NuagesApplicationUser CreateDefaultUser(string email = TestEmail)
     {
         return new NuagesApplicationUser
         {

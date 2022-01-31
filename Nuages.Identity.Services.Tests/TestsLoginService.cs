@@ -14,7 +14,7 @@ public class TestsLoginService
     {
         var user = MockHelpers.CreateDefaultUser();
         
-        const string password = "Nuages123*$";
+        const string password = MockHelpers.StrongPassword ;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
@@ -40,7 +40,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureWrongPassword()
     {
-        const string password = "Nuages123*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -67,7 +67,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureWrongUsername()
     {
-        const string password = "Nuages123*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -95,15 +95,13 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureLockedOut()
     {
-        const string password = "Nuages123*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.AccessFailedCount = 4;
         user.LockoutEnabled = true;
         user.LockoutEnd = DateTimeOffset.Now.AddDays(1);
-         
-      
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
@@ -127,7 +125,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureEmailNotConfirmed()
     {
-        const string password = "Nuages123*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.EmailConfirmed = false;
@@ -161,7 +159,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShouldLoginWithFailureBadPasswordThenLockedOut()
     {
-        const string password = "Nuages123*$";
+        const string password = MockHelpers.StrongPassword;
         
         var user = MockHelpers.CreateDefaultUser();
         user.AccessFailedCount = 5;
@@ -197,7 +195,7 @@ public class TestsLoginService
     
         var res = await loginService.Login2FAAsync(new Login2FAModel
         {
-            Code = "ok",
+            Code = MockHelpers.ValidToken,
             RememberMachine = false,
             RememberMe = false
         });
@@ -241,7 +239,7 @@ public class TestsLoginService
         {
             await loginService.Login2FAAsync(new Login2FAModel
             {
-                Code = "ok",
+                Code = MockHelpers.ValidToken,
                 RememberMachine = false,
                 RememberMe = false
             });
@@ -253,7 +251,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginRecoveryCodeWithSuccess()
     {
-        const string code = "123456";
+        const string code = MockHelpers.ValidRecoveryCode;
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -294,7 +292,7 @@ public class TestsLoginService
     [Fact]
     public async Task ShoudLoginRecoveryCodeWithFailuerUserDoesNotExists()
     {
-        const string code = "123456";
+        const string code = MockHelpers.ValidRecoveryCode;
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -327,7 +325,7 @@ public class TestsLoginService
 
         var res = await loginService.LoginSMSAsync(new LoginSMSModel
         {
-            Code = "123456"
+            Code = MockHelpers.ValidRecoveryCode
         });
         
         Assert.True(res.Success);
@@ -367,7 +365,7 @@ public class TestsLoginService
         {
             await loginService.LoginSMSAsync(new LoginSMSModel
             {
-                Code = "123456"
+                Code = MockHelpers.ValidRecoveryCode
             });
         });
     }

@@ -43,7 +43,7 @@ public class FakeSignInManager : NuagesSignInManager
     public override async Task<SignInResult> TwoFactorAuthenticatorSignInAsync(string code, bool isPersistent,
         bool rememberClient)
     {
-        if (code == "ok")
+        if (code == MockHelpers.ValidToken)
             return await Task.FromResult(SignInResult.Success);
         
         return await Task.FromResult(SignInResult.Failed);
@@ -60,13 +60,13 @@ public class FakeSignInManager : NuagesSignInManager
 
     public override async Task<SignInResult> TwoFactorRecoveryCodeSignInAsync(string recoveryCode)
     {
-        return await Task.FromResult(recoveryCode == "123456" ? SignInResult.Success : SignInResult.Failed);
+        return await Task.FromResult(recoveryCode == MockHelpers.ValidRecoveryCode ? SignInResult.Success : SignInResult.Failed);
     }
 
     public override async Task<SignInResult> TwoFactorSignInAsync(string provider, string code, bool isPersistent,
         bool rememberClient)
     {
-        return await Task.FromResult(code == "123456" ? SignInResult.Success : SignInResult.Failed);
+        return await Task.FromResult(code == MockHelpers.ValidRecoveryCode ? SignInResult.Success : SignInResult.Failed);
     }
 
     public override async Task<ExternalLoginInfo> GetExternalLoginInfoAsync(string? expectedXsrf = null)

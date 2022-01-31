@@ -38,7 +38,7 @@ public class TestsPasswordlessService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.GetPasswordlessUrl("bad_id");
+            await service.GetPasswordlessUrl(MockHelpers.BadId);
         });
         
     }

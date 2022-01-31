@@ -13,8 +13,8 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithSuccess()
     {
-        const string email = "test@nuages.org";
-        const string password = "Password123*#";
+        const string email = MockHelpers.TestEmail;
+        const string password = MockHelpers.StrongPassword;
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         
@@ -45,8 +45,8 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithSuccessDoesNotLogin()
     {
-        const string email = "test@nuages.org";
-        const string password = "Password123*#";
+        const string email = MockHelpers.TestEmail;
+        const string password = MockHelpers.StrongPassword;
         
 
         var options = new NuagesIdentityOptions
@@ -83,7 +83,7 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithErrorAlreadyExists()
     {
-        const string password = "Password123*#";
+        const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
         
@@ -116,7 +116,7 @@ public class TestsRegisterService
     [Fact]
     public async Task ShouldRegisterUserWithErrorPasswordDoesNotMatch()
     {
-        const string password = "Password123*#";
+        const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
         
@@ -150,7 +150,7 @@ public class TestsRegisterService
     public async Task ShouldRegisterUserWithErrorPasswordNotStrongEnough()
     {
         const string password = "password";
-        const string email = "test@nuages.org";
+        const string email = MockHelpers.TestEmail;
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         

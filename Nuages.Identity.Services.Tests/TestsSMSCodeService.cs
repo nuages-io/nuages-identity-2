@@ -14,7 +14,7 @@ public class TestsSmsCodeService
     public async Task ShouldSendCodeWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-        user.PhoneNumber = "9999999999";
+        user.PhoneNumber = MockHelpers.PhoneNumber;
         user.PhoneNumberConfirmed = true;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -64,7 +64,7 @@ public class TestsSmsCodeService
     public async Task ShouldSendCodeWithExceptionInvalidOperation()
     {
         var user = MockHelpers.CreateDefaultUser();
-        user.PhoneNumber = "9999999999";
+        user.PhoneNumber = MockHelpers.PhoneNumber;
         user.PhoneNumberConfirmed = true;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -88,7 +88,7 @@ public class TestsSmsCodeService
     public async Task ShouldSendCodeWithExceptionNotFound()
     {
         var user = MockHelpers.CreateDefaultUser();
-        user.PhoneNumber = "9999999999";
+        user.PhoneNumber = MockHelpers.PhoneNumber;
         user.PhoneNumberConfirmed = true;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -103,7 +103,7 @@ public class TestsSmsCodeService
         
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.SendCode("bad_id");
+            await service.SendCode(MockHelpers.BadId);
         });
 
     }

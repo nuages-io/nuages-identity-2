@@ -13,8 +13,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword = MockHelpers.StrongPassword;
+        const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -40,7 +40,7 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string newPassword = "NewPassword789*$";
+        const string newPassword = MockHelpers.StrongPassword + "New";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
@@ -65,8 +65,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword =MockHelpers.StrongPassword;
+        const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -85,8 +85,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword = MockHelpers.StrongPassword;
+        const string newPassword = MockHelpers.StrongPassword + "New";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -107,8 +107,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword = MockHelpers.StrongPassword;
+        const string newPassword = MockHelpers.StrongPassword + "New";
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -120,7 +120,7 @@ public class TestsChangePasswordService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await changePasswordService.ChangePasswordAsync("bad_id", currentPassword, newPassword, newPassword);
+            await changePasswordService.ChangePasswordAsync(MockHelpers.BadId, currentPassword, newPassword, newPassword);
         });
     }
     
@@ -129,8 +129,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword = MockHelpers.StrongPassword;
+        const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -159,7 +159,7 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string newPassword = "NewPassword789*$";
+        const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
        
@@ -188,8 +188,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword = MockHelpers.StrongPassword;
+        const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -216,8 +216,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword = MockHelpers.StrongPassword ;
+        const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -238,8 +238,8 @@ public class TestsChangePasswordService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-        const string currentPassword = "Current789*$";
-        const string newPassword = "NewPassword789*$";
+        const string currentPassword = MockHelpers.StrongPassword;
+        const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
@@ -249,7 +249,7 @@ public class TestsChangePasswordService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await changePasswordService.AdminChangePasswordAsync("bad_id",  
+            await changePasswordService.AdminChangePasswordAsync(MockHelpers.BadId,  
                 newPassword, newPassword, false, true, null);
 
         });

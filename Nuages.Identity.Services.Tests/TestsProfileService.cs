@@ -42,7 +42,7 @@ public class TestsProfileService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await profileService.SaveProfile("bad_id", new SaveProfileModel
+            await profileService.SaveProfile(MockHelpers.BadId, new SaveProfileModel
             {
                 FirstName = "FirstName",
                 LastName = "LastName"

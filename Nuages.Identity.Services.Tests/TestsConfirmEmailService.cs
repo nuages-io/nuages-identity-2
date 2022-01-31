@@ -31,6 +31,6 @@ public class TestsConfirmEmailService
       
         var confirmEmailService = new ConfirmEmailService(mockUserManager);
 
-        Assert.False(await confirmEmailService.Confirm("Bad_id", "code"));
+        Assert.False(await confirmEmailService.Confirm(MockHelpers.BadId, "code"));
     }
 }

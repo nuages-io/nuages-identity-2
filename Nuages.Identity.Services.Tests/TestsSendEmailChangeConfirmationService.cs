@@ -13,7 +13,7 @@ public class TestsSendEmailChangeConfirmationService
     [Fact]
     public async Task ShouldSendSendEMailWithSuccess()
     {
-        const string newEmail = "new_email@nuages.org";
+        const string newEmail = MockHelpers.NewTestEmail;
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -51,7 +51,6 @@ public class TestsSendEmailChangeConfirmationService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
 
-
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer());
 
@@ -65,7 +64,7 @@ public class TestsSendEmailChangeConfirmationService
     [Fact]
     public async Task ShouldSendSendEMailWithErrorAlreadyExists()
     {
-        var newEmail = "new_email@nuages.org".ToUpper();
+        var newEmail = MockHelpers.NewTestEmail.ToUpper();
         
         var user = MockHelpers.CreateDefaultUser();
         
@@ -107,7 +106,7 @@ public class TestsSendEmailChangeConfirmationService
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.SendEmailChangeConfirmation("bad_id", user.Email);
+            await service.SendEmailChangeConfirmation(MockHelpers.BadId, user.Email);
         });
     }
 }
