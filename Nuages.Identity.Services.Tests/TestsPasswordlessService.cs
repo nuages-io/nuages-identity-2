@@ -26,7 +26,7 @@ public class TestsPasswordlessService
         var url = await service.GetPasswordlessUrl(user.Id);
         
         
-        Assert.True(url.Success);
+        Assert.NotNull(url);
     }
     
     [Fact]

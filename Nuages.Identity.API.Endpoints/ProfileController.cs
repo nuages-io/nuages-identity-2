@@ -204,7 +204,13 @@ public class ProfileController : Controller
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AdminController.GetPasswordlessUrlAsync");
 
-            return await _passwordlessService.GetPasswordlessUrl(User.Sub()!);
+            var url = await _passwordlessService.GetPasswordlessUrl(User.Sub()!);
+
+            return new GetPasswordlessUrlResultModel
+            {
+                Success = true,
+                Url = url
+            };
         }
         catch (Exception e)
         {

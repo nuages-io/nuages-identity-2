@@ -27,7 +27,7 @@ public class PasswordlessService : IPasswordlessService
         _options = options.Value;
     }
     
-    public async Task<GetPasswordlessUrlResultModel> GetPasswordlessUrl(string userId)
+    public async Task<string> GetPasswordlessUrl(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
@@ -36,20 +36,15 @@ public class PasswordlessService : IPasswordlessService
         return await GetPasswordlessUrl(user);
     }
     
-    private async Task<GetPasswordlessUrlResultModel> GetPasswordlessUrl(NuagesApplicationUser user)
+    private async Task<string> GetPasswordlessUrl(NuagesApplicationUser user)
     {
         var token = await _userManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
             "passwordless-auth");
-
+       
         var baseUrl = _options.Authority;
         
-        var url = $"{baseUrl}/account/passwordlessLogin?token={token}&userId={user.Id}";
+        return $"{baseUrl}/account/passwordlessLogin?token={token}&userId={user.Id}";
 
-        return new GetPasswordlessUrlResultModel
-        {
-            Success = true,
-            Url = url
-        };
     }
 
     public async Task<PasswordlessResultModel> LoginPasswordLess(string token, string userId)
@@ -113,28 +108,16 @@ public class PasswordlessService : IPasswordlessService
             };
         }
         
-        var res = await GetPasswordlessUrl(user);
+        var url = await GetPasswordlessUrl(user);
 
-        if (res.Success)
+        _messageService.SendEmailUsingTemplate(user.Email, "Passwordless_Login", new Dictionary<string, string>
         {
-            _messageService.SendEmailUsingTemplate(user.Email, "Passwordless_Login", new Dictionary<string, string>
-            {
-                { "Link", res.Url }
-            });
+            { "Link", url}
+        });
 
-            
-            Console.WriteLine(res.Url);
-
-            return new StartPasswordlessResultModel
-            {
-                Success = true
-            };
-        }
-       
         return new StartPasswordlessResultModel
         {
-            Success = false,
-            Message = res.Message
+            Success = true
         };
     }
 }
@@ -149,7 +132,7 @@ public class PasswordlessResultModel
 
 public interface IPasswordlessService
 {
-    Task<GetPasswordlessUrlResultModel> GetPasswordlessUrl(string userId);
+    Task<string> GetPasswordlessUrl(string userId);
     Task<PasswordlessResultModel> LoginPasswordLess(string token, string userId);
     Task<StartPasswordlessResultModel> StartPasswordless(StartPasswordlessModel model);
 }
@@ -167,6 +150,7 @@ public class StartPasswordlessResultModel
     public FailedLoginReason? Reason { get; set; }
 }
 
+[ExcludeFromCodeCoverage]
 public class GetPasswordlessUrlResultModel
 {
     public bool Success { get; set; }
