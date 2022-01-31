@@ -1,5 +1,6 @@
 // ReSharper disable InconsistentNaming
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using Microsoft.Extensions.Localization;
@@ -57,7 +58,7 @@ public class MFAService : IMFAService
         return new DisableMFAResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+            Errors = res.Errors.Localize(_localizer)
         };
     }
 
@@ -79,7 +80,7 @@ public class MFAService : IMFAService
         {
             return new MFAResultModel
             {
-                Errors = new List<string>{ "InvalidVerificationCode" }
+                Errors = new List<string>{ _localizer["InvalidVerificationCode"]}
             };
         }
 
@@ -179,10 +180,11 @@ public class GetMFAUrlResultModel
     public bool Success { get; set; }
     public string Key { get; set; } = string.Empty;
     public string Url { get; set; } = string.Empty;
+    [ExcludeFromCodeCoverage]
     public List<string> Errors { get; set; } = new();
 }
 
-
+[ExcludeFromCodeCoverage]
 public class EnableMFAModel
 {
     public string Code { get; set; } = string.Empty;
@@ -191,6 +193,7 @@ public class EnableMFAModel
 public class DisableMFAResultModel
 {
     public bool Success { get; set; }
+    [ExcludeFromCodeCoverage]
     public List<string> Errors { get; set; } = new();
 }
 

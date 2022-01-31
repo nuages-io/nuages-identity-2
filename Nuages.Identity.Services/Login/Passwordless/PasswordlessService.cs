@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -170,5 +171,6 @@ public class GetPasswordlessUrlResultModel
 {
     public bool Success { get; set; }
     public string Url { get; set; } = string.Empty;
+    [ExcludeFromCodeCoverage]
     public string? Message { get; set; }
 }

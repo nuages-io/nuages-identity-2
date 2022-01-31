@@ -64,7 +64,7 @@ public class ChangeUserNameService : IChangeUserNameService
         return new ChangeUserNameResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+            Errors = res.Errors.Localize(_localizer)
         };
     }
 }

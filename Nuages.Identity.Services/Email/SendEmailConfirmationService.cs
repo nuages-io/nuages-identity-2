@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
@@ -67,5 +68,6 @@ public class SendEmailConfirmationModel
 public class SendEmailConfirmationResultModel
 {
     public bool Success { get; set; }
+    [ExcludeFromCodeCoverage]
     public string? Message { get; set; }
 }

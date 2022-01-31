@@ -96,7 +96,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         return new RegisterExternalLoginResultModel
         {
             Success = false,
-            Errors = result.Errors.Select( e=> _stringLocalizer[$"identity.{e.Code}"].Value).ToList()
+            Errors = result.Errors.Localize(_stringLocalizer)
         };
     }
 }

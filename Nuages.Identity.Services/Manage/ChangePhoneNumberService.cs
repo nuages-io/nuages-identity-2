@@ -67,7 +67,7 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
         return new ChangePhoneNumberResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+            Errors = res.Errors.Localize(_localizer)
         };
     }
 }
@@ -80,6 +80,7 @@ public interface IChangePhoneNumberService
 public class ChangePhoneNumberResultModel
 {
     public bool Success { get; set; }
+    [ExcludeFromCodeCoverage]
     public List<string> Errors { get; set; } = new();
 }
 

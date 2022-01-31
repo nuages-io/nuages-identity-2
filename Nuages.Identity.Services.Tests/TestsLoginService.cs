@@ -126,6 +126,40 @@ public class TestsLoginService
     }
     
     [Fact]
+    public async Task ShouldLoginWithFailureEmailNotConfirmed()
+    {
+        const string password = "Nuages123*$";
+        
+        var user = MockHelpers.CreateDefaultUser();
+        user.EmailConfirmed = false;
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user,
+            new NuagesIdentityOptions
+            {
+                RequireConfirmedEmail = true
+            });
+        
+        identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = true;
+        
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
+        
+        var messageService = new Mock<IMessageService>();
+
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        var res = await loginService.LoginAsync(new LoginModel
+        {
+            UserNameOrEmail = user.Email,
+            Password = password,
+            RememberMe = false
+        });
+        
+        Assert.False(res.Success);
+        Assert.Equal(FailedLoginReason.EmailNotConfirmed, res.Reason);
+    }
+    
+    [Fact]
     public async Task ShouldLoginWithFailureBadPasswordThenLockedOut()
     {
         const string password = "Nuages123*$";

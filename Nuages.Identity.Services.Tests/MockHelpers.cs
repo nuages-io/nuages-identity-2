@@ -29,6 +29,10 @@ public static class MockHelpers
         public FakeSignInManager SignInManager { get; set; }  = null!;
         public Mock<IUserPhoneNumberStore<NuagesApplicationUser>> UserPhoneNumberStore { get; set; } = null!;
         public Mock<IUserLoginStore<NuagesApplicationUser>> UserLoginStore { get; set; } = null!;
+        public Mock<IUserAuthenticatorKeyStore<NuagesApplicationUser>> UserAuthenticatorKeyStore { get; set; }= null!;
+        public Mock<IUserTwoFactorStore<NuagesApplicationUser>> UserTwoFactorStore { get; set; }= null!;
+
+        public Mock<IUserAuthenticationTokenStore<NuagesApplicationUser>> UserAuthenticationTokenStore { get; set; }= null!;
         //public Mock<IUserSecurityStampStore<NuagesApplicationUser>> UserSecurytyStampStore { get; set; }
     }
     
@@ -48,8 +52,12 @@ public static class MockHelpers
         mockIdentity.UserRecoveryCodeStore = mockIdentity.UserStore.As<IUserTwoFactorRecoveryCodeStore<NuagesApplicationUser>>();
         mockIdentity.UserPhoneNumberStore = mockIdentity.UserStore.As<IUserPhoneNumberStore<NuagesApplicationUser>>();
         mockIdentity.UserLoginStore = mockIdentity.UserStore.As<IUserLoginStore<NuagesApplicationUser>>();
-     
-        //mockIdentity.UserSecurytyStampStore =  mockIdentity.UserStore.As<IUserSecurityStampStore<NuagesApplicationUser>>();
+        mockIdentity.UserAuthenticatorKeyStore = mockIdentity.UserStore.As<IUserAuthenticatorKeyStore<NuagesApplicationUser>>();
+        mockIdentity.UserTwoFactorStore = mockIdentity.UserStore.As<IUserTwoFactorStore<NuagesApplicationUser>>();
+        mockIdentity.UserAuthenticationTokenStore =
+            mockIdentity.UserStore.As<IUserAuthenticationTokenStore<NuagesApplicationUser>>();
+        
+        //mockIdentity.UserSecurytyStmpStore =  mockIdentity.UserStore.As<IUserSecurityStampStore<NuagesApplicationUser>>();
         
         if (user != null)
         {
@@ -58,6 +66,7 @@ public static class MockHelpers
         
             mockIdentity.UserEmailStore.Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => user);
             mockIdentity.UserEmailStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.EmailConfirmed);
+            mockIdentity.UserEmailStore.Setup(u => u.GetEmailAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.Email);
 
             mockIdentity.UserPasswordStore.Setup(p => p.GetPasswordHashAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.PasswordHash);
@@ -137,25 +146,25 @@ public static class MockHelpers
                 c.IsConfirmedAsync(It.IsAny<UserManager<NuagesApplicationUser>>(), It.IsAny<NuagesApplicationUser>()))
             .ReturnsAsync(() => true);
         
-        mockIdentity.SignInManager = new FakeSignInManager(mockIdentity.UserManager, Options.Create(mockIdentity.NuagesOptions), mockConfirmation.Object, null, user);
+        mockIdentity.SignInManager = new FakeSignInManager(mockIdentity.UserManager, Options.Create(mockIdentity.NuagesOptions), mockConfirmation.Object, Options.Create(idOptions), null, user);
         
-        var token = Guid.NewGuid().ToString();
+        var newToken = Guid.NewGuid().ToString();
 
         var twoFactorTokenProvider = new Mock<IUserTwoFactorTokenProvider<NuagesApplicationUser>>();
 
         twoFactorTokenProvider.Setup(c =>
                 c.GenerateAsync(It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
-            .ReturnsAsync(() => token);
-        
-       
+            .ReturnsAsync(() => newToken);
+
         twoFactorTokenProvider.Setup(c =>
-                c.ValidateAsync(It.IsAny<string>(), token, mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
-            .ReturnsAsync(() => token != "bad_token");
+                c.ValidateAsync(It.IsAny<string>(), It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
+            .ReturnsAsync((string purpose, string token, UserManager<NuagesApplicationUser> manager, NuagesApplicationUser _) => token != "bad_token");
         
         mockIdentity.UserManager.RegisterTokenProvider("Default", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("Phone", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("PasswordlessLoginProvider", twoFactorTokenProvider.Object);
-
+        mockIdentity.UserManager.RegisterTokenProvider("Authenticator", twoFactorTokenProvider.Object);
+        
         validator.Setup(v => v.ValidateAsync(mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
             .Returns(Task.FromResult(IdentityResult.Success)).Verifiable();
         

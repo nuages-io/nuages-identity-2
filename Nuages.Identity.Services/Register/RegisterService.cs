@@ -89,7 +89,7 @@ public class RegisterService : IRegisterService
         return new RegisterResultModel
         {
             Success = false,
-            Errors = res.Errors.Select( e=> _localizer[$"identity.{e.Code}"].Value).ToList()
+            Errors = res.Errors.Localize(_localizer)
         };
     }
 }

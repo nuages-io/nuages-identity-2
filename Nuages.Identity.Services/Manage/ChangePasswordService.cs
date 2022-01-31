@@ -81,7 +81,7 @@ public class ChangePasswordService : IChangePasswordService
         return new ChangePasswordResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+            Errors = res.Errors.Localize(_localizer)
         };
     }
     
@@ -137,7 +137,7 @@ public class ChangePasswordService : IChangePasswordService
         return new ChangePasswordResultModel
         {
             Success = res.Succeeded,
-            Errors = res.Errors.Select(e => _localizer[$"identity.{e.Code}"].Value).ToList()
+            Errors = res.Errors.Localize(_localizer)
         };
     }
 }
