@@ -20,14 +20,18 @@ public class TestsProfileService
         
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
 
+        var newLastName = "LastName";
+        var newFirstName = "FirstName";
+        
         var res = await profileService.SaveProfile(user.Id, new SaveProfileModel
         {
-            FirstName = "FirstName",
-            LastName = "LastName"
+            FirstName = newFirstName,
+            LastName = newLastName
         });
         
         Assert.True(res.Success);
-
+        Assert.Equal(newLastName, user.LastName);
+        Assert.Equal(newFirstName, user.FirstName);
     }
     
     [Fact]
@@ -39,7 +43,6 @@ public class TestsProfileService
 
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
 
-        
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
             await profileService.SaveProfile("bad_id", new SaveProfileModel

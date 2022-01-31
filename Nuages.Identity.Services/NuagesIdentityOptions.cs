@@ -11,7 +11,7 @@ public class NuagesIdentityOptions
     public bool SupportsStartEnd { get; set; }
     
     public bool EnableAutoPasswordExpiration { get; set; }
-    public int AutoExpirePasswordDelayInDays { get; set; }
+    public int AutoExpirePasswordDelayInDays { get; set; } = 90;
 
     public bool EnableUserLockout { get; set; } = true;
 

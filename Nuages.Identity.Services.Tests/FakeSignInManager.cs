@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -33,6 +34,12 @@ public class FakeSignInManager : NuagesSignInManager
     public override async  Task SignInWithClaimsAsync(NuagesApplicationUser user, AuthenticationProperties authenticationProperties,
         IEnumerable<Claim> additionalClaims)
     {
+        user.LastLogin = DateTime.UtcNow;
+        user.LoginCount++;
+        user.LockoutEnd = null;
+        user.LockoutMessageSent = false;
+        user.AccessFailedCount = 0;
+        
         await Task.FromResult(0);
     }
 

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication;
@@ -166,7 +167,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return true;
     }
 
-    private async Task<bool> CheckStartEndAsync(NuagesApplicationUser user)
+    public async Task<bool> CheckStartEndAsync(NuagesApplicationUser user)
     {
         if (_nuagesIdentityOptions.SupportsStartEnd)
         {
@@ -198,6 +199,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return true;
     }
 
+    [ExcludeFromCodeCoverage]
     public override async Task SignInWithClaimsAsync(NuagesApplicationUser user, AuthenticationProperties authenticationProperties,
         IEnumerable<Claim> additionalClaims)
     {

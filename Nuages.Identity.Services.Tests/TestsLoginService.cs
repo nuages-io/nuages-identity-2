@@ -36,6 +36,7 @@ public class TestsLoginService
         });
         
         Assert.True(res.Success);
+        Assert.NotNull(user.LastLogin);
     }
     
     [Fact]
