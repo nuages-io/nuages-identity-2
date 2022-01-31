@@ -68,11 +68,17 @@ public class FakeSignInManager : NuagesSignInManager
     public override async Task<ExternalLoginInfo> GetExternalLoginInfoAsync(string? expectedXsrf = null)
     {
         var i = new ClaimsIdentity();
-        i.AddClaim(new Claim(ClaimTypes.Email, CurrentUser!.Email));
+        if (CurrentUser == null)
+            return null!;
+        
+        if (!string.IsNullOrEmpty(CurrentUser.Email))
+            i.AddClaim(new Claim(ClaimTypes.Email, CurrentUser.Email));
         
         var p = new ClaimsPrincipal(i);
+
+        var providerName = CurrentUser.Email == "INVALID@NUAGES.ORG" ? "invalid" : "loginProvider";
         
-        var info = new ExternalLoginInfo(p, "", "", "");
+        var info = new ExternalLoginInfo(p, providerName, "providerKey", "displayName");
         
         return await Task.FromResult(info);
     }

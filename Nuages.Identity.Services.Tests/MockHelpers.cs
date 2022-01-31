@@ -63,11 +63,16 @@ public static class MockHelpers
         {
             mockIdentity.UserStore.Setup(u => u.FindByIdAsync(user.Id, It.IsAny<CancellationToken>())).ReturnsAsync( () => user );
             mockIdentity.UserStore.Setup(u => u.UpdateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Success );
-        
+            mockIdentity.UserStore.Setup(u => u.SetNormalizedUserNameAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Callback( (NuagesApplicationUser user2, string normalizedName, CancellationToken cancellationToken) => user2.NormalizedUserName = normalizedName);
+
             mockIdentity.UserEmailStore.Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => user);
             mockIdentity.UserEmailStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.EmailConfirmed);
             mockIdentity.UserEmailStore.Setup(u => u.GetEmailAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => user.Email);
+            mockIdentity.UserEmailStore.Setup(u => u.SetNormalizedEmailAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Callback( (NuagesApplicationUser user2, string normalizedEmail, CancellationToken cancellationToken) => user2.NormalizedUserName = normalizedEmail);
 
+            
             mockIdentity.UserPasswordStore.Setup(p => p.GetPasswordHashAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.PasswordHash);
             

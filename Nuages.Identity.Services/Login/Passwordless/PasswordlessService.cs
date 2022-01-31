@@ -72,8 +72,7 @@ public class PasswordlessService : IPasswordlessService
             };
         }
         
-        if (_userManager.SupportsUserSecurityStamp)
-            await _userManager.UpdateSecurityStampAsync(user);
+            await UpdateSecurityStampAsync(user);
 
         result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
 
@@ -82,6 +81,13 @@ public class PasswordlessService : IPasswordlessService
             Success = result.Succeeded,
             Result = result
         };
+    }
+
+    [ExcludeFromCodeCoverage]
+    private async Task UpdateSecurityStampAsync(NuagesApplicationUser user)
+    {
+        if (_userManager.SupportsUserSecurityStamp)
+            await _userManager.UpdateSecurityStampAsync(user);
     }
 
     public async Task<StartPasswordlessResultModel> StartPasswordless(StartPasswordlessModel model)

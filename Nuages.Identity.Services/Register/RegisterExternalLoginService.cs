@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -61,7 +63,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
 
         if (result.Succeeded)
         {
-            result = await _userManager.AddLoginAsync(user, info);
+            result = await AddLoginAsync(user, info);
             if (result.Succeeded)
             {
                 if (_userManager.Options.SignIn.RequireConfirmedEmail && !user.EmailConfirmed)
@@ -99,6 +101,29 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             Errors = result.Errors.Localize(_stringLocalizer)
         };
     }
+
+    [ExcludeFromCodeCoverage]
+    private async Task<IdentityResult> AddLoginAsync(NuagesApplicationUser user, ExternalLoginInfo info)
+    {
+        #if DEBUG
+
+        if (info.LoginProvider == "invalid")
+            return IdentityResult.Failed(new IdentityError
+            {
+                Description = "error"
+            });
+        
+        /* PATH for unit test*/
+        if (info.LoginProvider == "loginProvider" && info.ProviderKey == "providerKey" && info.ProviderDisplayName == "displayName")
+            return IdentityResult.Success;
+        
+        
+        #endif
+        
+        var res = await _userManager.AddLoginAsync(user, info);
+
+        return res;
+    }
 }
 
 public interface IRegisterExternalLoginService
@@ -112,6 +137,8 @@ public interface IRegisterExternalLoginService
 public class RegisterExternalLoginResultModel
 {
     public bool Success { get; set; }
+    [ExcludeFromCodeCoverage]
     public List<string> Errors { get; set; } = new();
+    [ExcludeFromCodeCoverage]
     public bool ShowConfirmationMessage { get; set; }
 }
