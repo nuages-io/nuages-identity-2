@@ -73,6 +73,9 @@ public static class MockHelpers
                 .Callback( (NuagesApplicationUser user2, string normalizedEmail, CancellationToken cancellationToken) => user2.NormalizedUserName = normalizedEmail);
 
             
+            mockIdentity.UserPhoneNumberStore.Setup(c => c.GetPhoneNumberConfirmedAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((NuagesApplicationUser user2, CancellationToken cancellationToken) =>  user2.PhoneNumberConfirmed );
+            
             mockIdentity.UserPasswordStore.Setup(p => p.GetPasswordHashAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.PasswordHash);
             
@@ -118,7 +121,11 @@ public static class MockHelpers
             //         It.IsAny<string>(), It.IsAny<CancellationToken>()))
             //     .Callback((NuagesApplicationUser user2, string stamp, CancellationToken cancellationToken) => user2.SecurityStamp = stamp);
         }
-      
+
+        mockIdentity.UserAuthenticationTokenStore.Setup(c => c.GetTokenAsync(It.IsAny<NuagesApplicationUser>(),
+                It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => "0;1;2;3;4;5;6;7;8;9");
+        
         var options = new Mock<IOptions<IdentityOptions>>();
         var idOptions = new IdentityOptions
         {
@@ -149,7 +156,7 @@ public static class MockHelpers
         var mockConfirmation = new Mock<IUserConfirmation<NuagesApplicationUser>>();
         mockConfirmation.Setup(c =>
                 c.IsConfirmedAsync(It.IsAny<UserManager<NuagesApplicationUser>>(), It.IsAny<NuagesApplicationUser>()))
-            .ReturnsAsync(() => true);
+            .ReturnsAsync((UserManager<NuagesApplicationUser> _, NuagesApplicationUser user2) => user2.EmailConfirmed);
         
         mockIdentity.SignInManager = new FakeSignInManager(mockIdentity.UserManager, Options.Create(mockIdentity.NuagesOptions), mockConfirmation.Object, Options.Create(idOptions), null, user);
         

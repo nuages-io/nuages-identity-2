@@ -42,50 +42,6 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         
         return true;
     }
-
-    // public override async Task<SignInResult> CheckPasswordSignInAsync(NuagesApplicationUser user, string password, bool lockoutOnFailure)
-    // {
-    //     if (user == null)
-    //     {
-    //         throw new ArgumentNullException(nameof(user));
-    //     }
-    //
-    //     var error = await PreSignInCheck(user);
-    //     if (error != null)
-    //     {
-    //         return error;
-    //     }
-    //
-    //     if (await UserManager.CheckPasswordAsync(user, password))
-    //     {
-    //         var alwaysLockout = AppContext.TryGetSwitch("Microsoft.AspNetCore.Identity.CheckPasswordSignInAlwaysResetLockoutOnSuccess", out var enabled) && enabled;
-    //         // Only reset the lockout when not in quirks mode if either TFA is not enabled or the client is remembered for TFA.
-    //         if (alwaysLockout || !await IsTfaEnabled(user) || await IsTwoFactorClientRememberedAsync(user))
-    //         {
-    //             await ResetLockout(user);
-    //         }
-    //
-    //         return SignInResult.Success;
-    //     }
-    //     //Logger.LogWarning(EventIds.InvalidPassword, "User failed to provide the correct password.");
-    //
-    //     if (UserManager.SupportsUserLockout && lockoutOnFailure)
-    //     {
-    //         // If lockout is requested, increment access failed count which might lock out the user
-    //         await UserManager.AccessFailedAsync(user);
-    //         if (await UserManager.IsLockedOutAsync(user))
-    //         {
-    //             return await LockedOut(user);
-    //         }
-    //     }
-    //     return SignInResult.Failed;
-    // }
-    //
-    // private async Task<bool> IsTfaEnabled(NuagesApplicationUser user)
-    //     => UserManager.SupportsUserTwoFactor &&
-    //        await UserManager.GetTwoFactorEnabledAsync(user) &&
-    //        (await UserManager.GetValidTwoFactorProvidersAsync(user)).Count > 0;
-
     
     public override async Task<SignInResult> CheckPasswordSignInAsync(NuagesApplicationUser user, string password, bool lockoutOnFailure)
     {
@@ -109,7 +65,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return res;
     }
 
-    private async Task<bool> CheckAccountAsync(NuagesApplicationUser user)
+    public async Task<bool> CheckAccountAsync(NuagesApplicationUser user)
     {
         if (Options.SignIn.RequireConfirmedAccount && !await _confirmation.IsConfirmedAsync(UserManager, user))
         {
@@ -136,7 +92,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return new ClaimsPrincipal(identity);
     }
 
-    private async Task<bool> CheckPhoneNumberAsync(NuagesApplicationUser user)
+    public async Task<bool> CheckPhoneNumberAsync(NuagesApplicationUser user)
     {
         if (Options.SignIn.RequireConfirmedPhoneNumber && !await UserManager.IsPhoneNumberConfirmedAsync(user))
         {
