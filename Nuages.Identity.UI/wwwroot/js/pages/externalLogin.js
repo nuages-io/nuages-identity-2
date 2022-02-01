@@ -3,7 +3,7 @@ var App =
         data() {
             return {
                 errors: [],
-                status : ""
+                status: ""
             }
         },
         methods:
@@ -15,32 +15,24 @@ var App =
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
-                        body: JSON.stringify({
-                             
-                               
-                            }
+                        body: JSON.stringify({}
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
                             if (res.success) {
-                                if (res.showConfirmationMessage)
-                                {
+                                if (res.showConfirmationMessage) {
                                     self.status = "done";
-                                }
-                                else
-                                {
+                                } else {
                                     window.location = returnUrl;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 self.status = "";
 
                                 res.errors.forEach((element) => {
-                                    self.errors.push({ message : element});
+                                    self.errors.push({message: element});
                                 });
                             }
                         });
@@ -57,8 +49,6 @@ var App =
 
                     var res = formExternalLogin.checkValidity();
                     if (res) {
-
-
                         grecaptcha.ready(function () {
                             grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
                                 self.doExternalLogin(token);
@@ -74,7 +64,7 @@ var App =
 
                         list.forEach((element) => {
 
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }

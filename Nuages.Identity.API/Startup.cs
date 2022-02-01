@@ -36,19 +36,19 @@ public class Startup
     {
         services.AddDataProtection()
             .PersistKeysToAWSSystemsManager("Nuages.Identity.API/DataProtection");
-        
+
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-        
+
         services.AddHttpClient();
-        
+
         services.AddEndpointsApiExplorer();
-        
+
         services.AddSingleton(Configuration);
-            
+
         services.AddHttpContextAccessor();
-            
+
         AWSXRayRecorder.InitializeInstance(Configuration);
-        
+
         if (!_env.IsDevelopment())
         {
             AWSSDKHandler.RegisterXRayForAllServices();
@@ -58,26 +58,14 @@ public class Startup
         {
             AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
         }
-        
+
         services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }).AddNuagesLocalization(Configuration);
 
-        // services
-        //     .AddIdentityCore<NuagesApplicationUser>()
-        //     .AddRoles<NuagesApplicationRole>()
-        //     .AddMongoDbStores<NuagesApplicationUser, NuagesApplicationRole, string>(mongo =>
-        //     {
-        //         mongo.ConnectionString =
-        //             Configuration["Nuages:Mongo:ConnectionString"];
-        //     })
-        //     .AddDefaultTokenProviders()
-        //     .AddNuagesIdentityAPI(Configuration);;
-        //
-        
-         var identityOptions = Configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
-        
+        var identityOptions = Configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
+
         services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
             {
                 identity.Lockout = new LockoutOptions
@@ -117,7 +105,7 @@ public class Startup
                     UserNameClaimType = OpenIddictConstants.Claims.Name,
                     UserIdClaimType = OpenIddictConstants.Claims.Subject,
                     EmailClaimType = ClaimTypes.Email,
-                    SecurityStampClaimType =  "AspNet.Identity.SecurityStamp"
+                    SecurityStampClaimType = "AspNet.Identity.SecurityStamp"
                 };
 
                 identity.SignIn = new SignInOptions
@@ -126,17 +114,15 @@ public class Startup
                     RequireConfirmedPhoneNumber = false, //MUST be false
                     RequireConfirmedAccount = false //MUST be false
                 };
-                
             },
             mongo =>
             {
                 var connection = Configuration["Nuages:Mongo:ConnectionString"];
-                
-                mongo.ConnectionString = connection;
 
+                mongo.ConnectionString = connection;
             }).AddNuagesIdentity(Configuration).AddPasswordlessLoginProvider();
-        
-        
+
+
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -191,24 +177,20 @@ public class Startup
                 ValidIssuer = identityOptions.Authority
                 // ValidIssuers = null,
                 // ValidTypes = null
-
             };
         });
 
-        services.AddAuthorization(o => 
+        services.AddAuthorization(o =>
             o.AddPolicy("Admin",
                 b =>
                 {
                     b.RequireRole("Admin");
                     //b.RequireAuthenticatedUser();
                 })
-            );
+        );
 
-        
-       
-        
         services.AddHealthChecks();
-        
+
         services.AddSwaggerDocument(config =>
         {
             config.PostProcess = document =>
@@ -229,7 +211,7 @@ public class Startup
                 };
             };
         });
-        
+
         // services.AddHttpLogging(logging =>
         // {
         //     logging.LoggingFields = HttpLoggingFields.ResponseBody;
@@ -255,7 +237,7 @@ public class Startup
         app.UseStaticFiles();
 
         //app.UseHttpLogging();
-        
+
         app.UseRouting();
 
         app.UseAuthentication();
@@ -267,9 +249,8 @@ public class Startup
             endpoints.MapCustomEndpoints(serviceProvider);
             endpoints.MapHealthChecks("/health");
         });
-        
+
         app.UseOpenApi();
         app.UseSwaggerUi3();
-
     }
 }
