@@ -18,7 +18,6 @@ public class TestsLoginService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
         {
-            EnableUserLockout = true,
             SupportsUserName = true,
             AutoExpirePasswordDelayInDays = 90,
             AutoConfirmExternalLogin = true,
@@ -137,11 +136,7 @@ public class TestsLoginService
         var user = MockHelpers.CreateDefaultUser();
         user.EmailConfirmed = false;
 
-        var identityStuff = MockHelpers.MockIdentityStuff(user,
-            new NuagesIdentityOptions
-            {
-                RequireConfirmedEmail = true
-            });
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = true;
         

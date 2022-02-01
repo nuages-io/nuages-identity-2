@@ -53,7 +53,7 @@ public class Startup
             {
                 identity.Lockout = new LockoutOptions
                 {
-                    AllowedForNewUsers = options.EnableUserLockout,
+                    AllowedForNewUsers = true,
                     MaxFailedAccessAttempts = 5,
                     DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
                 };
@@ -93,7 +93,7 @@ public class Startup
 
                 identity.SignIn = new SignInOptions
                 {
-                    RequireConfirmedEmail = options.RequireConfirmedEmail,
+                    RequireConfirmedEmail = true,
                     RequireConfirmedPhoneNumber = false, //MUST be false
                     RequireConfirmedAccount = false //MUST be false
                 };
@@ -125,8 +125,8 @@ public class Startup
             .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme)
             .AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = _configuration["Nuages:UI:ExternalLogin:Google:ClientId"];
-                googleOptions.ClientSecret = _configuration["Nuages:UI:ExternalLogin:Google:ClientSecret"];
+                googleOptions.ClientId = _configuration["Google:ClientId"];
+                googleOptions.ClientSecret = _configuration["Google:ClientSecret"];
             });
 
        // var openIdDictOptions = _configuration.GetSection("Nuages:OpenIdDict").Get<OpenIdDictOptions>();

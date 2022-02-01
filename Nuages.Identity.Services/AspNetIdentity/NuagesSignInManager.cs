@@ -61,8 +61,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
                 await UserManager.UpdateAsync(user);
             }
         }
-     
-        
+
         return res;
     }
 
@@ -113,9 +112,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
             user.LastFailedLoginReason = FailedLoginReason.EmailNotConfirmed;
             
             await UserManager.UpdateAsync(user);
-            
-            //await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email ));
-            
+
             return false;
         }
 
@@ -169,30 +166,27 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
     public async Task<bool> CheckStartEndAsync(NuagesApplicationUser user)
     {
-        if (_nuagesIdentityOptions.SupportsStartEnd)
+        if (user.ValidFrom.HasValue)
         {
-            if (user.ValidFrom.HasValue)
+            if (user.ValidFrom > DateTimeOffset.UtcNow)
             {
-                if (user.ValidFrom > DateTimeOffset.UtcNow)
-                {
-                    user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
+                user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
 
-                    await UserManager.UpdateAsync(user);
+                await UserManager.UpdateAsync(user);
 
-                    return false;
-                }
+                return false;
             }
+        }
 
-            if (user.ValidTo.HasValue)
+        if (user.ValidTo.HasValue)
+        {
+            if (DateTime.UtcNow > user.ValidTo)
             {
-                if (DateTime.UtcNow > user.ValidTo)
-                {
-                    user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
+                user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
 
-                    await UserManager.UpdateAsync(user);
+                await UserManager.UpdateAsync(user);
 
-                    return false;
-                }
+                return false;
             }
         }
 

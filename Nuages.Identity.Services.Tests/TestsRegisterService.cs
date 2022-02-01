@@ -19,6 +19,7 @@ public class TestsRegisterService
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
         
         var sendCalled = false;
         
@@ -49,15 +50,12 @@ public class TestsRegisterService
         const string password = MockHelpers.StrongPassword;
         
 
-        var options = new NuagesIdentityOptions
-        {
-            RequireConfirmedEmail = true
-        };
-
-        var identityStuff = MockHelpers.MockIdentityStuff(null, options);
+        var identityStuff = MockHelpers.MockIdentityStuff(null);
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+
         
+            
         var sendCalled = false;
         
         var messageService = new Mock<IMessageService>();
@@ -66,7 +64,7 @@ public class TestsRegisterService
             .Callback(() => sendCalled = true);
         
         var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
-            messageService.Object, Options.Create(options));
+            messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
         {

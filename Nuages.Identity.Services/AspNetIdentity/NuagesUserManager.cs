@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -19,21 +18,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
     {
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
-
-    [ExcludeFromCodeCoverage]
-    public override bool SupportsUserLockout
-    {
-        get
-        {
-            ThrowIfDisposed();
     
-            if (!_nuagesIdentityOptions.EnableUserLockout)
-                return false;
-            
-            return Store is IUserLockoutStore<NuagesApplicationUser>;
-        }
-    }
-
     public override async Task<IdentityResult> CreateAsync(NuagesApplicationUser user)
     {
         var res = await base.CreateAsync(user);

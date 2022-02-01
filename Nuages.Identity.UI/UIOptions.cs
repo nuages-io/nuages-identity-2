@@ -8,10 +8,8 @@ namespace Nuages.Identity.UI;
 [ExcludeFromCodeCoverage]
 public class UIOptions
 {
-    public string SupportEmail { get; set; } = string.Empty;
-    public string SupportUrl { get; set; } = string.Empty;
     public bool ShowRegistration { get; set; } 
-    public string RegistrationUrl { get; set; } = string.Empty;
+    public string RegistrationUrl { get; set; } = "/Account/Register";
     public string LogoUrl { get; set; } = string.Empty;
     
     public bool ExternalLoginAutoEnrollIfEmailExists { get; set; }

@@ -123,10 +123,7 @@ public class TestNuagesSignInManager
         user.ValidFrom = DateTime.Now.AddDays(-1);
         user.ValidTo = DateTime.Now.AddDays(1);
         
-        var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
-        {
-            SupportsStartEnd = true
-        });
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.Options.SignIn.RequireConfirmedPhoneNumber = true;
     
         var res = await identityStuff.SignInManager.CheckStartEndAsync(user);
@@ -143,10 +140,7 @@ public class TestNuagesSignInManager
         user.ValidFrom = DateTime.Now.AddDays(2);
         user.ValidTo = DateTime.Now.AddDays(3);
         
-        var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
-        {
-            SupportsStartEnd = true
-        });
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.Options.SignIn.RequireConfirmedPhoneNumber = true;
     
         var res = await identityStuff.SignInManager.CheckStartEndAsync(user);
@@ -165,10 +159,7 @@ public class TestNuagesSignInManager
         user.ValidFrom = DateTime.Now.AddDays(-3);
         user.ValidTo = DateTime.Now.AddDays(-2);
         
-        var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
-        {
-            SupportsStartEnd = true
-        });
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.Options.SignIn.RequireConfirmedPhoneNumber = true;
     
         var res = await identityStuff.SignInManager.CheckStartEndAsync(user);
@@ -183,10 +174,7 @@ public class TestNuagesSignInManager
 
         var user = MockHelpers.CreateDefaultUser();
         
-        var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
-        {
-            SupportsStartEnd = true
-        });
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.SignInManager.Options.SignIn.RequireConfirmedPhoneNumber = true;
     
         await identityStuff.SignInManager.SignInWithClaimsAsync(user, new AuthenticationProperties(), new List<Claim>());
