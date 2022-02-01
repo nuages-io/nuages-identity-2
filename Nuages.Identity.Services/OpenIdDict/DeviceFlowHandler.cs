@@ -1,10 +1,10 @@
 using OpenIddict.Abstractions;
 
-namespace Nuages.Identity.UI.Endpoints;
+namespace Nuages.Identity.Services.OpenIdDict;
 
-public partial class AuthorizationController
+public class DeviceFlowHandler : IDeviceFlowHandler
 {
-    public  Task<Microsoft.AspNetCore.Mvc.SignInResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest)
+     public  Task<Microsoft.AspNetCore.Mvc.SignInResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest)
     {
         if (openIdDictRequest.IsDeviceCodeGrantType() || openIdDictRequest.IsRefreshTokenGrantType())
         {
@@ -50,4 +50,9 @@ public partial class AuthorizationController
 
         throw new NotImplementedException();
     }
+}
+
+public interface IDeviceFlowHandler
+{
+    Task<Microsoft.AspNetCore.Mvc.SignInResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest);
 }

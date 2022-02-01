@@ -146,8 +146,7 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
-    
+
     [HttpPost("changeUsername")]
     [AllowAnonymous]
     public async Task<ChangeUserNameResultModel> ChangeUsernameAsync([FromBody] ChangeUserNameModel model)
@@ -181,8 +180,6 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     [HttpDelete("disable2Fa")]
@@ -213,11 +210,8 @@ public class ManageController : Controller
         {
            AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
-    
-     
+
     [HttpPost("enable2FA")]
     [AllowAnonymous]
     public async Task<MFAResultModel> Enable2FaAsync([FromBody] EnableMFAModel model)
@@ -251,8 +245,6 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     [HttpDelete("removePhone")]
@@ -288,8 +280,6 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     [HttpPost("sendPhoneChangeMessage")]
@@ -319,8 +309,6 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     [HttpPost("changePhoneNumber")]
@@ -350,8 +338,6 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.EndSubsegment();
         }
-     
-      
     }
     
     [HttpGet("downloadRecoveryCodes")]

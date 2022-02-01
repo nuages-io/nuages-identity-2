@@ -5,11 +5,22 @@ using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
-namespace Nuages.Identity.UI.Endpoints;
+namespace Nuages.Identity.Services.OpenIdDict;
 
-public partial class AuthorizationController
+public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
 {
-    public async Task<IActionResult> ProcessClientCredentialsFlow(
+    private readonly IOpenIddictApplicationManager _applicationManager;
+    private readonly IOpenIddictScopeManager _scopeManager;
+    private readonly IAudienceValidator _audienceValidator;
+
+    public ClientCredentialsFlowHandler(IOpenIddictApplicationManager applicationManager, IOpenIddictScopeManager scopeManager,
+        IAudienceValidator audienceValidator)
+    {
+        _applicationManager = applicationManager;
+        _scopeManager = scopeManager;
+        _audienceValidator = audienceValidator;
+    }
+     public async Task<IActionResult> ProcessClientCredentialsFlow(
         OpenIddictRequest openIdDictRequest)
     {
         if (openIdDictRequest.IsClientCredentialsGrantType())
@@ -59,7 +70,7 @@ public partial class AuthorizationController
             principal.SetScopes(openIdDictRequest.GetScopes());
             principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
 
-            var error = CheckAudience(openIdDictRequest, principal);
+            var error = _audienceValidator.CheckAudience(openIdDictRequest, principal);
             if (!string.IsNullOrEmpty(error))
             {
                 var properties = new AuthenticationProperties(new Dictionary<string, string?>
@@ -68,17 +79,23 @@ public partial class AuthorizationController
                     [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = error
                 });
 
-                return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+                return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
             
             foreach (var claim in principal.Claims)
             {
-                claim.SetDestinations(GetDestinations(claim));
+                claim.SetDestinations(ClaimsDestinations.GetDestinations(claim));
             }
 
-            return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }
 
         throw new Exception("Wrong grantType");
     }
+}
+
+public interface IClientCredentialsFlowHandler
+{
+    Task<IActionResult> ProcessClientCredentialsFlow(
+        OpenIddictRequest openIdDictRequest);
 }

@@ -12,5 +12,7 @@
         <PackageReference Include="Nuages.Localization" Version="1.2.0" />
         <PackageReference Include="Nuages.Sender.API.Sdk" Version="1.1.7" />
         <PackageReference Include="Nuages.Web" Version="1.2.7" />
+        <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
+        <PackageReference Include="System.Linq.Async" Version="5.1.0" />
     </ItemGroup>
 </Project>

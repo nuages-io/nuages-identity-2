@@ -1,14 +1,25 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
-using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace Nuages.Identity.UI.Endpoints;
+namespace Nuages.Identity.Services.OpenIdDict;
 
-public partial class AuthorizationController
+public class PasswordFlowHandler : IPasswordFlowHandler
 {
-    private async Task<IActionResult> ProcessPasswordFlow(OpenIddictRequest request)
+    private readonly NuagesSignInManager _signInManager;
+    private readonly NuagesUserManager _userManager;
+    private readonly IAudienceValidator _audienceValidator;
+
+    public PasswordFlowHandler(NuagesSignInManager signInManager, NuagesUserManager userManager, IAudienceValidator audienceValidator)
+    {
+        _signInManager = signInManager;
+        _userManager = userManager;
+        _audienceValidator = audienceValidator;
+    }
+    
+    public async Task<IActionResult> ProcessPasswordFlow(OpenIddictRequest request)
     {
         if (request.IsPasswordGrantType())
         {
@@ -21,12 +32,12 @@ public partial class AuthorizationController
             {
                 var properties = new AuthenticationProperties(new Dictionary<string, string?>
                 {
-                    [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
+                    [OpenIddictServerAspNetCoreConstants.Properties.Error] = OpenIddictConstants.Errors.InvalidGrant,
                     [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
                         "The username/password couple is invalid."
                 });
 
-                return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+                return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
 
             var user = await _userManager.FindByNameAsync(request.Username!);
@@ -38,13 +49,13 @@ public partial class AuthorizationController
             // Set the list of scopes granted to the client application.
             principal.SetScopes(new[]
             {
-                Scopes.OpenId,
-                Scopes.Email,
-                Scopes.Profile,
-                Scopes.Roles
+                OpenIddictConstants.Scopes.OpenId,
+                OpenIddictConstants.Scopes.Email,
+                OpenIddictConstants.Scopes.Profile,
+                OpenIddictConstants.Scopes.Roles
             }.Intersect(request.GetScopes()));
 
-            var error = CheckAudience(request, principal);
+            var error = _audienceValidator.CheckAudience(request, principal);
             if (!string.IsNullOrEmpty(error))
             {
                 var properties = new AuthenticationProperties(new Dictionary<string, string?>
@@ -53,18 +64,22 @@ public partial class AuthorizationController
                     [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = error
                 });
 
-                return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+                return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
             
             foreach (var claim in principal.Claims)
             {
-                claim.SetDestinations(GetDestinations(claim, principal));
+                claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
             }
 
-            return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            return new SignInResult (OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }
 
         throw new Exception("Wrong grant type");
     }
+}
 
+public interface IPasswordFlowHandler
+{
+    Task<IActionResult> ProcessPasswordFlow(OpenIddictRequest request);
 }

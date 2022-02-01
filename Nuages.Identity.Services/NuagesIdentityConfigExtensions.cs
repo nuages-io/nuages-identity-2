@@ -5,6 +5,7 @@ using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
+using Nuages.Identity.Services.OpenIdDict;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
 using Nuages.Sender.API.Sdk;
@@ -62,6 +63,15 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IProfileService, ProfileService>();
         
         services.AddScoped<IMessageService, MessageService>();
+        
+        services.AddScoped<IAudienceValidator, AudienceValidator>();
+        services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
+        services.AddScoped<IAuthorizeEndpoint, AuthorizeEndpoint>();
+        services.AddScoped<IClientCredentialsFlowHandler, ClientCredentialsFlowHandler>();
+        services.AddScoped<IDeviceFlowHandler, DeviceFlowHandler>();
+        services.AddScoped<ILogoutEndpoint, LogoutEndpoint>();
+        services.AddScoped<IPasswordFlowHandler, PasswordFlowHandler>();
+        services.AddScoped<ITokenEndpoint, TokenEndpoint>();
         
         return builder;
     }
