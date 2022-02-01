@@ -17,7 +17,7 @@ using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 // ReSharper disable UnusedMember.Global
 
-namespace Nuages.Identity.UI.Endpoints;
+namespace Nuages.Identity.UI.Controllers;
 
 // ReSharper disable once UnusedType.Global
 [ApiController]

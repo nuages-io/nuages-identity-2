@@ -1,4 +1,4 @@
-namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public class OpenIdDictOptions
 {

@@ -12,7 +12,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\Nuages.Identity.API.Endpoints\Nuages.Identity.API.Endpoints.csproj" />
+      <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>

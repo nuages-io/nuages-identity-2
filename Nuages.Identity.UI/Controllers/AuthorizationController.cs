@@ -3,7 +3,7 @@ using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.OpenIdDict;
 
-namespace Nuages.Identity.UI.Endpoints;
+namespace Nuages.Identity.UI.Controllers;
 
 [ExcludeFromCodeCoverage]
 public class AuthorizationController : Controller

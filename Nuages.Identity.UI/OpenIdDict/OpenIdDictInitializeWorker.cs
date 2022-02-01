@@ -1,7 +1,7 @@
 using OpenIddict.Abstractions;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public class OpenIdDictInitializeWorker : IHostedService
 {
@@ -10,14 +10,11 @@ public class OpenIdDictInitializeWorker : IHostedService
     public OpenIdDictInitializeWorker(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-       
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-       
         using var scope = _serviceProvider.CreateScope();
-
         
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
@@ -58,11 +55,8 @@ public class OpenIdDictInitializeWorker : IHostedService
                 {
                     Requirements.Features.ProofKeyForCodeExchange
                 }
-                
-                    
             }, cancellationToken);
         }
-
     }
 
     public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;

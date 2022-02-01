@@ -3,16 +3,14 @@ using MongoDB.Driver;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
 
-namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public static class OpenIdDictConfigExtensions
 {
     public static void AddNuagesOpenIdDict(this IServiceCollection services, IConfiguration configuration, Action<OpenIdDictOptions> configure)
     {
-     
         services.Configure<OpenIdDictOptions>(configuration.GetSection("Nuages:OpenIdDict"));
         services.Configure(configure);
-        
         
         services.AddOpenIddict()
             // Register the OpenIddict core components.
@@ -22,7 +20,6 @@ public static class OpenIdDictConfigExtensions
                     .UseDatabase(new MongoClient(configuration["Nuages:OpenIdDict:ConnectionString"])
                     .GetDatabase(configuration["Nuages:OpenIdDict:Database"]));
             })
-
             // Register the OpenIddict server components.
             .AddServer(options =>
             {

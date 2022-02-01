@@ -8,7 +8,7 @@ using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
 
-namespace Nuages.Identity.UI.Endpoints;
+namespace Nuages.Identity.UI.Controllers;
 
 [Authorize]
 [ApiController]

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Server;
 
-namespace Nuages.Identity.UI.Endpoints.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIddictServerOptions>
 {
@@ -21,7 +21,6 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
     
     public void Configure(OpenIddictServerOptions options)
     {
-        
         SetupKeys(options );
     }
     
@@ -96,5 +95,4 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
             
         return new RsaSecurityKey(rsa);
     }
-
 }

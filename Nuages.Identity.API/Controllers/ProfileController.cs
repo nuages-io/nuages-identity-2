@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
 
-namespace Nuages.Identity.API.Endpoints;
+namespace Nuages.Identity.API.Controllers;
 
 [ExcludeFromCodeCoverage]
 

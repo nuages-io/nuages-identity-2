@@ -7,7 +7,7 @@ using Nuages.Identity.Services.Manage;
 
 // ReSharper disable UnusedMember.Global
 
-namespace Nuages.Identity.API.Endpoints;
+namespace Nuages.Identity.API.Controllers;
 
 [ExcludeFromCodeCoverage]
 [Authorize(Roles = "Admin")]
