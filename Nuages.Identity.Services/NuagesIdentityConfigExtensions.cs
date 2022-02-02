@@ -38,7 +38,8 @@ public static class NuagesIdentityConfigExtensions
             services.Configure(configure);
         
         builder.AddUserManager<NuagesUserManager>().AddSignInManager<NuagesSignInManager>();
-
+        builder.AddUserStore<InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
+        
         services.AddScoped<IEmailValidator, EmailValidator>();
         
         //Anonymous

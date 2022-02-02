@@ -48,10 +48,6 @@ public static class OpenIdDictConfigExtensions
                 options.AddDevelopmentEncryptionCertificate()
                     .AddDevelopmentSigningCertificate();
 #endif
-                
-                // options.AddEphemeralSigningKey();
-                // options.AddEphemeralEncryptionKey();
-
                 // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
                 options.UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough()

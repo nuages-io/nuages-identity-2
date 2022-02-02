@@ -93,7 +93,7 @@ public class Startup
 
                 identity.SignIn = new SignInOptions
                 {
-                    RequireConfirmedEmail = true,
+                    RequireConfirmedEmail = false,
                     RequireConfirmedPhoneNumber = false, //MUST be false
                     RequireConfirmedAccount = false //MUST be false
                 };
@@ -107,10 +107,13 @@ public class Startup
             .AddNuagesIdentity(_configuration)
             .AddPasswordlessLoginProvider();
 
-        services.AddMvc().AddJsonOptions(jsonOptions =>
-        {
-            jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-        }).AddNuagesLocalization(_configuration);
+        services
+            .AddMvc()
+            .AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            })
+            .AddNuagesLocalization(_configuration);
 
         services.AddHttpContextAccessor();
 
@@ -133,8 +136,7 @@ public class Startup
             
        // ReSharper disable once UnusedParameter.Local
        services.AddNuagesOpenIdDict(_configuration, configure => {
-            
-        });
+       });
 
         services.AddHealthChecks();
         
