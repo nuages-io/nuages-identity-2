@@ -199,16 +199,34 @@ public class MongoUserStore<TUser, TRole, TKey> :
         }
     }
 
-    public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
+    public  Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
     {
         if (claim == null)
         {
             throw new ArgumentNullException(nameof(claim));
         }
-
-        var ids = UsersClaims.Where(x => x.Type == claim.Type && x.Value == claim.Value).Select(c => c.UserId);
         
-        return Task.FromResult<IList<TUser>>(Users.Where(i => ids.Contains(i.Id)).ToList());
+        var query = from p in 
+                UsersClaims.AsQueryable().Where(u => u.Type == claim.Type)
+            join o in Users on p.UserId equals o.Id 
+            select o;
+        
+        return  Task.FromResult((IList<TUser>) query.ToList());
+        
+        // var result = from uc 
+        //         in UsersClaims.AsQueryable().Where(u => u.Type == claim.Type)
+        //     join c in Users.AsQueryable()
+        //         on uc.UserId equals c.Id
+        //         into user
+        //     select user;
+        // return (IList<TUser>) result.ToList();
+        
+        // var ids = UsersClaims.Where(x => x.Type == claim.Type && x.Value == claim.Value)
+        //     .Select(c => c.UserId);
+        //
+        // return Task.FromResult<IList<TUser>>(Users.Where(i => ids.Contains(i.Id)).ToList());
+
+        
     }
 
     public async Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken cancellationToken)
@@ -246,9 +264,9 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(Users.SingleOrDefault(u => u.Id.Equals(login.UserId)))!;
     }
 
-    public async Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public async Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName  == normalizedRoleName);
         
         ArgumentNullException.ThrowIfNull(role);
         
@@ -260,12 +278,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         };
         
         await UsersRolesCollection.InsertOneAsync(identityRole, InsertOneOptions, cancellationToken);
-
     }
 
-    public async Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public async Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName == normalizedRoleName);
         
         ArgumentNullException.ThrowIfNull(role);
 
@@ -274,16 +291,25 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
     {
-        var ids = UsersRoles.Where(u => u.UserId.Equals(user.Id)).ToList().Select(r => r.RoleId);
 
-        var list = Roles.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
+        var query = from p in UsersRoles.AsQueryable()
+                .Where(u => u.UserId.Equals(user.Id))
+            join o in Roles on p.RoleId equals o.Id
+            select o.Name;
 
-        return Task.FromResult((IList<string>)list.ToList());
+        return Task.FromResult((IList<string>)query.ToList());
+        
+        // var ids = UsersRoles.Where(u => u.UserId.Equals(user.Id)).ToList()
+        //     .Select(r => r.RoleId);
+        //
+        // var list = Roles.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
+        //
+        // return Task.FromResult((IList<string>)list.ToList());
     }
 
-    public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName == normalizedRoleName);
         if (role == null)
             return Task.FromResult(false);
         
@@ -292,17 +318,27 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(any);
     }
 
-    public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+    public Task<IList<TUser>> GetUsersInRoleAsync(string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName == normalizedRoleName);
         if (role == null)
             return Task.FromResult((IList<TUser>)new List<TUser>());
         
-        var ids = UsersRoles.Where(u => u.UserId.Equals(role.Id)).Select(r => r.RoleId);
+        var query = from p 
+                in UsersRoles.AsQueryable().Where(u => u.RoleId.Equals(role.Id))
+            join o in Users on p.UserId equals o.Id
+            select o;
 
-        var list = Users.Where(r => ids.Contains(r.Id));
-
-        return Task.FromResult((IList<TUser>)list.ToList());
+        return Task.FromResult((IList<TUser>)query.ToList());
+        
+        //
+        //
+        // var ids = UsersRoles.Where(u => u.UserId.Equals(role.Id))
+        //     .Select(r => r.RoleId);
+        //
+        // var list = Users.Where(r => ids.Contains(r.Id));
+        //
+        // return Task.FromResult((IList<TUser>)list.ToList());
     }
 
     public async Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)

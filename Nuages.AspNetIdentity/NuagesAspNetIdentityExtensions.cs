@@ -10,10 +10,10 @@ public static class NuagesAspNetIdentityExtensions
         var identityBuilder = services.AddIdentity<NuagesApplicationUser, NuagesApplicationRole>(identityOptions);
 
         identityBuilder
-            .AddDefaultTokenProviders()
             .AddUserManager<NuagesUserManager>()
             .AddSignInManager<NuagesSignInManager>()
-            .AddRoleManager<NuagesRoleManager>();
+            .AddRoleManager<NuagesRoleManager>()
+            .AddDefaultTokenProviders();
 
         return identityBuilder;
 

@@ -7,13 +7,10 @@ namespace Nuages.Identity.UI.OpenIdDict;
 
 public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIddictServerOptions>
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly OpenIdDictOptions _options;
 
-    public OpenIddictServerOptionsInitializer(
-         IServiceProvider serviceProvider, IOptions<OpenIdDictOptions> options)
+    public OpenIddictServerOptionsInitializer(IOptions<OpenIdDictOptions> options)
     {
-        _serviceProvider = serviceProvider;
         _options = options.Value;
     }
     

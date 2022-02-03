@@ -25,6 +25,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
         UsersLoginsCollection = database.GetCollection<MongoIdentityUserLogin<TKey>>("AspNetUserLogins");
         UsersTokensCollection = database.GetCollection<MongoIdentityUserToken<TKey>>("AspNetUserTokens");
         UsersRolesCollection = database.GetCollection<IdentityUserRole<TKey>>("AspNetUserRoles");
+        
+        _caseInsensitiveCollation = new Collation(options.Value.Locale, strength: CollationStrength.Primary);
     }
 
     private IMongoCollection<TRole> RolesCollection { get;  }
@@ -34,8 +36,9 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
     private IMongoCollection<MongoIdentityUserLogin<TKey>> UsersLoginsCollection { get;  }
     private IMongoCollection<MongoIdentityUserClaim<TKey>> UsersClaimsCollection { get;  }
     private IMongoCollection<IdentityRoleClaim<TKey>> RolesClaimsCollection { get;  }
-    
 
+    private readonly Collation _caseInsensitiveCollation;
+    
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await CreateRolesIndexes();
@@ -70,7 +73,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_RolesClaims_RoleIdClaimTypeClaimValue",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
     }
@@ -97,7 +101,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_UserClaims_UserIdTypeValue",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
     }
@@ -124,7 +129,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_UserLogin_ProviderKeyLoginProviderUserId",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
     }
@@ -140,7 +146,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_UserToken_NameLoginProviderUserId",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
     }
@@ -191,7 +198,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_Role_Name",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
         
@@ -202,7 +210,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_Role_NormalizedName",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
     }
@@ -216,7 +225,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_User_UserName",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
         
@@ -227,7 +237,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "UX_User_NormalizedUserName",
-                    Unique = true
+                    Unique = true,
+                    Collation = _caseInsensitiveCollation
                 })
         );
         
@@ -238,7 +249,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "IX_User_Email",
-                    Unique = _identityOptions.User.RequireUniqueEmail
+                    Unique = _identityOptions.User.RequireUniqueEmail,
+                    Collation = _caseInsensitiveCollation
                 })
         );
         
@@ -249,7 +261,8 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 , new CreateIndexOptions
                 {
                     Name = "IX_User_NormalizedEmail",
-                    Unique = _identityOptions.User.RequireUniqueEmail
+                    Unique = _identityOptions.User.RequireUniqueEmail,
+                    Collation = _caseInsensitiveCollation
                 })
         );
     }

@@ -86,7 +86,7 @@ public class Startup
                 };
             })
             .AddNuagesIdentityServices(Configuration, _ =>{})
-            .AddMongoStorage(options =>
+            .AddMongoStores(options =>
             {
                 options.ConnectionString = Configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = Configuration["Nuages:Mongo:Database"];

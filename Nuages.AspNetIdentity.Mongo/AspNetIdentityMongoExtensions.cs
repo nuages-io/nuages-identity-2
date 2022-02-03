@@ -7,7 +7,7 @@ namespace Nuages.AspNetIdentity.Mongo;
 
 public static class AspNetIdentityMongoExtensions
 {
-    public static void AddMongoStorage(this IdentityBuilder builder, Action<MongoIdentityOptions> configure)
+    public static void AddMongoStores(this IdentityBuilder builder, Action<MongoIdentityOptions> configure)
     {
         builder.Services.Configure(configure);
         

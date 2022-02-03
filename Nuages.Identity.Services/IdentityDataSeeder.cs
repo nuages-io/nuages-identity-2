@@ -14,9 +14,9 @@ public class IdentityDataSeeder : IHostedService
     {
         using var scope = _provider.CreateScope();
 
-        var email = "admin@example.com";
-        var userName = "admin";
-        var password = "Nuages123*";
+        const string email = "admin@example.com";
+        const string userName = "admin";
+        const string password = "Nuages123*";
         
         var userManager = scope.ServiceProvider.GetRequiredService<NuagesUserManager>();
         if (await userManager.FindByEmailAsync(email) == null)
@@ -25,8 +25,7 @@ public class IdentityDataSeeder : IHostedService
             {
                 UserName = userName,
                 Email = email,
-                EmailConfirmed = true,
-
+                EmailConfirmed = true
             };
             await userManager.CreateAsync(newUser, password);
         }

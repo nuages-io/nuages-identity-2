@@ -68,11 +68,12 @@ public class Startup
                     };
                 })
             .AddNuagesIdentityServices(_configuration, _ =>{})
-            .AddMongoStorage(options =>
+            .AddMongoStores(options =>
             {
                 options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = _configuration["Nuages:Mongo:Database"];
             });
+        
         services.AddNuagesAuthentication()
             .AddGoogle(googleOptions =>
             {
