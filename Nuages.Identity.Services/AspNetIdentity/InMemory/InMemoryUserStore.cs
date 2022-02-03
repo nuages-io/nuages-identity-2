@@ -1,9 +1,10 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable ConvertIfStatementToReturnStatement
 
-namespace Nuages.Identity.Services.AspNetIdentity;
+namespace Nuages.Identity.Services.AspNetIdentity.InMemory;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class InMemoryUserStore<TUser, TRole, TKey> : 
@@ -25,11 +26,8 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-    private bool _disposed;
-    
     public void Dispose()
     {
-        _disposed = true;
         
         GC.SuppressFinalize(this);
     }
@@ -41,37 +39,20 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
     private static readonly List<IdentityUserToken<TKey>> _tokens = new();
     private static readonly List<IdentityUserRole<TKey>> _userRoles = new();
     // ReSharper disable once CollectionNeverUpdated.Local
-    private static readonly List<IdentityRole<TKey>> _roles = new();
-    //private static readonly List<IdentityRoleClaim<TKey>> _roleClaims = new();
+   
     
-    public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
+    public Task<string?> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-        return user != null ? Task.FromResult(ConvertIdToString(user.Id)) : throw new ArgumentNullException(nameof (user));
-    }
-
-    protected virtual  string ConvertIdToString(TKey id) => (Equals(id,  default (TKey)!) ? null : id.ToString())!;
-    //public virtual TKey ConvertIdFromString(string? id) => (id == null ? default (TKey) : (TKey) TypeDescriptor.GetConverter(typeof (TKey)).ConvertFromInvariantString(id)!)!;
-
-    private void ThrowIfDisposed()
-    {
-        if (_disposed)
-            throw new ObjectDisposedException(GetType().Name);
+        return user != null ? Task.FromResult(user.Id?.ToString()) : throw new ArgumentNullException(nameof (user));
     }
 
     public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
         return user != null ? Task.FromResult(user.UserName) : throw new ArgumentNullException(nameof (user));
     }
 
     public Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.UserName = userName;
         
         return Task.CompletedTask;
@@ -79,16 +60,11 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
         return user != null ? Task.FromResult(user.NormalizedUserName) : throw new ArgumentNullException(nameof (user));
     }
 
     public Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.NormalizedUserName = normalizedName;
         
         return Task.CompletedTask;
@@ -96,30 +72,21 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
         if (user == null)
             throw new ArgumentNullException(nameof (user));
         
         _users.Add(user);
         
         return Task.FromResult(IdentityResult.Success);
-        
     }
 
     public Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-        
         return Task.FromResult(IdentityResult.Success);
     }
 
     public Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         _users.Remove(user);
         
         return Task.FromResult(IdentityResult.Success);
@@ -127,25 +94,16 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-        
         return Task.FromResult(_users.SingleOrDefault(u => u.Id.Equals(userId) ))!;
     }
 
     public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-        
         return Task.FromResult(_users.AsQueryable().FirstOrDefault(x => x.NormalizedUserName == normalizedUserName))!;
     }
 
     public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         var list = _userClaims.Where(c => c.UserId.Equals(user.Id)).Select(c =>
             new Claim(c.ClaimType, c.ClaimValue)
         ).ToList();
@@ -155,9 +113,6 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         foreach (var claim in claims)
         {
             _userClaims.Add(new IdentityUserClaim<TKey>
@@ -260,7 +215,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
         
@@ -277,7 +232,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
 
@@ -292,14 +247,14 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
     {
         var ids = _userRoles.Where(u => u.UserId.Equals(user.Id)).Select(r => r.RoleId);
 
-        var list = _roles.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
+        var list = InMemoryRoleStore<TRole, TKey>.RolesCollection.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
 
         return Task.FromResult((IList<string>)list.ToList());
     }
 
     public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
         if (role == null)
             return Task.FromResult(false);
         
@@ -310,7 +265,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
     {
-        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
         if (role == null)
             return Task.FromResult((IList<TUser>)new List<TUser>());
         
@@ -323,9 +278,6 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.PasswordHash = passwordHash;
         
         return Task.CompletedTask;
@@ -333,25 +285,16 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.PasswordHash);
     }
 
     public Task<bool> HasPasswordAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
     }
 
     public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.SecurityStamp = stamp;
 
         return Task.CompletedTask;
@@ -359,17 +302,11 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.SecurityStamp);
     }
 
     public Task SetEmailAsync(TUser user, string email, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.Email = email;
 
         return Task.CompletedTask;
@@ -377,25 +314,16 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<string> GetEmailAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.Email);
     }
 
     public Task<bool> GetEmailConfirmedAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.EmailConfirmed);
     }
 
     public Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.EmailConfirmed = confirmed;
 
         return Task.CompletedTask;
@@ -403,25 +331,16 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-        
         return Task.FromResult(_users.AsQueryable().FirstOrDefault(x => x.NormalizedEmail == normalizedEmail))!;
     }
 
     public Task<string> GetNormalizedEmailAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.NormalizedEmail);
     }
 
     public Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.NormalizedEmail = normalizedEmail;
 
         return Task.CompletedTask;
@@ -429,9 +348,6 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.PhoneNumber = phoneNumber;
 
         return Task.CompletedTask;
@@ -439,25 +355,16 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<string> GetPhoneNumberAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.PhoneNumber);
     }
 
     public Task<bool> GetPhoneNumberConfirmedAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.PhoneNumberConfirmed);
     }
 
     public Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.PhoneNumberConfirmed = confirmed;
 
         return Task.CompletedTask;
@@ -467,9 +374,6 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.TwoFactorEnabled = enabled;
 
         return Task.CompletedTask;
@@ -477,25 +381,16 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<bool> GetTwoFactorEnabledAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.TwoFactorEnabled);
     }
 
     public Task<DateTimeOffset?> GetLockoutEndDateAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.LockoutEnd);
     }
 
     public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.LockoutEnd = lockoutEnd;
 
         return Task.CompletedTask;
@@ -503,9 +398,6 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.AccessFailedCount += 1;
 
         return Task.FromResult(user.AccessFailedCount);
@@ -513,9 +405,6 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task ResetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.AccessFailedCount = 0;
 
         return Task.CompletedTask;
@@ -523,30 +412,20 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.AccessFailedCount);
     }
 
     public Task<bool> GetLockoutEnabledAsync(TUser user, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         return Task.FromResult(user.LockoutEnabled);
     }
 
     public Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
-        ThrowIfDisposed();
-
         user.LockoutEnabled = enabled;
 
         return Task.CompletedTask;
     }
-
     
     public Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
     {

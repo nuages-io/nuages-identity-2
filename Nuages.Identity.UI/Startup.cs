@@ -4,7 +4,6 @@ using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
-using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -49,7 +48,65 @@ public class Startup
         
         var options = _configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
         
-        services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
+        // services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
+        //     {
+        //         identity.Lockout = new LockoutOptions
+        //         {
+        //             AllowedForNewUsers = true,
+        //             MaxFailedAccessAttempts = 5,
+        //             DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
+        //         };
+        //
+        //         identity.Stores = new StoreOptions
+        //         {
+        //             MaxLengthForKeys = 0,
+        //             ProtectPersonalData = false
+        //         };
+        //
+        //         identity.Tokens = new TokenOptions
+        //         {
+        //             ProviderMap = new Dictionary<string, TokenProviderDescriptor>(),
+        //             EmailConfirmationTokenProvider = TokenOptions.DefaultProvider,
+        //             PasswordResetTokenProvider = TokenOptions.DefaultProvider,
+        //             ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
+        //             ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
+        //             AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider
+        //         };
+        //
+        //         identity.Password = options.Password;
+        //
+        //         identity.User = new UserOptions
+        //         {
+        //             AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+",
+        //             RequireUniqueEmail = true /* Not the default*/
+        //         };
+        //
+        //         identity.ClaimsIdentity = new ClaimsIdentityOptions
+        //         {
+        //             RoleClaimType = OpenIddictConstants.Claims.Role,
+        //             UserNameClaimType = OpenIddictConstants.Claims.Name,
+        //             UserIdClaimType = OpenIddictConstants.Claims.Subject,
+        //             EmailClaimType = ClaimTypes.Email,
+        //             SecurityStampClaimType =  "AspNet.Identity.SecurityStamp"
+        //         };
+        //
+        //         identity.SignIn = new SignInOptions
+        //         {
+        //             RequireConfirmedEmail = false,
+        //             RequireConfirmedPhoneNumber = false, //MUST be false
+        //             RequireConfirmedAccount = false //MUST be false
+        //         };
+        //         
+        //     },
+        //     mongo =>
+        //     {
+        //         mongo.ConnectionString =
+        //             _configuration["Nuages:Mongo:ConnectionString"];
+        //     })
+        //     .AddNuagesIdentity(_configuration)
+        //     .AddPasswordlessLoginProvider();
+
+         services.AddIdentity<NuagesApplicationUser, NuagesApplicationRole>(identity =>
             {
                 identity.Lockout = new LockoutOptions
                 {
@@ -98,15 +155,11 @@ public class Startup
                     RequireConfirmedAccount = false //MUST be false
                 };
                 
-            },
-            mongo =>
-            {
-                mongo.ConnectionString =
-                    _configuration["Nuages:Mongo:ConnectionString"];
             })
+             .AddDefaultTokenProviders()
             .AddNuagesIdentity(_configuration)
             .AddPasswordlessLoginProvider();
-
+         
         services
             .AddMvc()
             .AddJsonOptions(jsonOptions =>
@@ -139,8 +192,6 @@ public class Startup
        });
 
         services.AddHealthChecks();
-        
-        
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

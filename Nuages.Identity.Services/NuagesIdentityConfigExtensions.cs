@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.AspNetIdentity.InMemory;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
@@ -37,8 +38,13 @@ public static class NuagesIdentityConfigExtensions
         if (configure != null)
             services.Configure(configure);
         
-        builder.AddUserManager<NuagesUserManager>().AddSignInManager<NuagesSignInManager>();
+        builder.AddUserManager<NuagesUserManager>()
+            .AddSignInManager<NuagesSignInManager>()
+            .AddRoleManager<NuagesRoleManager>();
+        
         builder.AddUserStore<InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
+        builder.AddRoleStore<InMemoryRoleStore<NuagesApplicationRole, string>>();
+
         
         services.AddScoped<IEmailValidator, EmailValidator>();
         
