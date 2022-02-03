@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using Nuages.AspNetIdentity;
 
 namespace Nuages.Identity.Services;
 
+[ExcludeFromCodeCoverage]
 public class IdentityDataSeeder : IHostedService
 {
     private readonly IServiceProvider _provider;
