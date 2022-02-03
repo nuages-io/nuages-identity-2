@@ -29,10 +29,10 @@ where TKey : IEquatable<TKey>
         GC.SuppressFinalize(this);
     }
 
-    public MongoRoleStore(IOptions<NuagesIdentityOptions> options)
+    public MongoRoleStore(IOptions<MongoIdentityOptions> options)
     {
         var client = new MongoClient(options.Value.ConnectionString);
-        var database = client.GetDatabase(options.Value.DatabaseName);
+        var database = client.GetDatabase(options.Value.Database);
 
         RolesCollection = database.GetCollection<TRole>("AspNetRoles");
         RoleClaimsCollection = database.GetCollection<IdentityRoleClaim<TKey>>("AspNetRoleClaims");

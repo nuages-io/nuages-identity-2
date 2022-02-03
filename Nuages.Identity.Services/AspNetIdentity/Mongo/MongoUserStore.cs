@@ -48,10 +48,10 @@ public class MongoUserStore<TUser, TRole, TKey> :
     public static InsertOneOptions InsertOneOptions  { get; } = new();
     // ReSharper disable once CollectionNeverUpdated.Local
    
-    public MongoUserStore(IOptions<NuagesIdentityOptions> options)
+    public MongoUserStore(IOptions<MongoIdentityOptions> options)
     {
         var client = new MongoClient(options.Value.ConnectionString);
-        var database = client.GetDatabase(options.Value.DatabaseName);
+        var database = client.GetDatabase(options.Value.Database);
 
         UsersCollection = database.GetCollection<TUser>("AspNetUsers");
         UsersClaimsCollection = database.GetCollection<MongoIdentityUserClaim<TKey>>("AspNetUserClaims");

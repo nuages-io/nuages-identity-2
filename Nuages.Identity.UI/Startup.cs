@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
@@ -7,7 +6,7 @@ using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.AspNetIdentity.Mongo;
 using Nuages.Identity.UI.OpenIdDict;
 using Nuages.Localization;
 using OpenIddict.Abstractions;
@@ -35,7 +34,7 @@ public class Startup
         services.AddHttpClient();
 
         AWSXRayRecorder.InitializeInstance(_configuration);
-        
+
         if (!_env.IsDevelopment())
         {
             AWSSDKHandler.RegisterXRayForAllServices();
@@ -45,97 +44,13 @@ public class Startup
         {
             AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
         }
-        
-        var options = _configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
-        
-        // services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
-        //     {
-        //         identity.Lockout = new LockoutOptions
-        //         {
-        //             AllowedForNewUsers = true,
-        //             MaxFailedAccessAttempts = 5,
-        //             DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
-        //         };
-        //
-        //         identity.Stores = new StoreOptions
-        //         {
-        //             MaxLengthForKeys = 0,
-        //             ProtectPersonalData = false
-        //         };
-        //
-        //         identity.Tokens = new TokenOptions
-        //         {
-        //             ProviderMap = new Dictionary<string, TokenProviderDescriptor>(),
-        //             EmailConfirmationTokenProvider = TokenOptions.DefaultProvider,
-        //             PasswordResetTokenProvider = TokenOptions.DefaultProvider,
-        //             ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
-        //             ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
-        //             AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider
-        //         };
-        //
-        //         identity.Password = options.Password;
-        //
-        //         identity.User = new UserOptions
-        //         {
-        //             AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+",
-        //             RequireUniqueEmail = true /* Not the default*/
-        //         };
-        //
-        //         identity.ClaimsIdentity = new ClaimsIdentityOptions
-        //         {
-        //             RoleClaimType = OpenIddictConstants.Claims.Role,
-        //             UserNameClaimType = OpenIddictConstants.Claims.Name,
-        //             UserIdClaimType = OpenIddictConstants.Claims.Subject,
-        //             EmailClaimType = ClaimTypes.Email,
-        //             SecurityStampClaimType =  "AspNet.Identity.SecurityStamp"
-        //         };
-        //
-        //         identity.SignIn = new SignInOptions
-        //         {
-        //             RequireConfirmedEmail = false,
-        //             RequireConfirmedPhoneNumber = false, //MUST be false
-        //             RequireConfirmedAccount = false //MUST be false
-        //         };
-        //         
-        //     },
-        //     mongo =>
-        //     {
-        //         mongo.ConnectionString =
-        //             _configuration["Nuages:Mongo:ConnectionString"];
-        //     })
-        //     .AddNuagesIdentity(_configuration)
-        //     .AddPasswordlessLoginProvider();
 
-         services.AddIdentity<NuagesApplicationUser, NuagesApplicationRole>(identity =>
+        services.AddNuagesIdentity(_configuration,
+            _ => { },
+            identity =>
             {
-                identity.Lockout = new LockoutOptions
-                {
-                    AllowedForNewUsers = true,
-                    MaxFailedAccessAttempts = 5,
-                    DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
-                };
-
-                identity.Stores = new StoreOptions
-                {
-                    MaxLengthForKeys = 0,
-                    ProtectPersonalData = false
-                };
-
-                identity.Tokens = new TokenOptions
-                {
-                    ProviderMap = new Dictionary<string, TokenProviderDescriptor>(),
-                    EmailConfirmationTokenProvider = TokenOptions.DefaultProvider,
-                    PasswordResetTokenProvider = TokenOptions.DefaultProvider,
-                    ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
-                    ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
-                    AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider
-                };
-
-                identity.Password = options.Password;
-
                 identity.User = new UserOptions
                 {
-                    AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+",
                     RequireUniqueEmail = true /* Not the default*/
                 };
 
@@ -144,8 +59,6 @@ public class Startup
                     RoleClaimType = OpenIddictConstants.Claims.Role,
                     UserNameClaimType = OpenIddictConstants.Claims.Name,
                     UserIdClaimType = OpenIddictConstants.Claims.Subject,
-                    EmailClaimType = ClaimTypes.Email,
-                    SecurityStampClaimType =  "AspNet.Identity.SecurityStamp"
                 };
 
                 identity.SignIn = new SignInOptions
@@ -154,12 +67,23 @@ public class Startup
                     RequireConfirmedPhoneNumber = false, //MUST be false
                     RequireConfirmedAccount = false //MUST be false
                 };
-                
             })
-             .AddDefaultTokenProviders()
-            .AddNuagesIdentity(_configuration)
-            .AddPasswordlessLoginProvider();
-         
+        .AddMongoStorage(options =>
+        {
+            options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
+            options.Database = _configuration["Nuages:Mongo:Database"];
+        });
+
+        services.AddNuagesAuthentication()
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = _configuration["Google:ClientId"];
+                googleOptions.ClientSecret = _configuration["Google:ClientSecret"];
+            });
+
+        // ReSharper disable once UnusedParameter.Local
+        services.AddNuagesOpenIdDict(_configuration, configure => { });
+        
         services
             .AddMvc()
             .AddJsonOptions(jsonOptions =>
@@ -170,26 +94,9 @@ public class Startup
 
         services.AddHttpContextAccessor();
 
-        var enableOptimizer = !_env.IsDevelopment();
-        services.AddWebOptimizer(enableOptimizer, enableOptimizer);
-        
+        services.AddWebOptimizer( !_env.IsDevelopment(),  !_env.IsDevelopment());
+
         services.AddUI(_configuration);
-
-        services.AddAuthentication()
-            .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
-            .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
-            .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme)
-            .AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = _configuration["Google:ClientId"];
-                googleOptions.ClientSecret = _configuration["Google:ClientSecret"];
-            });
-
-       // var openIdDictOptions = _configuration.GetSection("Nuages:OpenIdDict").Get<OpenIdDictOptions>();
-            
-       // ReSharper disable once UnusedParameter.Local
-       services.AddNuagesOpenIdDict(_configuration, configure => {
-       });
 
         services.AddHealthChecks();
     }

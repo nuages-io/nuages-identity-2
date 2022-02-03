@@ -1,10 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.AspNetIdentity.Mongo;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
@@ -20,69 +17,26 @@ namespace Nuages.Identity.Services;
 [ExcludeFromCodeCoverage]
 public static class NuagesIdentityConfigExtensions
 {
-    // ReSharper disable once UnusedMember.Global
-    public static void AddNuagesIdentity(this IdentityBuilder builder,
-        Action<NuagesIdentityOptions> configure )
+    public static IdentityBuilder AddNuagesIdentity(this IServiceCollection services, IConfiguration configuration,
+        Action<NuagesIdentityOptions> configure, Action<IdentityOptions> identityOptions)
     {
-        AddNuagesIdentity(builder, null, configure);
-    }
-    
-    public static IdentityBuilder AddNuagesIdentity(this IdentityBuilder builder, IConfiguration? configuration = null, Action<NuagesIdentityOptions>? configure = null)
-    {
-        var services = builder.Services;
-        
-        if (configuration != null)
-        {
-            services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
-        }
+        services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
         
         services.AddSenderClient(configuration);
         
-        if (configure != null)
-            services.Configure(configure);
-        
-        builder.AddUserManager<NuagesUserManager>()
+        services.Configure(configure);
+
+        var identityBuilder = services.AddIdentity<NuagesApplicationUser, NuagesApplicationRole>(identityOptions);
+
+        identityBuilder
+            .AddDefaultTokenProviders()
+            .AddUserManager<NuagesUserManager>()
             .AddSignInManager<NuagesSignInManager>()
             .AddRoleManager<NuagesRoleManager>();
         
-        BsonClassMap.RegisterClassMap<MongoIdentityUserToken<string>>(cm => 
-        {
-            cm.AutoMap();
-            cm.MapIdMember(c => c.Id);
-            cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
-            
-        });
-        
-        BsonClassMap.RegisterClassMap<IdentityUserToken<string>>(cm => 
-        {
-            cm.AutoMap();
-            cm.MapMember(c => c.UserId).SetSerializer(new StringSerializer(BsonType.ObjectId));
-        });
-        
-        BsonClassMap.RegisterClassMap<IdentityRole<string>>(cm => 
-        {
-            cm.AutoMap();
-            cm.MapMember(c => c.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
-        });
-
-        
-        BsonClassMap.RegisterClassMap<IdentityUser<string>>(cm => 
-        {
-            cm.AutoMap();
-            cm.MapMember(c => c.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
-        });
-
-        
-        BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm => 
-        {
-            cm.AutoMap();
-            cm.SetIgnoreExtraElements(true);
-            cm.MapMember(c => c.LastFailedLoginReason).SetSerializer(new EnumSerializer< FailedLoginReason>(BsonType.String));
-
-        });
-        
-        builder.AddUserStore<MongoUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
-        builder.AddRoleStore<MongoRoleStore<NuagesApplicationRole, string>>();
+        var userType = identityBuilder.UserType;
+        var totpProvider = typeof(PasswordlessLoginProvider<>).MakeGenericType(userType);
+        identityBuilder.AddTokenProvider("PasswordlessLoginProvider", totpProvider);
         
         services.AddScoped<IEmailValidator, EmailValidator>();
         
@@ -117,7 +71,18 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<ILogoutEndpoint, LogoutEndpoint>();
         services.AddScoped<IPasswordFlowHandler, PasswordFlowHandler>();
         services.AddScoped<ITokenEndpoint, TokenEndpoint>();
-        
+
+        return identityBuilder;
+    }
+
+    public static AuthenticationBuilder AddNuagesAuthentication(this IServiceCollection services)
+    {
+        var builder = services.AddAuthentication()
+            .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
+            .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
+            .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme);
+
         return builder;
+
     }
 }
