@@ -283,7 +283,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
         if (role == null)
             return Task.FromResult(false);
         
@@ -294,7 +294,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
         if (role == null)
             return Task.FromResult((IList<TUser>)new List<TUser>());
         
