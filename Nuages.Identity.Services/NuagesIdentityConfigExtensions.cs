@@ -45,20 +45,40 @@ public static class NuagesIdentityConfigExtensions
             .AddSignInManager<NuagesSignInManager>()
             .AddRoleManager<NuagesRoleManager>();
         
-        // builder.AddUserStore<InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
-        // builder.AddRoleStore<InMemoryRoleStore<NuagesApplicationRole, string>>();
-
         BsonClassMap.RegisterClassMap<MongoIdentityUserToken<string>>(cm => 
         {
             cm.AutoMap();
             cm.MapIdMember(c => c.Id);
             cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+            
         });
         
         BsonClassMap.RegisterClassMap<IdentityUserToken<string>>(cm => 
         {
             cm.AutoMap();
             cm.MapMember(c => c.UserId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        });
+        
+        BsonClassMap.RegisterClassMap<IdentityRole<string>>(cm => 
+        {
+            cm.AutoMap();
+            cm.MapMember(c => c.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        });
+
+        
+        BsonClassMap.RegisterClassMap<IdentityUser<string>>(cm => 
+        {
+            cm.AutoMap();
+            cm.MapMember(c => c.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        });
+
+        
+        BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm => 
+        {
+            cm.AutoMap();
+            cm.SetIgnoreExtraElements(true);
+            cm.MapMember(c => c.LastFailedLoginReason).SetSerializer(new EnumSerializer< FailedLoginReason>(BsonType.String));
+
         });
         
         builder.AddUserStore<MongoUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();

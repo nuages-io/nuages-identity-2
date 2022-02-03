@@ -1,12 +1,11 @@
-using AspNetCore.Identity.Mongo.Model;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+
+using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.Login;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
-[BsonIgnoreExtraElements]
-public class NuagesApplicationUser : MongoUser<string>
+
+public class NuagesApplicationUser : IdentityUser<string>
 {
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }
@@ -21,8 +20,7 @@ public class NuagesApplicationUser : MongoUser<string>
     public DateTime? LastPasswordChangedDate { get; set; }
     public bool EnableAutoExpirePassword { get; set; } = true;
 
-    [BsonRepresentation(BsonType.String)]
-    public FailedLoginReason? LastFailedLoginReason { get; set; }
+    public FailedLoginReason LastFailedLoginReason { get; set; }
     
     public string? LastName { get; set; }
     public string? FirstName { get; set; }

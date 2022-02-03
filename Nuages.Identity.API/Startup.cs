@@ -1,20 +1,14 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
-using AspNetCore.Identity.Mongo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Nuages.Identity.Services;
-using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Localization;
 using Nuages.Web;
-using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.API;
 
@@ -66,61 +60,61 @@ public class Startup
 
         var identityOptions = Configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
 
-        services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
-            {
-                identity.Lockout = new LockoutOptions
-                {
-                    AllowedForNewUsers = true,
-                    MaxFailedAccessAttempts = 5,
-                    DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
-                };
-
-                identity.Stores = new StoreOptions
-                {
-                    MaxLengthForKeys = 0,
-                    ProtectPersonalData = false
-                };
-
-                identity.Tokens = new TokenOptions
-                {
-                    ProviderMap = new Dictionary<string, TokenProviderDescriptor>(),
-                    EmailConfirmationTokenProvider = TokenOptions.DefaultProvider,
-                    PasswordResetTokenProvider = TokenOptions.DefaultProvider,
-                    ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
-                    ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
-                    AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider
-                };
-
-                identity.Password = identityOptions.Password;
-
-                identity.User = new UserOptions
-                {
-                    AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+",
-                    RequireUniqueEmail = true /* Not the default*/
-                };
-
-                identity.ClaimsIdentity = new ClaimsIdentityOptions
-                {
-                    RoleClaimType = OpenIddictConstants.Claims.Role,
-                    UserNameClaimType = OpenIddictConstants.Claims.Name,
-                    UserIdClaimType = OpenIddictConstants.Claims.Subject,
-                    EmailClaimType = ClaimTypes.Email,
-                    SecurityStampClaimType = "AspNet.Identity.SecurityStamp"
-                };
-
-                identity.SignIn = new SignInOptions
-                {
-                    RequireConfirmedEmail = true,
-                    RequireConfirmedPhoneNumber = false, //MUST be false
-                    RequireConfirmedAccount = false //MUST be false
-                };
-            },
-            mongo =>
-            {
-                var connection = Configuration["Nuages:Mongo:ConnectionString"];
-
-                mongo.ConnectionString = connection;
-            }).AddNuagesIdentity(Configuration).AddPasswordlessLoginProvider();
+        // services.AddIdentityMongoDbProvider<NuagesApplicationUser, NuagesApplicationRole, string>(identity =>
+        //     {
+        //         identity.Lockout = new LockoutOptions
+        //         {
+        //             AllowedForNewUsers = true,
+        //             MaxFailedAccessAttempts = 5,
+        //             DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5)
+        //         };
+        //
+        //         identity.Stores = new StoreOptions
+        //         {
+        //             MaxLengthForKeys = 0,
+        //             ProtectPersonalData = false
+        //         };
+        //
+        //         identity.Tokens = new TokenOptions
+        //         {
+        //             ProviderMap = new Dictionary<string, TokenProviderDescriptor>(),
+        //             EmailConfirmationTokenProvider = TokenOptions.DefaultProvider,
+        //             PasswordResetTokenProvider = TokenOptions.DefaultProvider,
+        //             ChangeEmailTokenProvider = TokenOptions.DefaultProvider,
+        //             ChangePhoneNumberTokenProvider = TokenOptions.DefaultPhoneProvider,
+        //             AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider
+        //         };
+        //
+        //         identity.Password = identityOptions.Password;
+        //
+        //         identity.User = new UserOptions
+        //         {
+        //             AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+",
+        //             RequireUniqueEmail = true /* Not the default*/
+        //         };
+        //
+        //         identity.ClaimsIdentity = new ClaimsIdentityOptions
+        //         {
+        //             RoleClaimType = OpenIddictConstants.Claims.Role,
+        //             UserNameClaimType = OpenIddictConstants.Claims.Name,
+        //             UserIdClaimType = OpenIddictConstants.Claims.Subject,
+        //             EmailClaimType = ClaimTypes.Email,
+        //             SecurityStampClaimType = "AspNet.Identity.SecurityStamp"
+        //         };
+        //
+        //         identity.SignIn = new SignInOptions
+        //         {
+        //             RequireConfirmedEmail = true,
+        //             RequireConfirmedPhoneNumber = false, //MUST be false
+        //             RequireConfirmedAccount = false //MUST be false
+        //         };
+        //     },
+        //     mongo =>
+        //     {
+        //         var connection = Configuration["Nuages:Mongo:ConnectionString"];
+        //
+        //         mongo.ConnectionString = connection;
+        //     }).AddNuagesIdentity(Configuration).AddPasswordlessLoginProvider();
 
 
         services.AddAuthentication(options =>

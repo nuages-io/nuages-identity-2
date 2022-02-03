@@ -2,6 +2,7 @@ namespace Nuages.Identity.Services.Login;
 
 public enum FailedLoginReason
 {
+    None,
     NotWithinDateRange,
     PasswordMustBeChanged,
     EmailNotConfirmed,

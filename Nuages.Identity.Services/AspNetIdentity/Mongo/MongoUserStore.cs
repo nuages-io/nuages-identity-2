@@ -38,8 +38,10 @@ public class MongoUserStore<TUser, TRole, TKey> :
         GC.SuppressFinalize(this);
     }
 
+    private readonly IdentityErrorDescriber _errorDescriber = new ();
+    
     // ReSharper disable once StaticMemberInGenericType
-    public static ReplaceOptions ReplaceOptions1 { get; } = new();
+    public static ReplaceOptions ReplaceOptions { get; } = new();
     // ReSharper disable once StaticMemberInGenericType
     public static DeleteOptions DeleteOptions  { get; } = new();
     // ReSharper disable once StaticMemberInGenericType
@@ -51,11 +53,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         var client = new MongoClient(options.Value.ConnectionString);
         var database = client.GetDatabase(options.Value.DatabaseName);
 
-        UsersCollection = database.GetCollection<TUser>("Users");
-        UsersClaimsCollection = database.GetCollection<MongoIdentityUserClaim<TKey>>("UsersClaims");
-        UsersLoginsCollection = database.GetCollection<MongoIdentityUserLogin<TKey>>("UsersLogins");
-        UsersTokensCollection = database.GetCollection<MongoIdentityUserToken<TKey>>("UsersTokens");
-        UsersRolesCollection = database.GetCollection<IdentityUserRole<TKey>>("UsersRoles");
+        UsersCollection = database.GetCollection<TUser>("AspNetUsers");
+        UsersClaimsCollection = database.GetCollection<MongoIdentityUserClaim<TKey>>("AspNetUserClaims");
+        UsersLoginsCollection = database.GetCollection<MongoIdentityUserLogin<TKey>>("AspNetUserLogins");
+        UsersTokensCollection = database.GetCollection<MongoIdentityUserToken<TKey>>("AspNetUserTokens");
+        UsersRolesCollection = database.GetCollection<IdentityUserRole<TKey>>("AspNetUserRoles");
     }
     
     private  IMongoCollection<TUser> UsersCollection { get; }
@@ -80,11 +82,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return user != null ? Task.FromResult(user.UserName) : throw new ArgumentNullException(nameof (user));
     }
 
-    public Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken)
+    public async Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken)
     {
         user.UserName = userName;
-        
-        return Task.CompletedTask;
+
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<string> GetNormalizedUserNameAsync(TUser user, CancellationToken cancellationToken)
@@ -92,11 +94,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return user != null ? Task.FromResult(user.NormalizedUserName) : throw new ArgumentNullException(nameof (user));
     }
 
-    public Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken)
+    public async Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken)
     {
         user.NormalizedUserName = normalizedName;
         
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
@@ -109,9 +111,21 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return IdentityResult.Success;
     }
 
-    public Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken)
+    public async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken)
     {
-        return Task.FromResult(IdentityResult.Success);
+        var currentConcurrencyStamp = user.ConcurrencyStamp;
+        user.ConcurrencyStamp = Guid.NewGuid().ToString();
+
+        var result = await UsersCollection.ReplaceOneAsync(x => x.Id.Equals(user.Id) &&
+                                                                x.ConcurrencyStamp.Equals(currentConcurrencyStamp), 
+            user, ReplaceOptions, cancellationToken);
+
+        if (!result.IsAcknowledged && result.ModifiedCount == 0)
+        {
+            return IdentityResult.Failed(_errorDescriber.ConcurrencyFailure());
+        }
+        
+        return IdentityResult.Success;
     }
 
     public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
@@ -162,7 +176,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
             matchedClaim.Value = newClaim.Value;
             matchedClaim.Type = newClaim.Type;
 
-            await UsersClaimsCollection.ReplaceOneAsync(c => c.Id == matchedClaim.Id, matchedClaim, ReplaceOptions1, cancellationToken);
+            await UsersClaimsCollection.ReplaceOneAsync(c => c.Id == matchedClaim.Id, matchedClaim, ReplaceOptions, cancellationToken);
         }
     }
 
@@ -207,7 +221,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken)
     {
-        IList<UserLoginInfo> result = UsersLogins.Where(l => l.UserId.Equals(user.Id))
+        IList<UserLoginInfo> result = UsersLogins.Where(l => l.UserId.Equals(user.Id)).ToList()
             .Select(l => new UserLoginInfo(l.LoginProvider, l.ProviderKey, l.ProviderDisplayName)).ToList();
         return Task.FromResult(result);
     }
@@ -280,11 +294,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult((IList<TUser>)list.ToList());
     }
 
-    public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
+    public async Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
     {
         user.PasswordHash = passwordHash;
         
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<string> GetPasswordHashAsync(TUser user, CancellationToken cancellationToken)
@@ -297,11 +311,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
     }
 
-    public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
+    public async Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
     {
         user.SecurityStamp = stamp;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
@@ -309,11 +323,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(user.SecurityStamp);
     }
 
-    public Task SetEmailAsync(TUser user, string email, CancellationToken cancellationToken)
+    public async Task SetEmailAsync(TUser user, string email, CancellationToken cancellationToken)
     {
         user.Email = email;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<string> GetEmailAsync(TUser user, CancellationToken cancellationToken)
@@ -326,11 +340,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(user.EmailConfirmed);
     }
 
-    public Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken)
+    public async Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken)
     {
         user.EmailConfirmed = confirmed;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
@@ -343,18 +357,18 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(user.NormalizedEmail);
     }
 
-    public Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken cancellationToken)
+    public async Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken cancellationToken)
     {
         user.NormalizedEmail = normalizedEmail;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
-    public Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken cancellationToken)
+    public async Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken cancellationToken)
     {
         user.PhoneNumber = phoneNumber;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<string> GetPhoneNumberAsync(TUser user, CancellationToken cancellationToken)
@@ -367,20 +381,18 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(user.PhoneNumberConfirmed);
     }
 
-    public Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken)
+    public async Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken)
     {
         user.PhoneNumberConfirmed = confirmed;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
-   
-
-    public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
+    public async Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
     {
         user.TwoFactorEnabled = enabled;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<bool> GetTwoFactorEnabledAsync(TUser user, CancellationToken cancellationToken)
@@ -393,25 +405,27 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(user.LockoutEnd);
     }
 
-    public Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
+    public async Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
     {
         user.LockoutEnd = lockoutEnd;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
-    public Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
+    public async Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
     {
         user.AccessFailedCount += 1;
 
-        return Task.FromResult(user.AccessFailedCount);
+        await UpdateAsync(user, cancellationToken);
+        
+        return user.AccessFailedCount;
     }
 
-    public Task ResetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
+    public async Task ResetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
     {
         user.AccessFailedCount = 0;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
 
     public Task<int> GetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken)
@@ -424,11 +438,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(user.LockoutEnabled);
     }
 
-    public Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
+    public async Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
     {
         user.LockoutEnabled = enabled;
 
-        return Task.CompletedTask;
+        await UpdateAsync(user, cancellationToken);
     }
     
     public async Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
@@ -442,7 +456,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
         {
             tokenEntity.Value = value;
 
-            await UsersTokensCollection.ReplaceOneAsync(t => t.Id == tokenEntity.Id, tokenEntity, ReplaceOptions1, cancellationToken);
+            await UsersTokensCollection.ReplaceOneAsync(t => t.Id == tokenEntity.Id, tokenEntity, ReplaceOptions, cancellationToken);
         }
         else
         {

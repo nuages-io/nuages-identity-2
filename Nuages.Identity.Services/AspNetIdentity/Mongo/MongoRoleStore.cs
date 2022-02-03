@@ -34,8 +34,8 @@ where TKey : IEquatable<TKey>
         var client = new MongoClient(options.Value.ConnectionString);
         var database = client.GetDatabase(options.Value.DatabaseName);
 
-        RolesCollection = database.GetCollection<TRole>("Roles");
-        RoleClaimsCollection = database.GetCollection<IdentityRoleClaim<TKey>>("RolesClaims");
+        RolesCollection = database.GetCollection<TRole>("AspNetRoles");
+        RoleClaimsCollection = database.GetCollection<IdentityRoleClaim<TKey>>("AspNetRoleClaims");
     }
     
     private  IMongoCollection<TRole> RolesCollection { get; }

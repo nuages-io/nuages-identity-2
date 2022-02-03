@@ -39,7 +39,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         if (!await CheckAccountAsync(user)) 
             return false;
 
-        user.LastFailedLoginReason = null;
+        user.LastFailedLoginReason = FailedLoginReason.None;
         
         return true;
     }

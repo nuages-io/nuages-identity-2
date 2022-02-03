@@ -40,7 +40,7 @@ public class TestsRegisterService
         
         Assert.True(res.Success);
         Assert.False(res.ShowConfirmationMessage);
-        Assert.True(sendCalled);
+        Assert.False( sendCalled);
     }
     
     [Fact]
@@ -53,7 +53,7 @@ public class TestsRegisterService
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         
         identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
-
+        identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = true;
         
             
         var sendCalled = false;

@@ -1,9 +1,11 @@
-using AspNetCore.Identity.Mongo.Model;
+
+
+using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class NuagesApplicationRole : MongoRole<string>
+public class NuagesApplicationRole : IdentityRole
 {
 }
