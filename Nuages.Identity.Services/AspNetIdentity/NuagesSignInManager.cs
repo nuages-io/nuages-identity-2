@@ -16,10 +16,16 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
     private readonly NuagesIdentityOptions _nuagesIdentityOptions;
 
     // ReSharper disable once MemberCanBeProtected.Global
-    public NuagesSignInManager(UserManager<NuagesApplicationUser> userManager, IHttpContextAccessor contextAccessor, IUserClaimsPrincipalFactory<NuagesApplicationUser> claimsFactory, 
+    public NuagesSignInManager(UserManager<NuagesApplicationUser> userManager, 
+        IHttpContextAccessor contextAccessor, 
+        IUserClaimsPrincipalFactory<NuagesApplicationUser> claimsFactory, 
         // ReSharper disable once ContextualLoggerProblem
-        IOptions<IdentityOptions> optionsAccessor, ILogger<SignInManager<NuagesApplicationUser>> logger, IAuthenticationSchemeProvider schemes, 
-        IUserConfirmation<NuagesApplicationUser> confirmation, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
+        IOptions<IdentityOptions> optionsAccessor, 
+        ILogger<SignInManager<NuagesApplicationUser>> logger, 
+        IAuthenticationSchemeProvider schemes, 
+        IUserConfirmation<NuagesApplicationUser> confirmation, 
+        IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
+        base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
     {
         _confirmation = confirmation;
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;

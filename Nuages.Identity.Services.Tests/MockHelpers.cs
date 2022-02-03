@@ -153,7 +153,7 @@ public static class MockHelpers
         mockIdentity.UserManager = new NuagesUserManager(mockIdentity.UserStore.Object , options.Object, new PasswordHasher<NuagesApplicationUser>(),
             userValidators, pwdValidators, MockLookupNormalizer(),
             new IdentityErrorDescriber(), null!,
-            new Mock<ILogger<NuagesUserManager>>().Object, nuagesOptionsMock.Object);
+            new Mock<ILogger<NuagesUserManager>>().Object);
 
         mockIdentity.UserManager.Options.SignIn.RequireConfirmedEmail = true;
 

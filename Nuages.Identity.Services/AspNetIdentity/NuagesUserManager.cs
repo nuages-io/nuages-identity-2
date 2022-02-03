@@ -7,16 +7,16 @@ namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class NuagesUserManager : UserManager<NuagesApplicationUser> 
 {
-    private readonly NuagesIdentityOptions _nuagesIdentityOptions;
-
-    public NuagesUserManager(IUserStore<NuagesApplicationUser> store, IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<NuagesApplicationUser> passwordHasher, 
-        IEnumerable<IUserValidator<NuagesApplicationUser>> userValidators, IEnumerable<IPasswordValidator<NuagesApplicationUser>> passwordValidators, ILookupNormalizer keyNormalizer,
-        // ReSharper disable once ContextualLoggerProblem
-        IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<NuagesApplicationUser>> logger, 
-        IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
+    public NuagesUserManager(IUserStore<NuagesApplicationUser> store, 
+        IOptions<IdentityOptions> optionsAccessor, 
+        IPasswordHasher<NuagesApplicationUser> passwordHasher, 
+        IEnumerable<IUserValidator<NuagesApplicationUser>> userValidators, 
+        IEnumerable<IPasswordValidator<NuagesApplicationUser>> passwordValidators, 
+        ILookupNormalizer keyNormalizer,
+        IdentityErrorDescriber errors, IServiceProvider services, 
+        ILogger<UserManager<NuagesApplicationUser>> logger) : 
         base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
-        _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
     
     public override async Task<IdentityResult> CreateAsync(NuagesApplicationUser user)
@@ -36,13 +36,8 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
 
     public async Task<NuagesApplicationUser?> FindAsync(string userNameOrEmail)
     {
-        NuagesApplicationUser? user = null;
+        var user = await FindByNameAsync(userNameOrEmail);
         
-        if (_nuagesIdentityOptions.SupportsUserName)
-        {
-            user = await FindByNameAsync(userNameOrEmail);
-        }
-
         // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
         if (user == null)
             user = await FindByEmailAsync(userNameOrEmail);
