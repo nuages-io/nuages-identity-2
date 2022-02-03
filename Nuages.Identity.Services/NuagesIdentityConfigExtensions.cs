@@ -1,7 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.AspNetIdentity;
+
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;

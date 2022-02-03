@@ -33,6 +33,7 @@
     </ItemGroup>
     
     <ItemGroup>
+      <ProjectReference Include="..\Nuages.AspNetIdentity.Mongo\Nuages.AspNetIdentity.Mongo.csproj" />
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
     </ItemGroup>
     <ItemGroup>

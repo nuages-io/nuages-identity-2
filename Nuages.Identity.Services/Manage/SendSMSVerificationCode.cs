@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Localization;
-using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.AspNetIdentity;
+
 using Nuages.Identity.Services.Email;
 using Nuages.Web.Exceptions;
 

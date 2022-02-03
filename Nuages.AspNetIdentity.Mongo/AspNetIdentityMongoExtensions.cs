@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-using Nuages.Identity.Services.Login;
+using Nuages.AspNetIdentity;
 
 namespace Nuages.Identity.Services.AspNetIdentity.Mongo;
 

@@ -1,4 +1,5 @@
 using Moq;
+using Nuages.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Web.Exceptions;
@@ -18,7 +19,7 @@ public class TestsLoginService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
         {
-            SupportsUserName = true,
+            SupportsLoginWithEmail = true,
             AutoExpirePasswordDelayInDays = 90,
             AutoConfirmExternalLogin = true,
             Name = "TestName"

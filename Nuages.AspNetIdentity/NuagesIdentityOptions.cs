@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.Identity.Services;
+namespace Nuages.AspNetIdentity;
 
 [ExcludeFromCodeCoverage]
 public class NuagesIdentityOptions
@@ -16,7 +16,7 @@ public class NuagesIdentityOptions
     public bool EnableAutoPasswordExpiration { get; set; }
     public int AutoExpirePasswordDelayInDays { get; set; } = 90;
 
-    public bool SupportsUserName { get; set; } = true;
+    public bool SupportsLoginWithEmail { get; set; } = true;
 
     public bool AutoConfirmExternalLogin { get; set; }
     

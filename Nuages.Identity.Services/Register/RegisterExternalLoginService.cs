@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
-using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.AspNetIdentity;
+
 using Nuages.Identity.Services.Email;
 
 namespace Nuages.Identity.Services.Register;
@@ -53,7 +53,6 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         
         var user = new NuagesApplicationUser
         {
-            Id = ObjectId.GenerateNewId().ToString(),
             Email = email,
             UserName = email,
             EmailConfirmed = _options.AutoConfirmExternalLogin

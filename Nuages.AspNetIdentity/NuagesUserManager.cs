@@ -3,10 +3,12 @@ using Microsoft.Extensions.Options;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace Nuages.Identity.Services.AspNetIdentity;
+namespace Nuages.AspNetIdentity;
 
 public class NuagesUserManager : UserManager<NuagesApplicationUser> 
 {
+    private readonly NuagesIdentityOptions _nuagesIdentityOptions;
+
     public NuagesUserManager(IUserStore<NuagesApplicationUser> store, 
         IOptions<IdentityOptions> optionsAccessor, 
         IPasswordHasher<NuagesApplicationUser> passwordHasher, 
@@ -14,13 +16,16 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         IEnumerable<IPasswordValidator<NuagesApplicationUser>> passwordValidators, 
         ILookupNormalizer keyNormalizer,
         IdentityErrorDescriber errors, IServiceProvider services, 
-        ILogger<UserManager<NuagesApplicationUser>> logger) : 
+        ILogger<UserManager<NuagesApplicationUser>> logger, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
         base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
+        _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
     
     public override async Task<IdentityResult> CreateAsync(NuagesApplicationUser user)
     {
+        user.Id = Guid.NewGuid().ToString();
+        
         var res = await base.CreateAsync(user);
        
         if (res.Succeeded)
@@ -37,11 +42,12 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
     public async Task<NuagesApplicationUser?> FindAsync(string userNameOrEmail)
     {
         var user = await FindByNameAsync(userNameOrEmail);
-        
-        // ReSharper disable once ConvertIfStatementToNullCoalescingExpression
-        if (user == null)
-            user = await FindByEmailAsync(userNameOrEmail);
 
+        if (user == null && _nuagesIdentityOptions.SupportsLoginWithEmail)
+        {
+            user = await FindByEmailAsync(userNameOrEmail);
+        }
+      
         return user;
     }
 

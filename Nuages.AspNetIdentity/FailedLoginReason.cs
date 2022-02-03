@@ -1,4 +1,4 @@
-namespace Nuages.Identity.Services.Login;
+namespace Nuages.AspNetIdentity;
 
 public enum FailedLoginReason
 {

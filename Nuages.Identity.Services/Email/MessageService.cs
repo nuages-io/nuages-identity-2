@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Options;
+using Nuages.AspNetIdentity;
 using Nuages.Localization.CultureProvider;
 using Nuages.Sender.API.Sdk;
 

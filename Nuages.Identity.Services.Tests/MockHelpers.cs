@@ -6,7 +6,8 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.AspNetIdentity;
+
 // ReSharper disable UnusedParameter.Local
 
 namespace Nuages.Identity.Services.Tests;
@@ -153,7 +154,7 @@ public static class MockHelpers
         mockIdentity.UserManager = new NuagesUserManager(mockIdentity.UserStore.Object , options.Object, new PasswordHasher<NuagesApplicationUser>(),
             userValidators, pwdValidators, MockLookupNormalizer(),
             new IdentityErrorDescriber(), null!,
-            new Mock<ILogger<NuagesUserManager>>().Object);
+            new Mock<ILogger<NuagesUserManager>>().Object, nuagesOptionsMock.Object);
 
         mockIdentity.UserManager.Options.SignIn.RequireConfirmedEmail = true;
 

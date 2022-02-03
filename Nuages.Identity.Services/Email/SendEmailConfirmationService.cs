@@ -2,7 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.AspNetIdentity;
+
 using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Email;

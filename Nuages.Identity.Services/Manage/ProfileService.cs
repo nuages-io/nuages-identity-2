@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Localization;
-using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.AspNetIdentity;
+
 using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage;

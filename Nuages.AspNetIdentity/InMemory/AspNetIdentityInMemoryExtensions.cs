@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.Identity.Services.AspNetIdentity.InMemory;
+namespace Nuages.AspNetIdentity.InMemory;
 
 // ReSharper disable once UnusedType.Global
 public static class AspNetIdentityInMemoryExtensions

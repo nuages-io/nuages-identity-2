@@ -5,7 +5,7 @@ using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services;
-using Nuages.Identity.Services.AspNetIdentity;
+
 using Nuages.Identity.Services.AspNetIdentity.Mongo;
 using Nuages.Identity.UI.OpenIdDict;
 using Nuages.Localization;

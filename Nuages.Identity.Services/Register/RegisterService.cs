@@ -2,8 +2,8 @@ using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using MongoDB.Bson;
-using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.AspNetIdentity;
+
 using Nuages.Identity.Services.Email;
 
 namespace Nuages.Identity.Services.Register;
@@ -50,7 +50,6 @@ public class RegisterService : IRegisterService
 
         user = new NuagesApplicationUser
         {
-            Id = ObjectId.GenerateNewId().ToString(),
             Email = model.Email,
             UserName = model.Email
         };

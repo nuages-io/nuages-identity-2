@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using Nuages.AspNetIdentity;
 using Nuages.Identity.Services;
-using Nuages.Identity.Services.AspNetIdentity;
+
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -42,7 +43,7 @@ public class Login : PageModel
 
         ReturnUrl = returnUrl ?? Url.Content("~/");
 
-        UserNamePlaceHolder = _stringLocalizer[_nuagesIdentityOptions.SupportsUserName ? "Login:Mode:userNameEmail" : "Login:Mode:email"] ;
+        UserNamePlaceHolder = _stringLocalizer[_nuagesIdentityOptions.SupportsLoginWithEmail ? "Login:Mode:userNameEmail" : "Login:Mode:email"] ;
         
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

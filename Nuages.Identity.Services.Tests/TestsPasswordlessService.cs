@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using Moq;
+using Nuages.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;

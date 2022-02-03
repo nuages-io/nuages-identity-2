@@ -1,9 +1,10 @@
+using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Nuages.Identity.Services.AspNetIdentity.InMemory;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable InconsistentNaming
@@ -54,6 +55,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
         var database = client.GetDatabase(options.Value.Database);
 
         UsersCollection = database.GetCollection<TUser>("AspNetUsers");
+        RolesCollection = database.GetCollection<TRole>("AspNetRoles");
         UsersClaimsCollection = database.GetCollection<MongoIdentityUserClaim<TKey>>("AspNetUserClaims");
         UsersLoginsCollection = database.GetCollection<MongoIdentityUserLogin<TKey>>("AspNetUserLogins");
         UsersTokensCollection = database.GetCollection<MongoIdentityUserToken<TKey>>("AspNetUserTokens");
@@ -61,12 +63,14 @@ public class MongoUserStore<TUser, TRole, TKey> :
     }
     
     private  IMongoCollection<TUser> UsersCollection { get; }
+    private  IMongoCollection<TRole> RolesCollection { get; }
     private  IMongoCollection<MongoIdentityUserClaim<TKey>> UsersClaimsCollection { get; }
     private  IMongoCollection<MongoIdentityUserLogin<TKey>> UsersLoginsCollection { get; }
     private  IMongoCollection<MongoIdentityUserToken<TKey>> UsersTokensCollection { get; }
     private  IMongoCollection<IdentityUserRole<TKey>> UsersRolesCollection { get; }
     
     public IQueryable<TUser> Users => UsersCollection.AsQueryable();
+    public IQueryable<TRole> Roles => RolesCollection.AsQueryable();
     public IQueryable<MongoIdentityUserClaim<TKey>> UsersClaims => UsersClaimsCollection.AsQueryable();
     public IQueryable<MongoIdentityUserLogin<TKey>> UsersLogins => UsersLoginsCollection.AsQueryable();
     public IQueryable<MongoIdentityUserToken<TKey>> UsersTokens => UsersTokensCollection.AsQueryable();
@@ -101,8 +105,15 @@ public class MongoUserStore<TUser, TRole, TKey> :
         await UpdateAsync(user, cancellationToken);
     }
 
+    TKey? ConvertIdFromString(string id)
+    {
+        return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
+    }
+    
     public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
+        user.Id = ConvertIdFromString(ObjectId.GenerateNewId().ToString())!;
+        
         if (user == null)
             throw new ArgumentNullException(nameof (user));
         
@@ -237,7 +248,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public async Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.Name == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
         
@@ -254,7 +265,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public async Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.Name == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
 
@@ -263,16 +274,16 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
     {
-        var ids = UsersRoles.Where(u => u.UserId.Equals(user.Id)).Select(r => r.RoleId);
+        var ids = UsersRoles.Where(u => u.UserId.Equals(user.Id)).ToList().Select(r => r.RoleId);
 
-        var list = InMemoryRoleStore<TRole, TKey>.RolesCollection.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
+        var list = Roles.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
 
         return Task.FromResult((IList<string>)list.ToList());
     }
 
     public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.Name == roleName);
         if (role == null)
             return Task.FromResult(false);
         
@@ -283,7 +294,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.Name == roleName);
         if (role == null)
             return Task.FromResult((IList<TUser>)new List<TUser>());
         

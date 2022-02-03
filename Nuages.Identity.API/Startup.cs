@@ -7,6 +7,7 @@ using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Nuages.AspNetIdentity;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity.Mongo;
 using Nuages.Localization;

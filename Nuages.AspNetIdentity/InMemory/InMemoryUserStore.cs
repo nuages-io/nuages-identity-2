@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ConvertIfStatementToReturnStatement
 
-namespace Nuages.Identity.Services.AspNetIdentity.InMemory;
+namespace Nuages.AspNetIdentity.InMemory;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
