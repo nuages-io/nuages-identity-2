@@ -3,6 +3,7 @@
 #nullable disable
 
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,6 +13,7 @@ using Nuages.Identity.Services.AspNetIdentity;
 
 namespace Nuages.Identity.UI.Pages.Account.Manage;
 
+[Authorize]
 public class ExternalLoginsModel : PageModel
 {
     private readonly NuagesUserManager _userManager;

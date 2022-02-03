@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -8,6 +9,7 @@ using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.UI.Pages.Account.Manage;
 
+[Authorize]
 public class Profile : PageModel
 {
     private readonly NuagesUserManager _userManager;

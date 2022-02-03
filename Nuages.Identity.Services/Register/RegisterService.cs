@@ -63,14 +63,14 @@ public class RegisterService : IRegisterService
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
             var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
-
-            _messageService.SendEmailUsingTemplate(model.Email, "Confirm_Email", new Dictionary<string, string>
-            {
-                { "Link", url }
-            });
-        
+            
             if (_userManager.Options.SignIn.RequireConfirmedEmail)
             {
+                _messageService.SendEmailUsingTemplate(model.Email, "Confirm_Email", new Dictionary<string, string>
+                {
+                    { "Link", url }
+                });
+
                 return new RegisterResultModel
                 {
                     ShowConfirmationMessage = true,

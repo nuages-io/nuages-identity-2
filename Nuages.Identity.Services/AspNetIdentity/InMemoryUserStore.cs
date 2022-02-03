@@ -1,14 +1,13 @@
-using System.ComponentModel;
-using System.Linq.Expressions;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+// ReSharper disable InconsistentNaming
+// ReSharper disable ConvertIfStatementToReturnStatement
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class InMemoryUserStore<TUser, TRole, TKey> : 
     IUserClaimStore<TUser>,
-    IUserStore<TUser>,
-    IDisposable,
     IUserLoginStore<TUser>,
     IUserRoleStore<TUser>,
     IUserPasswordStore<TUser>,
@@ -26,20 +25,24 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-    private bool _disposed = false;
+    private bool _disposed;
     
     public void Dispose()
     {
         _disposed = true;
+        
+        GC.SuppressFinalize(this);
     }
 
-    private static List<TUser> _users = new ();
+    private static readonly List<TUser> _users = new ();
     
-    private static List<IdentityUserClaim<TKey>> _userClaims = new();
-    private static List<IdentityUserLogin<TKey>> _logins = new();
-    private static List<IdentityUserToken<TKey>> _tokens = new();
-    private static List<IdentityUserRole<TKey>> _roles = new();
-    private static List<IdentityRoleClaim<TKey>> _roleClaims = new();
+    private static readonly List<IdentityUserClaim<TKey>> _userClaims = new();
+    private static readonly List<IdentityUserLogin<TKey>> _logins = new();
+    private static readonly List<IdentityUserToken<TKey>> _tokens = new();
+    private static readonly List<IdentityUserRole<TKey>> _userRoles = new();
+    // ReSharper disable once CollectionNeverUpdated.Local
+    private static readonly List<IdentityRole<TKey>> _roles = new();
+    //private static readonly List<IdentityRoleClaim<TKey>> _roleClaims = new();
     
     public Task<string> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
     {
@@ -48,13 +51,13 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return user != null ? Task.FromResult(ConvertIdToString(user.Id)) : throw new ArgumentNullException(nameof (user));
     }
 
-    public virtual string ConvertIdToString(TKey id) => (Equals(id,  default (TKey)!) ? null : id.ToString())!;
-    public virtual TKey ConvertIdFromString(string? id) => (id == null ? default (TKey) : (TKey) TypeDescriptor.GetConverter(typeof (TKey)).ConvertFromInvariantString(id)!)!;
+    protected virtual  string ConvertIdToString(TKey id) => (Equals(id,  default (TKey)!) ? null : id.ToString())!;
+    //public virtual TKey ConvertIdFromString(string? id) => (id == null ? default (TKey) : (TKey) TypeDescriptor.GetConverter(typeof (TKey)).ConvertFromInvariantString(id)!)!;
 
     private void ThrowIfDisposed()
     {
         if (_disposed)
-            throw new ObjectDisposedException(this.GetType().Name);
+            throw new ObjectDisposedException(GetType().Name);
     }
 
     public Task<string> GetUserNameAsync(TUser user, CancellationToken cancellationToken)
@@ -170,62 +173,152 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var matchedClaims = _userClaims.Where(c =>
+            c.ClaimType == claim.Type && c.ClaimValue == claim.Value && user.Id.Equals(user.Id));
+
+        foreach (var matchedClaim in matchedClaims)
+        {
+            matchedClaim.ClaimValue = newClaim.Value;
+            matchedClaim.ClaimType = newClaim.Type;
+        }
+        
+        return Task.CompletedTask;
     }
 
     public Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        foreach (var claim in claims)
+        {
+            var entity =
+                _userClaims.FirstOrDefault(
+                    uc => uc.UserId.Equals(user.Id) && uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value);
+            if (entity != null)
+            {
+                _userClaims.Remove(entity);
+            }
+        }
+        
+        return Task.CompletedTask;
     }
 
     public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        if (claim == null)
+        {
+            throw new ArgumentNullException(nameof(claim));
+        }
+
+        var ids = _userClaims.Where(x => x.ClaimType == claim.Type && x.ClaimValue == claim.Value).Select(c => c.UserId);
+        
+        return Task.FromResult<IList<TUser>>(_users.Where(i => ids.Contains(i.Id)).ToList());
     }
 
     public Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        _logins.Add(new IdentityUserLogin<TKey>
+        {
+            UserId = user.Id,
+            ProviderKey = login.ProviderKey,
+            LoginProvider = login.LoginProvider,
+            ProviderDisplayName = login.ProviderDisplayName
+        });
+
+        return Task.CompletedTask;
     }
 
     public Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var loginEntity =
+            _logins.SingleOrDefault(
+                l =>
+                    l.ProviderKey == providerKey && l.LoginProvider == loginProvider &&
+                    l.UserId.Equals(user.Id));
+        
+        if (loginEntity != null)
+        {
+            _logins.Remove(loginEntity);
+        }
+        
+        return Task.CompletedTask;
     }
 
     public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        IList<UserLoginInfo> result = _logins
+            .Select(l => new UserLoginInfo(l.LoginProvider, l.ProviderKey, l.ProviderDisplayName)).ToList();
+        return Task.FromResult(result);
     }
 
     public Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var login = _logins.SingleOrDefault(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey);
+        if (login == null)
+            return Task.FromResult<TUser>(null!);
+        
+        return Task.FromResult(_users.SingleOrDefault(u => u.Id.Equals(login.UserId)))!;
     }
 
     public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        
+        ArgumentNullException.ThrowIfNull(role);
+        
+        var identityRole = new IdentityUserRole<TKey>
+        {
+            UserId = user.Id,
+            RoleId = role.Id
+        };
+        
+        _userRoles.Add(identityRole);
+
+        return Task.CompletedTask;
     }
 
     public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        
+        ArgumentNullException.ThrowIfNull(role);
+
+        var userRole = _userRoles.SingleOrDefault(u => u.UserId.Equals(user.Id) && u.RoleId.Equals(role.Id));
+        if (userRole != null)
+            _userRoles.Remove(userRole);
+
+        return Task.CompletedTask;
     }
 
     public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var ids = _userRoles.Where(u => u.UserId.Equals(user.Id)).Select(r => r.RoleId);
+
+        var list = _roles.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
+
+        return Task.FromResult((IList<string>)list.ToList());
     }
 
     public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        if (role == null)
+            return Task.FromResult(false);
+        
+        var any = _userRoles.Any(c => c.UserId.Equals(user.Id) && c.RoleId.Equals(role.Id));
+        
+        return Task.FromResult(any);
     }
 
     public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var role = _roles.SingleOrDefault(r => r.Name == roleName);
+        if (role == null)
+            return Task.FromResult((IList<TUser>)new List<TUser>());
+        
+        var ids = _userRoles.Where(u => u.UserId.Equals(role.Id)).Select(r => r.RoleId);
+
+        var list = _users.Where(r => ids.Contains(r.Id));
+
+        return Task.FromResult((IList<TUser>)list.ToList());
     }
 
     public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
@@ -454,43 +547,95 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.CompletedTask;
     }
 
-    public Task SetAuthenticatorKeyAsync(TUser user, string key, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<string> GetAuthenticatorKeyAsync(TUser user, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var tokenEntity =
+            _tokens.SingleOrDefault(
+                l =>
+                    l.Name == name && l.LoginProvider == loginProvider &&
+                    l.UserId.Equals(user.Id));
+        if (tokenEntity != null)
+        {
+            tokenEntity.Value = value;
+        }
+        else
+        {
+            _tokens.Add(new IdentityUserToken<TKey>
+            {
+                UserId = user.Id,
+                LoginProvider = loginProvider,
+                Name = name,
+                Value = value
+            });
+        }
+        return Task.FromResult(0);
     }
 
     public Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var tokenEntity =
+            _tokens.SingleOrDefault(
+                l =>
+                    l.Name == name && l.LoginProvider == loginProvider &&
+                    l.UserId.Equals(user.Id));
+        if (tokenEntity != null)
+        {
+            _tokens.Remove(tokenEntity);
+        }
+        return Task.FromResult(0);
     }
 
-    public Task<string> GetTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
+    public Task<string?> GetTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var tokenEntity =
+            _tokens.SingleOrDefault(
+                l =>
+                    l.Name == name && l.LoginProvider == loginProvider &&
+                    l.UserId.Equals(user.Id));
+        return Task.FromResult(tokenEntity?.Value);
+    }
+
+    private const string AuthenticatorStoreLoginProvider = "[AspNetUserStore]";
+    private const string AuthenticatorKeyTokenName = "AuthenticatorKey";
+    private const string RecoveryCodeTokenName = "RecoveryCodes";
+
+    public Task SetAuthenticatorKeyAsync(TUser user, string key, CancellationToken cancellationToken)
+    {
+        return SetTokenAsync(user, AuthenticatorStoreLoginProvider, AuthenticatorKeyTokenName, key, cancellationToken);
+    }
+
+    public Task<string?> GetAuthenticatorKeyAsync(TUser user, CancellationToken cancellationToken)
+    {
+        return GetTokenAsync(user, AuthenticatorStoreLoginProvider, AuthenticatorKeyTokenName, cancellationToken);
     }
 
     public Task ReplaceCodesAsync(TUser user, IEnumerable<string> recoveryCodes, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var mergedCodes = string.Join(";", recoveryCodes);
+        return SetTokenAsync(user, AuthenticatorStoreLoginProvider, RecoveryCodeTokenName, mergedCodes, cancellationToken);
     }
 
-    public Task<bool> RedeemCodeAsync(TUser user, string code, CancellationToken cancellationToken)
+    public async Task<bool> RedeemCodeAsync(TUser user, string code, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var mergedCodes = await GetTokenAsync(user, AuthenticatorStoreLoginProvider, RecoveryCodeTokenName, cancellationToken) ?? "";
+        var splitCodes = mergedCodes.Split(';');
+        if (splitCodes.Contains(code))
+        {
+            var updatedCodes = new List<string>(splitCodes.Where(s => s != code));
+            await ReplaceCodesAsync(user, updatedCodes, cancellationToken);
+            return true;
+        }
+        return false;
     }
 
-    public Task<int> CountCodesAsync(TUser user, CancellationToken cancellationToken)
+    public async Task<int> CountCodesAsync(TUser user, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var mergedCodes = await GetTokenAsync(user, AuthenticatorStoreLoginProvider, RecoveryCodeTokenName, cancellationToken) ?? "";
+        if (mergedCodes.Length > 0)
+        {
+            return mergedCodes.Split(';').Length;
+        }
+        return 0;
     }
 }

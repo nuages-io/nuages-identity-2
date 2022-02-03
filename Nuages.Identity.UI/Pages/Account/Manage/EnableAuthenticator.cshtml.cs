@@ -3,6 +3,7 @@
 #nullable disable
 
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -12,6 +13,7 @@ using Nuages.Identity.Services.Manage;
 
 namespace Nuages.Identity.UI.Pages.Account.Manage;
 
+[Authorize]
 public class EnableAuthenticatorModel : PageModel
 {
     private readonly NuagesUserManager _userManager;
