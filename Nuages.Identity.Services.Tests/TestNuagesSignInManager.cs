@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Nuages.AspNetIdentity;
-using Nuages.Identity.Services.Login;
 using Xunit;
 
 namespace Nuages.Identity.Services.Tests;

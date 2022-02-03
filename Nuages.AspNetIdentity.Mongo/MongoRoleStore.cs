@@ -2,9 +2,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Nuages.Identity.Services.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global

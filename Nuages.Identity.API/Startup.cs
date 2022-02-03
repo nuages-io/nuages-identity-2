@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Nuages.AspNetIdentity;
+using Nuages.AspNetIdentity.Mongo;
 using Nuages.Identity.Services;
-using Nuages.Identity.Services.AspNetIdentity.Mongo;
 using Nuages.Localization;
 using Nuages.Web;
 using OpenIddict.Abstractions;
@@ -76,7 +76,7 @@ public class Startup
                     {
                         RoleClaimType = OpenIddictConstants.Claims.Role,
                         UserNameClaimType = OpenIddictConstants.Claims.Name,
-                        UserIdClaimType = OpenIddictConstants.Claims.Subject,
+                        UserIdClaimType = OpenIddictConstants.Claims.Subject
                     };
 
                     identity.SignIn = new SignInOptions

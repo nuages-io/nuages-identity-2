@@ -10,7 +10,7 @@ using MongoDB.Driver;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ConvertIfStatementToReturnStatement
 
-namespace Nuages.Identity.Services.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
@@ -105,14 +105,14 @@ public class MongoUserStore<TUser, TRole, TKey> :
         await UpdateAsync(user, cancellationToken);
     }
 
-    TKey? ConvertIdFromString(string id)
+    private static TKey ConvertIdFromString(string id)
     {
         return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
     }
     
     public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
-        user.Id = ConvertIdFromString(ObjectId.GenerateNewId().ToString())!;
+        user.Id = ConvertIdFromString(ObjectId.GenerateNewId().ToString());
         
         if (user == null)
             throw new ArgumentNullException(nameof (user));

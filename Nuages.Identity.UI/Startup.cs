@@ -4,9 +4,8 @@ using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
+using Nuages.AspNetIdentity.Mongo;
 using Nuages.Identity.Services;
-
-using Nuages.Identity.Services.AspNetIdentity.Mongo;
 using Nuages.Identity.UI.OpenIdDict;
 using Nuages.Localization;
 using OpenIddict.Abstractions;
@@ -58,7 +57,7 @@ public class Startup
                 {
                     RoleClaimType = OpenIddictConstants.Claims.Role,
                     UserNameClaimType = OpenIddictConstants.Claims.Name,
-                    UserIdClaimType = OpenIddictConstants.Claims.Subject,
+                    UserIdClaimType = OpenIddictConstants.Claims.Subject
                 };
 
                 identity.SignIn = new SignInOptions
