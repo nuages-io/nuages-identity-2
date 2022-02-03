@@ -24,8 +24,6 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
     
     public override async Task<IdentityResult> CreateAsync(NuagesApplicationUser user)
     {
-        user.Id = Guid.NewGuid().ToString();
-        
         var res = await base.CreateAsync(user);
        
         if (res.Succeeded)

@@ -1,6 +1,8 @@
+using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -42,8 +44,15 @@ where TKey : IEquatable<TKey>
     private  IMongoCollection<TRole> RolesCollection { get; }
     private  IMongoCollection<IdentityRoleClaim<TKey>> RoleClaimsCollection { get; }
     
+    private static TKey ConvertIdFromString(string id)
+    {
+        return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
+    }
+    
     public async Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
     {
+        role.Id = ConvertIdFromString(ObjectId.GenerateNewId().ToString());
+        
         await RolesCollection.InsertOneAsync(role, null, cancellationToken);
 
         return IdentityResult.Success;

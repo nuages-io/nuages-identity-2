@@ -42,7 +42,7 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
         }
         else
         {
-            using var scope  = _serviceProvider.CreateScope();
+            //using var scope  = _serviceProvider.CreateScope();
                 
             key = CreateRsaSecurityKey(2048);
             var newKeyXml =  key.Rsa.ToXmlString(true);
@@ -68,7 +68,7 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
         }
         else
         {
-            using var scope  = _serviceProvider.CreateScope();
+            //using var scope  = _serviceProvider.CreateScope();
             key = CreateRsaSecurityKey(2048);
             var xmlNewKey = key.Rsa.ToXmlString(true);
                

@@ -59,7 +59,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
         UsersClaimsCollection = database.GetCollection<MongoIdentityUserClaim<TKey>>("AspNetUserClaims");
         UsersLoginsCollection = database.GetCollection<MongoIdentityUserLogin<TKey>>("AspNetUserLogins");
         UsersTokensCollection = database.GetCollection<MongoIdentityUserToken<TKey>>("AspNetUserTokens");
-        UsersRolesCollection = database.GetCollection<IdentityUserRole<TKey>>("AspNetUserRoles");
+        UsersRolesCollection = database.GetCollection<MongoIdentityUserRole<TKey>>("AspNetUserRoles");
     }
     
     private  IMongoCollection<TUser> UsersCollection { get; }
@@ -67,14 +67,14 @@ public class MongoUserStore<TUser, TRole, TKey> :
     private  IMongoCollection<MongoIdentityUserClaim<TKey>> UsersClaimsCollection { get; }
     private  IMongoCollection<MongoIdentityUserLogin<TKey>> UsersLoginsCollection { get; }
     private  IMongoCollection<MongoIdentityUserToken<TKey>> UsersTokensCollection { get; }
-    private  IMongoCollection<IdentityUserRole<TKey>> UsersRolesCollection { get; }
+    private  IMongoCollection<MongoIdentityUserRole<TKey>> UsersRolesCollection { get; }
     
     public IQueryable<TUser> Users => UsersCollection.AsQueryable();
     public IQueryable<TRole> Roles => RolesCollection.AsQueryable();
     public IQueryable<MongoIdentityUserClaim<TKey>> UsersClaims => UsersClaimsCollection.AsQueryable();
     public IQueryable<MongoIdentityUserLogin<TKey>> UsersLogins => UsersLoginsCollection.AsQueryable();
     public IQueryable<MongoIdentityUserToken<TKey>> UsersTokens => UsersTokensCollection.AsQueryable();
-    public IQueryable<IdentityUserRole<TKey>> UsersRoles => UsersRolesCollection.AsQueryable();
+    public IQueryable<MongoIdentityUserRole<TKey>> UsersRoles => UsersRolesCollection.AsQueryable();
     
     public Task<string?> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
     {
@@ -248,7 +248,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public async Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
         
@@ -265,7 +265,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public async Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.Name == roleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
 

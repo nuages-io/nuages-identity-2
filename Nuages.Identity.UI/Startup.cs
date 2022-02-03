@@ -100,6 +100,7 @@ public class Startup
         services.AddHealthChecks();
         
         services.AddHostedService<MongoSchemaInitializer<NuagesApplicationUser, NuagesApplicationRole, string>>();
+        services.AddHostedService<IdentityDataSeeder>();
 
     }
 
