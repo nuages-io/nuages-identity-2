@@ -19,4 +19,8 @@ public class NuagesIdentityOptions
     public bool SupportsUserName { get; set; } = true;
 
     public bool AutoConfirmExternalLogin { get; set; }
+    
+    public string ConnectionString { get; set; } = "";
+    public string DatabaseName { get; set; } = "";
+    
 }
