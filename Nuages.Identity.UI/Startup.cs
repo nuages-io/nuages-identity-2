@@ -98,6 +98,9 @@ public class Startup
         services.AddUI(_configuration);
 
         services.AddHealthChecks();
+        
+        services.AddHostedService<MongoSchemaInitializer<NuagesApplicationUser, NuagesApplicationRole, string>>();
+
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline

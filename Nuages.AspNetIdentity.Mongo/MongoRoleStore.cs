@@ -19,11 +19,11 @@ where TKey : IEquatable<TKey>
     
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     // ReSharper disable once StaticMemberInGenericType
-    public static ReplaceOptions ReplaceOptions1 { get; } = new();
+    public static ReplaceOptions ReplaceOptions { get; } = new();
 
     // ReSharper disable once StaticMemberInGenericType
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
-    public static DeleteOptions DeleteOptions1 { get; } = new();
+    public static DeleteOptions DeleteOptions { get; } = new();
 
     public void Dispose()
     {
@@ -51,7 +51,7 @@ where TKey : IEquatable<TKey>
 
     public async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
     {
-        var replaceOneResult = await RolesCollection.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, ReplaceOptions1, cancellationToken);
+        var replaceOneResult = await RolesCollection.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, ReplaceOptions, cancellationToken);
         if (replaceOneResult.IsAcknowledged || replaceOneResult.ModifiedCount != 0L)
             return IdentityResult.Success;
         
@@ -60,7 +60,7 @@ where TKey : IEquatable<TKey>
 
     public async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
     {
-        var result = await RolesCollection.DeleteOneAsync(m => m.Id.Equals(role.Id), DeleteOptions1, cancellationToken);
+        var result = await RolesCollection.DeleteOneAsync(m => m.Id.Equals(role.Id), DeleteOptions, cancellationToken);
         
         if (result.IsAcknowledged || result.DeletedCount != 0L)
             return IdentityResult.Success;
@@ -139,7 +139,7 @@ where TKey : IEquatable<TKey>
                 uc => uc.RoleId.Equals(role.Id) && uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value);
         if (entity != null)
         {
-            await RoleClaimsCollection.DeleteOneAsync( c => c.Id.Equals(entity.Id), DeleteOptions1, cancellationToken);
+            await RoleClaimsCollection.DeleteOneAsync( c => c.Id.Equals(entity.Id), DeleteOptions, cancellationToken);
         }
         
     }
