@@ -4,6 +4,7 @@ using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
+using Nuages.AspNetIdentity;
 using Nuages.AspNetIdentity.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.UI.OpenIdDict;
@@ -44,35 +45,34 @@ public class Startup
             AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
         }
 
-        services.AddNuagesIdentity(_configuration,
-            _ => { },
-            identity =>
+        services.AddNuagesAspNetIdentity(
+                identity =>
+                {
+                    identity.User = new UserOptions
+                    {
+                        RequireUniqueEmail = true /* Not the default*/
+                    };
+
+                    identity.ClaimsIdentity = new ClaimsIdentityOptions
+                    {
+                        RoleClaimType = OpenIddictConstants.Claims.Role,
+                        UserNameClaimType = OpenIddictConstants.Claims.Name,
+                        UserIdClaimType = OpenIddictConstants.Claims.Subject
+                    };
+
+                    identity.SignIn = new SignInOptions
+                    {
+                        RequireConfirmedEmail = false,
+                        RequireConfirmedPhoneNumber = false, //MUST be false
+                        RequireConfirmedAccount = false //MUST be false
+                    };
+                })
+            .AddNuagesIdentityServices(_configuration, _ =>{})
+            .AddMongoStorage(options =>
             {
-                identity.User = new UserOptions
-                {
-                    RequireUniqueEmail = true /* Not the default*/
-                };
-
-                identity.ClaimsIdentity = new ClaimsIdentityOptions
-                {
-                    RoleClaimType = OpenIddictConstants.Claims.Role,
-                    UserNameClaimType = OpenIddictConstants.Claims.Name,
-                    UserIdClaimType = OpenIddictConstants.Claims.Subject
-                };
-
-                identity.SignIn = new SignInOptions
-                {
-                    RequireConfirmedEmail = false,
-                    RequireConfirmedPhoneNumber = false, //MUST be false
-                    RequireConfirmedAccount = false //MUST be false
-                };
-            })
-        .AddMongoStorage(options =>
-        {
-            options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
-            options.Database = _configuration["Nuages:Mongo:Database"];
-        });
-
+                options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
+                options.Database = _configuration["Nuages:Mongo:Database"];
+            });
         services.AddNuagesAuthentication()
             .AddGoogle(googleOptions =>
             {

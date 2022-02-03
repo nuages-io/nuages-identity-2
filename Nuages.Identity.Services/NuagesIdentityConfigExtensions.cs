@@ -18,26 +18,21 @@ namespace Nuages.Identity.Services;
 [ExcludeFromCodeCoverage]
 public static class NuagesIdentityConfigExtensions
 {
-    public static IdentityBuilder AddNuagesIdentity(this IServiceCollection services, IConfiguration configuration,
-        Action<NuagesIdentityOptions> configure, Action<IdentityOptions> identityOptions)
+    public static IdentityBuilder AddNuagesIdentityServices(this IdentityBuilder builder, IConfiguration configuration,
+        Action<NuagesIdentityOptions> configure)
     {
+        var services = builder.Services;
+        
         services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
         
         services.AddSenderClient(configuration);
         
         services.Configure(configure);
 
-        var identityBuilder = services.AddIdentity<NuagesApplicationUser, NuagesApplicationRole>(identityOptions);
-
-        identityBuilder
-            .AddDefaultTokenProviders()
-            .AddUserManager<NuagesUserManager>()
-            .AddSignInManager<NuagesSignInManager>()
-            .AddRoleManager<NuagesRoleManager>();
         
-        var userType = identityBuilder.UserType;
+        var userType = builder.UserType;
         var totpProvider = typeof(PasswordlessLoginProvider<>).MakeGenericType(userType);
-        identityBuilder.AddTokenProvider("PasswordlessLoginProvider", totpProvider);
+        builder.AddTokenProvider("PasswordlessLoginProvider", totpProvider);
         
         services.AddScoped<IEmailValidator, EmailValidator>();
         
@@ -73,7 +68,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IPasswordFlowHandler, PasswordFlowHandler>();
         services.AddScoped<ITokenEndpoint, TokenEndpoint>();
 
-        return identityBuilder;
+        return builder;
     }
 
     public static AuthenticationBuilder AddNuagesAuthentication(this IServiceCollection services)

@@ -63,29 +63,29 @@ public class Startup
         }).AddNuagesLocalization(Configuration);
 
 
-        services.AddNuagesIdentity(Configuration,
-                _ => { },
-                identity =>
+        services.AddNuagesAspNetIdentity(
+            identity =>
+            {
+                identity.User = new UserOptions
                 {
-                    identity.User = new UserOptions
-                    {
-                        RequireUniqueEmail = true /* Not the default*/
-                    };
+                    RequireUniqueEmail = true /* Not the default*/
+                };
 
-                    identity.ClaimsIdentity = new ClaimsIdentityOptions
-                    {
-                        RoleClaimType = OpenIddictConstants.Claims.Role,
-                        UserNameClaimType = OpenIddictConstants.Claims.Name,
-                        UserIdClaimType = OpenIddictConstants.Claims.Subject
-                    };
+                identity.ClaimsIdentity = new ClaimsIdentityOptions
+                {
+                    RoleClaimType = OpenIddictConstants.Claims.Role,
+                    UserNameClaimType = OpenIddictConstants.Claims.Name,
+                    UserIdClaimType = OpenIddictConstants.Claims.Subject
+                };
 
-                    identity.SignIn = new SignInOptions
-                    {
-                        RequireConfirmedEmail = false,
-                        RequireConfirmedPhoneNumber = false, //MUST be false
-                        RequireConfirmedAccount = false //MUST be false
-                    };
-                })
+                identity.SignIn = new SignInOptions
+                {
+                    RequireConfirmedEmail = false,
+                    RequireConfirmedPhoneNumber = false, //MUST be false
+                    RequireConfirmedAccount = false //MUST be false
+                };
+            })
+            .AddNuagesIdentityServices(Configuration, _ =>{})
             .AddMongoStorage(options =>
             {
                 options.ConnectionString = Configuration["Nuages:Mongo:ConnectionString"];
