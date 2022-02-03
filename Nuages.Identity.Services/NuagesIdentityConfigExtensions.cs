@@ -1,7 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.AspNetIdentity.InMemory;
+using Nuages.Identity.Services.AspNetIdentity.Mongo;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
@@ -42,9 +45,24 @@ public static class NuagesIdentityConfigExtensions
             .AddSignInManager<NuagesSignInManager>()
             .AddRoleManager<NuagesRoleManager>();
         
-        builder.AddUserStore<InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
-        builder.AddRoleStore<InMemoryRoleStore<NuagesApplicationRole, string>>();
+        // builder.AddUserStore<InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
+        // builder.AddRoleStore<InMemoryRoleStore<NuagesApplicationRole, string>>();
 
+        BsonClassMap.RegisterClassMap<MongoIdentityUserToken<string>>(cm => 
+        {
+            cm.AutoMap();
+            cm.MapIdMember(c => c.Id);
+            cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
+        });
+        
+        BsonClassMap.RegisterClassMap<IdentityUserToken<string>>(cm => 
+        {
+            cm.AutoMap();
+            cm.MapMember(c => c.UserId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+        });
+        
+        builder.AddUserStore<MongoUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
+        builder.AddRoleStore<MongoRoleStore<NuagesApplicationRole, string>>();
         
         services.AddScoped<IEmailValidator, EmailValidator>();
         

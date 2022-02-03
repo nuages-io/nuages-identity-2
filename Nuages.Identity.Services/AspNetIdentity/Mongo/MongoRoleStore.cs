@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Nuages.Identity.Services.AspNetIdentity.Mongo;
 
@@ -15,6 +16,14 @@ where TKey : IEquatable<TKey>
 {
     private readonly IdentityErrorDescriber _errorDescriber = new ();
     
+    // ReSharper disable once FieldCanBeMadeReadOnly.Global
+    // ReSharper disable once StaticMemberInGenericType
+    public static ReplaceOptions ReplaceOptions1 { get; } = new();
+
+    // ReSharper disable once StaticMemberInGenericType
+    // ReSharper disable once FieldCanBeMadeReadOnly.Global
+    public static DeleteOptions DeleteOptions1 { get; } = new();
+
     public void Dispose()
     {
         GC.SuppressFinalize(this);
@@ -41,7 +50,7 @@ where TKey : IEquatable<TKey>
 
     public async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
     {
-        var replaceOneResult = await RolesCollection.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, (ReplaceOptions?) null, cancellationToken);
+        var replaceOneResult = await RolesCollection.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, ReplaceOptions1, cancellationToken);
         if (replaceOneResult.IsAcknowledged || replaceOneResult.ModifiedCount != 0L)
             return IdentityResult.Success;
         
@@ -50,7 +59,7 @@ where TKey : IEquatable<TKey>
 
     public async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
     {
-        var result = await RolesCollection.DeleteOneAsync(m => m.Id.Equals(role.Id), null, cancellationToken);
+        var result = await RolesCollection.DeleteOneAsync(m => m.Id.Equals(role.Id), DeleteOptions1, cancellationToken);
         
         if (result.IsAcknowledged || result.DeletedCount != 0L)
             return IdentityResult.Success;
@@ -129,7 +138,7 @@ where TKey : IEquatable<TKey>
                 uc => uc.RoleId.Equals(role.Id) && uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value);
         if (entity != null)
         {
-            await RoleClaimsCollection.DeleteOneAsync( c => c.Id.Equals(entity.Id), null, cancellationToken);
+            await RoleClaimsCollection.DeleteOneAsync( c => c.Id.Equals(entity.Id), DeleteOptions1, cancellationToken);
         }
         
     }

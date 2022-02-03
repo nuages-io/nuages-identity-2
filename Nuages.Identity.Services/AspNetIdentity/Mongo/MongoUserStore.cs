@@ -1,14 +1,19 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using Nuages.Identity.Services.AspNetIdentity.InMemory;
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable ConvertIfStatementToReturnStatement
 
-namespace Nuages.Identity.Services.AspNetIdentity.InMemory;
+namespace Nuages.Identity.Services.AspNetIdentity.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
-public class InMemoryUserStore<TUser, TRole, TKey> : 
+public class MongoUserStore<TUser, TRole, TKey> : 
     IUserClaimStore<TUser>,
     IUserLoginStore<TUser>,
     IUserRoleStore<TUser>,
@@ -33,14 +38,37 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         GC.SuppressFinalize(this);
     }
 
-    private static readonly List<TUser> _users = new ();
-    
-    private static readonly List<IdentityUserClaim<TKey>> _userClaims = new();
-    private static readonly List<IdentityUserLogin<TKey>> _logins = new();
-    private static readonly List<IdentityUserToken<TKey>> _tokens = new();
-    private static readonly List<IdentityUserRole<TKey>> _userRoles = new();
+    // ReSharper disable once StaticMemberInGenericType
+    public static ReplaceOptions ReplaceOptions1 { get; } = new();
+    // ReSharper disable once StaticMemberInGenericType
+    public static DeleteOptions DeleteOptions  { get; } = new();
+    // ReSharper disable once StaticMemberInGenericType
+    public static InsertOneOptions InsertOneOptions  { get; } = new();
     // ReSharper disable once CollectionNeverUpdated.Local
    
+    public MongoUserStore(IOptions<NuagesIdentityOptions> options)
+    {
+        var client = new MongoClient(options.Value.ConnectionString);
+        var database = client.GetDatabase(options.Value.DatabaseName);
+
+        UsersCollection = database.GetCollection<TUser>("Users");
+        UsersClaimsCollection = database.GetCollection<MongoIdentityUserClaim<TKey>>("UsersClaims");
+        UsersLoginsCollection = database.GetCollection<MongoIdentityUserLogin<TKey>>("UsersLogins");
+        UsersTokensCollection = database.GetCollection<MongoIdentityUserToken<TKey>>("UsersTokens");
+        UsersRolesCollection = database.GetCollection<IdentityUserRole<TKey>>("UsersRoles");
+    }
+    
+    private  IMongoCollection<TUser> UsersCollection { get; }
+    private  IMongoCollection<MongoIdentityUserClaim<TKey>> UsersClaimsCollection { get; }
+    private  IMongoCollection<MongoIdentityUserLogin<TKey>> UsersLoginsCollection { get; }
+    private  IMongoCollection<MongoIdentityUserToken<TKey>> UsersTokensCollection { get; }
+    private  IMongoCollection<IdentityUserRole<TKey>> UsersRolesCollection { get; }
+    
+    public IQueryable<TUser> Users => UsersCollection.AsQueryable();
+    public IQueryable<MongoIdentityUserClaim<TKey>> UsersClaims => UsersClaimsCollection.AsQueryable();
+    public IQueryable<MongoIdentityUserLogin<TKey>> UsersLogins => UsersLoginsCollection.AsQueryable();
+    public IQueryable<MongoIdentityUserToken<TKey>> UsersTokens => UsersTokensCollection.AsQueryable();
+    public IQueryable<IdentityUserRole<TKey>> UsersRoles => UsersRolesCollection.AsQueryable();
     
     public Task<string?> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
     {
@@ -71,14 +99,14 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.CompletedTask;
     }
 
-    public Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
+    public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
         if (user == null)
             throw new ArgumentNullException(nameof (user));
         
-        _users.Add(user);
+        await UsersCollection.InsertOneAsync(user, null, cancellationToken);
         
-        return Task.FromResult(IdentityResult.Success);
+        return IdentityResult.Success;
     }
 
     public Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken)
@@ -86,75 +114,64 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
+    public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
     {
-        _users.Remove(user);
+        await UsersCollection.DeleteOneAsync(u => u.Id.Equals(user.Id), DeleteOptions, cancellationToken);
         
-        return Task.FromResult(IdentityResult.Success);
+        return IdentityResult.Success;
     }
 
     public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
-        return Task.FromResult(_users.SingleOrDefault(u => u.Id.Equals(userId) ))!;
+        return Task.FromResult(Users.SingleOrDefault(u => u.Id.Equals(userId) ))!;
     }
 
     public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
-        return Task.FromResult(_users.AsQueryable().FirstOrDefault(x => x.NormalizedUserName == normalizedUserName))!;
+        return Task.FromResult(Users.FirstOrDefault(x => x.NormalizedUserName == normalizedUserName))!;
     }
 
     public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
     {
-        var list = _userClaims.Where(c => c.UserId.Equals(user.Id)).Select(c =>
-            new Claim(c.ClaimType, c.ClaimValue)
+        var list = UsersClaims.Where(c => c.UserId.Equals(user.Id)).Select(c =>
+            new Claim(c.Type, c.Value)
         ).ToList();
         
         return Task.FromResult((IList<Claim>) list);
     }
 
-    public Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+    public  async Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
-        foreach (var claim in claims)
-        {
-            _userClaims.Add(new IdentityUserClaim<TKey>
-            {
-                UserId = user.Id,
-                ClaimType = claim.Type,
-                ClaimValue = claim.Value
-            });
-        }
+        var list = claims.Select(claim => new MongoIdentityUserClaim<TKey> 
+            { Id = ObjectId.GenerateNewId().ToString(), 
+                UserId = user.Id, 
+                Type = claim.Type, 
+                Value = claim.Value }).ToList();
 
-        return Task.CompletedTask;
+        await UsersClaimsCollection.InsertManyAsync(list, null, cancellationToken);
+
     }
 
-    public Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
+    public async Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
     {
-        var matchedClaims = _userClaims.Where(c =>
-            c.ClaimType == claim.Type && c.ClaimValue == claim.Value && user.Id.Equals(user.Id));
+        var matchedClaims = UsersClaims.Where(c =>
+            c.Type == claim.Type && c.Value == claim.Value && user.Id.Equals(user.Id));
 
         foreach (var matchedClaim in matchedClaims)
         {
-            matchedClaim.ClaimValue = newClaim.Value;
-            matchedClaim.ClaimType = newClaim.Type;
+            matchedClaim.Value = newClaim.Value;
+            matchedClaim.Type = newClaim.Type;
+
+            await UsersClaimsCollection.ReplaceOneAsync(c => c.Id == matchedClaim.Id, matchedClaim, ReplaceOptions1, cancellationToken);
         }
-        
-        return Task.CompletedTask;
     }
 
-    public Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+    public async Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
         foreach (var claim in claims)
         {
-            var entity =
-                _userClaims.FirstOrDefault(
-                    uc => uc.UserId.Equals(user.Id) && uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value);
-            if (entity != null)
-            {
-                _userClaims.Remove(entity);
-            }
+            await UsersClaimsCollection.DeleteOneAsync(uc => uc.UserId.Equals(user.Id) && uc.Type == claim.Type && uc.Value == claim.Value,  cancellationToken);
         }
-        
-        return Task.CompletedTask;
     }
 
     public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
@@ -164,89 +181,75 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
             throw new ArgumentNullException(nameof(claim));
         }
 
-        var ids = _userClaims.Where(x => x.ClaimType == claim.Type && x.ClaimValue == claim.Value).Select(c => c.UserId);
+        var ids = UsersClaims.Where(x => x.Type == claim.Type && x.Value == claim.Value).Select(c => c.UserId);
         
-        return Task.FromResult<IList<TUser>>(_users.Where(i => ids.Contains(i.Id)).ToList());
+        return Task.FromResult<IList<TUser>>(Users.Where(i => ids.Contains(i.Id)).ToList());
     }
 
-    public Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken cancellationToken)
+    public async Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken cancellationToken)
     {
-        _logins.Add(new IdentityUserLogin<TKey>
+        await UsersLoginsCollection.InsertOneAsync(new MongoIdentityUserLogin<TKey>
         {
+            Id = ObjectId.GenerateNewId().ToString(),
             UserId = user.Id,
             ProviderKey = login.ProviderKey,
             LoginProvider = login.LoginProvider,
             ProviderDisplayName = login.ProviderDisplayName
-        });
-
-        return Task.CompletedTask;
+        }, InsertOneOptions, cancellationToken);
     }
 
-    public Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken cancellationToken)
+    public async Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey, CancellationToken cancellationToken)
     {
-        var loginEntity =
-            _logins.SingleOrDefault(
-                l =>
-                    l.ProviderKey == providerKey && l.LoginProvider == loginProvider &&
-                    l.UserId.Equals(user.Id));
-        
-        if (loginEntity != null)
-        {
-            _logins.Remove(loginEntity);
-        }
-        
-        return Task.CompletedTask;
+        await UsersLoginsCollection.DeleteOneAsync(l =>
+            l.ProviderKey == providerKey && l.LoginProvider == loginProvider &&
+            l.UserId.Equals(user.Id), DeleteOptions, cancellationToken);
     }
 
     public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken)
     {
-        IList<UserLoginInfo> result = _logins.Where(u => u.UserId.Equals(user.Id))
+        IList<UserLoginInfo> result = UsersLogins.Where(l => l.UserId.Equals(user.Id))
             .Select(l => new UserLoginInfo(l.LoginProvider, l.ProviderKey, l.ProviderDisplayName)).ToList();
         return Task.FromResult(result);
     }
 
     public Task<TUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
     {
-        var login = _logins.SingleOrDefault(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey);
+        var login = UsersLogins.SingleOrDefault(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey);
         if (login == null)
             return Task.FromResult<TUser>(null!);
         
-        return Task.FromResult(_users.SingleOrDefault(u => u.Id.Equals(login.UserId)))!;
+        return Task.FromResult(Users.SingleOrDefault(u => u.Id.Equals(login.UserId)))!;
     }
 
-    public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public async Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
         var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
         
-        var identityRole = new IdentityUserRole<TKey>
+        var identityRole = new MongoIdentityUserRole<TKey>
         {
+            Id = ObjectId.GenerateNewId().ToString(),
             UserId = user.Id,
             RoleId = role.Id
         };
         
-        _userRoles.Add(identityRole);
+        await UsersRolesCollection.InsertOneAsync(identityRole, InsertOneOptions, cancellationToken);
 
-        return Task.CompletedTask;
     }
 
-    public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public async Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
     {
         var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
         
         ArgumentNullException.ThrowIfNull(role);
 
-        var userRole = _userRoles.SingleOrDefault(u => u.UserId.Equals(user.Id) && u.RoleId.Equals(role.Id));
-        if (userRole != null)
-            _userRoles.Remove(userRole);
-
-        return Task.CompletedTask;
+        await UsersRolesCollection.DeleteOneAsync(u => u.UserId.Equals(user.Id) && u.RoleId.Equals(role.Id), DeleteOptions, cancellationToken);
     }
 
     public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
     {
-        var ids = _userRoles.Where(u => u.UserId.Equals(user.Id)).Select(r => r.RoleId);
+        var ids = UsersRoles.Where(u => u.UserId.Equals(user.Id)).Select(r => r.RoleId);
 
         var list = InMemoryRoleStore<TRole, TKey>.RolesCollection.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
 
@@ -259,7 +262,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         if (role == null)
             return Task.FromResult(false);
         
-        var any = _userRoles.Any(c => c.UserId.Equals(user.Id) && c.RoleId.Equals(role.Id));
+        var any = UsersRoles.Any(c => c.UserId.Equals(user.Id) && c.RoleId.Equals(role.Id));
         
         return Task.FromResult(any);
     }
@@ -270,9 +273,9 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         if (role == null)
             return Task.FromResult((IList<TUser>)new List<TUser>());
         
-        var ids = _userRoles.Where(u => u.UserId.Equals(role.Id)).Select(r => r.RoleId);
+        var ids = UsersRoles.Where(u => u.UserId.Equals(role.Id)).Select(r => r.RoleId);
 
-        var list = _users.Where(r => ids.Contains(r.Id));
+        var list = Users.Where(r => ids.Contains(r.Id));
 
         return Task.FromResult((IList<TUser>)list.ToList());
     }
@@ -332,7 +335,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
 
     public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
     {
-        return Task.FromResult(_users.AsQueryable().FirstOrDefault(x => x.NormalizedEmail == normalizedEmail))!;
+        return Task.FromResult(Users.AsQueryable().FirstOrDefault(x => x.NormalizedEmail == normalizedEmail))!;
     }
 
     public Task<string> GetNormalizedEmailAsync(TUser user, CancellationToken cancellationToken)
@@ -371,7 +374,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.CompletedTask;
     }
 
-    public IQueryable<TUser> Users => _users.AsQueryable();
+   
 
     public Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken)
     {
@@ -428,48 +431,43 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.CompletedTask;
     }
     
-    public Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
+    public async Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
     {
         var tokenEntity =
-            _tokens.SingleOrDefault(
+            UsersTokens.SingleOrDefault(
                 l =>
                     l.Name == name && l.LoginProvider == loginProvider &&
                     l.UserId.Equals(user.Id));
         if (tokenEntity != null)
         {
             tokenEntity.Value = value;
+
+            await UsersTokensCollection.ReplaceOneAsync(t => t.Id == tokenEntity.Id, tokenEntity, ReplaceOptions1, cancellationToken);
         }
         else
         {
-            _tokens.Add(new IdentityUserToken<TKey>
+            await UsersTokensCollection.InsertOneAsync(new MongoIdentityUserToken<TKey>
             {
+                Id = ObjectId.GenerateNewId().ToString(),
                 UserId = user.Id,
                 LoginProvider = loginProvider,
                 Name = name,
                 Value = value
-            });
+            }, InsertOneOptions, cancellationToken);
         }
-        return Task.FromResult(0);
     }
 
-    public Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
+    public async Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
     {
-        var tokenEntity =
-            _tokens.SingleOrDefault(
-                l =>
-                    l.Name == name && l.LoginProvider == loginProvider &&
-                    l.UserId.Equals(user.Id));
-        if (tokenEntity != null)
-        {
-            _tokens.Remove(tokenEntity);
-        }
-        return Task.FromResult(0);
+        await UsersTokensCollection.DeleteOneAsync(l =>
+            l.Name == name && l.LoginProvider == loginProvider &&
+            l.UserId.Equals(user.Id), DeleteOptions, cancellationToken);
     }
 
     public Task<string?> GetTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
     {
         var tokenEntity =
-            _tokens.SingleOrDefault(
+            UsersTokens.SingleOrDefault(
                 l =>
                     l.Name == name && l.LoginProvider == loginProvider &&
                     l.UserId.Equals(user.Id));
