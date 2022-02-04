@@ -60,10 +60,7 @@ public class ChangePasswordService : IChangePasswordService
 
             if (res.Succeeded)
             {
-                _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Changed", new Dictionary<string, string>
-                {
-                   
-                });
+                _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Changed", new Dictionary<string, string>());
             }
         }
         else

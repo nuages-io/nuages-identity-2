@@ -2,16 +2,14 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using Nuages.AspNetIdentity;
 using Nuages.AspNetIdentity.InMemory;
 
 // ReSharper disable UnusedParameter.Local
 
-namespace Nuages.Identity.Services.Tests;
+namespace Nuages.AspNetIdentity.Tests;
 
 public static class MockHelpers
 {
@@ -31,17 +29,14 @@ public static class MockHelpers
     public const string StrongPassword = "ThisIsAStrongPassword789*$#$$$";
     public const string WeakPassword = "password";
     public const string PhoneNumber = "9999999999";
-    public const string BadId = "bad_id";
-    public const string ValidToken = "ok";
-    public const string ValidRecoveryCode = "123456";
-    public const string TestEmail =  "TEST@NUAGES.ORG";
-    public const string NewTestEmail =  "NEWTEST@NUAGES.ORG";
     
     public static MockIdentity MockIdentityStuff(NuagesIdentityOptions? nuagesOptions = null )
     {
-        var mockIdentity = new MockIdentity();
-        
-        mockIdentity.RoleStore = new InMemoryRoleStore<NuagesApplicationRole, string>();
+        var mockIdentity = new MockIdentity
+        {
+            RoleStore = new InMemoryRoleStore<NuagesApplicationRole, string>()
+        };
+
         mockIdentity.UserStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>( mockIdentity.RoleStore);
         
         if (nuagesOptions != null)
@@ -79,7 +74,7 @@ public static class MockHelpers
                 c.IsConfirmedAsync(It.IsAny<UserManager<NuagesApplicationUser>>(), It.IsAny<NuagesApplicationUser>()))
             .ReturnsAsync((UserManager<NuagesApplicationUser> _, NuagesApplicationUser user2) => user2.EmailConfirmed);
         
-        mockIdentity.SignInManager = new NuagesSignInManager(mockIdentity.UserManager,  MockHelpers.MockHttpContextAccessor().Object,
+        mockIdentity.SignInManager = new NuagesSignInManager(mockIdentity.UserManager,  MockHttpContextAccessor().Object,
             new Mock<IUserClaimsPrincipalFactory<NuagesApplicationUser>>().Object, Options.Create(idOptions), new Mock<ILogger<SignInManager<NuagesApplicationUser>>>().Object
             ,  new Mock<IAuthenticationSchemeProvider>().Object,mockConfirmation.Object, Options.Create(mockIdentity.NuagesOptions));
         
@@ -127,7 +122,7 @@ public static class MockHelpers
     }
 
 
-    public static Mock<IHttpContextAccessor> MockHttpContextAccessor()
+    private static Mock<IHttpContextAccessor> MockHttpContextAccessor()
     {
         var authServiceMock = new Mock<IAuthenticationService>();
         authServiceMock
@@ -153,15 +148,3 @@ public static class MockHelpers
     }
 }
 
-public class FakeStringLocalizer : IStringLocalizer
-{
-    public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
-    {
-        throw new NotImplementedException();
-    }
-
-    public LocalizedString this[string name] => new (name, name);
-
-    public LocalizedString this[string name, params object[] arguments] => new (name, name);
-    
-}

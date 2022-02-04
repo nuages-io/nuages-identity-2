@@ -46,11 +46,12 @@ public class TestsInMemoryRoleStore
         Assert.True(res.Succeeded);
 
         var id = await _roleStore.GetRoleIdAsync(role, CancellationToken.None);
-        Assert.NotNull(await _roleStore.FindByIdAsync(id, CancellationToken.None));
+        Assert.NotNull(id);
+        Assert.NotNull(await _roleStore.FindByIdAsync(id!, CancellationToken.None));
 
         await _roleStore.DeleteAsync(role, CancellationToken.None);
         
-        Assert.Null(await _roleStore.FindByNameAsync(id, CancellationToken.None));
+        Assert.Null(await _roleStore.FindByIdAsync(id, CancellationToken.None));
     }
     
     [Fact]
@@ -70,7 +71,7 @@ public class TestsInMemoryRoleStore
         var name = await _roleStore.GetNormalizedRoleNameAsync(role, CancellationToken.None);
         
         Assert.NotNull(await _roleStore.FindByNameAsync(name, CancellationToken.None));
-        var newName = "NewName";
+        const string newName = "NewName";
         
         await _roleStore.SetRoleNameAsync(role, newName, CancellationToken.None);
         await _roleStore.SetNormalizedRoleNameAsync(role, newName.ToUpper(), CancellationToken.None);

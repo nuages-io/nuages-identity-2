@@ -41,11 +41,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         if (!await CheckPhoneNumberAsync(user)) 
             return false;
         
-        if (!await CheckAccountAsync(user)) 
-            return false;
-
-        
-        return true;
+        return await CheckAccountAsync(user);
     }
     
     public override async Task<SignInResult> CheckPasswordSignInAsync(NuagesApplicationUser user, string password, bool lockoutOnFailure)

@@ -1,5 +1,3 @@
-using Moq;
-using Nuages.Identity.Services.Tests;
 using Xunit;
 
 namespace Nuages.AspNetIdentity.Tests;

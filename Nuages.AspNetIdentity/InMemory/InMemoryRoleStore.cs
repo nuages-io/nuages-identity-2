@@ -28,8 +28,7 @@ where TKey : IEquatable<TKey>
     
     public Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
     {
-        if (role.Id == null)
-            role.Id = StringToKey(Guid.NewGuid().ToString());
+        role.Id ??= StringToKey(Guid.NewGuid().ToString());
         
         _rolesCollection.Add(role);
 
@@ -86,7 +85,7 @@ where TKey : IEquatable<TKey>
 
     public Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(t => t.NormalizedName.ToUpper() == normalizedRoleName.ToUpper());
+        var role = Roles.SingleOrDefault(t => string.Equals(t.NormalizedName, normalizedRoleName, StringComparison.CurrentCultureIgnoreCase));
 
         return Task.FromResult(role)!;
     }
