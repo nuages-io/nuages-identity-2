@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,6 @@ using Nuages.Identity.Services.Manage;
 
 namespace Nuages.Identity.API.Controllers;
 
-[ExcludeFromCodeCoverage]
 [Authorize(Roles = "Admin")]
 [Route("api/admin")]
 public class AdminController : Controller

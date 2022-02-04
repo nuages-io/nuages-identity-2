@@ -70,7 +70,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         return res;
     }
 
-    public async Task<bool> CheckAccountAsync(NuagesApplicationUser user)
+    public  async Task<bool> CheckAccountAsync(NuagesApplicationUser user)
     {
         if (Options.SignIn.RequireConfirmedAccount && !await _confirmation.IsConfirmedAsync(UserManager, user))
         {
