@@ -4,6 +4,9 @@ using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity;
 using Nuages.AspNetIdentity.Mongo;
 using Nuages.Identity.Services;
@@ -68,10 +71,18 @@ public class Startup
                     };
                 })
             .AddNuagesIdentityServices(_configuration, _ =>{})
-            .AddMongoStores(options =>
+            .AddMongoStores<NuagesApplicationUser, NuagesApplicationRole, string>(options =>
             {
                 options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = _configuration["Nuages:Mongo:Database"];
+                
+                BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.SetIgnoreExtraElements(true);
+                    cm.MapMember(c => c.LastFailedLoginReason)
+                        .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
+                });
             });
         
         services.AddNuagesAuthentication()
@@ -115,7 +126,6 @@ public class Startup
         else
         {
             app.UseExceptionHandler("/Error");
-            //app.UseDeveloperExceptionPage();
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }

@@ -7,6 +7,9 @@ using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity;
 using Nuages.AspNetIdentity.Mongo;
 using Nuages.Identity.Services;
@@ -86,10 +89,19 @@ public class Startup
                 };
             })
             .AddNuagesIdentityServices(Configuration, _ =>{})
-            .AddMongoStores(options =>
+            .AddMongoStores<NuagesApplicationUser, NuagesApplicationRole, string>(options =>
             {
+                
                 options.ConnectionString = Configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = Configuration["Nuages:Mongo:Database"];
+                
+                BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
+                {
+                    cm.AutoMap();
+                    cm.SetIgnoreExtraElements(true);
+                    cm.MapMember(c => c.LastFailedLoginReason)
+                        .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
+                });
             });
 
         

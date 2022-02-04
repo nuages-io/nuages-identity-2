@@ -6,6 +6,6 @@ namespace Nuages.AspNetIdentity;
 
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class NuagesApplicationRole : IdentityRole
+public class NuagesApplicationRole : IdentityRole<string>
 {
 }

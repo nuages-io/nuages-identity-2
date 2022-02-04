@@ -7,84 +7,82 @@ namespace Nuages.AspNetIdentity.Mongo;
 
 public static class AspNetIdentityMongoExtensions
 {
-    public static void AddMongoStores(this IdentityBuilder builder, Action<MongoIdentityOptions> configure)
+    public static void AddMongoStores<TUser, TRole, TKey>(this IdentityBuilder builder, Action<MongoIdentityOptions> configure)  
+        where TUser : IdentityUser<TKey>
+        where TRole : IdentityRole<TKey>
+        where TKey : IEquatable<TKey>
     {
         builder.Services.Configure(configure);
         
-        MapModel();
+        MapModel<TKey>();
 
-        builder.AddUserStore<MongoUserStore<NuagesApplicationUser, NuagesApplicationRole, string>>();
-        builder.AddRoleStore<MongoRoleStore<NuagesApplicationRole, string>>();
+        builder.AddUserStore<MongoUserStore<TUser, TRole, TKey>>();
+        builder.AddRoleStore<MongoRoleStore<TRole, TKey>>();
     }
 
-    private static void MapModel()
+    private static void MapModel<TKey>()  
+        where TKey : IEquatable<TKey>
     {
      
-        BsonClassMap.RegisterClassMap<MongoIdentityUserClaim<string>>(cm =>
+        BsonClassMap.RegisterClassMap<MongoIdentityUserClaim<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapIdMember(c => c.Id);
             cm.MapMember(c => c.UserId).SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
         
-        BsonClassMap.RegisterClassMap<MongoIdentityUserLogin<string>>(cm =>
+        BsonClassMap.RegisterClassMap<MongoIdentityUserLogin<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapIdMember(c => c.Id);
             cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
 
-        BsonClassMap.RegisterClassMap<IdentityUserLogin<string>>(cm =>
+        BsonClassMap.RegisterClassMap<IdentityUserLogin<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapMember(c => c.UserId).SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
         
-        BsonClassMap.RegisterClassMap<MongoIdentityUserRole<string>>(cm =>
+        BsonClassMap.RegisterClassMap<MongoIdentityUserRole<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapIdMember(c => c.Id);
             cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
 
-        BsonClassMap.RegisterClassMap<IdentityUserRole<string>>(cm =>
+        BsonClassMap.RegisterClassMap<IdentityUserRole<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapMember(c => c.UserId).SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
 
 
-        BsonClassMap.RegisterClassMap<IdentityRole<string>>(cm =>
+        BsonClassMap.RegisterClassMap<IdentityRole<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapMember(c => c.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
 
-        BsonClassMap.RegisterClassMap<MongoIdentityUserToken<string>>(cm =>
+        BsonClassMap.RegisterClassMap<MongoIdentityUserToken<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapIdMember(c => c.Id);
             cm.IdMemberMap.SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
 
-        BsonClassMap.RegisterClassMap<IdentityUserToken<string>>(cm =>
+        BsonClassMap.RegisterClassMap<IdentityUserToken<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapMember(c => c.UserId).SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
 
-        BsonClassMap.RegisterClassMap<IdentityUser<string>>(cm =>
+        BsonClassMap.RegisterClassMap<IdentityUser<TKey>>(cm =>
         {
             cm.AutoMap();
             cm.MapMember(c => c.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
         });
 
-        BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
-        {
-            cm.AutoMap();
-            cm.SetIgnoreExtraElements(true);
-            cm.MapMember(c => c.LastFailedLoginReason)
-                .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
-        });
+       
     }
 }
