@@ -1,6 +1,6 @@
 
 
-namespace Nuages.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 public class MongoIdentityUserClaim<TKey> where TKey : IEquatable<TKey>
 {

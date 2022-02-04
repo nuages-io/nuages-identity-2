@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace Nuages.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 public static class AspNetIdentityMongoExtensions
 {

@@ -73,5 +73,5 @@ where TKey : IEquatable<TKey>
     }
 
     public override IQueryable<TRole> Roles => _rolesCollection.AsQueryable();
-    public override IQueryable<IdentityRoleClaim<TKey>> RolesClaims => _roleClaims.AsQueryable();
+    protected override IQueryable<IdentityRoleClaim<TKey>> RolesClaims => _roleClaims.AsQueryable();
 }

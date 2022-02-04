@@ -10,7 +10,7 @@ using MongoDB.Driver;
 // ReSharper disable InconsistentNaming
 // ReSharper disable ConvertIfStatementToReturnStatement
 
-namespace Nuages.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global

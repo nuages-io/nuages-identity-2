@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 public class MongoIdentityUserToken<TKey> : IdentityUserToken<TKey> where TKey : IEquatable<TKey>
 {

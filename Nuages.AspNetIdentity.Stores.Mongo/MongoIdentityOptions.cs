@@ -1,4 +1,4 @@
-namespace Nuages.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 public class MongoIdentityOptions
 {

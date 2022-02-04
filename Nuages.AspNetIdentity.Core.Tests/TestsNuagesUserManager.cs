@@ -1,6 +1,6 @@
 using Xunit;
 
-namespace Nuages.AspNetIdentity.Tests;
+namespace Nuages.AspNetIdentity.Core.Tests;
 
 public class TestsNuagesUserManager
 {

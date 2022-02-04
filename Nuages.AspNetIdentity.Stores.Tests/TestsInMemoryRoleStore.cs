@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Nuages.AspNetIdentity.Core;
 using Nuages.AspNetIdentity.Stores.InMemory;
 using Xunit;
 

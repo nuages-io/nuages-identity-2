@@ -7,9 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Nuages.AspNetIdentity.Core;
 using Xunit;
 
-namespace Nuages.AspNetIdentity.Mongo.Tests;
+namespace Nuages.AspNetIdentity.Stores.Mongo.Tests;
 
 public class TestsRolesStore
 {
@@ -30,7 +31,7 @@ public class TestsRolesStore
 
         var config = serviceProvider.GetRequiredService<IConfiguration>();
         
-        MongoIdentityOptions options = new MongoIdentityOptions
+        var options = new MongoIdentityOptions
         {
             ConnectionString = config["ConnectionString"],
             Database = config["Database"]

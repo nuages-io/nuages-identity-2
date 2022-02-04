@@ -4,7 +4,8 @@
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.AspNetIdentity;
+
+using Nuages.AspNetIdentity.Core;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global

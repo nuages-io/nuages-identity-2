@@ -7,7 +7,7 @@ public abstract class RoleStoreBase<TRole, TKey> where TRole : IdentityRole<TKey
     where TKey : IEquatable<TKey>
 {
     public abstract IQueryable<TRole> Roles { get; }
-    public abstract IQueryable<IdentityRoleClaim<TKey>> RolesClaims { get; }
+    protected abstract IQueryable<IdentityRoleClaim<TKey>> RolesClaims { get; }
     
     public Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
     {
@@ -18,6 +18,7 @@ public abstract class RoleStoreBase<TRole, TKey> where TRole : IdentityRole<TKey
     
     public Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
     {
+        // ReSharper disable once SpecifyStringComparison
         var role = Roles.SingleOrDefault(t => t.NormalizedName.ToUpper() == normalizedRoleName.ToUpper());
 
         return Task.FromResult(role)!;

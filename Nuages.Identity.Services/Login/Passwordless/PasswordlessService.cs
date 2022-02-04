@@ -2,8 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Nuages.AspNetIdentity;
 
+using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 using Nuages.Web.Exceptions;
 

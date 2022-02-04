@@ -4,8 +4,8 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Nuages.AspNetIdentity;
 
+using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 
 namespace Nuages.Identity.Services.Password;

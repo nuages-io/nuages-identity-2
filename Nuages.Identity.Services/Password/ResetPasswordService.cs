@@ -1,7 +1,8 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
-using Nuages.AspNetIdentity;
+
+using Nuages.AspNetIdentity.Core;
 
 
 // ReSharper disable ClassNeverInstantiated.Global

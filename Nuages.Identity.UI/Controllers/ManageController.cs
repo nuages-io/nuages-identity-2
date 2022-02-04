@@ -4,8 +4,8 @@ using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Nuages.AspNetIdentity;
 
+using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
 

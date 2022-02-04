@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Localization;
-using Nuages.AspNetIdentity;
 
+using Nuages.AspNetIdentity.Core;
 using Nuages.Web.Exceptions;
 using Nuages.Web.Utilities;
 

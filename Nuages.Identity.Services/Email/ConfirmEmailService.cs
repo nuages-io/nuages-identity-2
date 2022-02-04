@@ -1,7 +1,8 @@
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Nuages.AspNetIdentity;
+
+using Nuages.AspNetIdentity.Core;
 
 
 namespace Nuages.Identity.Services.Email;

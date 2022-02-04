@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.AspNetIdentity;
+namespace Nuages.AspNetIdentity.Core;
 
 
 // ReSharper disable once ClassNeverInstantiated.Global

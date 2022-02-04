@@ -20,17 +20,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services.Te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{F47FB2A7-6BEE-4058-A722-DE81DC0FD87F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity", "Nuages.AspNetIdentity\Nuages.AspNetIdentity.csproj", "{872D1F5D-BBD4-494D-998C-18B520B8DB91}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Core", "Nuages.AspNetIdentity.Core\Nuages.AspNetIdentity.Core.csproj", "{872D1F5D-BBD4-494D-998C-18B520B8DB91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Mongo", "Nuages.AspNetIdentity.Mongo\Nuages.AspNetIdentity.Mongo.csproj", "{9E71948B-77DE-40B2-B56C-C195765D5A54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Stores.Mongo", "Nuages.AspNetIdentity.Stores.Mongo\Nuages.AspNetIdentity.Stores.Mongo.csproj", "{9E71948B-77DE-40B2-B56C-C195765D5A54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Tests", "Nuages.AspNetIdentity.Tests\Nuages.AspNetIdentity.Tests.csproj", "{2B882F36-9256-4FEF-BD64-B68C63548094}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Core.Tests", "Nuages.AspNetIdentity.Core.Tests\Nuages.AspNetIdentity.Core.Tests.csproj", "{2B882F36-9256-4FEF-BD64-B68C63548094}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Stores", "Nuages.AspNetIdentity.Stores\Nuages.AspNetIdentity.Stores.csproj", "{CFABDD24-6B13-4EFA-880C-B41635E9A3A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Stores.Tests", "Nuages.AspNetIdentity.Stores.Tests\Nuages.AspNetIdentity.Stores.Tests.csproj", "{BC00697F-2351-41B8-9B17-52BD6FA3B06D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Mongo.Tests", "Nuages.AspNetIdentity.Mongo.Tests\Nuages.AspNetIdentity.Mongo.Tests.csproj", "{D7A9B576-29FE-489B-8CE4-6F4C90415902}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.AspNetIdentity.Stores.Mongo.Tests", "Nuages.AspNetIdentity.Stores.Mongo.Tests\Nuages.AspNetIdentity.Stores.Mongo.Tests.csproj", "{D7A9B576-29FE-489B-8CE4-6F4C90415902}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

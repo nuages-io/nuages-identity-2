@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 // ReSharper disable ClassNeverInstantiated.Global
 
-namespace Nuages.AspNetIdentity;
+namespace Nuages.AspNetIdentity.Core;
 
 public class NuagesUserManager : UserManager<NuagesApplicationUser> 
 {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
-namespace Nuages.AspNetIdentity;
+namespace Nuages.AspNetIdentity.Core;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class NuagesSignInManager : SignInManager<NuagesApplicationUser>

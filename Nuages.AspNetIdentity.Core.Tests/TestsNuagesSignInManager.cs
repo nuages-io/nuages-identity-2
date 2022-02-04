@@ -2,7 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Xunit;
 
-namespace Nuages.AspNetIdentity.Tests;
+namespace Nuages.AspNetIdentity.Core.Tests;
 
 public class TestNuagesSignInManager
 {

@@ -10,8 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-using Nuages.AspNetIdentity;
-using Nuages.AspNetIdentity.Mongo;
+
+using Nuages.AspNetIdentity.Core;
+using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Localization;
 using Nuages.Web;

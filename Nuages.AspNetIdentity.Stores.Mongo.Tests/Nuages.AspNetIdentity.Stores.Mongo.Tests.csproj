@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,8 +26,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Nuages.AspNetIdentity.Mongo\Nuages.AspNetIdentity.Mongo.csproj" />
-      <ProjectReference Include="..\Nuages.AspNetIdentity\Nuages.AspNetIdentity.csproj" />
+      <ProjectReference Include="..\Nuages.AspNetIdentity.Stores.Mongo\Nuages.AspNetIdentity.Stores.Mongo.csproj" />
+      <ProjectReference Include="..\Nuages.AspNetIdentity.Core\Nuages.AspNetIdentity.Core.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="appsettings.local.json">

@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.AspNetIdentity;
+namespace Nuages.AspNetIdentity.Core;
 
 [ExcludeFromCodeCoverage]
 public class NuagesIdentityOptions

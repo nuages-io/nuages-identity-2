@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.AspNetIdentity;
 
+using Nuages.AspNetIdentity.Core;
 using OpenIddict.Server.AspNetCore;
 
 namespace Nuages.Identity.Services.OpenIdDict;

@@ -22,7 +22,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Nuages.AspNetIdentity.Stores\Nuages.AspNetIdentity.Stores.csproj" />
-      <ProjectReference Include="..\Nuages.AspNetIdentity\Nuages.AspNetIdentity.csproj" />
+      <ProjectReference Include="..\Nuages.AspNetIdentity.Core\Nuages.AspNetIdentity.Core.csproj" />
     </ItemGroup>
 
 </Project>

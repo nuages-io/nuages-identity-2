@@ -9,7 +9,7 @@ using Nuages.AspNetIdentity.Stores.InMemory;
 
 // ReSharper disable UnusedParameter.Local
 
-namespace Nuages.AspNetIdentity.Tests;
+namespace Nuages.AspNetIdentity.Core.Tests;
 
 public static class MockHelpers
 {

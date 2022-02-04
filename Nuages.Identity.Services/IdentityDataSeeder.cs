@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using Nuages.AspNetIdentity;
+
+using Nuages.AspNetIdentity.Core;
 
 namespace Nuages.Identity.Services;
 

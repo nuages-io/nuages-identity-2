@@ -2,8 +2,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using Nuages.AspNetIdentity;
 
+using Nuages.AspNetIdentity.Core;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 

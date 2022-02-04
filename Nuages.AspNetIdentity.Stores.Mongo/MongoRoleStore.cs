@@ -5,11 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Nuages.AspNetIdentity.Stores;
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Nuages.AspNetIdentity.Mongo;
+namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
@@ -105,5 +104,5 @@ where TKey : IEquatable<TKey>
     }
 
     public override IQueryable<TRole> Roles => RolesCollection.AsQueryable();
-    public override IQueryable<IdentityRoleClaim<TKey>> RolesClaims => RoleClaimsCollection.AsQueryable();
+    protected override IQueryable<IdentityRoleClaim<TKey>> RolesClaims => RoleClaimsCollection.AsQueryable();
 }
