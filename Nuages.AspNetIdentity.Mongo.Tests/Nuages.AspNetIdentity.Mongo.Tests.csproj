@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
+
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 
@@ -18,12 +18,19 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Moq" Version="4.16.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Nuages.AspNetIdentity.Stores\Nuages.AspNetIdentity.Stores.csproj" />
+      <ProjectReference Include="..\Nuages.AspNetIdentity.Mongo\Nuages.AspNetIdentity.Mongo.csproj" />
       <ProjectReference Include="..\Nuages.AspNetIdentity\Nuages.AspNetIdentity.csproj" />
     </ItemGroup>
-
+    <ItemGroup>
+        <Content Include="appsettings.local.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
 </Project>

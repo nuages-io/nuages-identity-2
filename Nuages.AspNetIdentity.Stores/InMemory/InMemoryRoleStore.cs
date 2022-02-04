@@ -3,10 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.AspNetIdentity.InMemory;
+namespace Nuages.AspNetIdentity.Stores.InMemory;
 
 // ReSharper disable once ClassNeverInstantiated.Global
-public class InMemoryRoleStore<TRole, TKey> : 
+public class InMemoryRoleStore<TRole, TKey> : RoleStoreBase <TRole, TKey>,
 IRoleClaimStore<TRole>,
 IQueryableRoleStore<TRole>
 where TRole : IdentityRole<TKey>
@@ -35,7 +35,7 @@ where TKey : IEquatable<TKey>
         return Task.FromResult(IdentityResult.Success);
     }
 
-    public Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
+    public override Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
     {
         return Task.FromResult(IdentityResult.Success);
     }
@@ -45,59 +45,6 @@ where TKey : IEquatable<TKey>
         _rolesCollection.Remove(role);
         
         return Task.FromResult(IdentityResult.Success);
-    }
-
-    public Task<string?> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(role.Id.ToString());
-    }
-
-    public Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(role.Name);
-    }
-
-    public Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken)
-    {
-        role.Name = roleName;
-
-        return Task.CompletedTask;
-    }
-
-    public Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(role.NormalizedName);
-    }
-
-    public Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, CancellationToken cancellationToken)
-    {
-        role.NormalizedName = normalizedName;
-
-        return Task.CompletedTask;
-    }
-
-    public Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
-    {
-        var role = Roles.SingleOrDefault(t => t.Id.Equals(roleId));
-
-        return Task.FromResult(role)!;
-    }
-
-    public Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
-    {
-        var role = Roles.SingleOrDefault(t => string.Equals(t.NormalizedName, normalizedRoleName, StringComparison.CurrentCultureIgnoreCase));
-
-        return Task.FromResult(role)!;
-    }
-
-    public Task<IList<Claim>> GetClaimsAsync(TRole role, CancellationToken cancellationToken = new())
-    {
-        var list = _roleClaims.Where(c => c.RoleId.Equals(role.Id)).Select(c =>
-            new Claim(c.ClaimType, c.ClaimValue)
-        ).ToList();
-        
-        return Task.FromResult((IList<Claim>) list);
-    
     }
 
     public Task AddClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
@@ -125,5 +72,6 @@ where TKey : IEquatable<TKey>
         return Task.CompletedTask;
     }
 
-    public IQueryable<TRole> Roles => _rolesCollection.AsQueryable();
+    public override IQueryable<TRole> Roles => _rolesCollection.AsQueryable();
+    public override IQueryable<IdentityRoleClaim<TKey>> RolesClaims => _roleClaims.AsQueryable();
 }

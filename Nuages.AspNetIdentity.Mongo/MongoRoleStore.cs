@@ -1,9 +1,11 @@
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Nuages.AspNetIdentity.Stores;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -11,7 +13,7 @@ namespace Nuages.AspNetIdentity.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
-public class MongoRoleStore<TRole, TKey> : 
+public class MongoRoleStore<TRole, TKey> : RoleStoreBase<TRole, TKey>,
 IRoleClaimStore<TRole>,
 IQueryableRoleStore<TRole>
 where TRole : IdentityRole<TKey>
@@ -27,6 +29,7 @@ where TKey : IEquatable<TKey>
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     public static DeleteOptions DeleteOptions { get; } = new();
 
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         GC.SuppressFinalize(this);
@@ -58,7 +61,7 @@ where TKey : IEquatable<TKey>
         return IdentityResult.Success;
     }
 
-    public async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
+    public override async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
     {
         var replaceOneResult = await RolesCollection.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, ReplaceOptions, cancellationToken);
         if (replaceOneResult.IsAcknowledged || replaceOneResult.ModifiedCount != 0L)
@@ -77,58 +80,6 @@ where TKey : IEquatable<TKey>
         return IdentityResult.Failed(_errorDescriber.ConcurrencyFailure());
     }
 
-    public Task<string?> GetRoleIdAsync(TRole role, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(role.Id.ToString());
-    }
-
-    public Task<string> GetRoleNameAsync(TRole role, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(role.Name);
-    }
-
-    public Task SetRoleNameAsync(TRole role, string roleName, CancellationToken cancellationToken)
-    {
-        role.Name = roleName;
-
-        return Task.CompletedTask;
-    }
-
-    public Task<string> GetNormalizedRoleNameAsync(TRole role, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(role.NormalizedName);
-    }
-
-    public Task SetNormalizedRoleNameAsync(TRole role, string normalizedName, CancellationToken cancellationToken)
-    {
-        role.NormalizedName = normalizedName;
-
-        return Task.CompletedTask;
-    }
-
-    public Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
-    {
-        var role = Roles.SingleOrDefault(t => t.Id.Equals(roleId));
-
-        return Task.FromResult(role)!;
-    }
-
-    public Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
-    {
-        var role = Roles.SingleOrDefault(t => t.NormalizedName == normalizedRoleName);
-
-        return Task.FromResult(role)!;
-    }
-
-    public Task<IList<Claim>> GetClaimsAsync(TRole role, CancellationToken cancellationToken = new())
-    {
-        var list = RoleClaimsCollection.AsQueryable().Where(c => c.RoleId.Equals(role.Id)).Select(c =>
-            new Claim(c.ClaimType, c.ClaimValue)
-        ).ToList();
-        
-        return Task.FromResult((IList<Claim>) list);
-    
-    }
 
     public async Task AddClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
     {
@@ -153,5 +104,6 @@ where TKey : IEquatable<TKey>
         
     }
 
-    public IQueryable<TRole> Roles => RolesCollection.AsQueryable();
+    public override IQueryable<TRole> Roles => RolesCollection.AsQueryable();
+    public override IQueryable<IdentityRoleClaim<TKey>> RolesClaims => RoleClaimsCollection.AsQueryable();
 }

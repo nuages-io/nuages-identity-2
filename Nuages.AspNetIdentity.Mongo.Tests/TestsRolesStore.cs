@@ -1,16 +1,45 @@
+using System;
+using System.IO;
 using System.Security.Claims;
-using Nuages.AspNetIdentity.InMemory;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using Xunit;
 
-namespace Nuages.AspNetIdentity.Tests;
+namespace Nuages.AspNetIdentity.Mongo.Tests;
 
-public class TestsInMemoryRoleStore
+public class TestsRolesStore
 {
-    private readonly InMemoryRoleStore<NuagesApplicationRole, string> _roleStore;
+    private readonly MongoRoleStore<NuagesApplicationRole, string> _roleStore;
 
-    public TestsInMemoryRoleStore()
+    public TestsRolesStore()
     {
-        _roleStore = new InMemoryRoleStore<NuagesApplicationRole, string>();
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
+            .AddJsonFile("appsettings.local.json", false)
+            .Build();
+
+        var serviceCollection = new ServiceCollection();
+
+        serviceCollection.AddSingleton<IConfiguration>(configuration);
+
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+        var config = serviceProvider.GetRequiredService<IConfiguration>();
+        
+        MongoIdentityOptions options = new MongoIdentityOptions
+        {
+            ConnectionString = config["ConnectionString"],
+            Database = config["Database"]
+        };
+            
+        var client = new MongoClient(options.ConnectionString);
+        client.DropDatabase(options.Database);
+        
+        _roleStore = new MongoRoleStore<NuagesApplicationRole, string>(Options.Create(options));
     }
     
     [Fact]
@@ -51,7 +80,7 @@ public class TestsInMemoryRoleStore
 
         await _roleStore.DeleteAsync(role, CancellationToken.None);
         
-        Assert.Null(await _roleStore.FindByIdAsync(id, CancellationToken.None));
+        Assert.Null(await _roleStore.FindByIdAsync(id!, CancellationToken.None));
     }
     
     [Fact]
