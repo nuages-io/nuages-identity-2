@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.AspNetIdentity.InMemory;
 
 // ReSharper disable once UnusedType.Global
+[ExcludeFromCodeCoverage]
 public static class AspNetIdentityInMemoryExtensions
 {
     // ReSharper disable once UnusedMember.Global

@@ -44,7 +44,6 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
         if (!await CheckAccountAsync(user)) 
             return false;
 
-        user.LastFailedLoginReason = FailedLoginReason.None;
         
         return true;
     }
@@ -123,6 +122,8 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser>
 
         return true;
     }
+    
+    
 
     private async Task<bool> CheckPasswordAsync(NuagesApplicationUser user)
     {

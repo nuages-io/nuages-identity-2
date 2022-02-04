@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
@@ -10,17 +12,26 @@ IQueryableRoleStore<TRole>
 where TRole : IdentityRole<TKey>
 where TKey : IEquatable<TKey>
 {
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         GC.SuppressFinalize(this);
     }
     
-    public static readonly List<TRole> RolesCollection = new();
-    private static readonly List<IdentityRoleClaim<TKey>> RoleClaims = new();
+    private readonly List<TRole> _rolesCollection = new();
+    private readonly List<IdentityRoleClaim<TKey>> _roleClaims = new();
+    
+    private static TKey StringToKey(string id)
+    {
+        return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
+    }
     
     public Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
     {
-        RolesCollection.Add(role);
+        if (role.Id == null)
+            role.Id = StringToKey(Guid.NewGuid().ToString());
+        
+        _rolesCollection.Add(role);
 
         return Task.FromResult(IdentityResult.Success);
     }
@@ -32,7 +43,7 @@ where TKey : IEquatable<TKey>
 
     public Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
     {
-        RolesCollection.Remove(role);
+        _rolesCollection.Remove(role);
         
         return Task.FromResult(IdentityResult.Success);
     }
@@ -68,21 +79,21 @@ where TKey : IEquatable<TKey>
 
     public Task<TRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
     {
-        var role = RolesCollection.SingleOrDefault(t => t.Id.Equals(roleId));
+        var role = Roles.SingleOrDefault(t => t.Id.Equals(roleId));
 
         return Task.FromResult(role)!;
     }
 
     public Task<TRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = RolesCollection.SingleOrDefault(t => t.NormalizedName == normalizedRoleName);
+        var role = Roles.SingleOrDefault(t => t.NormalizedName.ToUpper() == normalizedRoleName.ToUpper());
 
         return Task.FromResult(role)!;
     }
 
     public Task<IList<Claim>> GetClaimsAsync(TRole role, CancellationToken cancellationToken = new())
     {
-        var list = RoleClaims.Where(c => c.RoleId.Equals(role.Id)).Select(c =>
+        var list = _roleClaims.Where(c => c.RoleId.Equals(role.Id)).Select(c =>
             new Claim(c.ClaimType, c.ClaimValue)
         ).ToList();
         
@@ -92,7 +103,7 @@ where TKey : IEquatable<TKey>
 
     public Task AddClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
     {
-        RoleClaims.Add(new IdentityRoleClaim<TKey>
+        _roleClaims.Add(new IdentityRoleClaim<TKey>
         {
             RoleId = role.Id,
             ClaimType = claim.Type,
@@ -105,15 +116,15 @@ where TKey : IEquatable<TKey>
     public Task RemoveClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
     {
         var entity =
-            RoleClaims.FirstOrDefault(
+            _roleClaims.FirstOrDefault(
                 uc => uc.RoleId.Equals(role.Id) && uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value);
         if (entity != null)
         {
-            RoleClaims.Remove(entity);
+            _roleClaims.Remove(entity);
         }
         
         return Task.CompletedTask;
     }
 
-    public IQueryable<TRole> Roles => RolesCollection.AsQueryable();
+    public IQueryable<TRole> Roles => _rolesCollection.AsQueryable();
 }

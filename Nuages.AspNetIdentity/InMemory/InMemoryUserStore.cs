@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,7 +14,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
     IUserLoginStore<TUser>,
     IUserRoleStore<TUser>,
     IUserPasswordStore<TUser>,
-    IUserSecurityStampStore<TUser>,
+   // IUserSecurityStampStore<TUser>,
     IUserEmailStore<TUser>,
     IUserPhoneNumberStore<TUser>,
     IQueryableUserStore<TUser>,
@@ -27,18 +28,25 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
+    private readonly InMemoryRoleStore<TRole, TKey> _roleStore;
+
     public void Dispose()
     {
         
         GC.SuppressFinalize(this);
     }
 
-    private static readonly List<TUser> _users = new ();
+    public InMemoryUserStore(InMemoryRoleStore<TRole, TKey> roleStore)
+    {
+        _roleStore = roleStore;
+    }
     
-    private static readonly List<IdentityUserClaim<TKey>> _userClaims = new();
-    private static readonly List<IdentityUserLogin<TKey>> _logins = new();
-    private static readonly List<IdentityUserToken<TKey>> _tokens = new();
-    private static readonly List<IdentityUserRole<TKey>> _userRoles = new();
+    private readonly List<TUser> _users = new ();
+    
+    private readonly List<IdentityUserClaim<TKey>> _userClaims = new();
+    private readonly List<IdentityUserLogin<TKey>> _logins = new();
+    private readonly List<IdentityUserToken<TKey>> _tokens = new();
+    private readonly List<IdentityUserRole<TKey>> _userRoles = new();
     // ReSharper disable once CollectionNeverUpdated.Local
    
     
@@ -71,10 +79,18 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.CompletedTask;
     }
 
+    private static TKey StringToKey(string id)
+    {
+        return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
+    }
+
+    
     public Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
         if (user == null)
             throw new ArgumentNullException(nameof (user));
+        
+        user.Id = StringToKey(Guid.NewGuid().ToString());
         
         _users.Add(user);
         
@@ -214,9 +230,9 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.FromResult(_users.SingleOrDefault(u => u.Id.Equals(login.UserId)))!;
     }
 
-    public Task AddToRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public async Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = await _roleStore.FindByNameAsync(normalizedRoleName, cancellationToken);
         
         ArgumentNullException.ThrowIfNull(role);
         
@@ -227,54 +243,68 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         };
         
         _userRoles.Add(identityRole);
-
-        return Task.CompletedTask;
     }
 
-    public Task RemoveFromRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public async Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = await _roleStore.FindByNameAsync(normalizedRoleName, cancellationToken);
         
         ArgumentNullException.ThrowIfNull(role);
 
         var userRole = _userRoles.SingleOrDefault(u => u.UserId.Equals(user.Id) && u.RoleId.Equals(role.Id));
         if (userRole != null)
             _userRoles.Remove(userRole);
-
-        return Task.CompletedTask;
     }
 
     public Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken)
     {
-        var ids = _userRoles.Where(u => u.UserId.Equals(user.Id)).Select(r => r.RoleId);
+        var query = from p in _userRoles.AsQueryable()
+                .Where(u => u.UserId.Equals(user.Id))
+            join o in _roleStore.Roles on p.RoleId equals o.Id
+            select o.Name;
 
-        var list = InMemoryRoleStore<TRole, TKey>.RolesCollection.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
-
-        return Task.FromResult((IList<string>)list.ToList());
+        return Task.FromResult((IList<string>)query.ToList());
+        
+        // var ids = _userRoles.Where(u => u.UserId.Equals(user.Id)).Select(r => r.RoleId);
+        //
+        // var list = InMemoryRoleStore<TRole, TKey>.RolesCollection.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
+        //
+        // return Task.FromResult((IList<string>)list.ToList());
     }
 
-    public Task<bool> IsInRoleAsync(TUser user, string roleName, CancellationToken cancellationToken)
+    public async Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = await _roleStore.FindByNameAsync(normalizedRoleName, cancellationToken);
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         if (role == null)
-            return Task.FromResult(false);
+            return false;
         
-        var any = _userRoles.Any(c => c.UserId.Equals(user.Id) && c.RoleId.Equals(role.Id));
+        return _userRoles.Any(c => c.UserId.Equals(user.Id) && c.RoleId.Equals(role.Id));
         
-        return Task.FromResult(any);
     }
 
-    public Task<IList<TUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+    public Task<IList<TUser>> GetUsersInRoleAsync(string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        var role = _roleStore.Roles.SingleOrDefault(r => r.NormalizedName == normalizedRoleName);
         if (role == null)
             return Task.FromResult((IList<TUser>)new List<TUser>());
         
-        var ids = _userRoles.Where(u => u.UserId.Equals(role.Id)).Select(r => r.RoleId);
+        var query = from p 
+                in _userRoles.AsQueryable().Where(u => u.RoleId.Equals(role.Id))
+            join o in Users on p.UserId equals o.Id
+            select o;
 
-        var list = _users.Where(r => ids.Contains(r.Id));
-
-        return Task.FromResult((IList<TUser>)list.ToList());
+        return Task.FromResult((IList<TUser>)query.ToList());
+        
+        // var role = InMemoryRoleStore<TRole, TKey>.RolesCollection.SingleOrDefault(r => r.Name == roleName);
+        // if (role == null)
+        //     return Task.FromResult((IList<TUser>)new List<TUser>());
+        //
+        // var ids = _userRoles.Where(u => u.UserId.Equals(role.Id)).Select(r => r.RoleId);
+        //
+        // var list = _users.Where(r => ids.Contains(r.Id));
+        //
+        // return Task.FromResult((IList<TUser>)list.ToList());
     }
 
     public Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)
@@ -294,17 +324,17 @@ public class InMemoryUserStore<TUser, TRole, TKey> :
         return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
     }
 
-    public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
-    {
-        user.SecurityStamp = stamp;
-
-        return Task.CompletedTask;
-    }
-
-    public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
-    {
-        return Task.FromResult(user.SecurityStamp);
-    }
+    // public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
+    // {
+    //     user.SecurityStamp = stamp;
+    //
+    //     return Task.CompletedTask;
+    // }
+    //
+    // public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
+    // {
+    //     return Task.FromResult(user.SecurityStamp);
+    // }
 
     public Task SetEmailAsync(TUser user, string email, CancellationToken cancellationToken)
     {

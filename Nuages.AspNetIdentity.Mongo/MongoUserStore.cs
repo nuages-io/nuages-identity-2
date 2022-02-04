@@ -105,14 +105,14 @@ public class MongoUserStore<TUser, TRole, TKey> :
         await UpdateAsync(user, cancellationToken);
     }
 
-    private static TKey ConvertIdFromString(string id)
+    private static TKey StringToKey(string id)
     {
         return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
     }
     
     public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
-        user.Id = ConvertIdFromString(ObjectId.GenerateNewId().ToString());
+        user.Id = StringToKey(ObjectId.GenerateNewId().ToString());
         
         if (user == null)
             throw new ArgumentNullException(nameof (user));
@@ -330,15 +330,6 @@ public class MongoUserStore<TUser, TRole, TKey> :
             select o;
 
         return Task.FromResult((IList<TUser>)query.ToList());
-        
-        //
-        //
-        // var ids = UsersRoles.Where(u => u.UserId.Equals(role.Id))
-        //     .Select(r => r.RoleId);
-        //
-        // var list = Users.Where(r => ids.Contains(r.Id));
-        //
-        // return Task.FromResult((IList<TUser>)list.ToList());
     }
 
     public async Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken)

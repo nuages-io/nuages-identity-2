@@ -28,6 +28,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
        
         if (res.Succeeded)
         {
+          
             user.CreatedOn = DateTime.UtcNow;
             user.LastPasswordChangedDate = user.CreatedOn;
             
@@ -49,23 +50,42 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return user;
     }
 
-    protected override async Task<IdentityResult> UpdatePasswordHash(NuagesApplicationUser user, string newPassword, bool validatePassword)
+    public override async Task<IdentityResult> ChangePasswordAsync(NuagesApplicationUser user, string currentPassword, string newPassword)
     {
-        var res = await base.UpdatePasswordHash(user, newPassword, validatePassword);
-
+        var res = await base.ChangePasswordAsync(user, currentPassword, newPassword);
         if (res.Succeeded)
         {
             user.LastPasswordChangedDate = DateTime.UtcNow;
-            await UpdateAsync(user);
+            return await UpdateAsync(user);
         }
 
         return res;
     }
 
-    public async Task<List<string>> GetRecoveryCodes(NuagesApplicationUser user)
+    public override async Task<IdentityResult> AddPasswordAsync(NuagesApplicationUser user, string password)
     {
-        var recoveryCode = await GetAuthenticationTokenAsync(user, "[AspNetUserStore]", "RecoveryCodes");
-        return recoveryCode?.Split(";").ToList() ?? new List<string>();
+        var res = await base.AddPasswordAsync(user, password);
+        if (res.Succeeded)
+        {
+            user.LastPasswordChangedDate = DateTime.UtcNow;
+            return await UpdateAsync(user);
+        }
+
+        return res;
     }
+
+    // protected override async Task<IdentityResult> UpdatePasswordHash(NuagesApplicationUser user, string newPassword, bool validatePassword)
+    // {
+    //     var res = await base.UpdatePasswordHash(user, newPassword, validatePassword);
+    //
+    //     if (res.Succeeded)
+    //     {
+    //         user.LastPasswordChangedDate = DateTime.UtcNow;
+    //         await UpdateAsync(user);
+    //     }
+    //
+    //     return res;
+    // }
+
 }
 

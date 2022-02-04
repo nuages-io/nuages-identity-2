@@ -15,6 +15,7 @@ public class TestsLoginService
     {
         var user = MockHelpers.CreateDefaultUser();
         
+        
         const string password = MockHelpers.StrongPassword ;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
@@ -157,6 +158,37 @@ public class TestsLoginService
         
         Assert.False(res.Success);
         Assert.Equal(FailedLoginReason.EmailNotConfirmed, res.Reason);
+    }
+    
+    [Fact]
+    public async Task ShouldLoginWithFailureAccountNotConfirmed()
+    {
+        const string password = MockHelpers.StrongPassword;
+        
+        var user = MockHelpers.CreateDefaultUser();
+        user.EmailConfirmed = false;
+
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        
+        identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
+        identityStuff.UserManager.Options.SignIn.RequireConfirmedAccount = true;
+        
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
+        
+        var messageService = new Mock<IMessageService>();
+
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+            messageService.Object);
+
+        var res = await loginService.LoginAsync(new LoginModel
+        {
+            UserNameOrEmail = user.Email,
+            Password = password,
+            RememberMe = false
+        });
+        
+        Assert.False(res.Success);
+        Assert.Equal(FailedLoginReason.AccountNotConfirmed, res.Reason);
     }
     
     [Fact]

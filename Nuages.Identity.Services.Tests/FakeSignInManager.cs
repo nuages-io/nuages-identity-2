@@ -37,6 +37,7 @@ public class FakeSignInManager : NuagesSignInManager
         user.LockoutEnd = null;
         user.LockoutMessageSent = false;
         user.AccessFailedCount = 0;
+        user.LastFailedLoginReason = FailedLoginReason.None;
         
         await Task.FromResult(0);
     }

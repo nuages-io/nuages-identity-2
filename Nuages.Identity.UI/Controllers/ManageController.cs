@@ -344,8 +344,7 @@ public class ManageController : Controller
     [HttpGet("downloadRecoveryCodes")]
     public async Task<ActionResult> DownloadRecoveryCodesAsync()
     {
-        var user = await _userManager.FindByIdAsync(User.Sub());
-        var codes = await _userManager.GetRecoveryCodes(user);
+        var codes = await _mfaService.GetRecoveryCodes(User.Sub()!);
 
         var recoveryCodesString = string.Join(",", codes);
         return File(Encoding.Default.GetBytes(recoveryCodesString), "application/text", "recoveryCodes.txt");

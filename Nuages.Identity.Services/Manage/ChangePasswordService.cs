@@ -62,7 +62,7 @@ public class ChangePasswordService : IChangePasswordService
             {
                 _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Changed", new Dictionary<string, string>
                 {
-                   // { "PhoneNumber", phoneNumber }
+                   
                 });
             }
         }

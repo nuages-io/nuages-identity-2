@@ -68,6 +68,9 @@ public class TestsMfaService
         
         Assert.True(res.Success);
         Assert.Equal(10, res.Codes.Count);
+
+        var res2 = await service.GetRecoveryCodes(user.Id);
+        Assert.Equal(10, res2.Count);
     }
     
     [Fact]
@@ -82,6 +85,11 @@ public class TestsMfaService
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
             await service.ResetRecoveryCodesAsync(MockHelpers.BadId);
+        });
+        
+        await Assert.ThrowsAsync<NotFoundException>(async () =>
+        {
+            await service.GetRecoveryCodes(MockHelpers.BadId);
         });
     }
     

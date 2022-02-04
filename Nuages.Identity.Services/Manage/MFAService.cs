@@ -166,6 +166,16 @@ public class MFAService : IMFAService
             _urlEncoder.Encode(email),
             unformattedKey);
     }
+    
+    public async Task<List<string>> GetRecoveryCodes(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            throw new NotFoundException("UserNotFound");
+        
+        var recoveryCode = await _userManager.GetAuthenticationTokenAsync(user, "[AspNetUserStore]", "RecoveryCodes");
+        return recoveryCode?.Split(";").ToList() ?? new List<string>();
+    }
 }
 
 public interface IMFAService
@@ -174,6 +184,7 @@ public interface IMFAService
     Task<MFAResultModel> EnableMFAAsync(string userId, string code);
     Task<MFAResultModel> ResetRecoveryCodesAsync(string userId);
     Task<GetMFAUrlResultModel> GetMFAUrlAsync(string userId);
+    Task<List<string>> GetRecoveryCodes(string userId);
 }
 
 public class GetMFAUrlResultModel
