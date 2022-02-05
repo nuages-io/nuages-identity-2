@@ -32,6 +32,7 @@ where TKey : IEquatable<TKey>
         
         _rolesCollection.Add(role);
 
+        role.NormalizedName = role.Name.ToUpper();
         return Task.FromResult(IdentityResult.Success);
     }
 

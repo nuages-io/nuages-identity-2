@@ -54,6 +54,8 @@ where TKey : IEquatable<TKey>
     public async Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
     {
         role.Id = ConvertIdFromString(ObjectId.GenerateNewId().ToString());
+
+        await SetNormalizedRoleNameAsync(role, role.Name.ToUpper(), cancellationToken);
         
         await RolesCollection.InsertOneAsync(role, null, cancellationToken);
 
@@ -63,19 +65,32 @@ where TKey : IEquatable<TKey>
     public override async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
     {
         var replaceOneResult = await RolesCollection.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, ReplaceOptions, cancellationToken);
+
+        return ReturnUpdateResult(replaceOneResult);
+    }
+
+    [ExcludeFromCodeCoverage]
+    private IdentityResult ReturnUpdateResult(ReplaceOneResult replaceOneResult)
+    {
         if (replaceOneResult.IsAcknowledged || replaceOneResult.ModifiedCount != 0L)
             return IdentityResult.Success;
-        
+
         return IdentityResult.Failed(_errorDescriber.ConcurrencyFailure());
     }
 
     public async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
     {
         var result = await RolesCollection.DeleteOneAsync(m => m.Id.Equals(role.Id), DeleteOptions, cancellationToken);
-        
+
+        return ReturnDeleteResult(result);
+    }
+
+    [ExcludeFromCodeCoverage]
+    private IdentityResult ReturnDeleteResult(DeleteResult result)
+    {
         if (result.IsAcknowledged || result.DeletedCount != 0L)
             return IdentityResult.Success;
-        
+
         return IdentityResult.Failed(_errorDescriber.ConcurrencyFailure());
     }
 

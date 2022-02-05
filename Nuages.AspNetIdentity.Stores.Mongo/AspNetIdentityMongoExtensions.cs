@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -5,6 +6,7 @@ using MongoDB.Bson.Serialization.Serializers;
 
 namespace Nuages.AspNetIdentity.Stores.Mongo;
 
+[ExcludeFromCodeCoverage]
 public static class AspNetIdentityMongoExtensions
 {
     public static void AddMongoStores<TUser, TRole, TKey>(this IdentityBuilder builder, Action<MongoIdentityOptions> configure)  

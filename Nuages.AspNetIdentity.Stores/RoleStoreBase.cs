@@ -62,6 +62,7 @@ public abstract class RoleStoreBase<TRole, TKey> where TRole : IdentityRole<TKey
         await UpdateAsync(role, cancellationToken);
     }
 
+    
 
      public abstract Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken);
     

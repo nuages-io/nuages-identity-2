@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -33,6 +34,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         
@@ -113,9 +115,18 @@ public class MongoUserStore<TUser, TRole, TKey> :
     public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
         user.Id = StringToKey(ObjectId.GenerateNewId().ToString());
+
+        var email = await GetEmailAsync(user, cancellationToken);
+        await SetNormalizedEmailAsync(user, email.ToUpper(), cancellationToken);
+
+        var userName = await GetUserNameAsync(user, cancellationToken);
+        if (string.IsNullOrEmpty(userName))
+        {
+            await SetUserNameAsync(user, email, cancellationToken);
+            userName = email;
+        }
         
-        if (user == null)
-            throw new ArgumentNullException(nameof (user));
+        await SetNormalizedUserNameAsync(user,userName.ToUpper(), cancellationToken);
         
         await UsersCollection.InsertOneAsync(user, null, cancellationToken);
         
@@ -131,20 +142,37 @@ public class MongoUserStore<TUser, TRole, TKey> :
                                                                 x.ConcurrencyStamp.Equals(currentConcurrencyStamp), 
             user, ReplaceOptions, cancellationToken);
 
+        return ReturnUpdateResult(result);
+    }
+
+    [ExcludeFromCodeCoverage]
+    private IdentityResult ReturnUpdateResult(ReplaceOneResult result)
+    {
         if (!result.IsAcknowledged && result.ModifiedCount == 0)
         {
             return IdentityResult.Failed(_errorDescriber.ConcurrencyFailure());
         }
-        
+
         return IdentityResult.Success;
     }
 
     public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
     {
-        await UsersCollection.DeleteOneAsync(u => u.Id.Equals(user.Id), DeleteOptions, cancellationToken);
-        
-        return IdentityResult.Success;
+        var deleteResult = await UsersCollection.DeleteOneAsync(u => u.Id.Equals(user.Id), DeleteOptions, cancellationToken);
+
+        return ReturnDeleteResult(deleteResult);
     }
+    
+    
+    [ExcludeFromCodeCoverage]
+    private IdentityResult ReturnDeleteResult(DeleteResult result)
+    {
+        if (result.IsAcknowledged || result.DeletedCount != 0L)
+            return IdentityResult.Success;
+
+        return IdentityResult.Failed(_errorDescriber.ConcurrencyFailure());
+    }
+
 
     public Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
@@ -153,7 +181,8 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
-        return Task.FromResult(Users.FirstOrDefault(x => x.NormalizedUserName == normalizedUserName))!;
+        // ReSharper disable once SpecifyStringComparison
+        return Task.FromResult(Users.FirstOrDefault(x => x.NormalizedUserName.ToUpper() == normalizedUserName.ToUpper()))!;
     }
 
     public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
@@ -201,32 +230,12 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public  Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
     {
-        if (claim == null)
-        {
-            throw new ArgumentNullException(nameof(claim));
-        }
-        
         var query = from p in 
                 UsersClaims.AsQueryable().Where(u => u.Type == claim.Type)
             join o in Users on p.UserId equals o.Id 
             select o;
         
         return  Task.FromResult((IList<TUser>) query.ToList());
-        
-        // var result = from uc 
-        //         in UsersClaims.AsQueryable().Where(u => u.Type == claim.Type)
-        //     join c in Users.AsQueryable()
-        //         on uc.UserId equals c.Id
-        //         into user
-        //     select user;
-        // return (IList<TUser>) result.ToList();
-        
-        // var ids = UsersClaims.Where(x => x.Type == claim.Type && x.Value == claim.Value)
-        //     .Select(c => c.UserId);
-        //
-        // return Task.FromResult<IList<TUser>>(Users.Where(i => ids.Contains(i.Id)).ToList());
-
-        
     }
 
     public async Task AddLoginAsync(TUser user, UserLoginInfo login, CancellationToken cancellationToken)
@@ -266,7 +275,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public async Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.NormalizedName  == normalizedRoleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName.ToUpper()  == normalizedRoleName.ToUpper() );
         
         ArgumentNullException.ThrowIfNull(role);
         
@@ -282,7 +291,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public async Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.NormalizedName == normalizedRoleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName.ToUpper()  == normalizedRoleName.ToUpper() );
         
         ArgumentNullException.ThrowIfNull(role);
 
@@ -298,18 +307,11 @@ public class MongoUserStore<TUser, TRole, TKey> :
             select o.Name;
 
         return Task.FromResult((IList<string>)query.ToList());
-        
-        // var ids = UsersRoles.Where(u => u.UserId.Equals(user.Id)).ToList()
-        //     .Select(r => r.RoleId);
-        //
-        // var list = Roles.Where(r => ids.Contains(r.Id)).Select(r => r.Name);
-        //
-        // return Task.FromResult((IList<string>)list.ToList());
     }
 
     public Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
-        var role = Roles.SingleOrDefault(r => r.NormalizedName == normalizedRoleName);
+        var role = Roles.SingleOrDefault(r => r.NormalizedName.ToUpper()  == normalizedRoleName.ToUpper() );
         if (role == null)
             return Task.FromResult(false);
         
@@ -349,6 +351,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
         return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
     }
 
+    [ExcludeFromCodeCoverage]
     public async Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
     {
         user.SecurityStamp = stamp;
@@ -356,6 +359,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
         await UpdateAsync(user, cancellationToken);
     }
 
+    [ExcludeFromCodeCoverage]
     public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
     {
         return Task.FromResult(user.SecurityStamp);
@@ -387,7 +391,7 @@ public class MongoUserStore<TUser, TRole, TKey> :
 
     public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
     {
-        return Task.FromResult(Users.AsQueryable().FirstOrDefault(x => x.NormalizedEmail == normalizedEmail))!;
+        return Task.FromResult(Users.AsQueryable().FirstOrDefault(x => x.NormalizedEmail.ToUpper()  == normalizedEmail.ToUpper() ))!;
     }
 
     public Task<string> GetNormalizedEmailAsync(TUser user, CancellationToken cancellationToken)

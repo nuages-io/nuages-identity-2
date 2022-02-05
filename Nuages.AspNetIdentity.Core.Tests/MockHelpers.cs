@@ -15,9 +15,7 @@ public static class MockHelpers
 {
     public class MockIdentity
     {
-        
         public InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string> UserStore { get; set; } = null!;
-        public InMemoryRoleStore<NuagesApplicationRole, string> RoleStore { get; set; } = null!;
         
         public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
         
@@ -34,11 +32,9 @@ public static class MockHelpers
     {
         var mockIdentity = new MockIdentity
         {
-            RoleStore = new InMemoryRoleStore<NuagesApplicationRole, string>()
+            UserStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>()
         };
 
-        mockIdentity.UserStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>( mockIdentity.RoleStore);
-        
         if (nuagesOptions != null)
             mockIdentity.NuagesOptions = nuagesOptions;
 
