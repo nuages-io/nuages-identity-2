@@ -1,25 +1,27 @@
 using System.ComponentModel;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.AspNetIdentity.Stores;
 
-public abstract class UserStoreBase <TUser, TRole, TKey>
+public abstract class UserStoreBase <TUser, TRole, TKey,  TUserLogin, TUserToken, TUserRole>
     where TUser : IdentityUser<TKey>
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
+    where TUserLogin : IdentityUserLogin<TKey>, new()
+    where TUserToken : IdentityUserToken<TKey>, new()
+    where TUserRole : IdentityUserRole<TKey>, new()
 {
     
     
     public abstract IQueryable<TUser> Users { get; }
     protected abstract IQueryable<TRole> Roles { get; }
-    protected abstract IQueryable<IdentityUserClaim<TKey>> UsersClaims { get; }
-    protected abstract IQueryable<IdentityUserLogin<TKey>> UsersLogins { get; }
-    protected abstract IQueryable<IdentityUserToken<TKey>> UsersTokens { get; }
-    protected abstract IQueryable<IdentityUserRole<TKey>> UsersRoles { get; }
+    
+    protected abstract IQueryable<TUserLogin> UsersLogins { get; }
+    protected abstract IQueryable<TUserToken> UsersTokens { get; }
+    protected abstract IQueryable<TUserRole> UsersRoles { get; }
 
     public abstract Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken);
-    protected abstract Task UpdateClaimAsync(IdentityUserClaim<TKey> claim, CancellationToken cancellationToken);
+    
     
     public Task<string?> GetUserIdAsync(TUser user, CancellationToken cancellationToken)
     {
@@ -69,26 +71,12 @@ public abstract class UserStoreBase <TUser, TRole, TKey>
         return Task.FromResult(Users.FirstOrDefault(x => x.NormalizedUserName.ToUpper()  == normalizedUserName.ToUpper() ))!;
     }
     
-    public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
-    {
-        var list = UsersClaims.Where(c => c.UserId.Equals(user.Id)).Select(c =>
-            new Claim(c.ClaimType, c.ClaimValue)
-        ).ToList();
-        
-        return Task.FromResult((IList<Claim>) list);
-    }
-
-    public Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
-    {
-        var ids = UsersClaims.Where(x => x.ClaimType == claim.Type && x.ClaimValue == claim.Value).Select(c => c.UserId);
-        
-        return Task.FromResult<IList<TUser>>(Users.Where(i => ids.Contains(i.Id)).ToList());
-    }
+  
     
     
     public Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken)
     {
-        IList<UserLoginInfo> result = UsersLogins.Where(u => u.UserId.Equals(user.Id))
+        IList<UserLoginInfo> result = UsersLogins.Where(u => u.UserId.Equals(user.Id)).ToList()
             .Select(l => new UserLoginInfo(l.LoginProvider, l.ProviderKey, l.ProviderDisplayName)).ToList();
         return Task.FromResult(result);
     }
@@ -109,7 +97,7 @@ public abstract class UserStoreBase <TUser, TRole, TKey>
         return Task.FromResult((IList<string>)query.ToList());
     }
 
-     protected abstract Task<TRole> FindRoleByNameAsync(string nomalizedName, CancellationToken cancellationToken);
+     protected abstract Task<TRole?> FindRoleByNameAsync(string normalizedName, CancellationToken cancellationToken);
      
     public async Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
     {
@@ -234,6 +222,7 @@ public abstract class UserStoreBase <TUser, TRole, TKey>
 
     public Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
     {
+        // ReSharper disable once SpecifyStringComparison
         return Task.FromResult(Users.AsQueryable().FirstOrDefault(x => x.NormalizedEmail.ToUpper() == normalizedEmail.ToUpper() ))!;
     }
 
@@ -308,10 +297,12 @@ public abstract class UserStoreBase <TUser, TRole, TKey>
         if (tokenEntity != null)
         {
             tokenEntity.Value = value;
+
+            await UpdateUserTokenAsync(tokenEntity);
         }
         else
         {
-            await AddUserTokenAsync(new IdentityUserToken<TKey>
+            await AddUserTokenAsync(new TUserToken
             {
                 UserId = user.Id,
                 LoginProvider = loginProvider,
@@ -345,35 +336,9 @@ public abstract class UserStoreBase <TUser, TRole, TKey>
         return false;
     }
 
-    protected abstract Task AddClaim(IdentityUserClaim<TKey> claim);
-    
-    public async Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
-    {
-        foreach (var claim in claims)
-        {
-            await AddClaim(new IdentityUserClaim<TKey>
-            {
-                UserId = user.Id,
-                ClaimType = claim.Type,
-                ClaimValue = claim.Value
-            });
-        }
+   
 
-    }
-
-    public async Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
-    {
-        var matchedClaims = UsersClaims.Where(c =>
-            c.ClaimType == claim.Type && c.ClaimValue == claim.Value && user.Id.Equals(user.Id));
-
-        foreach (var matchedClaim in matchedClaims)
-        {
-            matchedClaim.ClaimValue = newClaim.Value;
-            matchedClaim.ClaimType = newClaim.Type;
-
-            await UpdateClaimAsync(matchedClaim, cancellationToken);
-        }
-    }
+  
     
     public async Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
     {
@@ -406,7 +371,7 @@ public abstract class UserStoreBase <TUser, TRole, TKey>
         
         ArgumentNullException.ThrowIfNull(role);
         
-        var identityRole = new IdentityUserRole<TKey>
+        var identityRole = new TUserRole
         {
             UserId = user.Id,
             RoleId = role.Id
@@ -430,25 +395,11 @@ public abstract class UserStoreBase <TUser, TRole, TKey>
         
     }
     
-    public async Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
-    {
-        foreach (var claim in claims)
-        {
-            var entity =
-                UsersClaims.FirstOrDefault(
-                    uc => uc.UserId.Equals(user.Id) && uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value);
-            if (entity != null)
-            {
-                await RemoveUserClaimAsync(entity);
-            }
-        }
-        
-    }
     
-    protected abstract Task AddUserTokenAsync(IdentityUserToken<TKey> token);
-    protected abstract Task RemoveTokenAsync(IdentityUserToken<TKey> token);
-    protected abstract Task RemoveUserRoleAsync(IdentityUserRole<TKey> role);
-    protected abstract Task AddUserRoleAsync(IdentityUserRole<TKey> role);
-    protected abstract Task RemoveUserLoginAsync(IdentityUserLogin<TKey> login);
-    protected abstract Task RemoveUserClaimAsync(IdentityUserClaim<TKey> claim);
+    protected abstract Task AddUserTokenAsync(TUserToken token);
+    protected abstract Task UpdateUserTokenAsync(TUserToken token);
+    protected abstract Task RemoveTokenAsync(TUserToken token);
+    protected abstract Task RemoveUserRoleAsync(TUserRole role);
+    protected abstract Task AddUserRoleAsync(TUserRole role);
+    protected abstract Task RemoveUserLoginAsync(TUserLogin login);
 }

@@ -112,6 +112,17 @@ public class Startup
 
         services.AddHealthChecks();
         
+        services.AddScoped<IAudienceValidator, AudienceValidator>();
+        services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
+        services.AddScoped<IAuthorizeEndpoint, AuthorizeEndpoint>();
+        services.AddScoped<IClientCredentialsFlowHandler, ClientCredentialsFlowHandler>();
+        services.AddScoped<IDeviceFlowHandler, DeviceFlowHandler>();
+        services.AddScoped<ILogoutEndpoint, LogoutEndpoint>();
+        services.AddScoped<IPasswordFlowHandler, PasswordFlowHandler>();
+        services.AddScoped<ITokenEndpoint, TokenEndpoint>();
+
+        services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
+        
         services.AddHostedService<MongoSchemaInitializer<NuagesApplicationUser, NuagesApplicationRole, string>>();
         services.AddHostedService<IdentityDataSeeder>();
 

@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-
 using Nuages.AspNetIdentity.Core;
 using OpenIddict.Server.AspNetCore;
 
-namespace Nuages.Identity.Services.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public class LogoutEndpoint  : ILogoutEndpoint
 {

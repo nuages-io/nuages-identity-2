@@ -1,6 +1,6 @@
 using OpenIddict.Abstractions;
 
-namespace Nuages.Identity.Services.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public class DeviceFlowHandler : IDeviceFlowHandler
 {

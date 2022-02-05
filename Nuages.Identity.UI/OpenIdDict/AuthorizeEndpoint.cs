@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-
 using Nuages.AspNetIdentity.Core;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
-namespace Nuages.Identity.Services.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public class AuthorizeEndpoint : IAuthorizeEndpoint
 {
@@ -17,9 +15,11 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
     private readonly IOpenIddictApplicationManager _applicationManager;
     private readonly IOpenIddictAuthorizationManager _authorizationManager;
     private readonly IOpenIddictScopeManager _scopeManager;
+    private readonly IOpenIddictServerRequestProvider _openIddictServerRequestProvider;
 
     public AuthorizeEndpoint(NuagesUserManager userManager, NuagesSignInManager signInManager, IHttpContextAccessor contextAccessor,
-        IOpenIddictApplicationManager applicationManager, IOpenIddictAuthorizationManager authorizationManager, IOpenIddictScopeManager scopeManager)
+        IOpenIddictApplicationManager applicationManager, IOpenIddictAuthorizationManager authorizationManager, 
+        IOpenIddictScopeManager scopeManager, IOpenIddictServerRequestProvider openIddictServerRequestProvider)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -27,22 +27,23 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
         _applicationManager = applicationManager;
         _authorizationManager = authorizationManager;
         _scopeManager = scopeManager;
+        _openIddictServerRequestProvider = openIddictServerRequestProvider;
     }
     
     public async Task<IActionResult> Authorize()
     {
-        var request = _contextAccessor.HttpContext!.GetOpenIddictServerRequest() ??
+        var openIdRequest = _openIddictServerRequestProvider.GetOpenIddictServerRequest() ??
                       throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
         var httpRequest = _contextAccessor.HttpContext!.Request;
         
         // If prompt=login was specified by the client application,
         // immediately return the user agent to the login page.
-        if (request.HasPrompt(OpenIddictConstants.Prompts.Login))
+        if (openIdRequest.HasPrompt(OpenIddictConstants.Prompts.Login))
         {
             // To avoid endless login -> authorization redirects, the prompt=login flag
             // is removed from the authorization request payload before redirecting the user.
-            var prompt = string.Join(" ", request.GetPrompts().Remove(OpenIddictConstants.Prompts.Login));
+            var prompt = string.Join(" ", openIdRequest.GetPrompts().Remove(OpenIddictConstants.Prompts.Login));
 
             var parameters = httpRequest.HasFormContentType
                 ? httpRequest.Form.Where(parameter => parameter.Key != OpenIddictConstants.Parameters.Prompt).ToList()
@@ -62,13 +63,13 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
         // If a max_age parameter was provided, ensure that the cookie is not too old.
         // If the user principal can't be extracted or the cookie is too old, redirect the user to the login page.
         var result = await _contextAccessor.HttpContext.AuthenticateAsync(Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme);
-        if ( /*result == null ||*/ !result.Succeeded || request.MaxAge != null &&
+        if ( /*result == null ||*/ !result.Succeeded || openIdRequest.MaxAge != null &&
             result.Properties?.IssuedUtc != null &&
-            DateTimeOffset.UtcNow - result.Properties.IssuedUtc > TimeSpan.FromSeconds(request.MaxAge.Value))
+            DateTimeOffset.UtcNow - result.Properties.IssuedUtc > TimeSpan.FromSeconds(openIdRequest.MaxAge.Value))
         {
             // If the client application requested promptless authentication,
             // return an error indicating that the user is not logged in.
-            if (request.HasPrompt(OpenIddictConstants.Prompts.None))
+            if (openIdRequest.HasPrompt(OpenIddictConstants.Prompts.None))
             {
                 return new ForbidResult (
                      new[] { OpenIddictServerAspNetCoreDefaults.AuthenticationScheme },
@@ -93,7 +94,7 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
                    throw new InvalidOperationException("The user details cannot be retrieved.");
 
         // Retrieve the application details from the database.
-        var application = await _applicationManager.FindByClientIdAsync(request.ClientId!) ??
+        var application = await _applicationManager.FindByClientIdAsync(openIdRequest.ClientId!) ??
                           throw new InvalidOperationException(
                               "Details concerning the calling client application cannot be found.");
 
@@ -103,7 +104,7 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
             (await _applicationManager.GetIdAsync(application))!,
             OpenIddictConstants.Statuses.Valid,
             OpenIddictConstants.AuthorizationTypes.Permanent,
-            request.GetScopes()).ToListAsync();
+            openIdRequest.GetScopes()).ToListAsync();
         
         var principal =
             await _signInManager.CreateUserPrincipalAsync(user);
@@ -111,7 +112,7 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
         // Note: in this sample, the granted scopes match the requested scope
         // but you may want to allow the user to uncheck specific scopes.
         // For that, simply restrict the list of scopes before calling SetScopes.
-        principal.SetScopes(request.GetScopes());
+        principal.SetScopes(openIdRequest.GetScopes());
         principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
 
         // Automatically create a permanent authorization 

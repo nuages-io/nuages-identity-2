@@ -48,9 +48,9 @@ public class TestsUsersStore
         _userStore = new MongoUserStore<NuagesApplicationUser, NuagesApplicationRole, string>(Options.Create(options));
     }
     
-        private async Task<NuagesApplicationUser> CreateDefaultUser()
-        {
-            var email = "user@example.com";
+    private async Task<NuagesApplicationUser> CreateDefaultUser()
+    {
+        const string email = "user@example.com";
             
         var user = new NuagesApplicationUser
         {

@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Identity.Services.OpenIdDict;
+using Nuages.Identity.UI.OpenIdDict;
 
 namespace Nuages.Identity.UI.Controllers;
 

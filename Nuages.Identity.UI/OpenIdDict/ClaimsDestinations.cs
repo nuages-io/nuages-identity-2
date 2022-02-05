@@ -2,7 +2,7 @@ using System.Collections.Immutable;
 using System.Security.Claims;
 using OpenIddict.Abstractions;
 
-namespace Nuages.Identity.Services.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict;
 
 public static class ClaimsDestinations
 {
