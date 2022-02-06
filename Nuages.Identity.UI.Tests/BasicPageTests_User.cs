@@ -60,6 +60,7 @@ public class BasicPageTestsUser
 
     [Theory]
     [InlineData("/")]
+    [InlineData("/Index")]
     [InlineData("/account/login")]
     [InlineData("/account/forgotpassword")]
     [InlineData("/account/register")]
