@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
@@ -85,6 +85,6 @@ public interface ISMSSendCodeService
 public class SendSMSCodeResultModel
 {
     public bool Success { get; set; }
-    [ExcludeFromCodeCoverage]
+    
     public List<string> Errors { get; set; } = new();
 }

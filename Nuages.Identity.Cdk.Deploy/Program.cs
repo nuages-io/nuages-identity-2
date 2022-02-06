@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Amazon.CDK;
+﻿using Amazon.CDK;
 using Microsoft.Extensions.Configuration;
 using Environment = Amazon.CDK.Environment;
 
@@ -9,7 +8,7 @@ using Environment = Amazon.CDK.Environment;
 
 namespace Nuages.Identity.Cdk.Deploy;
 
-[ExcludeFromCodeCoverage]
+
 // ReSharper disable once ClassNeverInstantiated.Global
 sealed class Program
 {

@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
@@ -81,7 +81,7 @@ public interface ISendEmailChangeConfirmationService
     Task<SendEmailChangeResultModel> SendEmailChangeConfirmation(string userId, string email);
 }
 
-[ExcludeFromCodeCoverage]
+
 public class SendEmailChangeModel
 {
     public string Email { get; set; } = string.Empty;

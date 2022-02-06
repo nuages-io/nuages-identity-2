@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -180,7 +180,7 @@ public class LoginService : ILoginService
         };
     }
 
-    [ExcludeFromCodeCoverage]
+    
     private string? GetMessage(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once ConvertIfStatementToReturnStatement
@@ -190,7 +190,7 @@ public class LoginService : ILoginService
         return _stringLocalizer[GetMessageKey(failedLoginReason)];
     }
     
-    [ExcludeFromCodeCoverage]
+    
     public static string GetMessageKey(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault

@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -34,7 +34,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-    [ExcludeFromCodeCoverage]
+    
     public void Dispose()
     {
         
@@ -181,7 +181,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
         await UsersLoginsCollection.DeleteOneAsync(l => l.Id.Equals(login.Id));
     }
 
-    [ExcludeFromCodeCoverage]
+    
     private IdentityResult ReturnUpdateResult(ReplaceOneResult result)
     {
         if (!result.IsAcknowledged && result.ModifiedCount == 0)
@@ -200,7 +200,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
     }
     
     
-    [ExcludeFromCodeCoverage]
+    
     private IdentityResult ReturnDeleteResult(DeleteResult result)
     {
         if (result.IsAcknowledged || result.DeletedCount != 0L)
@@ -389,7 +389,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
     //     return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
     // }
 
-    [ExcludeFromCodeCoverage]
+    
     public async Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
     {
         user.SecurityStamp = stamp;
@@ -397,7 +397,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
         await UpdateAsync(user, cancellationToken);
     }
 
-    [ExcludeFromCodeCoverage]
+    
     public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
     {
         return Task.FromResult(user.SecurityStamp);

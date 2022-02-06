@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -152,7 +152,7 @@ public interface IChangePasswordService
         string newPasswordConfirmation, bool mustChangePassword, bool sendByEmail, string? token);
 }
 
-[ExcludeFromCodeCoverage]
+
 public class ChangePasswordModel
 {
     public string CurrentPassword { get; set; } = string.Empty;

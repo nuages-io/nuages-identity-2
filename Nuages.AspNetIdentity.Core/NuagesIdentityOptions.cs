@@ -1,9 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.AspNetIdentity.Core;
 
-[ExcludeFromCodeCoverage]
 public class NuagesIdentityOptions
 {
     public string Name { get; set; } = string.Empty;

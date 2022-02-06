@@ -1,5 +1,5 @@
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
+
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,7 +18,7 @@ where TKey : IEquatable<TKey>
     {
         _inMemoryStorage = inMemoryStorage;
     }
-    [ExcludeFromCodeCoverage]
+    
     public void Dispose()
     {
         GC.SuppressFinalize(this);

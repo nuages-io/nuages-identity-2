@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
@@ -31,7 +31,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
 {
     private readonly IInMemoryStorage<TRole> _inMemoryStorage;
 
-    [ExcludeFromCodeCoverage]
+    
     public void Dispose()
     {
         GC.SuppressFinalize(this);
@@ -147,6 +147,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
         CancellationToken cancellationToken)
     {
         return Task.FromResult(
+            // ReSharper disable once SpecifyStringComparison
             _inMemoryStorage.Roles.SingleOrDefault(r => r.NormalizedName.ToUpper() == normalizedName.ToUpper()));
     }
     

@@ -1,8 +1,6 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Nuages.Identity.UI.Tests;
@@ -20,7 +18,7 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
         var claims = new[]
         {
             //new Claim(ClaimTypes.NameIdentifier,  Options.DefaultUserId),
-            new Claim("sub", Options.DefaultUserId), 
+            new Claim("sub", Options.DefaultUserId)
             //new Claim("name", $"{Options.DefaultUserId}@nuages.org"),
         };
         var identity = new ClaimsIdentity(claims, "Test");

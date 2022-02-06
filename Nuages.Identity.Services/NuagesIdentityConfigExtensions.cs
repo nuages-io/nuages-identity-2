@@ -1,6 +1,5 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 
 using Nuages.AspNetIdentity.Core;
@@ -15,7 +14,7 @@ using Nuages.Web.Utilities;
 
 namespace Nuages.Identity.Services;
 
-[ExcludeFromCodeCoverage]
+
 public static class NuagesIdentityConfigExtensions
 {
     public static IdentityBuilder AddNuagesIdentityServices(this IdentityBuilder builder, IConfiguration configuration,

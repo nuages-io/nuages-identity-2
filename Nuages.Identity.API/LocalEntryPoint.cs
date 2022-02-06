@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿
 using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.API;
@@ -7,7 +7,7 @@ namespace Nuages.Identity.API;
 /// The Main function can be used to run the ASP.NET Core application locally using the Kestrel webserver.
 /// </summary>
 // ReSharper disable once ClassNeverInstantiated.Global
-[ExcludeFromCodeCoverage]
+
 // ReSharper disable once ClassNeverInstantiated.Global
 public class LocalEntryPoint
 {

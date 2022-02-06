@@ -1,6 +1,6 @@
 // ReSharper disable InconsistentNaming
 
-using System.Diagnostics.CodeAnalysis;
+
 using Nuages.Web.Recaptcha;
 
 namespace Nuages.Identity.UI;

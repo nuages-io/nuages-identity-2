@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using NLog.Web;
 
 namespace Nuages.Identity.API;
@@ -10,7 +10,7 @@ namespace Nuages.Identity.API;
 /// Nuages.Sender.API::Nuages.Sender.API.LambdaEntryPoint::FunctionHandlerAsync
 /// </summary>
 // ReSharper disable once UnusedType.Global
-[ExcludeFromCodeCoverage]
+
 // ReSharper disable once UnusedType.Global
 public class LambdaEntryPoint :
 

@@ -1,14 +1,9 @@
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Nuages.AspNetIdentity.Core;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Nuages.Identity.UI.Tests;
 
-[ExcludeFromCodeCoverage]
+
 public class IdentityDataSeeder : IHostedService
 {
     private readonly IServiceProvider _provider;
@@ -18,15 +13,15 @@ public class IdentityDataSeeder : IHostedService
         _provider = provider;
     }
     
-    public static string UserEmail = "8e8afe93-74e1-47a7-9c02-c907cd37b9b9@example.com";
-    public static string UserUserName = "user";
-    public static string UserPassword = "Nuages123*";
-    public static string UserId = "8e8afe93-74e1-47a7-9c02-c907cd37b9b9";
+    public const string UserEmail = "8e8afe93-74e1-47a7-9c02-c907cd37b9b9@example.com";
+    public const string UserUserName = "user";
+    public const string UserPassword = "Nuages123*";
+    public const string UserId = "8e8afe93-74e1-47a7-9c02-c907cd37b9b9";
     
-    public static string AdminEmail = "9da1b495-844e-453c-9748-cea28c959819@example.com";
-    public static string AdminUserName = "admin";
-    public static string AdminPassword = "Nuages123*";
-    public static string AdminId = "9da1b495-844e-453c-9748-cea28c959819";
+    public const string AdminEmail = "9da1b495-844e-453c-9748-cea28c959819@example.com";
+    public const string AdminUserName = "admin";
+    public const string AdminPassword = "Nuages123*";
+    public const string AdminId = "9da1b495-844e-453c-9748-cea28c959819";
     
     public async Task StartAsync(CancellationToken cancellationToken)
     {
@@ -54,7 +49,7 @@ public class IdentityDataSeeder : IHostedService
                 Email = UserEmail,
                 EmailConfirmed = true
             };
-            await userManager.CreateAsync(newUser, AdminPassword);
+            await userManager.CreateAsync(newUser, UserPassword);
             
             await userManager.SetTwoFactorEnabledAsync(newUser, true);
         }

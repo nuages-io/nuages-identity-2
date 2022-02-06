@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication;
@@ -79,6 +79,6 @@ public class ForgotPasswordResultModel
 {
     public bool Success { get; set; }
     
-    [ExcludeFromCodeCoverage]
+    
     public string? Message { get; set; }
 }

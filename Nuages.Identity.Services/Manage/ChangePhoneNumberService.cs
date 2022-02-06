@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 
@@ -81,11 +81,11 @@ public interface IChangePhoneNumberService
 public class ChangePhoneNumberResultModel
 {
     public bool Success { get; set; }
-    [ExcludeFromCodeCoverage]
+    
     public List<string> Errors { get; set; } = new();
 }
 
-[ExcludeFromCodeCoverage]
+
 public class ChangePhoneNumberModel
 {
     public string PhoneNumber { get; set; } = string.Empty;

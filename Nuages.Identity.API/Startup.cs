@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿
 using System.Text;
 using System.Text.Json.Serialization;
 using Amazon;
@@ -20,7 +20,7 @@ using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.API;
 
-[ExcludeFromCodeCoverage]
+
 public class Startup
 {
     private readonly IWebHostEnvironment _env;

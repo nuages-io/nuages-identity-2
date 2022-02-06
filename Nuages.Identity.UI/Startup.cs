@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
@@ -9,7 +9,6 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
 using Nuages.AspNetIdentity.Core;
-using Nuages.AspNetIdentity.Stores.InMemory;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.UI.OpenIdDict;

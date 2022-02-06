@@ -1,9 +1,9 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.AspNetIdentity.Stores.Mongo;
 
-[ExcludeFromCodeCoverage]
+
 public static class AspNetIdentityMongoExtensions
 {
     public static void AddMongoStores<TUser, TRole, TKey>(this IdentityBuilder builder, Action<MongoIdentityOptions> configure)  

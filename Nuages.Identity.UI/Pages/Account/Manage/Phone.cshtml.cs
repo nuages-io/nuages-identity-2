@@ -27,7 +27,7 @@ public class PhoneModel : PageModel
         }
     }
 
-    public CountryCode[] Codes { get; set; } = { };
+    public CountryCode[] Codes { get; set; } = Array.Empty<CountryCode>();
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global

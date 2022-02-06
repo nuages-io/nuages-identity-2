@@ -1,9 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.AspNetIdentity.Core;
 
-[ExcludeFromCodeCoverage]
 public static class NuagesAspNetIdentityExtensions
 {
     public static IdentityBuilder AddNuagesAspNetIdentity(this IServiceCollection services,

@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using Microsoft.Extensions.Localization;
 
 using Nuages.AspNetIdentity.Core;
@@ -62,11 +62,11 @@ public interface ISendSMSVerificationCodeService
 public class SendSMSVerificationCodeResultModel
 {
     public bool Success { get; set; }
-    [ExcludeFromCodeCoverage]
+    
     public List<string> Errors { get; set; } = new();
 }
 
-[ExcludeFromCodeCoverage]
+
 public class SendSMSVerificationCodeModel
 {
     public string PhoneNumber { get; set; } = string.Empty;

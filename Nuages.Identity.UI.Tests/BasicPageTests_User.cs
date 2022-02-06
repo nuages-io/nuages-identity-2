@@ -1,14 +1,8 @@
-using System;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using Nuages.AspNetIdentity.Core;
 using Nuages.AspNetIdentity.Stores.InMemory;
 using Xunit;
@@ -17,23 +11,13 @@ using Xunit;
 
 namespace Nuages.Identity.UI.Tests;
 
-public class CustomWebApplicationFactory : WebApplicationFactory<Startup> {
-
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
-        builder.UseContentRoot(AppContext.BaseDirectory);
-        base.ConfigureWebHost(builder);
-    
-    }
-}
-
 public class BasicPageTestsUser
-    : IClassFixture<CustomWebApplicationFactory>
+    : IClassFixture<WebApplicationFactory<Startup>>
 {
-    private readonly CustomWebApplicationFactory  _factory;
+    private readonly WebApplicationFactory<Startup>  _factory;
     private readonly HttpClient _authenticatedClient;
 
-    public BasicPageTestsUser(CustomWebApplicationFactory  factory)
+    public BasicPageTestsUser(WebApplicationFactory<Startup>  factory)
     {
         _factory = factory;
 
@@ -67,7 +51,7 @@ public class BasicPageTestsUser
             })
             .CreateClient(new WebApplicationFactoryClientOptions
             {
-                AllowAutoRedirect = false,
+                AllowAutoRedirect = false
             });
 
         _authenticatedClient.DefaultRequestHeaders.Authorization =

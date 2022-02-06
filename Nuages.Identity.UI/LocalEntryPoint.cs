@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Nuages.AspNetIdentity.Stores.Mongo;
-using Nuages.Localization.Storage.Config.Sources;
+﻿using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.UI;
 

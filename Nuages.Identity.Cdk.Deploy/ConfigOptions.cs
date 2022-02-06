@@ -1,10 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
+
 
 // ReSharper disable ClassNeverInstantiated.Global
 
 namespace Nuages.Identity.Cdk.Deploy;
 
-[ExcludeFromCodeCoverage]
+
 public class ConfigOptions
 {
     public string StackName { get; set; } = string.Empty;

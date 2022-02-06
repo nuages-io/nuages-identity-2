@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
@@ -101,7 +101,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
         };
     }
 
-    [ExcludeFromCodeCoverage]
+    
     // ReSharper disable once SuggestBaseTypeForParameter
     private async Task<IdentityResult> AddLoginAsync(NuagesApplicationUser user, ExternalLoginInfo info)
     {
@@ -138,8 +138,8 @@ public interface IRegisterExternalLoginService
 public class RegisterExternalLoginResultModel
 {
     public bool Success { get; set; }
-    [ExcludeFromCodeCoverage]
+    
     public List<string> Errors { get; set; } = new();
-    [ExcludeFromCodeCoverage]
+    
     public bool ShowConfirmationMessage { get; set; }
 }
