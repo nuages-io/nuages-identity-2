@@ -25,6 +25,8 @@ public class Startup
 
     public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
+        
+        
         _configuration = configuration;
         _env = env;
     }
@@ -77,13 +79,18 @@ public class Startup
                 options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = _configuration["Nuages:Mongo:Database"];
                 
-                BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
+                ModelMapper.MapModel<string>();
+
+                if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser)))
                 {
-                    cm.AutoMap();
-                    cm.SetIgnoreExtraElements(true);
-                    cm.MapMember(c => c.LastFailedLoginReason)
-                        .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
-                });
+                    BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
+                    {
+                        cm.AutoMap();
+                        cm.SetIgnoreExtraElements(true);
+                        cm.MapMember(c => c.LastFailedLoginReason)
+                            .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
+                    });
+                }
             });
         
         services.AddNuagesAuthentication()

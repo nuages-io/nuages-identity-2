@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.UI;
@@ -12,6 +13,7 @@ public class LocalEntryPoint
 {
     public static void Main(string[] args)
     {
+        
         CreateHostBuilder(args).Build().Run();
     }
 
