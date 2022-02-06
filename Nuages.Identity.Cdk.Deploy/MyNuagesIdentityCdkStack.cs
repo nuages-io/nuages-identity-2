@@ -1,11 +1,12 @@
 
+using System.Diagnostics.CodeAnalysis;
 using Amazon.CDK;
 using Constructs;
 using Nuages.Identity.CDK;
 
 namespace Nuages.Identity.Cdk.Deploy;
 
-
+[ExcludeFromCodeCoverage]
 public class MyNuagesSenderCdkStack : NuagesIdentityCdkStack
 {
     public MyNuagesSenderCdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)

@@ -1,10 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using Amazon.CDK;
 using Amazon.CDK.AWS.IAM;
 using Constructs;
 
 namespace Nuages.Identity.CDK;
 
-
+[ExcludeFromCodeCoverage]
 public partial class NuagesIdentityCdkStack : Stack
 {
     protected string AssetUi { get; set; } = "";

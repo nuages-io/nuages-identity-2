@@ -6,7 +6,7 @@ public class InMemoryStorage<TRole, TKey> : IInMemoryStorage<TRole>
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-    public List<TRole> Roles { get; set; } = new ();
+    public List<TRole> Roles { get;  } = new ();
 }
 
 public interface IInMemoryStorage<TRole>
