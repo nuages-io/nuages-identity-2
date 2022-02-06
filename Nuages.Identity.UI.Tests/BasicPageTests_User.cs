@@ -65,6 +65,8 @@ public class BasicPageTestsUser
     [InlineData("/account/forgotpassword")]
     [InlineData("/account/register")]
     [InlineData("/account/loginWithPasswordless")]
+    [InlineData("/account/emailNotConfirmed")]
+    [InlineData("/account/logout")]
     public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
     {
         // Arrange
