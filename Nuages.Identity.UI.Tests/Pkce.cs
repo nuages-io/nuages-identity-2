@@ -1,17 +1,21 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable NotAccessedField.Global
 
 namespace Nuages.Identity.UI.Tests;
 
 /// <summary>
 /// Provides a randomly generating PKCE code verifier and it's corresponding code challenge.
 /// </summary>
+// ReSharper disable once ClassNeverInstantiated.Global
 public class Pkce
 {
     /// <summary>
     /// The randomly generating PKCE code verifier.
     /// </summary>
+    // ReSharper disable once FieldCanBeMadeReadOnly.Global
     public string CodeVerifier;
 
     /// <summary>
@@ -51,14 +55,14 @@ public class Pkce
     ///</remarks>
     public static string GenerateCodeVerifier(uint size = 128)
     {
-        if (size < 43 || size > 128)
+        if (size is < 43 or > 128)
             size = 128;
 
         const string unreservedCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789-._~";
-        Random random = new Random();
-        char[] highEntropyCryptograph = new char[size];
+        var random = new Random();
+        var highEntropyCryptograph = new char[size];
 
-        for (int i = 0; i < highEntropyCryptograph.Length; i++)
+        for (var i = 0; i < highEntropyCryptograph.Length; i++)
         {
             highEntropyCryptograph[i] = unreservedCharacters[random.Next(unreservedCharacters.Length)];
         }
@@ -99,10 +103,8 @@ public class Pkce
     /// </remarks>
     public static string GenerateCodeChallenge(string codeVerifier)
     {
-        using (var sha256 = SHA256.Create())
-        {
-            var challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
-            return Base64UrlEncoder.Encode(challengeBytes);
-        }
+        using var sha256 = SHA256.Create();
+        var challengeBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(codeVerifier));
+        return Base64UrlEncoder.Encode(challengeBytes);
     }
 }

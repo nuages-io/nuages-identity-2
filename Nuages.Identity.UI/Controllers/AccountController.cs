@@ -267,7 +267,7 @@ public class AccountController : Controller
     
     [HttpPost("forgotPassword")]
     [AllowAnonymous]
-    public async Task<ForgotPasswordResultModel> PasswordLoginAsync([FromBody] ForgotPasswordModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
+    public async Task<ForgotPasswordResultModel> ForgotPaswordAsync([FromBody] ForgotPasswordModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
@@ -371,7 +371,7 @@ public class AccountController : Controller
 
     [HttpPost("passwordlessLogin")]
     [AllowAnonymous]
-    public async Task<StartPasswordlessResultModel> PasswordLoginAsync([FromBody] StartPasswordlessModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
+    public async Task<StartPasswordlessResultModel> PasswordlessLoginAsync([FromBody] StartPasswordlessModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {

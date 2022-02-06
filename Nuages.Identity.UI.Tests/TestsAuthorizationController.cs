@@ -1,46 +1,20 @@
 using System.Net;
-using System.Text.Json;
 using System.Web;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Nuages.AspNetIdentity.Core;
-using Nuages.AspNetIdentity.Stores.InMemory;
 using Xunit;
 // ReSharper disable InconsistentNaming
 
 namespace Nuages.Identity.UI.Tests;
 
-public class TestsAuthorizationController : IClassFixture<WebApplicationFactory<Startup>>
+public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFactory<Startup>>
 {
-    private readonly WebApplicationFactory<Startup> _factory;
+    private readonly CustomWebApplicationFactory<Startup> _factory;
 
-    public TestsAuthorizationController(WebApplicationFactory<Startup> factory)
+    public TestsAuthorizationController(CustomWebApplicationFactory<Startup> factory)
     {
-        _factory = factory.WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureTestServices(services =>
-                {
-                    services
-                        .AddSingleton<IInMemoryStorage<NuagesApplicationRole>,
-                            InMemoryStorage<NuagesApplicationRole, string>>();
-                    services.AddSingleton(typeof(IUserStore<>).MakeGenericType(typeof(NuagesApplicationUser)),
-                        typeof(InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>));
-                    services.AddSingleton(typeof(IRoleStore<>).MakeGenericType(typeof(NuagesApplicationRole)),
-                        typeof(InMemoryRoleStore<NuagesApplicationRole, string>));
-
-                    services.AddHostedService<IdentityDataSeeder>();
-                    
-                });
-            });
+        _factory = factory;
     }
 
-    class TokenResult
-    {
-        public string? access_token { get; set; } 
-        public string? token_type { get; set; } 
-        public string? id_token { get; set; }
-    }
     
     [Fact]
     public async Task ShouldLoginWithPasswordGrant()
@@ -60,9 +34,15 @@ public class TestsAuthorizationController : IClassFixture<WebApplicationFactory<
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
-        var contents = await res.Content.ReadAsStringAsync();
+        var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializer.Deserialize<TokenResult>(contents);
+        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new
+        {
+            access_token = "",
+            token_type = "",
+            id_token = ""
+        })!;
+        
         Assert.NotNull(result.access_token);
         Assert.NotNull(result.id_token);
         Assert.NotNull(result.token_type);
@@ -85,9 +65,15 @@ public class TestsAuthorizationController : IClassFixture<WebApplicationFactory<
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
-        var contents = await res.Content.ReadAsStringAsync();
+        var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializer.Deserialize<TokenResult>(contents);
+        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new
+        {
+            access_token = (string?) null,
+            token_type = (string?) null,
+            id_token = (string?) null
+        })!;
+        
         Assert.NotNull(result.access_token);
         Assert.Null(result.id_token);
         Assert.NotNull(result.token_type);
@@ -103,10 +89,10 @@ public class TestsAuthorizationController : IClassFixture<WebApplicationFactory<
             AllowAutoRedirect = false
         });
 
-        var client_id = "postman-ui";
-        var audience = "IdentityAPI";
-        var scope = "email openid profile";
-        var redirect_uri = "https://oauth.pstmn.io/v1/callback";
+        const string client_id = "postman-ui";
+        const string audience = "IdentityAPI";
+        const string scope = "email openid profile";
+        const string redirect_uri = "https://oauth.pstmn.io/v1/callback";
         var code_challenge = Pkce.GenerateCodeChallenge(Pkce.GenerateCodeVerifier());
         
         var url =
@@ -128,7 +114,7 @@ public class TestsAuthorizationController : IClassFixture<WebApplicationFactory<
 
         var parameetrs = HttpUtility.ParseQueryString(uri.Query);
 
-        parameetrs = HttpUtility.ParseQueryString(parameetrs.Get("ReturnUrl"));
+        parameetrs = HttpUtility.ParseQueryString(parameetrs.Get("ReturnUrl")!);
             
         var value = parameetrs.Get("redirect_uri");
         Assert.Equal(redirect_uri, value);

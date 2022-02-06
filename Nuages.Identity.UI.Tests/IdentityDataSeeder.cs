@@ -51,7 +51,6 @@ public class IdentityDataSeeder : IHostedService
             };
             await userManager.CreateAsync(newUser, UserPassword);
             
-            await userManager.SetTwoFactorEnabledAsync(newUser, true);
         }
         
         var roleManager = scope.ServiceProvider.GetRequiredService<NuagesRoleManager>();
