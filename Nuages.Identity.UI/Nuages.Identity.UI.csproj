@@ -43,6 +43,7 @@
         <Content Include="..\locales\fr-CA.json" CopyToOutputDirectory="Always">
             <Link>locales\fr-CA.json</Link>
         </Content>
+    
     </ItemGroup>
    
 </Project>

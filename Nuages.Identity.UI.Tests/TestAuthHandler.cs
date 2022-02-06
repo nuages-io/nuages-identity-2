@@ -7,9 +7,9 @@ using Microsoft.Extensions.Options;
 
 namespace Nuages.Identity.UI.Tests;
 
-public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
 {
-    public TestAuthHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, 
+    public TestAuthHandler(IOptionsMonitor<TestAuthHandlerOptions> options, 
         ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
         : base(options, logger, encoder, clock)
     {
@@ -19,9 +19,9 @@ public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, "61fc617f5e0ea6bede43b333"),
-            new Claim("sub", "61fc617f5e0ea6bede43b333"),
-            new Claim("name", "martin@nuages.org"),
+            //new Claim(ClaimTypes.NameIdentifier,  Options.DefaultUserId),
+            new Claim("sub", Options.DefaultUserId), 
+            //new Claim("name", $"{Options.DefaultUserId}@nuages.org"),
         };
         var identity = new ClaimsIdentity(claims, "Test");
         

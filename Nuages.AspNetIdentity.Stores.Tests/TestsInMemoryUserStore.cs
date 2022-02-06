@@ -13,10 +13,13 @@ namespace Nuages.AspNetIdentity.Stores.Tests;
 public class TestsInMemoryUserStore
 {
     private readonly InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string> _userStore;
-
+    private readonly InMemoryRoleStore<NuagesApplicationRole, string> _roleStore;
+    
     public TestsInMemoryUserStore()
     {
-        _userStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>();
+        var inmemoryRoleStorage = new InMemoryStorage<NuagesApplicationRole, string>();
+        _userStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>(inmemoryRoleStorage);
+        _roleStore = new InMemoryRoleStore<NuagesApplicationRole, string>(inmemoryRoleStorage);
     }
     
     private async Task<NuagesApplicationUser> CreateDefaultUser()
@@ -262,7 +265,7 @@ public class TestsInMemoryUserStore
         var user = await CreateDefaultUser();
         await CreateDefaultUser2();
         
-        await _userStore.RoleStore.CreateAsync(new NuagesApplicationRole
+        await _roleStore.CreateAsync(new NuagesApplicationRole
         {
             Name = roleName
         }, CancellationToken.None);

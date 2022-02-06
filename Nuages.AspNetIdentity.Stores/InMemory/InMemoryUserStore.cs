@@ -17,6 +17,7 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
     IUserPasswordStore<TUser>,
     IUserEmailStore<TUser>,
     IUserPhoneNumberStore<TUser>,
+    IUserSecurityStampStore<TUser>,
     IQueryableUserStore<TUser>,
     IUserTwoFactorStore<TUser>,
     IUserLockoutStore<TUser>,
@@ -28,15 +29,18 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
-   [ExcludeFromCodeCoverage]
+    private readonly IInMemoryStorage<TRole> _inMemoryStorage;
+
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         GC.SuppressFinalize(this);
     }
 
-    public InMemoryUserStore()
+    public InMemoryUserStore(IInMemoryStorage<TRole> inMemoryStorage)
     {
-        RoleStore = new InMemoryRoleStore<TRole, TKey>();
+        _inMemoryStorage = inMemoryStorage;
+        //RoleStore = roleStore;
     }
     
     private readonly List<TUser> _users = new ();
@@ -47,10 +51,9 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
     private readonly List<IdentityUserRole<TKey>> _userRoles = new();
     // ReSharper disable once CollectionNeverUpdated.Local
    
-    public readonly InMemoryRoleStore<TRole, TKey> RoleStore;
 
     public override IQueryable<TUser> Users => _users.AsQueryable();
-    protected override IQueryable<TRole> Roles => RoleStore.Roles;
+    protected override IQueryable<TRole> Roles => _inMemoryStorage.Roles.AsQueryable();
     private IQueryable<IdentityUserClaim<TKey>> UsersClaims => _userClaims.AsQueryable();
     protected override IQueryable<IdentityUserLogin<TKey>> UsersLogins => _userLogins.AsQueryable();
     protected override IQueryable<IdentityUserToken<TKey>> UsersTokens => _userTokens.AsQueryable();
@@ -59,7 +62,8 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
     
     public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
-        user.Id = StringToKey(Guid.NewGuid().ToString());
+        user.Id ??= StringToKey(Guid.NewGuid().ToString());
+        
         _users.Add(user);
 
         var username = await GetUserNameAsync(user, cancellationToken);
@@ -139,10 +143,11 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
         return Task.CompletedTask;
     }
     
-    protected override async Task<TRole?> FindRoleByNameAsync(string normalizedName,
+    protected override  Task<TRole?> FindRoleByNameAsync(string normalizedName,
         CancellationToken cancellationToken)
     {
-        return await RoleStore.FindByNameAsync(normalizedName, cancellationToken);
+        return Task.FromResult(
+            _inMemoryStorage.Roles.SingleOrDefault(r => r.NormalizedName.ToUpper() == normalizedName.ToUpper()));
     }
     
     protected override Task AddUserTokenAsync(IdentityUserToken<TKey> token)
@@ -211,4 +216,15 @@ public class InMemoryUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole,
         return Task.CompletedTask;
     }
 
+    public Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
+    {
+        user.SecurityStamp = stamp;
+
+        return Task.CompletedTask;
+    }
+
+    public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(user.SecurityStamp);
+    }
 }

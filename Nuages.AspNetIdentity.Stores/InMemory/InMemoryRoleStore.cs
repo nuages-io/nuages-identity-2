@@ -12,13 +12,18 @@ IQueryableRoleStore<TRole>
 where TRole : IdentityRole<TKey>
 where TKey : IEquatable<TKey>
 {
+    private readonly IInMemoryStorage<TRole> _inMemoryStorage;
+
+    public InMemoryRoleStore(IInMemoryStorage<TRole> inMemoryStorage)
+    {
+        _inMemoryStorage = inMemoryStorage;
+    }
     [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         GC.SuppressFinalize(this);
     }
     
-    private readonly List<TRole> _rolesCollection = new();
     private readonly List<IdentityRoleClaim<TKey>> _roleClaims = new();
     
     private static TKey StringToKey(string id)
@@ -30,7 +35,7 @@ where TKey : IEquatable<TKey>
     {
         role.Id ??= StringToKey(Guid.NewGuid().ToString());
         
-        _rolesCollection.Add(role);
+        _inMemoryStorage.Roles.Add(role);
 
         role.NormalizedName = role.Name.ToUpper();
         return Task.FromResult(IdentityResult.Success);
@@ -43,7 +48,7 @@ where TKey : IEquatable<TKey>
 
     public Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
     {
-        _rolesCollection.Remove(role);
+        _inMemoryStorage.Roles.Remove(role);
         
         return Task.FromResult(IdentityResult.Success);
     }
@@ -73,6 +78,6 @@ where TKey : IEquatable<TKey>
         return Task.CompletedTask;
     }
 
-    public override IQueryable<TRole> Roles => _rolesCollection.AsQueryable();
+    public override IQueryable<TRole> Roles => _inMemoryStorage.Roles.AsQueryable();
     protected override IQueryable<IdentityRoleClaim<TKey>> RolesClaims => _roleClaims.AsQueryable();
 }

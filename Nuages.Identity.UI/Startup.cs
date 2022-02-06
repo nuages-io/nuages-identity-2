@@ -9,6 +9,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
 using Nuages.AspNetIdentity.Core;
+using Nuages.AspNetIdentity.Stores.InMemory;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.UI.OpenIdDict;
@@ -17,7 +18,7 @@ using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI;
 
-[ExcludeFromCodeCoverage]
+
 public class Startup
 {
     private readonly IWebHostEnvironment _env;
@@ -25,8 +26,6 @@ public class Startup
 
     public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
-        
-        
         _configuration = configuration;
         _env = env;
     }
@@ -74,13 +73,15 @@ public class Startup
                     };
                 })
             .AddNuagesIdentityServices(_configuration, _ =>{})
+            //.AddInMemoryStores<NuagesApplicationUser, NuagesApplicationRole, string>();
+            
             .AddMongoStores<NuagesApplicationUser, NuagesApplicationRole, string>(options =>
             {
                 options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = _configuration["Nuages:Mongo:Database"];
                 
                 ModelMapper.MapModel<string>();
-
+            
                 if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser)))
                 {
                     BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
@@ -93,6 +94,8 @@ public class Startup
                 }
             });
         
+            
+            
         services.AddNuagesAuthentication()
             .AddGoogle(googleOptions =>
             {
@@ -130,8 +133,7 @@ public class Startup
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
         
-        services.AddHostedService<MongoSchemaInitializer<NuagesApplicationUser, NuagesApplicationRole, string>>();
-        services.AddHostedService<IdentityDataSeeder>();
+       
 
     }
 

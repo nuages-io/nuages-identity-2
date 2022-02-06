@@ -30,9 +30,11 @@ public static class MockHelpers
     
     public static MockIdentity MockIdentityStuff(NuagesIdentityOptions? nuagesOptions = null )
     {
+        var inMemoryStorage = new InMemoryStorage<NuagesApplicationRole, string>();
+        
         var mockIdentity = new MockIdentity
         {
-            UserStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>()
+            UserStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>(inMemoryStorage)
         };
 
         if (nuagesOptions != null)

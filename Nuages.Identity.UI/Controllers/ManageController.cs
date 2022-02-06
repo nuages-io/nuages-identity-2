@@ -14,7 +14,7 @@ namespace Nuages.Identity.UI.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-[ExcludeFromCodeCoverage]
+
 public class ManageController : Controller
 {
     private readonly IChangePasswordService _changePasswordService;

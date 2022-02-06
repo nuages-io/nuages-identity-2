@@ -5,7 +5,7 @@ using Nuages.Web.Recaptcha;
 
 namespace Nuages.Identity.UI;
 
-[ExcludeFromCodeCoverage]
+
 public class UIOptions
 {
     public bool ShowRegistration { get; set; } 
@@ -21,7 +21,6 @@ public class UIOptions
     public bool Enable2FARememberDevice { get; set; } = true;
 }
 
-[ExcludeFromCodeCoverage]
 public static class UIConfigExtension
 {
     public static void AddUI(this IServiceCollection services, IConfiguration configuration)

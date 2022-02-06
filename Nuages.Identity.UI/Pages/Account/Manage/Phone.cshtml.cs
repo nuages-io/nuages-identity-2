@@ -20,11 +20,14 @@ public class PhoneModel : PageModel
 
     public void OnGetAsync()
     {
-        using var file = System.IO.File.OpenText(@"wwwroot/data/countryCodes.json");
-        Codes = JsonSerializer.Deserialize<CountryCode[]>(file.BaseStream);
+        if (System.IO.File.Exists(@"wwwroot/data/countryCodes.json"))
+        {
+            using var file = System.IO.File.OpenText(@"wwwroot/data/countryCodes.json");
+            Codes = JsonSerializer.Deserialize<CountryCode[]>(file.BaseStream);
+        }
     }
 
-    public CountryCode[] Codes { get; set; }
+    public CountryCode[] Codes { get; set; } = { };
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global

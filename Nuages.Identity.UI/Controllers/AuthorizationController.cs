@@ -5,7 +5,7 @@ using Nuages.Identity.UI.OpenIdDict;
 
 namespace Nuages.Identity.UI.Controllers;
 
-[ExcludeFromCodeCoverage]
+
 public class AuthorizationController : Controller
 {
     private readonly IAuthorizeEndpoint _authorizeEndpoint;

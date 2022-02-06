@@ -23,7 +23,7 @@ namespace Nuages.Identity.UI.Controllers;
 // ReSharper disable once UnusedType.Global
 [ApiController]
 [Route("api/[controller]")]
-[ExcludeFromCodeCoverage]
+
 public class AccountController : Controller
 {
     private readonly IRecaptchaValidator _recaptchaValidator;

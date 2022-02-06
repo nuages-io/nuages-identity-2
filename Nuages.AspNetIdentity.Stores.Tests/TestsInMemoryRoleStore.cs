@@ -13,7 +13,8 @@ public class TestsInMemoryRoleStore
 
     public TestsInMemoryRoleStore()
     {
-        _roleStore = new InMemoryRoleStore<NuagesApplicationRole, string>();
+        var inmemoryRoleStorage = new InMemoryStorage<NuagesApplicationRole, string>();
+        _roleStore = new InMemoryRoleStore<NuagesApplicationRole, string>(inmemoryRoleStorage);
     }
     
     [Fact]

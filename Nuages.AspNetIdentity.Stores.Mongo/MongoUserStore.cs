@@ -223,7 +223,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
     {
-        var list = UsersClaims.Where(c => c.UserId.Equals(user.Id)).Select(c =>
+        var list = UsersClaims.Where(c => c.UserId.Equals(user.Id)).ToList().Select(c =>
             new Claim(c.Type, c.Value)
         ).ToList();
         

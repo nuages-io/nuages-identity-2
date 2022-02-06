@@ -12,6 +12,8 @@ using Xunit;
 
 namespace Nuages.AspNetIdentity.Stores.Mongo.Tests;
 
+
+[Collection("Mongo")]
 public class TestsRolesStore
 {
     private readonly MongoRoleStore<NuagesApplicationRole, string> _roleStore;
