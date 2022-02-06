@@ -49,7 +49,7 @@ public class TokenEndpoint  : ITokenEndpoint
             }
         }
 
-        throw new InvalidOperationException("The specified grant type is not supported.");
+        throw new InvalidOperationException("The specified grant type lol is not supported.");
     }
 }
 

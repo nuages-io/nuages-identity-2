@@ -1,4 +1,5 @@
 
+using System.Diagnostics.CodeAnalysis;
 using NLog.Web;
 using Nuages.Localization.Storage.Config.Sources;
 
@@ -12,6 +13,7 @@ namespace Nuages.Identity.UI;
 /// </summary>
  
 // ReSharper disable once UnusedType.Global
+[ExcludeFromCodeCoverage]
 public class LambdaEntryPoint :
 
     // The base class must be set to match the AWS service invoking the Lambda function. If not Amazon.Lambda.AspNetCoreServer

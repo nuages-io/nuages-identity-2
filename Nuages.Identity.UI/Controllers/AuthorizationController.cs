@@ -5,7 +5,8 @@ using Nuages.Identity.UI.OpenIdDict;
 
 namespace Nuages.Identity.UI.Controllers;
 
-
+[ApiController]
+[Route("connect")]
 public class AuthorizationController : Controller
 {
     private readonly IAuthorizeEndpoint _authorizeEndpoint;
@@ -24,8 +25,30 @@ public class AuthorizationController : Controller
         _logger = logger;
     }
 
-    [HttpGet("~/connect/authorize")]
-    [HttpPost("~/connect/authorize")]
+    [HttpPost("token"), Produces("application/json")]
+    public async Task<IActionResult> Token()
+    {
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Exchange");
+            
+            return await _tokenEndpoint.Exchange();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+    
+    [HttpGet("authorize")]
+    [HttpPost("authorize")]
     [IgnoreAntiforgeryToken]
     public async Task<IActionResult> Authorize()
     {
@@ -48,7 +71,7 @@ public class AuthorizationController : Controller
         }
     }
 
-    [HttpGet("~/connect/logout")]
+    [HttpGet("logout")]
     public async Task<IActionResult> Logout()
     {
         try
@@ -70,25 +93,5 @@ public class AuthorizationController : Controller
         }
     }
 
-    [HttpPost("~/connect/token"), Produces("application/json")]
-    public async Task<IActionResult> Exchange()
-    {
-        try
-        {
-            AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Exchange");
-            
-            return await _tokenEndpoint.Exchange();
-        }
-        catch (Exception e)
-        {
-            AWSXRayRecorder.Instance.AddException(e);
-            _logger.LogError(e, e.Message);
-
-            throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-    }
+  
 }

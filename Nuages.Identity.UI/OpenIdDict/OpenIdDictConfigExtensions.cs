@@ -53,7 +53,11 @@ public static class OpenIdDictConfigExtensions
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableLogoutEndpointPassthrough()
                     .EnableStatusCodePagesIntegration()
-                    .EnableTokenEndpointPassthrough();
+                    .EnableTokenEndpointPassthrough()
+                    #if DEBUG
+                    .DisableTransportSecurityRequirement()
+                    #endif
+                    ;
             })
 
             // Register the OpenIddict validation components.
