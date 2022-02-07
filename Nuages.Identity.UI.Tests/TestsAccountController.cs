@@ -1,9 +1,14 @@
 using System.Net;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Nuages.AspNetIdentity.Core;
-using Nuages.Identity.UI.Tests.Utilities;
+using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Login;
+using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.Password;
 using OtpNet;
 using Xunit;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Nuages.Identity.UI.Tests;
 
@@ -11,6 +16,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
 {
     private readonly CustomWebApplicationFactoryAnonymous<Startup> _factory;
     private readonly NuagesUserManager _userManager;
+    private readonly JsonSerializerOptions _options;
 
     public TestsAccountControllerAnonymous(CustomWebApplicationFactoryAnonymous<Startup> factory)
     {
@@ -21,6 +27,13 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
 
         _userManager = scope.ServiceProvider.GetRequiredService<NuagesUserManager>();
         
+        _options  = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            PropertyNameCaseInsensitive = true
+
+        };
+        _options.Converters.Add(new JsonStringEnumConverter());
     }
 
     [Fact]
@@ -28,7 +41,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
     {
         var client = _factory.CreateClient();
 
-        var body = new
+        var body = new LoginModel
         {
             UserNameOrEmail = IdentityDataSeeder.UserEmail,
             Password = IdentityDataSeeder.UserPassword
@@ -40,9 +53,9 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         
         var content = await res.Content.ReadAsStringAsync();
         
-        var success = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true })!.success;
-        Assert.True(success);
+        var response = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
         
+        Assert.True(response!.Success);
     }
     
     [Fact]
@@ -50,7 +63,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
     {
         var client = _factory.CreateClient();
 
-        var body = new
+        var body = new ForgotPasswordModel
         {
             Email = IdentityDataSeeder.UserEmail
         };
@@ -60,23 +73,23 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         var content = await res.Content.ReadAsStringAsync();
+
+        var result = JsonSerializer.Deserialize<ForgotPasswordResultModel>(content, _options);
         
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true, url = "", code = "" })!;
-        
-        Assert.True(result.success);
+        Assert.True(result!.Success);
         
         //Go to reset page
         
-        res = await client.GetAsync(result.url);
+        res = await client.GetAsync(result.Url);
         
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
-        var resetBody = new 
+        var resetBody = new ResetPasswordModel
         {
             Email = IdentityDataSeeder.UserEmail,
             Password = "Nuages123*",
-            PasswordCOnfirm = "Nuages123*",
-            Code = result.code
+            PasswordConfirm = "Nuages123*",
+            Code = result.Code!
         };
         
         res = await client.PostAsync("api/account/resetPassword", 
@@ -85,10 +98,10 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         content = await res.Content.ReadAsStringAsync();
+
+        var result2 = JsonSerializer.Deserialize<ResetPasswordResultModel>(content, _options);
         
-        var result2 = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true })!;
-        
-        Assert.True(result2.success);
+        Assert.True(result2!.Success);
     }
     
     [Fact]
@@ -96,7 +109,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
     {
         var client = _factory.CreateClient();
 
-        var body = new
+        var body = new StartPasswordlessModel
         {
             Email = IdentityDataSeeder.UserEmail
         };
@@ -108,12 +121,12 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         
         var content = await res.Content.ReadAsStringAsync();
         
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true, url = "" });
+        var result = JsonSerializer.Deserialize<StartPasswordlessResultModel>(content, _options);
         
-        Assert.True(result!.success);
-        Assert.NotNull(result.url);
+        Assert.True(result!.Success);
+        Assert.NotNull(result.Url);
 
-        res = await client.GetAsync(result.url);
+        res = await client.GetAsync(result.Url);
         
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
     }
@@ -123,7 +136,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
     {
         var client = _factory.CreateClient();
 
-        var body = new
+        var body = new LoginModel
         {
             UserNameOrEmail = IdentityDataSeeder.UserEmail_Unconfirmed,
             Password = IdentityDataSeeder.UserPassword_Unconfirmed
@@ -136,10 +149,12 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         var content = await res.Content.ReadAsStringAsync();
+
+
+        var result = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
         
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true, reason = "" })!;
-        Assert.False(result.success);
-        Assert.Equal("EmailNotConfirmed", result.reason);
+        Assert.False(result!.Success);
+        Assert.Equal(FailedLoginReason.EmailNotConfirmed, result.Reason);
         
         //Got to EmailNotCOnfirmed page
         res = await client.GetAsync("/account/emailnotconfirmed");
@@ -154,10 +169,11 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         content = await res.Content.ReadAsStringAsync();
-        var confirmSuccess = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true, url = "" })!;
+        
+        var confirmResult = JsonSerializer.Deserialize<SendEmailConfirmationResultModel>(content, _options);
         
         //Confirm email
-        res = await client.GetAsync(confirmSuccess.url);
+        res = await client.GetAsync(confirmResult!.Url);
         
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
@@ -170,8 +186,9 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         
         content = await res.Content.ReadAsStringAsync();
         
-        var successLogin = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true })!;
-        Assert.True(successLogin.success);
+        var loginResult = JsonSerializer.Deserialize<LoginResultModel>(content,_options);
+        
+        Assert.True(loginResult!.Success);
     }
 
     [Fact]
@@ -179,7 +196,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
     {
         var client = _factory.CreateClient();
 
-        var body = new
+        var body = new LoginModel
         {
             UserNameOrEmail = IdentityDataSeeder.UserEmail_MFA,
             Password = IdentityDataSeeder.UserPassword_MFA
@@ -193,16 +210,11 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
 
         var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, 
-            new { success = true, 
-                result = new
-                {
-                    requiresTwoFactor =  false
-                } 
-            })!;
-        
-        Assert.False(result.success);
-        Assert.True(result.result.requiresTwoFactor);
+        var result = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
+
+
+        Assert.False(result!.Success);
+        Assert.True(result.Result.RequiresTwoFactor);
 
         //Go to MFALogin page
         
@@ -215,11 +227,11 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         var user = await _userManager.FindByEmailAsync(IdentityDataSeeder.UserEmail_MFA);
         var key = await _userManager.GetAuthenticatorKeyAsync(user);
         
-        var totp = new Totp(Base32.FromBase32String(key)).ComputeTotp();
+        var totp = new Totp(Base32Encoding.ToBytes(key)).ComputeTotp();
         
-        var loginBody = new
+        var loginBody = new Login2FAModel
         {
-            code = totp
+            Code = totp
         };
         
         res = await client.PostAsync("api/account/login2fa",
@@ -228,10 +240,10 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         content = await res.Content.ReadAsStringAsync();
+
+        var confirmSuccess = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
         
-        var confirmSuccess = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = false })!;
-        
-        Assert.True(confirmSuccess.success);
+        Assert.True(confirmSuccess!.Success);
         
         //Go to Home page
         
@@ -247,7 +259,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
     {
         var client = _factory.CreateClient();
 
-        var body = new
+        var body = new LoginModel
         {
             UserNameOrEmail = IdentityDataSeeder.UserEmail_MFA,
             Password = IdentityDataSeeder.UserPassword_MFA
@@ -261,16 +273,10 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
 
         var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, 
-            new { success = true, 
-                result = new
-                {
-                    requiresTwoFactor =  false
-                } 
-            })!;
+        var result = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
         
-        Assert.False(result.success);
-        Assert.True(result.result.requiresTwoFactor);
+        Assert.False(result!.Success);
+        Assert.True(result.Result.RequiresTwoFactor);
 
         //Go to MFALogin page
         
@@ -283,9 +289,9 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         var user = await _userManager.FindByEmailAsync(IdentityDataSeeder.UserEmail_MFA);
         var codes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 1);
         
-        var loginBody = new
+        var loginBody = new LoginRecoveryCodeModel()
         {
-            code = codes.First()
+            Code = codes.First()
         };
         
         res = await client.PostAsync("api/account/loginRecoveryCode",
@@ -294,10 +300,10 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         content = await res.Content.ReadAsStringAsync();
+
+        var confirmSuccess = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
         
-        var confirmSuccess = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = false })!;
-        
-        Assert.True(confirmSuccess.success);
+        Assert.True(confirmSuccess!.Success);
         
         //Go to Home page
         
@@ -313,7 +319,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
     {
         var client = _factory.CreateClient();
 
-        var body = new
+        var body = new LoginModel
         {
             UserNameOrEmail = IdentityDataSeeder.UserEmail_MFA,
             Password = IdentityDataSeeder.UserPassword_MFA
@@ -327,16 +333,10 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
 
         var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, 
-            new { success = true, 
-                result = new
-                {
-                    requiresTwoFactor =  false
-                } 
-            })!;
+        var result = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
         
-        Assert.False(result.success);
-        Assert.True(result.result.requiresTwoFactor);
+        Assert.False(result!.Success);
+        Assert.True(result.Result.RequiresTwoFactor);
 
         //Go to SMS Login code request page
         
@@ -349,9 +349,8 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         
         res = await client.PostAsync("api/account/sendSMSCode", null);
         content = await res.Content.ReadAsStringAsync();
-        
-        var coreResult = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = false, code = "" })!;
-        
+
+        var codeResult = JsonSerializer.Deserialize<SendSMSCodeResultModel>(content, _options);
         //Go to SMS Login page
         
         res = await client.GetAsync("/account/LoginWithSMS?returnUrl=~/");
@@ -360,9 +359,9 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         
         //Login with Code
         
-        var loginBody = new
+        var loginBody = new LoginSMSModel
         {
-            coreResult.code
+            Code = codeResult!.Code!
         };
         
         res = await client.PostAsync("api/account/loginSMS",
@@ -371,10 +370,10 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         content = await res.Content.ReadAsStringAsync();
+
+        var confirmSuccess = JsonSerializer.Deserialize<LoginResultModel>(content, _options);
         
-        var confirmSuccess = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = false })!;
-        
-        Assert.True(confirmSuccess.success);
+        Assert.True(confirmSuccess!.Success);
         
         //Go to Home page
         

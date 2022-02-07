@@ -31,7 +31,7 @@ public class LoginService : ILoginService
         {
             return new LoginResultModel
             {
-                Result = SignInResult.Failed,
+                Result = new SignInResultModel(SignInResult.Failed),
                 Reason = FailedLoginReason.UserNameOrPasswordInvalid,
                 Message = _stringLocalizer["errorMessage:userNameOrPasswordInvalid"]
             };
@@ -79,7 +79,7 @@ public class LoginService : ILoginService
 
         return new LoginResultModel
         {
-            Result = result,
+            Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
@@ -109,7 +109,7 @@ public class LoginService : ILoginService
         
         return new LoginResultModel
         {
-            Result = result,
+            Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
@@ -141,7 +141,7 @@ public class LoginService : ILoginService
 
         return new LoginResultModel
         {
-            Result = result,
+            Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
@@ -173,7 +173,7 @@ public class LoginService : ILoginService
 
         return new LoginResultModel
         {
-            Result = result,
+            Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
@@ -272,7 +272,28 @@ public class LoginSMSModel
 public class LoginResultModel
 {
     public bool Success { get; set; }
-    public SignInResult Result { get; set; } = null!;
+    public SignInResultModel Result { get; set; } = null!;
     public string? Message { get; set; }
-    public FailedLoginReason? Reason { get; set; }
+    
+    public FailedLoginReason Reason { get; set; }
+}
+
+public class SignInResultModel
+{
+    public SignInResultModel()
+    {
+        
+    }
+    public SignInResultModel(SignInResult result)
+    {
+        Succeeded = result.Succeeded;
+        IsLockedOut = result.IsLockedOut;
+        IsNotAllowed = result.IsNotAllowed;
+        RequiresTwoFactor = result.RequiresTwoFactor;
+    }
+
+    public bool Succeeded { get; set; }
+    public bool IsLockedOut { get; set; }
+    public bool IsNotAllowed { get; set; }
+    public bool RequiresTwoFactor { get; set; }
 }

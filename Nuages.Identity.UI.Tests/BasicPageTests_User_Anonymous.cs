@@ -22,6 +22,7 @@ public class BasicPageTestsUserAnonymous
     [InlineData("/account/loginWithPasswordless")]
     [InlineData("/account/emailNotConfirmed")]
     [InlineData("/account/logout")]
+    [InlineData("/error")]
     public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
     {
         // Arrange

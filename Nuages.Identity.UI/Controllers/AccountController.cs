@@ -76,7 +76,7 @@ public class AccountController : Controller
                 return new LoginResultModel
                 {
                     Success = false,
-                    Result = SignInResult.Failed,
+                    Result = new SignInResultModel(SignInResult.Failed),
                     Reason = FailedLoginReason.RecaptchaError,
                     Message = _stringLocalizer["errorMessage:RecaptchaError"]
                 };
@@ -123,7 +123,7 @@ public class AccountController : Controller
                 return new LoginResultModel
                 {
                     Success = false,
-                    Result = SignInResult.Failed,
+                    Result =new SignInResultModel(SignInResult.Failed),
                     Reason = FailedLoginReason.RecaptchaError,
                     Message = _stringLocalizer["errorMessage:RecaptchaError"]
                 };
@@ -169,7 +169,7 @@ public class AccountController : Controller
                 return new LoginResultModel
                 {
                     Success = false,
-                    Result = SignInResult.Failed,
+                    Result = new SignInResultModel(SignInResult.Failed),
                     Reason = FailedLoginReason.RecaptchaError,
                     Message = _stringLocalizer["errorMessage:RecaptchaError"]
                 };
@@ -453,7 +453,7 @@ public class AccountController : Controller
                 return new LoginResultModel
                 {
                     Success = false,
-                    Result = SignInResult.Failed,
+                    Result = new SignInResultModel(SignInResult.Failed),
                     Reason = FailedLoginReason.RecaptchaError,
                     Message = _stringLocalizer["errorMessage:RecaptchaError"]
                 };

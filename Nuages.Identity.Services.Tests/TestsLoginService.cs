@@ -68,7 +68,6 @@ public class TestsLoginService
         
         Assert.False(res.Success);
         Assert.Equal(FailedLoginReason.UserNameOrPasswordInvalid, res.Reason);
-        Assert.Equal(SignInResult.Failed, res.Result);
         Assert.NotStrictEqual("errorMessage:userNameOrPasswordInvalid", res.Message);
     }
     
