@@ -25,6 +25,17 @@ public class PhoneModel : PageModel
             using var file = System.IO.File.OpenText(@"wwwroot/data/countryCodes.json");
             Codes = JsonSerializer.Deserialize<CountryCode[]>(file.BaseStream);
         }
+        else
+        {
+            Codes = new[]
+            {
+                new CountryCode
+                {
+                    name = "default",
+                    dial_code = "1"
+                }
+            };
+        }
     }
 
     public CountryCode[] Codes { get; set; } = Array.Empty<CountryCode>();

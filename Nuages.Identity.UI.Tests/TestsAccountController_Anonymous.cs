@@ -55,4 +55,30 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
     }
+    
+    [Fact]
+    public async Task ShouldStartPasswordlessWithSuccess()
+    {
+        var client = _factory.CreateClient();
+
+        var body = new
+        {
+            Email = IdentityDataSeeder.UserEmail
+        };
+
+        var res = await client.PostAsync("api/account/passwordlessLogin", 
+            new StringContent(JsonSerializer.Serialize(body), System.Text.Encoding.UTF8, "application/json"));
+
+        var content = await res.Content.ReadAsStringAsync();
+        
+        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true, url = "" });
+        
+        Assert.True(result!.success);
+        Assert.NotNull(result!.url);
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+
+        res = await client.GetAsync(result!.url);
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+
+    }
 }

@@ -1,4 +1,5 @@
 
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -124,6 +125,7 @@ public class PasswordlessService : IPasswordlessService
 
         return new StartPasswordlessResultModel
         {
+            Url = url,
             Success = true
         };
     }
@@ -155,6 +157,11 @@ public class StartPasswordlessResultModel
     public string? Message { get; set; }
     public SignInResult Result { get; set; } = null!;
     public FailedLoginReason? Reason { get; set; }
+    
+#if !DEBUG
+    [JsonIgnore]
+#endif
+    public string? Url { get; set; }
 }
 
 

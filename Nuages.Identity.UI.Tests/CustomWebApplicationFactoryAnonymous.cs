@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Nuages.AspNetIdentity.Core;
 using Nuages.AspNetIdentity.Stores.InMemory;
+using Nuages.Sender.API.Sdk;
 using Nuages.Web.Recaptcha;
 
 namespace Nuages.Identity.UI.Tests;
@@ -27,6 +28,7 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
             services.AddHostedService<IdentityDataSeeder>();
 
             services.AddScoped<IRecaptchaValidator, DummyRecaptchaValidator>();
+            services.AddScoped<IMessageSender, DummyMessageSender>();
         });
     }
 }

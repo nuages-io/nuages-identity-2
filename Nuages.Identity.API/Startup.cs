@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json.Serialization;
 using Amazon;
@@ -198,14 +199,9 @@ public class Startup
                 };
             };
         });
-
-        // services.AddHttpLogging(logging =>
-        // {
-        //     logging.LoggingFields = HttpLoggingFields.ResponseBody;
-        //     logging.ResponseBodyLogLimit = 4096;
-        // });
     }
 
+    [ExcludeFromCodeCoverage]
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
     {
