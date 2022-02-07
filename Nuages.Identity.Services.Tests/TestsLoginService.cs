@@ -4,7 +4,6 @@ using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Web.Exceptions;
 using Xunit;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Nuages.Identity.Services.Tests;
 

@@ -280,6 +280,7 @@ public class LoginResultModel
 
 public class SignInResultModel
 {
+    // ReSharper disable once UnusedMember.Global
     public SignInResultModel()
     {
         
@@ -292,8 +293,11 @@ public class SignInResultModel
         RequiresTwoFactor = result.RequiresTwoFactor;
     }
 
+    // ReSharper disable once MemberCanBePrivate.Global
     public bool Succeeded { get; set; }
+    // ReSharper disable once MemberCanBePrivate.Global
     public bool IsLockedOut { get; set; }
+    // ReSharper disable once MemberCanBePrivate.Global
     public bool IsNotAllowed { get; set; }
     public bool RequiresTwoFactor { get; set; }
 }

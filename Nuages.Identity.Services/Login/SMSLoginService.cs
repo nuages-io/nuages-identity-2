@@ -89,6 +89,7 @@ public class SendSMSCodeResultModel
 {
     public bool Success { get; set; }
     
+    // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
     
 #if !DEBUG

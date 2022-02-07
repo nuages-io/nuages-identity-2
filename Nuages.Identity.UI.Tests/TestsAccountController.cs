@@ -289,7 +289,7 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         var user = await _userManager.FindByEmailAsync(IdentityDataSeeder.UserEmail_MFA);
         var codes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 1);
         
-        var loginBody = new LoginRecoveryCodeModel()
+        var loginBody = new LoginRecoveryCodeModel
         {
             Code = codes.First()
         };
