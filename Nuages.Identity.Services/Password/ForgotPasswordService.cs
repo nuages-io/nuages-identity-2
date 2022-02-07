@@ -51,6 +51,10 @@ public class ForgotPasswordService : IForgotPasswordService
         
         return new ForgotPasswordResultModel
         {
+#if DEBUG
+            Url = url,
+            Code = code,
+#endif
             Success = true // Fake success
         };
     }
@@ -79,4 +83,13 @@ public class ForgotPasswordResultModel
 {
     public bool Success { get; set; }
     public string? Message { get; set; }
+        
+#if !DEBUG
+    [JsonIgnore]
+#endif
+    public string? Url { get; set; }
+#if !DEBUG
+    [JsonIgnore]
+#endif
+    public string? Code { get; set; }
 }

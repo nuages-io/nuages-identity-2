@@ -20,7 +20,7 @@ using System.Text;
 
 // ReSharper disable UnusedMember.Global
 
-namespace Nuages.Identity.UI.Tests;
+namespace Nuages.Identity.UI.Tests.Utilities;
 
 public static class Base32
 {

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.Tests.Utilities;
 using OtpNet;
 using Xunit;
 
@@ -60,9 +61,34 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         
         var content = await res.Content.ReadAsStringAsync();
         
-        var success = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true })!.success;
+        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true, url = "", code = "" })!;
         
-        Assert.True(success);
+        Assert.True(result.success);
+        
+        //Go to reset page
+        
+        res = await client.GetAsync(result.url);
+        
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+
+        var resetBody = new 
+        {
+            Email = IdentityDataSeeder.UserEmail,
+            Password = "Nuages123*",
+            PasswordCOnfirm = "Nuages123*",
+            Code = result.code
+        };
+        
+        res = await client.PostAsync("api/account/resetPassword", 
+            new StringContent(JsonSerializer.Serialize(resetBody), System.Text.Encoding.UTF8, "application/json"));
+        
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+        
+        content = await res.Content.ReadAsStringAsync();
+        
+        var result2 = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = true })!;
+        
+        Assert.True(result2.success);
     }
     
     [Fact]
@@ -325,6 +351,12 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         content = await res.Content.ReadAsStringAsync();
         
         var coreResult = JsonSerializerExtensions.DeserializeAnonymousType(content, new { success = false, code = "" })!;
+        
+        //Go to SMS Login page
+        
+        res = await client.GetAsync("/account/LoginWithSMS?returnUrl=~/");
+        
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
         
         //Login with Code
         

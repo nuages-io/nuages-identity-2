@@ -13,9 +13,9 @@ using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 // ReSharper disable InconsistentNaming
-
 // ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Controllers;
@@ -201,11 +201,11 @@ public class AccountController : Controller
     
     [HttpPost("register")]
     [AllowAnonymous]
-    public async Task<RegisterResultModel> Register([FromBody] RegisterModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
+    public async Task<RegisterResultModel> RegisterAsync([FromBody] RegisterModel model, [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.RegisterAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterResultModel
@@ -234,11 +234,11 @@ public class AccountController : Controller
     
     [HttpPost("registerExternalLogin")]
     [AllowAnonymous]
-    public async Task<RegisterExternalLoginResultModel> RegisterExternalLogin( [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
+    public async Task<RegisterExternalLoginResultModel> RegisterExternalLoginAsync( [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.RegisterExternalLoginAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterExternalLoginResultModel
@@ -481,6 +481,4 @@ public class AccountController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-
-   
 }

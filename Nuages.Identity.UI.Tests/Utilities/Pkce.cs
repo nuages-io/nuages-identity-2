@@ -1,10 +1,11 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable NotAccessedField.Global
 
-namespace Nuages.Identity.UI.Tests;
+namespace Nuages.Identity.UI.Tests.Utilities;
 
 /// <summary>
 /// Provides a randomly generating PKCE code verifier and it's corresponding code challenge.

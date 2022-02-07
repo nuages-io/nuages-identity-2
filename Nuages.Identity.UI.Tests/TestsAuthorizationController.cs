@@ -1,6 +1,7 @@
 using System.Net;
 using System.Web;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Nuages.Identity.UI.Tests.Utilities;
 using Xunit;
 // ReSharper disable InconsistentNaming
 
