@@ -119,6 +119,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     protected override async Task AddUserTokenAsync(MongoIdentityUserToken<TKey> token)
     {
+        token.Id = ObjectId.GenerateNewId().ToString();
         await UsersTokensCollection.InsertOneAsync(token);
     }
 

@@ -49,6 +49,9 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         
         return new SendEmailConfirmationResultModel
         {
+#if DEBUG
+            Url = url,
+#endif
             Success = true // Fake success
             
         };
@@ -71,4 +74,9 @@ public class SendEmailConfirmationResultModel
     public bool Success { get; set; }
     
     public string? Message { get; set; }
+
+#if !DEBUG
+    [JsonIgnore]
+#endif
+    public string? Url { get; set; }
 }

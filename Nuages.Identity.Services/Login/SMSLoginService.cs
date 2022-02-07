@@ -70,6 +70,9 @@ public class SMSSendCodeService : ISMSSendCodeService
         
         return new SendSMSCodeResultModel
         {
+#if DEBUG
+            Code = code,
+#endif
             Success = true
         };
     }
@@ -87,4 +90,9 @@ public class SendSMSCodeResultModel
     public bool Success { get; set; }
     
     public List<string> Errors { get; set; } = new();
+    
+#if !DEBUG
+    [JsonIgnore]
+#endif
+    public string? Code { get; set; }
 }

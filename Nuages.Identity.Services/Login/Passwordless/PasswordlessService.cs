@@ -1,5 +1,3 @@
-
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -125,7 +123,9 @@ public class PasswordlessService : IPasswordlessService
 
         return new StartPasswordlessResultModel
         {
+#if DEBUG
             Url = url,
+#endif
             Success = true
         };
     }

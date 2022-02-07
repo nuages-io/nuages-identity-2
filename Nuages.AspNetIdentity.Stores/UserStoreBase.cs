@@ -97,6 +97,7 @@ public abstract class UserStoreBase <TUser, TRole, TKey,  TUserLogin, TUserToken
         return Task.FromResult((IList<string>)query.ToList());
     }
 
+     // ReSharper disable once UnusedParameter.Global
      protected abstract Task<TRole?> FindRoleByNameAsync(string normalizedName, CancellationToken cancellationToken);
      
     public async Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken)
