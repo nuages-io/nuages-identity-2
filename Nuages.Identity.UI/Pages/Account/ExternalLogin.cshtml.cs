@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ using Nuages.AspNetIdentity.Core;
 namespace Nuages.Identity.UI.Pages.Account;
 
 [AllowAnonymous]
+[ExcludeFromCodeCoverage]
 public class ExternalLoginModel : PageModel
 {
     private readonly NuagesSignInManager _signInManager;

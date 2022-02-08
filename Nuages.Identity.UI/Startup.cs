@@ -1,4 +1,5 @@
 ﻿
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
@@ -39,15 +40,7 @@ public class Startup
 
         AWSXRayRecorder.InitializeInstance(_configuration);
 
-        if (!_env.IsDevelopment())
-        {
-            AWSSDKHandler.RegisterXRayForAllServices();
-            AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
-        }
-        else
-        {
-            AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
-        }
+        ConfigureXRay();
 
         services.AddNuagesAspNetIdentity(
                 identity =>
@@ -136,19 +129,24 @@ public class Startup
 
     }
 
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    [ExcludeFromCodeCoverage]
+    private void ConfigureXRay()
     {
-        if (env.IsDevelopment())
+        if (!_env.IsDevelopment())
         {
-            app.UseDeveloperExceptionPage();
+            AWSSDKHandler.RegisterXRayForAllServices();
+            AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
         }
         else
         {
-            app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
+            AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
         }
+    }
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        ConfigureErrorPage(app, env);
 
         app.UseWebOptimizer();
         app.UseHttpsRedirection();
@@ -167,5 +165,20 @@ public class Startup
             endpoints.MapControllers();
             endpoints.MapHealthChecks("health");
         });
+    }
+
+    [ExcludeFromCodeCoverage]
+    private static void ConfigureErrorPage(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+        else
+        {
+            app.UseExceptionHandler("/Error");
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseHsts();
+        }
     }
 }

@@ -80,6 +80,7 @@ public class TestsUsersStore
 
         Assert.True(res.Succeeded);
 
+     
         return user;
     }
     
@@ -91,6 +92,9 @@ public class TestsUsersStore
         Assert.NotNull(await _userStore.FindByEmailAsync(user.Email, CancellationToken.None));
         Assert.NotNull(await _userStore.FindByIdAsync(user.Id, CancellationToken.None));
 
+        await _userStore.SetSecurityStampAsync(user, "stamp", CancellationToken.None);
+        Assert.Equal("stamp",await _userStore.GetSecurityStampAsync(user, CancellationToken.None));
+        
         user = await _userStore.FindByNameAsync(user.UserName, CancellationToken.None);
         Assert.NotNull(user);
         var id = await _userStore.GetUserIdAsync(user, CancellationToken.None);

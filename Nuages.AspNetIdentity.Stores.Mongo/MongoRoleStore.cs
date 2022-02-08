@@ -1,5 +1,5 @@
 using System.ComponentModel;
-
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -28,7 +28,7 @@ where TKey : IEquatable<TKey>
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     public static DeleteOptions DeleteOptions { get; } = new();
 
-    
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         GC.SuppressFinalize(this);

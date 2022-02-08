@@ -1,4 +1,5 @@
-﻿using Nuages.Localization.Storage.Config.Sources;
+﻿using System.Diagnostics.CodeAnalysis;
+using Nuages.Localization.Storage.Config.Sources;
 
 namespace Nuages.Identity.UI;
 
@@ -9,6 +10,7 @@ namespace Nuages.Identity.UI;
 // ReSharper disable once ClassNeverInstantiated.Global
 public class LocalEntryPoint
 {
+    [ExcludeFromCodeCoverage]
     public static void Main(string[] args)
     {
         

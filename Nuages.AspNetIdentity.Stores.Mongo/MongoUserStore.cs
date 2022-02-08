@@ -1,4 +1,5 @@
 
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -35,6 +36,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
     where TKey : IEquatable<TKey>
 {
     
+    [ExcludeFromCodeCoverage]
     public void Dispose()
     {
         
