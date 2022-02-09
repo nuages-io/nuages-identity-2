@@ -1,51 +1,68 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Nuages.AspNetIdentity.Core;
 using OpenIddict.Abstractions;
+using OpenIddict.Server.AspNetCore;
 
 namespace Nuages.Identity.UI.OpenIdDict;
 
 public class DeviceFlowHandler : IDeviceFlowHandler
 {
-     public  Task<Microsoft.AspNetCore.Mvc.SignInResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest)
+    private readonly NuagesUserManager _userManager;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly IHttpContextAccessor _contextAccessor;
+
+    public DeviceFlowHandler(NuagesUserManager userManager, NuagesSignInManager signInManager, IHttpContextAccessor contextAccessor)
+    {
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _contextAccessor = contextAccessor;
+    }
+    
+    public async Task<IActionResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest)
     {
         if (openIdDictRequest.IsDeviceCodeGrantType() || openIdDictRequest.IsRefreshTokenGrantType())
         {
-            //     // Retrieve the claims principal stored in the authorization code/device code/refresh token.
-            //     var principal = (await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)).Principal;
-            //
-            //     // Retrieve the user profile corresponding to the authorization code/refresh token.
-            //     // Note: if you want to automatically invalidate the authorization code/refresh token
-            //     // when the user password/roles change, use the following line instead:
-            //     // var user = _signInManager.ValidateSecurityStampAsync(info.Principal);
-            //     var user = await _userManager.GetUserAsync(principal);
-            //     if (user == null)
-            //     {
-            //         return Forbid(
-            //             authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
-            //             properties: new AuthenticationProperties(new Dictionary<string, string>
-            //             {
-            //                 [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-            //                 [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The token is no longer valid."
-            //             }));
-            //     }
-            //
-            //     // Ensure the user is still allowed to sign in.
-            //     if (!await _signInManager.CanSignInAsync(user))
-            //     {
-            //         return Forbid(
-            //             authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
-            //             properties: new AuthenticationProperties(new Dictionary<string, string>
-            //             {
-            //                 [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-            //                 [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The user is no longer allowed to sign in."
-            //             }));
-            //     }
-            //
-            //     foreach (var claim in principal.Claims)
-            //     {
-            //         claim.SetDestinations(GetDestinations(claim, principal));
-            //     }
-            //
-            //     // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
-            //     return SignIn(principal, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            // Retrieve the claims principal stored in the authorization code/device code/refresh token.
+            var principal = (await _contextAccessor.HttpContext!.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)).Principal;
+            
+            // Retrieve the user profile corresponding to the authorization code/refresh token.
+            // Note: if you want to automatically invalidate the authorization code/refresh token
+            // when the user password/roles change, use the following line instead:
+            // var user = _signInManager.ValidateSecurityStampAsync(info.Principal);
+            var user = await _userManager.GetUserAsync(principal);
+            if (user == null)
+            {
+                return new ForbidResult(new List<string>
+                {
+                    OpenIddictServerAspNetCoreDefaults.AuthenticationScheme
+                },
+                    new AuthenticationProperties(new Dictionary<string, string>
+                    {
+                        [OpenIddictServerAspNetCoreConstants.Properties.Error] = OpenIddictConstants.Errors.InvalidGrant,
+                        [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The token is no longer valid."
+                    }!));
+            }
+            
+            // Ensure the user is still allowed to sign in.
+            if (!await _signInManager.CanSignInAsync(user))
+            {
+                return new ForbidResult(
+                    new List<string> { OpenIddictServerAspNetCoreDefaults.AuthenticationScheme},
+                    new AuthenticationProperties(new Dictionary<string, string>
+                    {
+                        [OpenIddictServerAspNetCoreConstants.Properties.Error] = OpenIddictConstants.Errors.InvalidGrant,
+                        [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The user is no longer allowed to sign in."
+                    }!));
+            }
+            
+            foreach (var claim in principal?.Claims!)
+            {
+                claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
+            }
+            
+            // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
+            return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }
 
         throw new NotImplementedException();
@@ -54,5 +71,5 @@ public class DeviceFlowHandler : IDeviceFlowHandler
 
 public interface IDeviceFlowHandler
 {
-    Task<Microsoft.AspNetCore.Mvc.SignInResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest);
+    Task<IActionResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest);
 }

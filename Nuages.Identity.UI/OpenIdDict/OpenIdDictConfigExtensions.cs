@@ -30,6 +30,8 @@ public static class OpenIdDictConfigExtensions
                 options.SetAuthorizationEndpointUris("/connect/authorize")
                     .SetLogoutEndpointUris("/connect/logout")
                     .SetTokenEndpointUris("/connect/token")
+                    .SetDeviceEndpointUris("/connect/device")
+                    .SetVerificationEndpointUris("connect/verify")
                     .SetUserinfoEndpointUris("/connect/userinfo");
 
                 // Mark the "email", "profile" and "roles" scopes as supported scopes.
@@ -41,6 +43,7 @@ public static class OpenIdDictConfigExtensions
                 options.AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
                     .AllowPasswordFlow()
+                    .AllowDeviceCodeFlow()
                     .AllowClientCredentialsFlow();
 
 #if DEBUG
@@ -54,6 +57,7 @@ public static class OpenIdDictConfigExtensions
                     .EnableLogoutEndpointPassthrough()
                     .EnableStatusCodePagesIntegration()
                     .EnableTokenEndpointPassthrough()
+                    .EnableVerificationEndpointPassthrough()
                     #if DEBUG
                     .DisableTransportSecurityRequirement()
                     #endif
