@@ -6,6 +6,7 @@ using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Password;
+using Nuages.Identity.Services.Register;
 using OtpNet;
 using Xunit;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -380,5 +381,29 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
+    }
+    
+    [Fact]
+    public async Task ShouldRegisterWithSuccess()
+    {
+        var client = _factory.CreateClient();
+
+        var body = new RegisterModel
+        {
+            Email = "newUser@example.com",
+            Password = IdentityDataSeeder.UserPassword,
+            PasswordConfirm = IdentityDataSeeder.UserPassword
+        };
+
+        var res = await client.PostAsync("api/account/register", 
+            new StringContent(JsonSerializer.Serialize(body), System.Text.Encoding.UTF8, "application/json"));
+
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+        
+        var content = await res.Content.ReadAsStringAsync();
+        
+        var result = JsonSerializer.Deserialize<RegisterResultModel>(content, _options);
+        
+        Assert.True(result!.Success);
     }
 }

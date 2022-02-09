@@ -85,7 +85,6 @@ public class ChangePhoneNumberResultModel
     public List<string> Errors { get; set; } = new();
 }
 
-
 public class ChangePhoneNumberModel
 {
     public string PhoneNumber { get; set; } = string.Empty;

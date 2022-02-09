@@ -14,15 +14,15 @@ public class BasicPageTestsUserAnonymous
     }
 
     [Theory]
-    [InlineData("/")]
-    [InlineData("/Index")]
-    [InlineData("/account/login")]
+     [InlineData("/")]
+     [InlineData("/Index")]
+     [InlineData("/account/login")]
     [InlineData("/account/forgotpassword")]
-    [InlineData("/account/register")]
-    [InlineData("/account/loginWithPasswordless")]
+     [InlineData("/account/register")]
+     [InlineData("/account/loginWithPasswordless")]
     [InlineData("/account/emailNotConfirmed")]
     [InlineData("/account/logout")]
-
+    [InlineData("/error")]
     public async Task Get_EndpointsReturnSuccessAndCorrectContentType(string url)
     {
         // Arrange

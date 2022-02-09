@@ -1,4 +1,5 @@
 
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -232,6 +233,7 @@ public class AccountController : Controller
         }
     }
     
+    [ExcludeFromCodeCoverage]
     [HttpPost("registerExternalLogin")]
     [AllowAnonymous]
     public async Task<RegisterExternalLoginResultModel> RegisterExternalLoginAsync( [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)

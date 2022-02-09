@@ -17,18 +17,14 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
     
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        var claims = new List<Claim>();
-        
-        if (Context.Request.Headers.TryGetValue(UserId, out var userId))
+        var claims = new List<Claim>
         {
-            claims.Add(new Claim("sub", userId[0]));
-        }
-        else
-        {
-            claims.Add(new Claim("sub", Options.DefaultUserId));
-        }
-        
-        
+            Context.Request.Headers.TryGetValue(UserId, out var userId)
+                ? new Claim("sub", userId[0])
+                : new Claim("sub", Options.DefaultUserId)
+        };
+
+
         var identity = new ClaimsIdentity(claims, "Test");
         
         var principal = new ClaimsPrincipal(identity);

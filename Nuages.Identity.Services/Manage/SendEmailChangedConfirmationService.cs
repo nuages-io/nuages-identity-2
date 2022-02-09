@@ -71,6 +71,10 @@ public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationSe
         
         return new SendEmailChangeResultModel
         {
+            #if DEBUG
+            Code = code,
+            Url = url,
+            #endif
             Success = true // Fake success
         };
     }
@@ -89,6 +93,10 @@ public class SendEmailChangeModel
 
 public class SendEmailChangeResultModel
 {
+    #if DEBUG
+    public string? Code { get; set; }
+    public string? Url { get; set; }
+    #endif
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();
 }

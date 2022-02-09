@@ -314,7 +314,7 @@ public class ManageController : Controller
     
     [HttpPost("changePhoneNumber")]
     [AllowAnonymous]
-    public async Task<ChangePhoneNumberResultModel> ChangePhoneNUmberAsync([FromBody] ChangePhoneNumberModel model)
+    public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync([FromBody] ChangePhoneNumberModel model)
     {
         try
         {
@@ -344,10 +344,26 @@ public class ManageController : Controller
     [HttpGet("downloadRecoveryCodes")]
     public async Task<ActionResult> DownloadRecoveryCodesAsync()
     {
-        var codes = await _mfaService.GetRecoveryCodes(User.Sub()!);
+        try
+        {
+            var codes = await _mfaService.GetRecoveryCodes(User.Sub()!);
 
-        var recoveryCodesString = string.Join(",", codes);
-        return File(Encoding.Default.GetBytes(recoveryCodesString), "application/text", "recoveryCodes.txt");
+            var recoveryCodesString = string.Join(",", codes);
+            return File(Encoding.Default.GetBytes(recoveryCodesString), "application/text", "recoveryCodes.txt");
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
+
+            return new EmptyResult();
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
+      
     }
     
     [HttpPost("resetRecoveryCodes")]

@@ -12,9 +12,9 @@ namespace Nuages.Identity.UI.Pages;
 [IgnoreAntiforgeryToken]
 public class ErrorModel : PageModel
 {
-    private readonly Logger<ErrorModel> _logger;
+    private readonly ILogger<ErrorModel> _logger;
 
-    public ErrorModel(Logger<ErrorModel> logger)
+    public ErrorModel(ILogger<ErrorModel> logger)
     {
         _logger = logger;
     }

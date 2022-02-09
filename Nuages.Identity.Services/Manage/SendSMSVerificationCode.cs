@@ -48,7 +48,12 @@ public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
         
         return new SendSMSVerificationCodeResultModel
         {
+            #if DEBUG
+            Code = code,
+            #endif
+            
             Success = true
+            
         };
     }
 }
@@ -62,7 +67,10 @@ public interface ISendSMSVerificationCodeService
 public class SendSMSVerificationCodeResultModel
 {
     public bool Success { get; set; }
-    
+    #if DEBUG
+    public string? Code { get; set; }
+    #endif
+    // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
 }
 
