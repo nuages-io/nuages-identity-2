@@ -318,7 +318,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePhoneNumberAsync");
             
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
 

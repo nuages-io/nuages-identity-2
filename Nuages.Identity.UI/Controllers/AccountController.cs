@@ -377,7 +377,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.PasswordLoginAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.PasswordlessLoginAsync");
             
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new StartPasswordlessResultModel

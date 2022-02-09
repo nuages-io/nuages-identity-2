@@ -30,7 +30,7 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Exchange");
+            AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Token");
             
             return await _tokenEndpoint.Exchange();
         }
