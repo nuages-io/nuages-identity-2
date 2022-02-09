@@ -85,11 +85,11 @@ public class ForgotPasswordResultModel
     public string? Message { get; set; }
         
 #if !DEBUG
-    [JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
 #endif
     public string? Url { get; set; }
 #if !DEBUG
-    [JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
 #endif
     public string? Code { get; set; }
 }

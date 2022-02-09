@@ -12,13 +12,13 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Nuages.Identity.UI.Tests;
 
-public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicationFactoryAnonymous<Startup>>
+public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryAnonymous<Startup>>
 {
     private readonly CustomWebApplicationFactoryAnonymous<Startup> _factory;
     private readonly NuagesUserManager _userManager;
     private readonly JsonSerializerOptions _options;
 
-    public TestsAccountControllerAnonymous(CustomWebApplicationFactoryAnonymous<Startup> factory)
+    public TestsAccountController(CustomWebApplicationFactoryAnonymous<Startup> factory)
     {
         _factory = factory;
         
@@ -31,7 +31,6 @@ public class TestsAccountControllerAnonymous : IClassFixture<CustomWebApplicatio
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             PropertyNameCaseInsensitive = true
-
         };
         _options.Converters.Add(new JsonStringEnumConverter());
     }

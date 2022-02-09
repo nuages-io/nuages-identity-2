@@ -95,7 +95,6 @@ public class IdentityDataSeeder : IHostedService
             await userManager.SetTwoFactorEnabledAsync(newUser, true);
             await userManager.GenerateNewTwoFactorRecoveryCodesAsync(newUser, 1);
             
-            
         }
         
         var roleManager = scope.ServiceProvider.GetRequiredService<NuagesRoleManager>();

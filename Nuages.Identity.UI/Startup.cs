@@ -168,7 +168,7 @@ public class Startup
     }
 
     [ExcludeFromCodeCoverage]
-    private static void ConfigureErrorPage(IApplicationBuilder app, IWebHostEnvironment env)
+    private static void ConfigureErrorPage(IApplicationBuilder app, IHostEnvironment env)
     {
         if (env.IsDevelopment())
         {

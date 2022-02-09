@@ -30,7 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="appsettings.prod.json" />
-    <Content Include="appsettings.prod.json" CopyToOutputDirectory="Always" />
+    <Content Include="appsettings.prod.json" CopyToOutputDirectory="Always" Condition="Exists('appsettings.prod.json')"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nuages.Identity.Cdk\Nuages.Identity.Cdk.csproj" />

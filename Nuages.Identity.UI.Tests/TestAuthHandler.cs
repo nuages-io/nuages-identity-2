@@ -13,14 +13,22 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
     {
     }
 
+    public const string UserId = "UserId";
+    
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
-        var claims = new[]
+        var claims = new List<Claim>();
+        
+        if (Context.Request.Headers.TryGetValue(UserId, out var userId))
         {
-            //new Claim(ClaimTypes.NameIdentifier,  Options.DefaultUserId),
-            new Claim("sub", Options.DefaultUserId)
-            //new Claim("name", $"{Options.DefaultUserId}@nuages.org"),
-        };
+            claims.Add(new Claim("sub", userId[0]));
+        }
+        else
+        {
+            claims.Add(new Claim("sub", Options.DefaultUserId));
+        }
+        
+        
         var identity = new ClaimsIdentity(claims, "Test");
         
         var principal = new ClaimsPrincipal(identity);

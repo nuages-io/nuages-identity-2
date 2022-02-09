@@ -93,7 +93,7 @@ public class SendSMSCodeResultModel
     public List<string> Errors { get; set; } = new();
     
 #if !DEBUG
-    [JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
 #endif
     public string? Code { get; set; }
 }

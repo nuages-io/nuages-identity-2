@@ -159,7 +159,7 @@ public class StartPasswordlessResultModel
     public FailedLoginReason? Reason { get; set; }
     
 #if !DEBUG
-    [JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
 #endif
     public string? Url { get; set; }
 }

@@ -1,5 +1,6 @@
 
 using System.Text;
+
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
@@ -76,7 +77,7 @@ public class SendEmailConfirmationResultModel
     public string? Message { get; set; }
 
 #if !DEBUG
-    [JsonIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
 #endif
     public string? Url { get; set; }
 }
