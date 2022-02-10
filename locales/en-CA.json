@@ -75,6 +75,13 @@
 		"success": "Thank you for confirming your email.",
 		"title": "Confirmation of your email"
 	},
+	"device": {
+		"confirm": "Do you want to grant {0} access to your data? (scopes requested: {1})",
+		"confirmCode": "Make sure that the code displayed on the device is",
+		"instructions": "Enter the user code given by the client application",
+		"rejectIfDifferentMessage": "If the two codes don't match, press \"No\" to reject the authorization demand.",
+		"title": "Device authorization"
+	},
 	"email": "Email",
 	"emailNotConfirmed": {
 		"message": "Your email has not been confirmed. Check your emails to find the verification email. You can also click on the following button to receive it again.",
@@ -248,6 +255,7 @@
 		"success": "Your password has been successfully added",
 		"title": "Add a password"
 	},
+	"submit": "Submit",
 	"username": "Username",
 	"warning": "Warning!",
 	"yourEmail": "Your email"

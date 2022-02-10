@@ -75,6 +75,13 @@
 		"success": "Merci d'avoir confirmé votre courriel.",
 		"title": "Confirmation de votre courriel"
 	},
+	"device": {
+		"confirm": "Voulez-vous donner accès à vos données à {0} (Accès demandés: {1})?",
+		"confirmCode": "Assurez-vous que le code affiché sur votre appareil est ",
+		"instructions": "Entrez le code fourni par l'application",
+		"rejectIfDifferentMessage": "Appuyez sur Non si le code ne correspond pas à celui affiché sur votre appareil.",
+		"title": "Authorization d'un appareil"
+	},
 	"email": "Courriel",
 	"emailNotConfirmed": {
 		"message": "Votre courriel n'a pas été confirmé. Vérifier vos courriels afin de trouver le courriel de vérification. Vous pouvez également cliquer sur le bouton suivant afin de le recevoir à nouveau.",
@@ -248,6 +255,7 @@
 		"success": "Votre mot de passe a été ajouté avec succès",
 		"title": "Ajout d'un mot de passe"
 	},
+	"submit": "Soumettre",
 	"username": "Nom d'utilisateur",
 	"warning": "Attention!",
 	"yourEmail": "Votre courriel"

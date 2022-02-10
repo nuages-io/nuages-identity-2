@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<babeledit_project be_version="2.9.0" version="1.2">
+<babeledit_project be_version="2.9.2" version="1.2">
     <!--
 
     BabelEdit project file
@@ -1071,6 +1071,96 @@
                     </concept_node>
                     <concept_node>
                         <name>success</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>title</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                </children>
+            </folder_node>
+            <folder_node>
+                <name>device</name>
+                <children>
+                    <concept_node>
+                        <name>confirm</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>confirmCode</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>instructions</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>rejectIfDifferentMessage</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -3437,6 +3527,23 @@
                     </concept_node>
                 </children>
             </folder_node>
+            <concept_node>
+                <name>submit</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>en-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
             <concept_node>
                 <name>username</name>
                 <definition_loaded>false</definition_loaded>
