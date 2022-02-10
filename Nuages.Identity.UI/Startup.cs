@@ -56,6 +56,7 @@ public class Startup
                         UserNameClaimType = OpenIddictConstants.Claims.Name,
                         UserIdClaimType = OpenIddictConstants.Claims.Subject
                     };
+                    
 
                     identity.SignIn = new SignInOptions
                     {
@@ -103,7 +104,8 @@ public class Startup
             {
                 jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             })
-            .AddNuagesLocalization(_configuration);
+             .AddNuagesLocalization(_configuration)
+            ;
 
         services.AddHttpContextAccessor();
 
@@ -125,8 +127,6 @@ public class Startup
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
         
-
-
         services.AddNuagesOpenIdDict(_configuration, configure => { });
 
     }
@@ -165,6 +165,7 @@ public class Startup
         {
             endpoints.MapRazorPages();
             endpoints.MapControllers();
+            endpoints.MapDefaultControllerRoute();
             endpoints.MapHealthChecks("health");
         });
     }

@@ -81,4 +81,5 @@ public static class OpenIdDictConfigExtensions
 
         services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, OpenIddictServerOptionsInitializer>();
     }
+
 }

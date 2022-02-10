@@ -51,6 +51,8 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
             SecurityAlgorithms.RsaOAEP, SecurityAlgorithms.Aes256CbcHmacSha512);
     
         options.EncryptionCredentials.Add(encryptionCredential);
+        
+        
     }
         
     private void SetupSigningKey(OpenIddictServerOptions options)
