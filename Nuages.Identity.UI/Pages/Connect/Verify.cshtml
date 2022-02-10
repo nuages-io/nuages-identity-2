@@ -12,19 +12,14 @@
     {
         @if (!string.IsNullOrEmpty(Model.Error) && !string.IsNullOrEmpty(Model.ErrorDescription))
         {
-            <p class="lead text-center alert alert-warning">
-                An error occurred:
-                <br />
-                @Model.ErrorDescription (@Model.Error)
-            </p>
-            
-            <partial name="Shared/_Warning" model='new { Title = Localizer["warning"], Message = Model.Error }'/>
+            <div class="mb-2">
+                 <partial name="Shared/_Error" model='new { Title = Localizer["error"], Message = Model.Error }'/>
+            </div>
+           
         }
 
-        
-
         <form  method="get" class="flex flex-col space-y-2">
-            <p class="lead text-left">@Localizer["device.instructions"] :</p>
+            <p>@Localizer["device.instructions"]</p>
             <div class="form-check">
                 <input id="user_code" name="user_code" type="text" placeholder="@Localizer["device:code"]" required class="text-box" autofocus="autofocus">
             </div>
@@ -35,11 +30,15 @@
     else
     {
  
-        <form method="post"  class="flex flex-col space-y-2">
-           <p class="lead text-left">@Localizer["device.confirm", Model.ApplicationName, Model.Scope] </p>
-            <p class="lead text-center alert alert-warning">
-                @Localizer["device.confirmCode"] <strong>@Model.UserCode</strong>.
-                <br />
+        <form method="post"  class="flex flex-col space-y-4">
+           <p >@Localizer["device.confirm", Model.ApplicationName, Model.Scope] </p>
+            <p >
+                @Localizer["device.confirmCode"] 
+            </p>
+            <p class="text-center">
+                <strong class="text-lg">@Model.UserCode</strong>
+            </p>
+            <p>
                 @Localizer["device.rejectIfDifferentMessage"] 
             </p>
 
@@ -50,7 +49,10 @@
                 <input type="hidden" name="@parameter.Key" value="@parameter.Value"/>
             }
 
-            <button class="primary" name="submit.Accept" type="submit" value="Yes">@Localizer["yes"]</button>
-            <button class="primary" name="submit.Deny" type="submit" value="No">@Localizer["no"]</button>
+            <div class="flex flex-row space-x-2 justify-center">
+                 <button class="primary" name="submit.Accept" type="submit" value="Yes">@Localizer["yes"]</button>
+                    <button class="primary" name="submit.Deny" type="submit" value="No">@Localizer["no"]</button>
+            </div>
+           
         </form>
     }

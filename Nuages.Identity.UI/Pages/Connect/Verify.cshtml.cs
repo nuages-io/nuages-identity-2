@@ -69,55 +69,58 @@ public class Verify : PageModel
 
     public async Task<IActionResult> OnPost()
     {
-        // Retrieve the profile of the logged in user.
-        var user = await _userManager.GetUserAsync(User) ??
-                   throw new InvalidOperationException("The user details cannot be retrieved.");
-
-        // Retrieve the claims principal associated with the user code.
-        var result = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-        if (result.Succeeded)
+        if (HttpContext.Request.Form.ContainsKey("submit.Accept"))
         {
-            var principal = await _signInManager.CreateUserPrincipalAsync(user);
+            // Retrieve the profile of the logged in user.
+            var user = await _userManager.GetUserAsync(User) ??
+                       throw new InvalidOperationException("The user details cannot be retrieved.");
 
-            // Note: in this sample, the granted scopes match the requested scope
-            // but you may want to allow the user to uncheck specific scopes.
-            // For that, simply restrict the list of scopes before calling SetScopes.
-            principal.SetScopes(result.Principal.GetScopes());
-            principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
-
-            foreach (var claim in principal.Claims)
+            // Retrieve the claims principal associated with the user code.
+            var result = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            if (result.Succeeded)
             {
-                claim.SetDestinations(GetDestinations(claim, principal));
+                var principal = await _signInManager.CreateUserPrincipalAsync(user);
+
+                // Note: in this sample, the granted scopes match the requested scope
+                // but you may want to allow the user to uncheck specific scopes.
+                // For that, simply restrict the list of scopes before calling SetScopes.
+                principal.SetScopes(result.Principal.GetScopes());
+                principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
+
+                foreach (var claim in principal.Claims)
+                {
+                    claim.SetDestinations(GetDestinations(claim, principal));
+                }
+
+                var properties = new AuthenticationProperties
+                {
+                    // This property points to the address OpenIddict will automatically
+                    // redirect the user to after validating the authorization demand.
+                    RedirectUri = "/Connect/VerifyAccepted"
+                };
+
+                return SignIn(principal, properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
             }
 
-            var properties = new AuthenticationProperties
-            {
-                // This property points to the address OpenIddict will automatically
-                // redirect the user to after validating the authorization demand.
-                RedirectUri = "/"
-            };
-
-            return SignIn(principal, properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-        }
-
-        Error = "InvalidToken";
-        ErrorDescription = "The specified user code is not valid. Please make sure you typed it correctly.";
+            Error = "InvalidToken";
+            ErrorDescription = "The specified user code is not valid. Please make sure you typed it correctly.";
             
-        // Redisplay the form when the user code is not valid.
-        return Page();
+            // Redisplay the form when the user code is not valid.
+            return Page();
+        }
+        else
+        {
+            return Forbid(
+                authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
+                properties: new AuthenticationProperties
+                {
+                    // This property points to the address OpenIddict will automatically
+                    // redirect the user to after rejecting the authorization demand.
+                    RedirectUri = "/Connect/VerifyRejected"
+                });
+        }
     }
 
-    public ActionResult OnDelete()
-    {
-        return Forbid(
-            authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
-            properties: new AuthenticationProperties
-            {
-                // This property points to the address OpenIddict will automatically
-                // redirect the user to after rejecting the authorization demand.
-                RedirectUri = "/"
-            });
-    }
     
     private static IEnumerable<string> GetDestinations(Claim claim, ClaimsPrincipal principal)
     {

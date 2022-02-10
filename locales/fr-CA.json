@@ -98,6 +98,7 @@
 		"submit": "Vérifier",
 		"title": "Configuration d'un authentificateur"
 	},
+	"error": "Erreur",
 	"errorMessage": {
 		"exception": "Une erreur innatendue est survenue",
 		"invalidEmail": "Le courriel est invalide",
