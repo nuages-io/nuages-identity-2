@@ -64,8 +64,8 @@ public class DeviceFlowHandler : IDeviceFlowHandler
             // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
             return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }
-
-        throw new NotImplementedException();
+        
+        throw new Exception("Wrong grantType");
     }
 }
 

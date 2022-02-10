@@ -27,40 +27,41 @@ public static class OpenIdDictConfigExtensions
                 options.DisableAccessTokenEncryption();
 #endif
                 // Enable the authorization, logout, token and userinfo endpoints.
-                options.SetAuthorizationEndpointUris("/connect/authorize")
-                    .SetLogoutEndpointUris("/connect/logout")
-                    .SetTokenEndpointUris("/connect/token")
+                options
                     .SetDeviceEndpointUris("/connect/device")
                     .SetVerificationEndpointUris("connect/verify")
+                    .SetAuthorizationEndpointUris("/connect/authorize")
+                    .SetLogoutEndpointUris("/connect/logout")
+                    .SetTokenEndpointUris("/connect/token")
                     .SetUserinfoEndpointUris("/connect/userinfo");
 
                 // Mark the "email", "profile" and "roles" scopes as supported scopes.
                 options.RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile,
                     OpenIddictConstants.Scopes.Roles);
 
-                // Note: the sample uses the code and refresh token flows but you can enable
-                // the other flows if you need to support implicit, password or client credentials.
                 options.AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
                     .AllowPasswordFlow()
                     .AllowDeviceCodeFlow()
                     .AllowClientCredentialsFlow();
+                
 
-#if DEBUG
-                // Register the signing and encryption credentials.
-                options.AddDevelopmentEncryptionCertificate()
-                    .AddDevelopmentSigningCertificate();
-#endif
+// #if DEBUG
+//                 // Register the signing and encryption credentials.
+//                 options.AddDevelopmentEncryptionCertificate()
+//                     .AddDevelopmentSigningCertificate();
+// #endif
                 // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
                 options.UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableLogoutEndpointPassthrough()
-                    .EnableStatusCodePagesIntegration()
+                    .EnableUserinfoEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
                     .EnableVerificationEndpointPassthrough()
                     #if DEBUG
                     .DisableTransportSecurityRequirement()
                     #endif
+                    .EnableStatusCodePagesIntegration()
                     ;
             })
 

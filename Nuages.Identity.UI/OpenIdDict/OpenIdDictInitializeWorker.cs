@@ -10,6 +10,7 @@ public class OpenIdDictInitializeWorker : IHostedService
     public OpenIdDictInitializeWorker(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
@@ -40,12 +41,13 @@ public class OpenIdDictInitializeWorker : IHostedService
                     Permissions.Endpoints.Authorization,
                     Permissions.Endpoints.Logout,
                     Permissions.Endpoints.Token,
+                    Permissions.Endpoints.Device,
                     Permissions.GrantTypes.AuthorizationCode,
                     Permissions.GrantTypes.RefreshToken,
                     Permissions.GrantTypes.Password,
                     Permissions.GrantTypes.ClientCredentials,
                    // Permissions.GrantTypes.Implicit,
-                    //Permissions.GrantTypes.DeviceCode,
+                    Permissions.GrantTypes.DeviceCode,
                     Permissions.ResponseTypes.Code,
                     Permissions.Scopes.Email,
                     Permissions.Scopes.Profile,
@@ -56,6 +58,27 @@ public class OpenIdDictInitializeWorker : IHostedService
                     Requirements.Features.ProofKeyForCodeExchange
                 }
             }, cancellationToken);
+        }
+        
+        if (await manager.FindByClientIdAsync("device") == null)
+        {
+            await manager.CreateAsync(new OpenIddictApplicationDescriptor
+            {
+                ClientId = "device",
+                Type = ClientTypes.Public,
+                ConsentType = ConsentTypes.Explicit,
+                DisplayName = "Device client",
+                Permissions =
+                {
+                    Permissions.GrantTypes.DeviceCode,
+                    Permissions.GrantTypes.RefreshToken,
+                    Permissions.Endpoints.Device,
+                    Permissions.Endpoints.Token,
+                    Permissions.Scopes.Email,
+                    Permissions.Scopes.Profile,
+                    Permissions.Scopes.Roles,
+                }
+            });
         }
     }
 

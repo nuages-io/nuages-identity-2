@@ -96,7 +96,6 @@ public class Startup
             });
 
         // ReSharper disable once UnusedParameter.Local
-        services.AddNuagesOpenIdDict(_configuration, configure => { });
         
         services
             .AddMvc()
@@ -114,6 +113,7 @@ public class Startup
 
         services.AddHealthChecks();
         
+        
         services.AddScoped<IAudienceValidator, AudienceValidator>();
         services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
         services.AddScoped<IAuthorizeEndpoint, AuthorizeEndpoint>();
@@ -125,7 +125,9 @@ public class Startup
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
         
-       
+
+
+        services.AddNuagesOpenIdDict(_configuration, configure => { });
 
     }
 
