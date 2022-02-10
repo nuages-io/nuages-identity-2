@@ -60,7 +60,7 @@ public class OpenIdDictInitializeWorker : IHostedService
             }, cancellationToken);
         }
         
-        if (await manager.FindByClientIdAsync("device") == null)
+        if (await manager.FindByClientIdAsync("device", cancellationToken) == null)
         {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
@@ -76,9 +76,9 @@ public class OpenIdDictInitializeWorker : IHostedService
                     Permissions.Endpoints.Token,
                     Permissions.Scopes.Email,
                     Permissions.Scopes.Profile,
-                    Permissions.Scopes.Roles,
+                    Permissions.Scopes.Roles
                 }
-            });
+            }, cancellationToken);
         }
     }
 

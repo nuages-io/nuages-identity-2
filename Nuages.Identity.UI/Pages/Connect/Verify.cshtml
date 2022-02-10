@@ -1,0 +1,53 @@
+@page
+@using Microsoft.Extensions.Primitives
+@inject IHttpContextAccessor ContextAccessor;
+@model Nuages.Identity.UI.Pages.Connect.Verify
+
+@{
+    ViewBag.Title = Localizer["device:title"];
+}
+
+
+@if (string.IsNullOrEmpty(Model!.UserCode) || !string.IsNullOrEmpty(Model!.Error))
+    {
+        @if (!string.IsNullOrEmpty(Model.Error) && !string.IsNullOrEmpty(Model.ErrorDescription))
+        {
+            <p class="lead text-center alert alert-warning">
+                An error occurred:
+                <br />
+                @Model.ErrorDescription (@Model.Error)
+            </p>
+        }
+
+        
+
+        <form  method="get" class="flex flex-col space-y-2">
+            <p class="lead text-left">Enter the user code given by the client application:</p>
+            <div class="form-check">
+                <input id="user_code" name="user_code" type="text" placeholder="@Localizer["device:code"]" required class="text-box" autofocus="autofocus">
+            </div>
+
+            <button class="button primary" type="submit" value="Submit">Submit</button>
+        </form>
+    }
+    else
+    {
+        <p class="lead text-left">Do you want to grant <strong>@Model.ApplicationName</strong> access to your data? (scopes requested: @Model.Scope)</p>
+        <p class="lead text-center alert alert-warning">
+            Make sure that the code displayed on the device is <strong>@Model.UserCode</strong>.
+            <br />
+            If the two codes don't match, press "No" to reject the authorization demand.
+        </p>
+
+        <form  method="post">
+            @* Flow the request parameters so they can be received by the VerifyAccept/VerifyReject actions: *@
+            @foreach (var parameter in ContextAccessor.HttpContext.Request.HasFormContentType ?
+              (IEnumerable<KeyValuePair<string, StringValues>>)ContextAccessor.HttpContext.Request.Form : ContextAccessor.HttpContext.Request.Query)
+            {
+                <input type="hidden" name="@parameter.Key" value="@parameter.Value" />
+            }
+
+            <button class="primary" name="submit.Accept" type="submit" value="Yes" >@Localizer["yes"]</button>
+            <button class="primary" name="submit.Deny" type="submit" value="No" >@Localizer["no"]</button>
+        </form>
+    }

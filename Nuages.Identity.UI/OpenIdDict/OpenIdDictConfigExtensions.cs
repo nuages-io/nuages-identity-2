@@ -26,15 +26,13 @@ public static class OpenIdDictConfigExtensions
 #if DEBUG
                 options.DisableAccessTokenEncryption();
 #endif
-                // Enable the authorization, logout, token and userinfo endpoints.
-                options
-                    .SetDeviceEndpointUris("/connect/device")
-                    .SetVerificationEndpointUris("connect/verify")
-                    .SetAuthorizationEndpointUris("/connect/authorize")
-                    .SetLogoutEndpointUris("/connect/logout")
+                options.SetDeviceEndpointUris("/connect/device")
+                    .SetVerificationEndpointUris("/connect/verify")
                     .SetTokenEndpointUris("/connect/token")
-                    .SetUserinfoEndpointUris("/connect/userinfo");
-
+                    .SetUserinfoEndpointUris("/connect/userinfo")
+                    .SetAuthorizationEndpointUris("/connect/authorize")
+                    .SetLogoutEndpointUris("/connect/logout");
+                
                 // Mark the "email", "profile" and "roles" scopes as supported scopes.
                 options.RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile,
                     OpenIddictConstants.Scopes.Roles);
@@ -45,13 +43,12 @@ public static class OpenIdDictConfigExtensions
                     .AllowDeviceCodeFlow()
                     .AllowClientCredentialsFlow();
                 
-
 // #if DEBUG
 //                 // Register the signing and encryption credentials.
 //                 options.AddDevelopmentEncryptionCertificate()
 //                     .AddDevelopmentSigningCertificate();
 // #endif
-                // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
+                
                 options.UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableLogoutEndpointPassthrough()
@@ -64,8 +61,6 @@ public static class OpenIdDictConfigExtensions
                     .EnableStatusCodePagesIntegration()
                     ;
             })
-
-            // Register the OpenIddict validation components.
             .AddValidation(options =>
             {
                 // Import the configuration from the local OpenIddict server instance.

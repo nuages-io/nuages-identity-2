@@ -127,7 +127,7 @@ public class Startup
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
         
-        services.AddNuagesOpenIdDict(_configuration, configure => { });
+        services.AddNuagesOpenIdDict(_configuration, _ => { });
 
     }
 
