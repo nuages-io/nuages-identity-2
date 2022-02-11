@@ -4,7 +4,7 @@
 @model Nuages.Identity.UI.Pages.Connect.Verify
 
 @{
-    ViewBag.Title = Localizer["device:title"];
+    ViewData["Title"] = Localizer["device:title"];
 }
 
 
@@ -43,7 +43,7 @@
             </p>
 
             @* Flow the request parameters so they can be received by the VerifyAccept/VerifyReject actions: *@
-            @foreach (var parameter in ContextAccessor.HttpContext.Request.HasFormContentType ?
+            @foreach (var parameter in ContextAccessor.HttpContext!.Request.HasFormContentType ?
                 (IEnumerable<KeyValuePair<string, StringValues>>)ContextAccessor.HttpContext.Request.Form : ContextAccessor.HttpContext.Request.Query)
             {
                 <input type="hidden" name="@parameter.Key" value="@parameter.Value"/>

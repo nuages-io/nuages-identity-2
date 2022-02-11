@@ -78,8 +78,10 @@
 	"device": {
 		"confirm": "Do you want to grant {0} access to your data? (scopes requested: {1})",
 		"confirmCode": "Make sure that the code displayed on the device is",
+		"error": "Device authorization failed",
 		"instructions": "Enter the user code given by the client application",
 		"rejectIfDifferentMessage": "If the two codes don't match, press \"No\" to reject the authorization demand.",
+		"success": "Device authorization successful.",
 		"title": "Device authorization"
 	},
 	"email": "Email",
@@ -135,6 +137,7 @@
 		"seeEmail": "See your email to find the reset messages",
 		"title": "Reset your password"
 	},
+	"go_home": "Back to the home page",
 	"identity": {
 		"DefaultError": "An unknown failure has occured.",
 		"DuplicateEmail": "Email '{0}' is already taken.",

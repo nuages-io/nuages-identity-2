@@ -25,6 +25,8 @@ public class BasicPageTestsUser
     [InlineData("/account/manage/twofactorauthentication")]
     [InlineData("/account/manage/externalLogins")]
     [InlineData("/account/manage/enableAuthenticator")]
+    [InlineData("/connect/verify")]
+    [InlineData("/connect/verifyDone")]
     public async Task Get_SecurePageIsReturnedForAnAuthenticatedUser(string url)
     {
         var client = _factory.CreateClient();

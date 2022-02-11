@@ -1143,6 +1143,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>error</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>instructions</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -1161,6 +1178,23 @@
                     </concept_node>
                     <concept_node>
                         <name>rejectIfDifferentMessage</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>success</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
@@ -1893,6 +1927,23 @@
                     </concept_node>
                 </children>
             </folder_node>
+            <concept_node>
+                <name>go_home</name>
+                <definition_loaded>false</definition_loaded>
+                <description/>
+                <comment/>
+                <default_text/>
+                <translations>
+                    <translation>
+                        <language>en-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                    <translation>
+                        <language>fr-CA</language>
+                        <approved>false</approved>
+                    </translation>
+                </translations>
+            </concept_node>
             <folder_node>
                 <name>identity</name>
                 <children>

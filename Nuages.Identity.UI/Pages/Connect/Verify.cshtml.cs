@@ -1,9 +1,9 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.OpenIdDict;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 // ReSharper disable MemberCanBePrivate.Global
@@ -33,6 +33,7 @@ public class Verify : PageModel
         _applicationManager = applicationManager;
         _scopeManager = scopeManager;
     }
+    
     public async Task<IActionResult> OnGet()
     {
         var request = HttpContext.GetOpenIddictServerRequest() ??
@@ -89,14 +90,14 @@ public class Verify : PageModel
 
                 foreach (var claim in principal.Claims)
                 {
-                    claim.SetDestinations(GetDestinations(claim, principal));
+                    claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
                 }
 
                 var properties = new AuthenticationProperties
                 {
                     // This property points to the address OpenIddict will automatically
                     // redirect the user to after validating the authorization demand.
-                    RedirectUri = "/Connect/VerifyAccepted"
+                    RedirectUri = "/Connect/VerifyDone"
                 };
 
                 return SignIn(principal, properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
@@ -108,59 +109,15 @@ public class Verify : PageModel
             // Redisplay the form when the user code is not valid.
             return Page();
         }
-        else
-        {
-            return Forbid(
-                authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
-                properties: new AuthenticationProperties
-                {
-                    // This property points to the address OpenIddict will automatically
-                    // redirect the user to after rejecting the authorization demand.
-                    RedirectUri = "/Connect/VerifyRejected"
-                });
-        }
-    }
 
-    
-    private static IEnumerable<string> GetDestinations(Claim claim, ClaimsPrincipal principal)
-    {
-        // Note: by default, claims are NOT automatically included in the access and identity tokens.
-        // To allow OpenIddict to serialize them, you must attach them a destination, that specifies
-        // whether they should be included in access tokens, in identity tokens or in both.
-
-        switch (claim.Type)
-        {
-            case OpenIddictConstants.Claims.Name:
-                yield return OpenIddictConstants.Destinations.AccessToken;
-
-                if (principal.HasScope(OpenIddictConstants.Permissions.Scopes.Profile))
-                    yield return OpenIddictConstants.Destinations.IdentityToken;
-
-                yield break;
-
-            case OpenIddictConstants.Claims.Email:
-                yield return OpenIddictConstants.Destinations.AccessToken;
-
-                if (principal.HasScope(OpenIddictConstants.Permissions.Scopes.Email))
-                    yield return OpenIddictConstants.Destinations.IdentityToken;
-
-                yield break;
-
-            case OpenIddictConstants.Claims.Role:
-                yield return OpenIddictConstants.Destinations.AccessToken;
-
-                if (principal.HasScope(OpenIddictConstants.Permissions.Scopes.Roles))
-                    yield return OpenIddictConstants.Destinations.IdentityToken;
-
-                yield break;
-
-            // Never include the security stamp in the access and identity tokens, as it's a secret value.
-            case "AspNet.Identity.SecurityStamp": yield break;
-
-            default:
-                yield return OpenIddictConstants.Destinations.AccessToken;
-                yield break;
-        }
+        return Forbid(
+            authenticationSchemes: OpenIddictServerAspNetCoreDefaults.AuthenticationScheme,
+            properties: new AuthenticationProperties
+            {
+                // This property points to the address OpenIddict will automatically
+                // redirect the user to after rejecting the authorization demand.
+                RedirectUri = "/Connect/VerifyDone?success=false"
+            });
     }
 }
 

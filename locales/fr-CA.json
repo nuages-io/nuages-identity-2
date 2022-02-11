@@ -78,8 +78,10 @@
 	"device": {
 		"confirm": "Voulez-vous donner accès à vos données à {0} (Accès demandés: {1})?",
 		"confirmCode": "Assurez-vous que le code affiché sur votre appareil est ",
+		"error": "L'autorisation de l'appareil à échouée",
 		"instructions": "Entrez le code fourni par l'application",
 		"rejectIfDifferentMessage": "Appuyez sur Non si le code ne correspond pas à celui affiché sur votre appareil.",
+		"success": "L'autorization de l'appareil à réussi. ",
 		"title": "Authorization d'un appareil"
 	},
 	"email": "Courriel",
@@ -135,6 +137,7 @@
 		"seeEmail": "Voir vos courriel afin de retrouver le messages de ré-initialisation",
 		"title": "Ré-initialisation de votre mot de passe"
 	},
+	"go_home": "Retour à la page d'accueil",
 	"identity": {
 		"DefaultError": "Une erreur inconnue s'est produite.",
 		"DuplicateEmail": "Le courriel \"{0}\" est déjà utilisé.",

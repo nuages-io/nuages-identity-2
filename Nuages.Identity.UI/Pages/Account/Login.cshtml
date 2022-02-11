@@ -4,7 +4,7 @@
 @inject IOptions<UIOptions> UIOptions
 
 @{
-    ViewBag.Title = Localizer["login:title"];
+    ViewData["Title"] = Localizer["login:title"];
     ViewBag.ShowRegistration = UIOptions.Value.ShowRegistration;
     ViewBag.RegistrationUrl = UIOptions.Value.RegistrationUrl;
 }

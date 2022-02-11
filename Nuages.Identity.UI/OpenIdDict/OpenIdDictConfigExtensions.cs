@@ -42,13 +42,7 @@ public static class OpenIdDictConfigExtensions
                     .AllowPasswordFlow()
                     .AllowDeviceCodeFlow()
                     .AllowClientCredentialsFlow();
-                
-// #if DEBUG
-//                 // Register the signing and encryption credentials.
-//                 options.AddDevelopmentEncryptionCertificate()
-//                     .AddDevelopmentSigningCertificate();
-// #endif
-                
+
                 options.UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableLogoutEndpointPassthrough()
