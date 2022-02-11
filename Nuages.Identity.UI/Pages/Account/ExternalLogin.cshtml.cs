@@ -28,7 +28,7 @@ public class ExternalLoginModel : PageModel
     private readonly IStringLocalizer _localizer;
     private readonly UIOptions _options;
 
-    public ExternalLoginModel(NuagesSignInManager signInManager, NuagesUserManager userManager, IUserStore<NuagesApplicationUser> userStore,
+    public ExternalLoginModel(NuagesSignInManager signInManager, NuagesUserManager userManager, IUserStore<NuagesApplicationUser<string>> userStore,
         ILogger<ExternalLoginModel> logger, IOptions<UIOptions> options, IStringLocalizer localizer)
     {
         _signInManager = signInManager;

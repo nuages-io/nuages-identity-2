@@ -138,7 +138,7 @@ public class MFAService : IMFAService
         };
     }
     
-    private async Task<(string Key, string Url)> GetSharedKeyAndQrCodeUriAsync(NuagesApplicationUser user)
+    private async Task<(string Key, string Url)> GetSharedKeyAndQrCodeUriAsync(NuagesApplicationUser<string> user)
     {
         // Load the authenticator key & QR code URI to display on the form
         var key = await _userManager.GetAuthenticatorKeyAsync(user);

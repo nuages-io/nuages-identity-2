@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Nuages.AspNetIdentity.Core;
 
 
-public class NuagesApplicationUser : IdentityUser<string>
+public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEquatable<TKey>
 {
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }

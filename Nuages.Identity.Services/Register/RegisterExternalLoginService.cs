@@ -51,7 +51,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             };
         }
         
-        var user = new NuagesApplicationUser
+        var user = new NuagesApplicationUser<string>
         {
             Email = email,
             UserName = email,
@@ -103,7 +103,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
 
     
     // ReSharper disable once SuggestBaseTypeForParameter
-    private async Task<IdentityResult> AddLoginAsync(NuagesApplicationUser user, ExternalLoginInfo info)
+    private async Task<IdentityResult> AddLoginAsync(NuagesApplicationUser<string> user, ExternalLoginInfo info)
     {
         #if DEBUG
 

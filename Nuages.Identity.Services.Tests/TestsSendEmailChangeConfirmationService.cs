@@ -70,7 +70,7 @@ public class TestsSendEmailChangeConfirmationService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         identityStuff.UserEmailStore.Setup(u => 
-            u.FindByEmailAsync(newEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => new NuagesApplicationUser
+            u.FindByEmailAsync(newEmail, It.IsAny<CancellationToken>())).ReturnsAsync( () => new NuagesApplicationUser<string>
         {
             Id = Guid.NewGuid().ToString()
         });

@@ -48,7 +48,7 @@ public class RegisterService : IRegisterService
             };
         }
 
-        user = new NuagesApplicationUser
+        user = new NuagesApplicationUser<string>
         {
             Email = model.Email,
             UserName = model.Email

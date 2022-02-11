@@ -8,7 +8,7 @@ public static class NuagesAspNetIdentityExtensions
     public static IdentityBuilder AddNuagesAspNetIdentity(this IServiceCollection services,
         Action<IdentityOptions> identityOptions)
     {
-        var identityBuilder = services.AddIdentity<NuagesApplicationUser, NuagesApplicationRole>(identityOptions);
+        var identityBuilder = services.AddIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(identityOptions);
 
         identityBuilder
             .AddUserManager<NuagesUserManager>()

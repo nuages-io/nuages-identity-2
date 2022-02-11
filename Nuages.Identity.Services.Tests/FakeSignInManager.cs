@@ -13,13 +13,13 @@ namespace Nuages.Identity.Services.Tests;
 
 public class FakeSignInManager : NuagesSignInManager
 {
-    public FakeSignInManager(NuagesUserManager userManager, IOptions<NuagesIdentityOptions> options, IUserConfirmation<NuagesApplicationUser> confirmation,
-        IOptions<IdentityOptions> identityOptions, IHttpContextAccessor? contextAccessor = null, NuagesApplicationUser? user = null)
+    public FakeSignInManager(NuagesUserManager userManager, IOptions<NuagesIdentityOptions> options, IUserConfirmation<NuagesApplicationUser<string>> confirmation,
+        IOptions<IdentityOptions> identityOptions, IHttpContextAccessor? contextAccessor = null, NuagesApplicationUser<string>? user = null)
         : base(userManager,
             contextAccessor ?? MockHelpers.MockHttpContextAccessor().Object,
-            new Mock<IUserClaimsPrincipalFactory<NuagesApplicationUser>>().Object,
+            new Mock<IUserClaimsPrincipalFactory<NuagesApplicationUser<string>>>().Object,
             identityOptions,
-            new Mock<ILogger<SignInManager<NuagesApplicationUser>>>().Object,
+            new Mock<ILogger<SignInManager<NuagesApplicationUser<string>>>>().Object,
             new Mock<IAuthenticationSchemeProvider>().Object,
              confirmation,
             options)
@@ -30,7 +30,7 @@ public class FakeSignInManager : NuagesSignInManager
     }
 
 
-    public override async  Task SignInWithClaimsAsync(NuagesApplicationUser user, AuthenticationProperties authenticationProperties,
+    public override async  Task SignInWithClaimsAsync(NuagesApplicationUser<string> user, AuthenticationProperties authenticationProperties,
         IEnumerable<Claim> additionalClaims)
     {
         user.LastLogin = DateTime.UtcNow;
@@ -52,11 +52,11 @@ public class FakeSignInManager : NuagesSignInManager
         return await Task.FromResult(SignInResult.Failed);
     }
 
-    public NuagesApplicationUser? CurrentUser { get; set; }
-    public override async Task<NuagesApplicationUser> GetTwoFactorAuthenticationUserAsync()
+    public NuagesApplicationUser<string>? CurrentUser { get; set; }
+    public override async Task<NuagesApplicationUser<string>> GetTwoFactorAuthenticationUserAsync()
     {
         if (CurrentUser == null)
-            return (await Task.FromResult((NuagesApplicationUser?)null))!;
+            return (await Task.FromResult((NuagesApplicationUser<string>?)null))!;
         
         return await Task.FromResult(CurrentUser);
     }

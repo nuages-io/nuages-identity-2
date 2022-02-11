@@ -30,5 +30,5 @@ public class Profile : PageModel
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
-    public NuagesApplicationUser? CurrentUser { get; set; }
+    public NuagesApplicationUser<string>? CurrentUser { get; set; }
 }

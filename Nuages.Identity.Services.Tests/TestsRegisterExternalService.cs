@@ -18,7 +18,7 @@ public class TestsRegisterExternalService
         const string email = MockHelpers.TestEmail;
         
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
+        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser<string>
         {
             Email = email,
             EmailConfirmed = false
@@ -26,7 +26,7 @@ public class TestsRegisterExternalService
 
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
         
@@ -50,7 +50,7 @@ public class TestsRegisterExternalService
         const string email = MockHelpers.TestEmail;
         
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
+        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser<string>
         {
             Email = email,
             EmailConfirmed = false
@@ -58,7 +58,7 @@ public class TestsRegisterExternalService
 
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = true;
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
         
@@ -80,14 +80,14 @@ public class TestsRegisterExternalService
     public async Task ShouldRegisterWithErrorNoEmailClaim()
     {
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
+        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser<string>
         {
             Email = "" //NO EMAIL
         };
         
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
        
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
@@ -105,7 +105,7 @@ public class TestsRegisterExternalService
         
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object);
@@ -122,14 +122,14 @@ public class TestsRegisterExternalService
         const string email = MockHelpers.TestEmail;
         
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
+        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser<string>
         {
             Email = email,
             EmailConfirmed = false
         };
 
-        var validator = new Mock<IUserValidator<NuagesApplicationUser>>();
-        validator.Setup(v => v.ValidateAsync(It.IsAny<NuagesUserManager>(), It.IsAny<NuagesApplicationUser>()))
+        var validator = new Mock<IUserValidator<NuagesApplicationUser<string>>>();
+        validator.Setup(v => v.ValidateAsync(It.IsAny<NuagesUserManager>(), It.IsAny<NuagesApplicationUser<string>>()))
             .ReturnsAsync(() => IdentityResult.Failed(new IdentityError
             {
                Description = "error"
@@ -138,7 +138,7 @@ public class TestsRegisterExternalService
         identityStuff.UserManager.UserValidators.Add(validator.Object);
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object);
@@ -154,13 +154,13 @@ public class TestsRegisterExternalService
         const string email = "INVALID@NUAGES.ORG";
         
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser
+        identityStuff.SignInManager.CurrentUser = new NuagesApplicationUser<string>
         {
             Email = email,
             EmailConfirmed = false
         };
 
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object);

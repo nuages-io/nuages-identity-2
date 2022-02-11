@@ -41,7 +41,7 @@ public class IdentityDataSeeder : IHostedService
     
         if (await userManager.FindByEmailAsync(AdminEmail) == null)
         {
-            var newUser = new NuagesApplicationUser
+            var newUser = new NuagesApplicationUser<string>
             {
                 Id = AdminId,
                 UserName = AdminUserName,
@@ -53,7 +53,7 @@ public class IdentityDataSeeder : IHostedService
         
         if (await userManager.FindByEmailAsync(UserEmail) == null)
         {
-            var newUser = new NuagesApplicationUser
+            var newUser = new NuagesApplicationUser<string>
             {
                 Id = UserId,
                 UserName = UserUserName,
@@ -66,7 +66,7 @@ public class IdentityDataSeeder : IHostedService
         
         if (await userManager.FindByEmailAsync(UserEmail_Unconfirmed) == null)
         {
-            var newUser = new NuagesApplicationUser
+            var newUser = new NuagesApplicationUser<string>
             {
                 Id = UserId_Unconfirmed,
                 UserName = UserUserName_Unconfirmed,
@@ -79,7 +79,7 @@ public class IdentityDataSeeder : IHostedService
         
         if (await userManager.FindByEmailAsync(UserEmail_MFA) == null)
         {
-            var newUser = new NuagesApplicationUser
+            var newUser = new NuagesApplicationUser<string>
             {
                 Id = UserId_MFA,
                 UserName = UserUserName_MFA,
@@ -101,7 +101,7 @@ public class IdentityDataSeeder : IHostedService
        
         if (!await roleManager.RoleExistsAsync("Admin"))
         {
-            var adminRole = new NuagesApplicationRole
+            var adminRole = new NuagesApplicationRole<string>
             {
                 Name = "Admin"
             };

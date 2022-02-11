@@ -4,12 +4,12 @@ namespace Nuages.AspNetIdentity.Core.Tests;
 
 public class TestsNuagesUserManager
 {
-    private readonly NuagesApplicationUser _defaultUser;
+    private readonly NuagesApplicationUser<string> _defaultUser;
     private readonly MockHelpers.MockIdentity _identityStuff;
 
     public TestsNuagesUserManager()
     {
-        _defaultUser = new NuagesApplicationUser
+        _defaultUser = new NuagesApplicationUser<string>
         {
             Email = "test@example.com",
             UserName = "test"

@@ -18,7 +18,7 @@ public class TestsRegisterService
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
         
         var sendCalled = false;
@@ -52,7 +52,7 @@ public class TestsRegisterService
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = true;
         
             
@@ -87,7 +87,7 @@ public class TestsRegisterService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
         
@@ -120,7 +120,7 @@ public class TestsRegisterService
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
         
@@ -152,7 +152,7 @@ public class TestsRegisterService
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
         
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
         
         var sendCalled = false;
         

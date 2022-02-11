@@ -21,12 +21,12 @@ public class TestsMfaService
         string? currentKey = null;
 
         identityStuff.UserAuthenticatorKeyStore.Setup(c =>
-                c.GetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>()))
+                c.GetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => currentKey);
         
         identityStuff.UserAuthenticatorKeyStore.Setup(c =>
-                c.SetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .Callback((NuagesApplicationUser _, string key, CancellationToken _) => currentKey = key);
+                c.SetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback((NuagesApplicationUser<string> _, string key, CancellationToken _) => currentKey = key);
         
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
             Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
@@ -102,12 +102,12 @@ public class TestsMfaService
         string? currentKey = null;
 
         identityStuff.UserAuthenticatorKeyStore.Setup(c =>
-                c.GetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<CancellationToken>()))
+                c.GetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(() => currentKey);
         
         identityStuff.UserAuthenticatorKeyStore.Setup(c =>
-                c.SetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-            .Callback((NuagesApplicationUser _, string key, CancellationToken _) => currentKey = key);
+                c.SetAuthenticatorKeyAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback((NuagesApplicationUser<string> _, string key, CancellationToken _) => currentKey = key);
         
         var sendCalled = false;
         

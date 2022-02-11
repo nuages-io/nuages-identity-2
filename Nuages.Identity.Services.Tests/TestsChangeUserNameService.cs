@@ -102,7 +102,7 @@ public class TestsChangeUserNameService
         var user = MockHelpers.CreateDefaultUser();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        identityStuff.UserStore.Setup(u => u.FindByNameAsync("EXISTING", It.IsAny<CancellationToken>())).ReturnsAsync( () => new NuagesApplicationUser
+        identityStuff.UserStore.Setup(u => u.FindByNameAsync("EXISTING", It.IsAny<CancellationToken>())).ReturnsAsync( () => new NuagesApplicationUser<string>
         {
             Id = Guid.NewGuid().ToString()
         });

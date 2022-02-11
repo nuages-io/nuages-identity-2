@@ -15,7 +15,7 @@ public static class MockHelpers
 {
     public class MockIdentity
     {
-        public InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string> UserStore { get; set; } = null!;
+        public InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string> UserStore { get; set; } = null!;
         
         public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
         
@@ -30,11 +30,11 @@ public static class MockHelpers
     
     public static MockIdentity MockIdentityStuff(NuagesIdentityOptions? nuagesOptions = null )
     {
-        var inMemoryStorage = new InMemoryStorage<NuagesApplicationRole, string>();
+        var inMemoryStorage = new InMemoryStorage<NuagesApplicationRole<string>, string>();
         
         var mockIdentity = new MockIdentity
         {
-            UserStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>(inMemoryStorage)
+            UserStore = new InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(inMemoryStorage)
         };
 
         if (nuagesOptions != null)
@@ -55,45 +55,45 @@ public static class MockHelpers
 
         nuagesOptionsMock.Setup(o => o.Value).Returns(mockIdentity.NuagesOptions);
 
-        var userValidators = new List<IUserValidator<NuagesApplicationUser>>();
-        var validator = new Mock<IUserValidator<NuagesApplicationUser>>();
+        var userValidators = new List<IUserValidator<NuagesApplicationUser<string>>>();
+        var validator = new Mock<IUserValidator<NuagesApplicationUser<string>>>();
         userValidators.Add(validator.Object);
-        var pwdValidators = new List<PasswordValidator<NuagesApplicationUser>> { new () };
+        var pwdValidators = new List<PasswordValidator<NuagesApplicationUser<string>>> { new () };
             
-        mockIdentity.UserManager = new NuagesUserManager(mockIdentity.UserStore , options.Object, new PasswordHasher<NuagesApplicationUser>(),
+        mockIdentity.UserManager = new NuagesUserManager(mockIdentity.UserStore , options.Object, new PasswordHasher<NuagesApplicationUser<string>>(),
             userValidators, pwdValidators, MockLookupNormalizer(),
             new IdentityErrorDescriber(), null!,
             new Mock<ILogger<NuagesUserManager>>().Object, nuagesOptionsMock.Object);
 
         mockIdentity.UserManager.Options.SignIn.RequireConfirmedEmail = true;
 
-        var mockConfirmation = new Mock<IUserConfirmation<NuagesApplicationUser>>();
+        var mockConfirmation = new Mock<IUserConfirmation<NuagesApplicationUser<string>>>();
         mockConfirmation.Setup(c =>
-                c.IsConfirmedAsync(It.IsAny<UserManager<NuagesApplicationUser>>(), It.IsAny<NuagesApplicationUser>()))
-            .ReturnsAsync((UserManager<NuagesApplicationUser> _, NuagesApplicationUser user2) => user2.EmailConfirmed);
+                c.IsConfirmedAsync(It.IsAny<UserManager<NuagesApplicationUser<string>>>(), It.IsAny<NuagesApplicationUser<string>>()))
+            .ReturnsAsync((UserManager<NuagesApplicationUser<string>> _, NuagesApplicationUser<string> user2) => user2.EmailConfirmed);
         
         mockIdentity.SignInManager = new NuagesSignInManager(mockIdentity.UserManager,  MockHttpContextAccessor().Object,
-            new Mock<IUserClaimsPrincipalFactory<NuagesApplicationUser>>().Object, Options.Create(idOptions), new Mock<ILogger<SignInManager<NuagesApplicationUser>>>().Object
+            new Mock<IUserClaimsPrincipalFactory<NuagesApplicationUser<string>>>().Object, Options.Create(idOptions), new Mock<ILogger<SignInManager<NuagesApplicationUser<string>>>>().Object
             ,  new Mock<IAuthenticationSchemeProvider>().Object,mockConfirmation.Object, Options.Create(mockIdentity.NuagesOptions));
         
         var newToken = Guid.NewGuid().ToString();
 
-        var twoFactorTokenProvider = new Mock<IUserTwoFactorTokenProvider<NuagesApplicationUser>>();
+        var twoFactorTokenProvider = new Mock<IUserTwoFactorTokenProvider<NuagesApplicationUser<string>>>();
 
         twoFactorTokenProvider.Setup(c =>
-                c.GenerateAsync(It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
+                c.GenerateAsync(It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser<string>>()))
             .ReturnsAsync(() => newToken);
 
         twoFactorTokenProvider.Setup(c =>
-                c.ValidateAsync(It.IsAny<string>(), It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
-            .ReturnsAsync((string purpose, string token, UserManager<NuagesApplicationUser> manager, NuagesApplicationUser _) => token != "bad_token");
+                c.ValidateAsync(It.IsAny<string>(), It.IsAny<string>(), mockIdentity.UserManager, It.IsAny<NuagesApplicationUser<string>>()))
+            .ReturnsAsync((string purpose, string token, UserManager<NuagesApplicationUser<string>> manager, NuagesApplicationUser<string> _) => token != "bad_token");
         
         mockIdentity.UserManager.RegisterTokenProvider("Default", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("Phone", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("PasswordlessLoginProvider", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("Authenticator", twoFactorTokenProvider.Object);
         
-        validator.Setup(v => v.ValidateAsync(mockIdentity.UserManager, It.IsAny<NuagesApplicationUser>()))
+        validator.Setup(v => v.ValidateAsync(mockIdentity.UserManager, It.IsAny<NuagesApplicationUser<string>>()))
             .Returns(Task.FromResult(IdentityResult.Success)).Verifiable();
         
         return mockIdentity;

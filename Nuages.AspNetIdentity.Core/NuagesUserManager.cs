@@ -5,24 +5,24 @@ using Microsoft.Extensions.Options;
 
 namespace Nuages.AspNetIdentity.Core;
 
-public class NuagesUserManager : UserManager<NuagesApplicationUser> 
+public class NuagesUserManager : UserManager<NuagesApplicationUser<string>> 
 {
     private readonly NuagesIdentityOptions _nuagesIdentityOptions;
 
-    public NuagesUserManager(IUserStore<NuagesApplicationUser> store, 
+    public NuagesUserManager(IUserStore<NuagesApplicationUser<string>> store, 
         IOptions<IdentityOptions> optionsAccessor, 
-        IPasswordHasher<NuagesApplicationUser> passwordHasher, 
-        IEnumerable<IUserValidator<NuagesApplicationUser>> userValidators, 
-        IEnumerable<IPasswordValidator<NuagesApplicationUser>> passwordValidators, 
+        IPasswordHasher<NuagesApplicationUser<string>> passwordHasher, 
+        IEnumerable<IUserValidator<NuagesApplicationUser<string>>> userValidators, 
+        IEnumerable<IPasswordValidator<NuagesApplicationUser<string>>> passwordValidators, 
         ILookupNormalizer keyNormalizer,
         IdentityErrorDescriber errors, IServiceProvider services, 
-        ILogger<UserManager<NuagesApplicationUser>> logger, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
+        ILogger<UserManager<NuagesApplicationUser<string>>> logger, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
         base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
     
-    public override async Task<IdentityResult> CreateAsync(NuagesApplicationUser user)
+    public override async Task<IdentityResult> CreateAsync(NuagesApplicationUser<string> user)
     {
         var res = await base.CreateAsync(user);
        
@@ -38,7 +38,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return res;
     }
 
-    public async Task<NuagesApplicationUser?> FindAsync(string userNameOrEmail)
+    public async Task<NuagesApplicationUser<string>?> FindAsync(string userNameOrEmail)
     {
         var user = await FindByNameAsync(userNameOrEmail);
 
@@ -50,7 +50,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return user;
     }
 
-    public override async Task<IdentityResult> ChangePasswordAsync(NuagesApplicationUser user, string currentPassword, string newPassword)
+    public override async Task<IdentityResult> ChangePasswordAsync(NuagesApplicationUser<string> user, string currentPassword, string newPassword)
     {
         var res = await base.ChangePasswordAsync(user, currentPassword, newPassword);
         if (res.Succeeded)
@@ -62,7 +62,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser>
         return res;
     }
 
-    public override async Task<IdentityResult> AddPasswordAsync(NuagesApplicationUser user, string password)
+    public override async Task<IdentityResult> AddPasswordAsync(NuagesApplicationUser<string> user, string password)
     {
         var res = await base.AddPasswordAsync(user, password);
         if (res.Succeeded)

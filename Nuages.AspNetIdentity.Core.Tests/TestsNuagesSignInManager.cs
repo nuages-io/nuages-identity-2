@@ -6,11 +6,11 @@ namespace Nuages.AspNetIdentity.Core.Tests;
 
 public class TestNuagesSignInManager
 {
-    private readonly NuagesApplicationUser _defaultUser;
+    private readonly NuagesApplicationUser<string> _defaultUser;
     private readonly MockHelpers.MockIdentity _identityStuff;
     public TestNuagesSignInManager()
     {
-        _defaultUser = new NuagesApplicationUser
+        _defaultUser = new NuagesApplicationUser<string>
         {
             Email = "test@example.com",
             EmailConfirmed = true,

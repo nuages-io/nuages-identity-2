@@ -12,19 +12,19 @@ namespace Nuages.AspNetIdentity.Stores.Tests;
 
 public class TestsInMemoryUserStore
 {
-    private readonly InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string> _userStore;
-    private readonly InMemoryRoleStore<NuagesApplicationRole, string> _roleStore;
+    private readonly InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string> _userStore;
+    private readonly InMemoryRoleStore<NuagesApplicationRole<string>, string> _roleStore;
     
     public TestsInMemoryUserStore()
     {
-        var inmemoryRoleStorage = new InMemoryStorage<NuagesApplicationRole, string>();
-        _userStore = new InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>(inmemoryRoleStorage);
-        _roleStore = new InMemoryRoleStore<NuagesApplicationRole, string>(inmemoryRoleStorage);
+        var inmemoryRoleStorage = new InMemoryStorage<NuagesApplicationRole<string>, string>();
+        _userStore = new InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(inmemoryRoleStorage);
+        _roleStore = new InMemoryRoleStore<NuagesApplicationRole<string>, string>(inmemoryRoleStorage);
     }
     
-    private async Task<NuagesApplicationUser> CreateDefaultUser()
+    private async Task<NuagesApplicationUser<string>> CreateDefaultUser()
     {
-        var user = new NuagesApplicationUser
+        var user = new NuagesApplicationUser<string>
         {
             Email = "user@example.com"
         };
@@ -37,9 +37,9 @@ public class TestsInMemoryUserStore
     }
     
     // ReSharper disable once UnusedMethodReturnValue.Local
-    private async Task<NuagesApplicationUser> CreateDefaultUser2()
+    private async Task<NuagesApplicationUser<string>> CreateDefaultUser2()
     {
-        var user = new NuagesApplicationUser
+        var user = new NuagesApplicationUser<string>
         {
             Email = "user2@example.com"
         };
@@ -203,8 +203,8 @@ public class TestsInMemoryUserStore
         Assert.Equal("key", await _userStore.GetAuthenticatorKeyAsync(user, CancellationToken.None));
 
         await _userStore.RemoveTokenAsync(user,
-            InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>.AuthenticatorStoreLoginProvider,
-            InMemoryUserStore<NuagesApplicationUser, NuagesApplicationRole, string>.AuthenticatorKeyTokenName,
+            InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>.AuthenticatorStoreLoginProvider,
+            InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>.AuthenticatorKeyTokenName,
             CancellationToken.None);
         
         user = await ReloadAsync(user);
@@ -252,7 +252,7 @@ public class TestsInMemoryUserStore
 
     }
 
-    private async Task<NuagesApplicationUser> ReloadAsync(NuagesApplicationUser user)
+    private async Task<NuagesApplicationUser<string>> ReloadAsync(NuagesApplicationUser<string> user)
     {
         return await _userStore.FindByIdAsync(user.Id, CancellationToken.None);
     }
@@ -265,7 +265,7 @@ public class TestsInMemoryUserStore
         var user = await CreateDefaultUser();
         await CreateDefaultUser2();
         
-        await _roleStore.CreateAsync(new NuagesApplicationRole
+        await _roleStore.CreateAsync(new NuagesApplicationRole<string>
         {
             Name = roleName
         }, CancellationToken.None);

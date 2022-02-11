@@ -93,13 +93,13 @@ public class Startup
                 };
             })
             .AddNuagesIdentityServices(Configuration, _ =>{})
-            .AddMongoStores<NuagesApplicationUser, NuagesApplicationRole, string>(options =>
+            .AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
             {
                 
                 options.ConnectionString = Configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = Configuration["Nuages:Mongo:Database"];
                 
-                BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
+                BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
                 {
                     cm.AutoMap();
                     cm.SetIgnoreExtraElements(true);

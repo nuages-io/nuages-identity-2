@@ -9,18 +9,18 @@ namespace Nuages.AspNetIdentity.Stores.Tests;
 
 public class TestsInMemoryRoleStore
 {
-    private readonly InMemoryRoleStore<NuagesApplicationRole, string> _roleStore;
+    private readonly InMemoryRoleStore<NuagesApplicationRole<string>, string> _roleStore;
 
     public TestsInMemoryRoleStore()
     {
-        var inmemoryRoleStorage = new InMemoryStorage<NuagesApplicationRole, string>();
-        _roleStore = new InMemoryRoleStore<NuagesApplicationRole, string>(inmemoryRoleStorage);
+        var inmemoryRoleStorage = new InMemoryStorage<NuagesApplicationRole<string>, string>();
+        _roleStore = new InMemoryRoleStore<NuagesApplicationRole<string>, string>(inmemoryRoleStorage);
     }
     
     [Fact]
     public async Task ShouldCreateWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"
@@ -39,7 +39,7 @@ public class TestsInMemoryRoleStore
     [Fact]
     public async Task ShouldDeleteWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"
@@ -61,7 +61,7 @@ public class TestsInMemoryRoleStore
     [Fact]
     public async Task ShouldFindByNameWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"
@@ -88,7 +88,7 @@ public class TestsInMemoryRoleStore
     [Fact]
     public async Task ShouldFAddCLaimsWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"

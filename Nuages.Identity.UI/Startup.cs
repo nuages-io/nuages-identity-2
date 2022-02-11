@@ -68,16 +68,16 @@ public class Startup
             .AddNuagesIdentityServices(_configuration, _ =>{})
             //.AddInMemoryStores<NuagesApplicationUser, NuagesApplicationRole, string>();
             
-            .AddMongoStores<NuagesApplicationUser, NuagesApplicationRole, string>(options =>
+            .AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
             {
                 options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = _configuration["Nuages:Mongo:Database"];
                 
                 ModelMapper.MapModel<string>();
             
-                if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser)))
+                if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser<string>)))
                 {
-                    BsonClassMap.RegisterClassMap<NuagesApplicationUser>(cm =>
+                    BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
                     {
                         cm.AutoMap();
                         cm.SetIgnoreExtraElements(true);

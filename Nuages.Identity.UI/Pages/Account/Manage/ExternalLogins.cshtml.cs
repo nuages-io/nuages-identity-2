@@ -20,12 +20,12 @@ public class ExternalLoginsModel : PageModel
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesSignInManager _signInManager;
-    private readonly IUserStore<NuagesApplicationUser> _userStore;
+    private readonly IUserStore<NuagesApplicationUser<string>> _userStore;
 
     public ExternalLoginsModel(
         NuagesUserManager userManager,
         NuagesSignInManager signInManager,
-        IUserStore<NuagesApplicationUser> userStore)
+        IUserStore<NuagesApplicationUser<string>> userStore)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -55,7 +55,7 @@ public class ExternalLoginsModel : PageModel
             .ToList();
 
         string passwordHash = null;
-        if (_userStore is IUserPasswordStore<NuagesApplicationUser> userPasswordStore)
+        if (_userStore is IUserPasswordStore<NuagesApplicationUser<string>> userPasswordStore)
         {
             passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
         }

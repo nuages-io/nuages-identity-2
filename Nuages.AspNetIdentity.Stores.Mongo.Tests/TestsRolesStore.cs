@@ -16,7 +16,7 @@ namespace Nuages.AspNetIdentity.Stores.Mongo.Tests;
 [Collection("Mongo")]
 public class TestsRolesStore
 {
-    private readonly MongoRoleStore<NuagesApplicationRole, string> _roleStore;
+    private readonly MongoRoleStore<NuagesApplicationRole<string>, string> _roleStore;
 
     public TestsRolesStore()
     {
@@ -42,13 +42,13 @@ public class TestsRolesStore
         var client = new MongoClient(options.ConnectionString);
         client.DropDatabase(options.Database);
         
-        _roleStore = new MongoRoleStore<NuagesApplicationRole, string>(Options.Create(options));
+        _roleStore = new MongoRoleStore<NuagesApplicationRole<string>, string>(Options.Create(options));
     }
     
     [Fact]
     public async Task ShouldCreateWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"
@@ -67,7 +67,7 @@ public class TestsRolesStore
     [Fact]
     public async Task ShouldDeleteWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"
@@ -89,7 +89,7 @@ public class TestsRolesStore
     [Fact]
     public async Task ShouldFindByNameWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"
@@ -116,7 +116,7 @@ public class TestsRolesStore
     [Fact]
     public async Task ShouldFAddCLaimsWithSuccess()
     {
-        var role = new NuagesApplicationRole
+        var role = new NuagesApplicationRole<string>
         {
             Name = "Role",
             NormalizedName = "ROLE"
