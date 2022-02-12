@@ -25,15 +25,4 @@
         -->
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="../README.md" Pack="true" PackagePath="\"/>
-        <None Include="../LICENSE">
-            <Pack>true</Pack>
-            <PackagePath>/</PackagePath>
-        </None>
-        <None Include="../nuages.png">
-            <Pack>true</Pack>
-            <PackagePath>/</PackagePath>
-        </None>
-    </ItemGroup>
 </Project>

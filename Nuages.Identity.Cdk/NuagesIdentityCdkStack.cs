@@ -18,7 +18,6 @@ public partial class NuagesIdentityCdkStack : Stack
 
     public void CreateTemplate()
     {
-        CreateWebApi();
         CreateWebUi();
     }
     
