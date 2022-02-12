@@ -48,7 +48,7 @@ public partial class NuagesIdentityCdkStack
         // var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
         // var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
         //
-        //  var hc = new CfnHealthCheck(this, MakeId("HealthCheck"), new CfnHealthCheckProps
+        //  var hc = new CfnHealthCheck(this, MakeId("HealthCheckUI"), new CfnHealthCheckProps
         //  {
         //      HealthCheckConfig = new CfnHealthCheck.HealthCheckConfigProperty
         //      {
@@ -120,7 +120,6 @@ public partial class NuagesIdentityCdkStack
             throw new Exception("DomainName must be provided");
         }
     }
-
 
     private Role CreateWebUiRole()
     {

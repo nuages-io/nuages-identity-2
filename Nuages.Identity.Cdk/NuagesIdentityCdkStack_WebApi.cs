@@ -42,23 +42,23 @@ public partial class NuagesIdentityCdkStack
         var webApi = (RestApi)Node.Children.Single(c =>
             c.GetType() == typeof(RestApi) && ((RestApi)c).RestApiName.Contains("WebAPI"));
 
-        //var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
-        //var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
-
-        // var hc = new CfnHealthCheck(this, MakeId("HealthCheck"), new CfnHealthCheckProps
-        // {
-        //     HealthCheckConfig = new CfnHealthCheck.HealthCheckConfigProperty
-        //     {
-        //         EnableSni = true,
-        //         FailureThreshold = 3,
-        //         FullyQualifiedDomainName = apiDomain,
-        //         Port = 443,
-        //         RequestInterval = 30,
-        //         ResourcePath = apiCheckPath,
-        //         Type = "HTTPS",
-        //     },
-        //     //©©HealthCheckTags = null
-        // });
+        // var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
+        // var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
+        //
+        //  var hc = new CfnHealthCheck(this, MakeId("HealthCheckAPI"), new CfnHealthCheckProps
+        //  {
+        //      HealthCheckConfig = new CfnHealthCheck.HealthCheckConfigProperty
+        //      {
+        //          EnableSni = true,
+        //          FailureThreshold = 3,
+        //          FullyQualifiedDomainName = apiDomain,
+        //          Port = 443,
+        //          RequestInterval = 30,
+        //          ResourcePath = apiCheckPath,
+        //          Type = "HTTPS",
+        //      },
+        //      //©©HealthCheckTags = null
+        //  });
 
         var domainName = (string)Node.TryGetContext("DomainNameApi");
 

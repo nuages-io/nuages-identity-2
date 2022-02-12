@@ -14,7 +14,6 @@ public partial class NuagesIdentityCdkStack : Stack
     }
 
     protected string AssetUi { get; set; } = "";
-
     protected string AssetApi { get; set; } = "";
 
     public void CreateTemplate()
@@ -22,8 +21,7 @@ public partial class NuagesIdentityCdkStack : Stack
         CreateWebApi();
         CreateWebUi();
     }
-
-
+    
     private ManagedPolicy CreateLambdaBasicExecutionRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("LambdaBasicExecutionRole" + suffix), new ManagedPolicyProps
