@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -424,8 +425,11 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SaveProfileAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
+            if (model.LastName == "m")
+                throw new Exception("Hey yo");
+            
             return await _profileService.SaveProfile(User.Sub()!, model);
         }
         catch (Exception e)
