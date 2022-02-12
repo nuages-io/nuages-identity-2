@@ -273,18 +273,16 @@ public abstract class UserStoreBase <TUser, TRole, TKey,  TUserLogin, TUserToken
         return Task.FromResult(tokenEntity?.Value);
     }
 
-    public const string AuthenticatorStoreLoginProvider = "[AspNetUserStore]";
-    public const string AuthenticatorKeyTokenName = "AuthenticatorKey";
-    private const string RecoveryCodeTokenName = "RecoveryCodes";
+   
     
     public Task<string?> GetAuthenticatorKeyAsync(TUser user, CancellationToken cancellationToken)
     {
-        return GetTokenAsync(user, AuthenticatorStoreLoginProvider, AuthenticatorKeyTokenName, cancellationToken);
+        return GetTokenAsync(user, AuthenticatorInfo.AuthenticatorStoreLoginProvider, AuthenticatorInfo.AuthenticatorKeyTokenName, cancellationToken);
     }
     
     public async Task<int> CountCodesAsync(TUser user, CancellationToken cancellationToken)
     {
-        var mergedCodes = await GetTokenAsync(user, AuthenticatorStoreLoginProvider, RecoveryCodeTokenName, cancellationToken) ?? "";
+        var mergedCodes = await GetTokenAsync(user, AuthenticatorInfo.AuthenticatorStoreLoginProvider, AuthenticatorInfo.RecoveryCodeTokenName, cancellationToken) ?? "";
         return mergedCodes.Length > 0 ? mergedCodes.Split(';').Length : 0;
     }
     
@@ -315,18 +313,18 @@ public abstract class UserStoreBase <TUser, TRole, TKey,  TUserLogin, TUserToken
 
     public Task SetAuthenticatorKeyAsync(TUser user, string key, CancellationToken cancellationToken)
     {
-        return SetTokenAsync(user, AuthenticatorStoreLoginProvider, AuthenticatorKeyTokenName, key, cancellationToken);
+        return SetTokenAsync(user, AuthenticatorInfo.AuthenticatorStoreLoginProvider, AuthenticatorInfo.AuthenticatorKeyTokenName, key, cancellationToken);
     }
 
     public Task ReplaceCodesAsync(TUser user, IEnumerable<string> recoveryCodes, CancellationToken cancellationToken)
     {
         var mergedCodes = string.Join(";", recoveryCodes);
-        return SetTokenAsync(user, AuthenticatorStoreLoginProvider, RecoveryCodeTokenName, mergedCodes, cancellationToken);
+        return SetTokenAsync(user, AuthenticatorInfo.AuthenticatorStoreLoginProvider, AuthenticatorInfo.RecoveryCodeTokenName, mergedCodes, cancellationToken);
     }
 
     public async Task<bool> RedeemCodeAsync(TUser user, string code, CancellationToken cancellationToken)
     {
-        var mergedCodes = await GetTokenAsync(user, AuthenticatorStoreLoginProvider, RecoveryCodeTokenName, cancellationToken) ?? "";
+        var mergedCodes = await GetTokenAsync(user, AuthenticatorInfo.AuthenticatorStoreLoginProvider, AuthenticatorInfo.RecoveryCodeTokenName, cancellationToken) ?? "";
         var splitCodes = mergedCodes.Split(';');
         if (splitCodes.Contains(code))
         {

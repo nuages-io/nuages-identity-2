@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using OpenIddict.Abstractions;
@@ -16,11 +17,32 @@ public static class OpenIdDictConfigExtensions
             // Register the OpenIddict core components.
             .AddCore(options =>
             {
-                var inMemmory = configuration.GetValue<bool>("Nuages:OpenIdDict:InMemory");
+                var storage = configuration.GetValue<string>("Nuages:OpenIdDict:Storage");
+                switch (storage)
+                {
+                    case "Mongo":
+                    {
+                        options.UseMongoDb()
+                            .UseDatabase(new MongoClient(configuration["Nuages:OpenIdDict:ConnectionString"])
+                                .GetDatabase(configuration["Nuages:OpenIdDict:Database"]));
+
+                        break;
+                    }
+                    default:
+                    {
+                        services.AddDbContext<OpenIdDictContext>(options =>
+                        {
+                            options.UseInMemoryDatabase("IdentityContext");
+                            options.UseOpenIddict();
+                        });
+                        
+                        options.UseEntityFrameworkCore()
+                            .UseDbContext<OpenIdDictContext>();
+                        
+                        break;
+                    }
+                }
                 
-                options.UseMongoDb()
-                    .UseDatabase(new MongoClient(configuration["Nuages:OpenIdDict:ConnectionString"])
-                    .GetDatabase(configuration["Nuages:OpenIdDict:Database"]));
             })
             // Register the OpenIddict server components.
             .AddServer(options =>

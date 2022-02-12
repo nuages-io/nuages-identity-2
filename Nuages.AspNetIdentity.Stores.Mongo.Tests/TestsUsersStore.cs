@@ -241,8 +241,8 @@ public class TestsUsersStore
         Assert.Equal("key", await _userStore.GetAuthenticatorKeyAsync(user, CancellationToken.None));
 
         await _userStore.RemoveTokenAsync(user,
-            InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>.AuthenticatorStoreLoginProvider,
-            InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>.AuthenticatorKeyTokenName,
+            AuthenticatorInfo.AuthenticatorStoreLoginProvider,
+            AuthenticatorInfo.AuthenticatorKeyTokenName,
             CancellationToken.None);
         
         user = await ReloadAsync(user);

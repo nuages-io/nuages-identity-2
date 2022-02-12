@@ -23,11 +23,11 @@ public class CustomWebApplicationFactory<TStartup>
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration(builder =>
+        builder.ConfigureAppConfiguration(configurationBuilder =>
         {
-            builder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
+            configurationBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
             {
-                new KeyValuePair<string, string>("Nuages:OpenIdDict:InMemory", "True")
+                new("Nuages:OpenIdDict:Storage", "InMemory")
             });
         });
         
@@ -42,14 +42,6 @@ public class CustomWebApplicationFactory<TStartup>
                 .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(
                     "Test", options => { options.DefaultUserId = DefaultUserId; });
 
-            // services
-            //     .AddSingleton<IInMemoryStorage<NuagesApplicationRole<string>>,
-            //         InMemoryStorage<NuagesApplicationRole<string>, string>>();
-
-            // services.AddSingleton(typeof(IUserStore<>).MakeGenericType(typeof(NuagesApplicationUser<string>)),
-            //     typeof(InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>));
-            // services.AddSingleton(typeof(IRoleStore<>).MakeGenericType(typeof(NuagesApplicationRole<string>)),
-            //     typeof(InMemoryRoleStore<NuagesApplicationRole<string>, string>));
 
             var serviceDescriptorUser = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));
             services.Remove(serviceDescriptorUser);

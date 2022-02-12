@@ -4,6 +4,7 @@ using Xunit;
 
 namespace Nuages.AspNetIdentity.Core.Tests;
 
+[Collection("InMemoryTests")]
 public class TestNuagesSignInManager
 {
     private readonly NuagesApplicationUser<string> _defaultUser;
@@ -18,6 +19,7 @@ public class TestNuagesSignInManager
         };
         
         _identityStuff = MockHelpers.MockIdentityStuff();
+        _identityStuff.DataContext.Database.EnsureDeleted();
     }
     
     [Fact]

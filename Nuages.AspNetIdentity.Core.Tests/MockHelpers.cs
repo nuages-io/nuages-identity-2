@@ -2,6 +2,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -15,13 +17,14 @@ public static class MockHelpers
 {
     public class MockIdentity
     {
-        public InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string> UserStore { get; set; } = null!;
+        //public InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string> UserStore { get; set; } = null!;
         
         public NuagesIdentityOptions NuagesOptions { get; set; } = new ();
         
         public NuagesUserManager UserManager { get; set; } = null!;
         public NuagesSignInManager SignInManager { get; set; }  = null!;
-      
+        
+        public TestDataContext DataContext { get; set; } = null!;
     }
 
     public const string StrongPassword = "ThisIsAStrongPassword789*$#$$$";
@@ -30,11 +33,27 @@ public static class MockHelpers
     
     public static MockIdentity MockIdentityStuff(NuagesIdentityOptions? nuagesOptions = null )
     {
-        var inMemoryStorage = new InMemoryStorage<NuagesApplicationRole<string>, string>();
+        var serviceCollection = new ServiceCollection();
+
+        serviceCollection.AddDbContext<TestDataContext>(options =>
+        {
+            options.UseInMemoryDatabase("IdentityContext");
+        });
+        
+        var identityBuilder = new IdentityBuilder(typeof(NuagesApplicationUser<string>), typeof(NuagesApplicationRole<string>), serviceCollection);
+        identityBuilder.AddEntityFrameworkStores<TestDataContext>();
+        
+        
+        var serviceProvider = serviceCollection.BuildServiceProvider();
+
+
+        var context = serviceProvider.GetRequiredService<TestDataContext>();
+        var inMemoryStorage = serviceProvider.GetRequiredService<IUserStore<NuagesApplicationUser<string>>>();
         
         var mockIdentity = new MockIdentity
         {
-            UserStore = new InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(inMemoryStorage)
+            DataContext = context
+            //UserStore = new InMemoryUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(inMemoryStorage)
         };
 
         if (nuagesOptions != null)
@@ -60,7 +79,7 @@ public static class MockHelpers
         userValidators.Add(validator.Object);
         var pwdValidators = new List<PasswordValidator<NuagesApplicationUser<string>>> { new () };
             
-        mockIdentity.UserManager = new NuagesUserManager(mockIdentity.UserStore , options.Object, new PasswordHasher<NuagesApplicationUser<string>>(),
+        mockIdentity.UserManager = new NuagesUserManager(inMemoryStorage, options.Object, new PasswordHasher<NuagesApplicationUser<string>>(),
             userValidators, pwdValidators, MockLookupNormalizer(),
             new IdentityErrorDescriber(), null!,
             new Mock<ILogger<NuagesUserManager>>().Object, nuagesOptionsMock.Object);

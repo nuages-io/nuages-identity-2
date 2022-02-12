@@ -18,6 +18,15 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureAppConfiguration(configurationBuilder =>
+        {
+            configurationBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
+            {
+                new("Nuages:OpenIdDict:Storage", "InMemory")
+            });
+        });
+
+        
         builder.ConfigureTestServices(services =>
         {
             
