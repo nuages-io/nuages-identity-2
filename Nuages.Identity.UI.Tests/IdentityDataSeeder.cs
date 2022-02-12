@@ -103,7 +103,8 @@ public class IdentityDataSeeder : IHostedService
         {
             var adminRole = new NuagesApplicationRole<string>
             {
-                Name = "Admin"
+                Name = "Admin",
+                Id = Guid.NewGuid().ToString()
             };
             
             await roleManager.CreateAsync(adminRole);

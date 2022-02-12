@@ -14,7 +14,6 @@ public static class AspNetIdentityMongoExtensions
         builder.Services.Configure(configure);
 
         
-
         builder.AddUserStore<MongoUserStore<TUser, TRole, TKey>>();
         builder.AddRoleStore<MongoRoleStore<TRole, TKey>>();
         

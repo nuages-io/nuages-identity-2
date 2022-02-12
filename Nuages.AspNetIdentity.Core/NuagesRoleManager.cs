@@ -13,4 +13,5 @@ public class NuagesRoleManager : RoleManager<NuagesApplicationRole<string>>
         ILogger<RoleManager<NuagesApplicationRole<string>>> logger) : base(store, roleValidators, keyNormalizer, errors, logger)
     {
     }
+    
 }
