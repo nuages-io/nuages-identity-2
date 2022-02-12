@@ -12,10 +12,9 @@ public static class AspNetIdentityMongoExtensions
         where TKey : IEquatable<TKey>
     {
         builder.Services.Configure(configure);
-
         
-        builder.AddUserStore<MongoUserStore<TUser, TRole, TKey>>();
-        builder.AddRoleStore<MongoRoleStore<TRole, TKey>>();
+        builder.AddUserStore<MongoNoSqlUserStore<TUser, TRole, TKey>>();
+        builder.AddRoleStore<MongoNoSqlRoleStore<TRole, TKey>>();
         
         builder.Services.AddHostedService<MongoSchemaInitializer<TUser, TRole, TKey>>();
     }

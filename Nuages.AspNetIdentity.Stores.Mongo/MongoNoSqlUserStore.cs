@@ -15,7 +15,7 @@ namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
-public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TKey, 
+public class MongoNoSqlUserStore<TUser, TRole, TKey> : NoSqlUserStoreBase<TUser, TRole, TKey, 
         MongoIdentityUserLogin<TKey>, MongoIdentityUserToken<TKey>, MongoIdentityUserRole<TKey>>,
     IUserClaimStore<TUser>,
     IUserLoginStore<TUser>,
@@ -36,12 +36,6 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
     where TKey : IEquatable<TKey>
 {
     
-    [ExcludeFromCodeCoverage]
-    public void Dispose()
-    {
-        
-        GC.SuppressFinalize(this);
-    }
 
     private readonly IdentityErrorDescriber _errorDescriber = new ();
     
@@ -53,7 +47,7 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
     public static InsertOneOptions InsertOneOptions  { get; } = new();
     // ReSharper disable once CollectionNeverUpdated.Local
    
-    public MongoUserStore(IOptions<MongoIdentityOptions> options)
+    public MongoNoSqlUserStore(IOptions<MongoIdentityOptions> options)
     {
         var client = new MongoClient(options.Value.ConnectionString);
         var database = client.GetDatabase(options.Value.Database);
@@ -82,6 +76,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public async Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         user.Id = StringToKey(ObjectId.GenerateNewId().ToString());
 
         var email = await GetEmailAsync(user, cancellationToken);
@@ -103,6 +100,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public override async Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var currentConcurrencyStamp = user.ConcurrencyStamp;
         user.ConcurrencyStamp = Guid.NewGuid().ToString();
 
@@ -115,6 +115,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     protected override Task<TRole?> FindRoleByNameAsync(string normalizedName, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         // ReSharper disable once SpecifyStringComparison
         return Task.FromResult(Roles.SingleOrDefault(r => r.NormalizedName.ToUpper() == normalizedName.ToUpper()));
     }
@@ -162,6 +165,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public async Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var deleteResult = await UsersCollection.DeleteOneAsync(u => u.Id.Equals(user.Id), DeleteOptions, cancellationToken);
 
         return ReturnDeleteResult(deleteResult);
@@ -177,6 +183,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var list = UsersClaims.Where(c => c.UserId.Equals(user.Id)).ToList().Select(c =>
             new Claim(c.Type, c.Value)
         ).ToList();
@@ -186,6 +195,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public  async  Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var list = claims.Select(claim => new MongoIdentityUserClaim<TKey> 
             { Id = ObjectId.GenerateNewId().ToString(), 
                 UserId = user.Id, 
@@ -198,6 +210,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public async Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var matchedClaims = UsersClaims.Where(c =>
             c.Type == claim.Type && c.Value == claim.Value && user.Id.Equals(user.Id));
 
@@ -212,6 +227,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public async Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         foreach (var claim in claims)
         {
             await UsersClaimsCollection.DeleteOneAsync(uc => uc.UserId.Equals(user.Id) && uc.Type == claim.Type && uc.Value == claim.Value,  cancellationToken);
@@ -220,6 +238,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public  Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var query = from p in 
                 UsersClaims.AsQueryable().Where(u => u.Type == claim.Type)
             join o in Users on p.UserId equals o.Id 
@@ -230,6 +251,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public async Task AddLoginAsync(TUser user, UserLoginInfo loginInfo, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var login = new MongoIdentityUserLogin<TKey>
         {
             Id = ObjectId.GenerateNewId().ToString(),
@@ -244,6 +268,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public async Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         user.SecurityStamp = stamp;
 
         await UpdateAsync(user, cancellationToken);
@@ -251,6 +278,9 @@ public class MongoUserStore<TUser, TRole, TKey> : UserStoreBase<TUser, TRole, TK
 
     public Task<string> GetSecurityStampAsync(TUser user, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         return Task.FromResult(user.SecurityStamp);
     }
 }

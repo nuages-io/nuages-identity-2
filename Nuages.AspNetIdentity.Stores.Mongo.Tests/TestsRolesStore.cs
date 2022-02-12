@@ -16,7 +16,7 @@ namespace Nuages.AspNetIdentity.Stores.Mongo.Tests;
 [Collection("Mongo")]
 public class TestsRolesStore
 {
-    private readonly MongoRoleStore<NuagesApplicationRole<string>, string> _roleStore;
+    private readonly MongoNoSqlRoleStore<NuagesApplicationRole<string>, string> _noSqlRoleStore;
 
     public TestsRolesStore()
     {
@@ -42,7 +42,7 @@ public class TestsRolesStore
         var client = new MongoClient(options.ConnectionString);
         client.DropDatabase(options.Database);
         
-        _roleStore = new MongoRoleStore<NuagesApplicationRole<string>, string>(Options.Create(options));
+        _noSqlRoleStore = new MongoNoSqlRoleStore<NuagesApplicationRole<string>, string>(Options.Create(options));
     }
     
     [Fact]
@@ -54,13 +54,13 @@ public class TestsRolesStore
             NormalizedName = "ROLE"
         };
 
-        var res = await _roleStore.CreateAsync(role, CancellationToken.None);
+        var res = await _noSqlRoleStore.CreateAsync(role, CancellationToken.None);
         
         Assert.True(res.Succeeded);
 
-        await _roleStore.UpdateAsync(role, CancellationToken.None);
+        await _noSqlRoleStore.UpdateAsync(role, CancellationToken.None);
         
-        var name = await _roleStore.GetRoleNameAsync(role, CancellationToken.None);
+        var name = await _noSqlRoleStore.GetRoleNameAsync(role, CancellationToken.None);
         Assert.Equal(role.Name, name);
     }
     
@@ -73,17 +73,17 @@ public class TestsRolesStore
             NormalizedName = "ROLE"
         };
 
-        var res = await _roleStore.CreateAsync(role, CancellationToken.None);
+        var res = await _noSqlRoleStore.CreateAsync(role, CancellationToken.None);
         
         Assert.True(res.Succeeded);
 
-        var id = await _roleStore.GetRoleIdAsync(role, CancellationToken.None);
+        var id = await _noSqlRoleStore.GetRoleIdAsync(role, CancellationToken.None);
         Assert.NotNull(id);
-        Assert.NotNull(await _roleStore.FindByIdAsync(id!, CancellationToken.None));
+        Assert.NotNull(await _noSqlRoleStore.FindByIdAsync(id!, CancellationToken.None));
 
-        await _roleStore.DeleteAsync(role, CancellationToken.None);
+        await _noSqlRoleStore.DeleteAsync(role, CancellationToken.None);
         
-        Assert.Null(await _roleStore.FindByIdAsync(id!, CancellationToken.None));
+        Assert.Null(await _noSqlRoleStore.FindByIdAsync(id!, CancellationToken.None));
     }
     
     [Fact]
@@ -95,21 +95,21 @@ public class TestsRolesStore
             NormalizedName = "ROLE"
         };
 
-        var res = await _roleStore.CreateAsync(role, CancellationToken.None);
+        var res = await _noSqlRoleStore.CreateAsync(role, CancellationToken.None);
         
         Assert.True(res.Succeeded);
         
         
-        var name = await _roleStore.GetNormalizedRoleNameAsync(role, CancellationToken.None);
+        var name = await _noSqlRoleStore.GetNormalizedRoleNameAsync(role, CancellationToken.None);
         
-        Assert.NotNull(await _roleStore.FindByNameAsync(name, CancellationToken.None));
+        Assert.NotNull(await _noSqlRoleStore.FindByNameAsync(name, CancellationToken.None));
         const string newName = "NewName";
         
-        await _roleStore.SetRoleNameAsync(role, newName, CancellationToken.None);
-        await _roleStore.SetNormalizedRoleNameAsync(role, newName.ToUpper(), CancellationToken.None);
+        await _noSqlRoleStore.SetRoleNameAsync(role, newName, CancellationToken.None);
+        await _noSqlRoleStore.SetNormalizedRoleNameAsync(role, newName.ToUpper(), CancellationToken.None);
         
-        Assert.NotNull(await _roleStore.FindByNameAsync(newName, CancellationToken.None));
-        Assert.NotNull(await _roleStore.FindByNameAsync(newName.ToUpper(), CancellationToken.None));
+        Assert.NotNull(await _noSqlRoleStore.FindByNameAsync(newName, CancellationToken.None));
+        Assert.NotNull(await _noSqlRoleStore.FindByNameAsync(newName.ToUpper(), CancellationToken.None));
     }
     
     
@@ -122,21 +122,21 @@ public class TestsRolesStore
             NormalizedName = "ROLE"
         };
 
-        var res = await _roleStore.CreateAsync(role, CancellationToken.None);
+        var res = await _noSqlRoleStore.CreateAsync(role, CancellationToken.None);
         
         Assert.True(res.Succeeded);
 
         var claim = new Claim("name", "value");
 
-        await _roleStore.AddClaimAsync(role, claim, CancellationToken.None);
+        await _noSqlRoleStore.AddClaimAsync(role, claim, CancellationToken.None);
 
-        var claims = await _roleStore.GetClaimsAsync(role, CancellationToken.None);
+        var claims = await _noSqlRoleStore.GetClaimsAsync(role, CancellationToken.None);
 
         Assert.Single(claims);
 
-        await _roleStore.RemoveClaimAsync(role, claim, CancellationToken.None);
+        await _noSqlRoleStore.RemoveClaimAsync(role, claim, CancellationToken.None);
         
-        claims = await _roleStore.GetClaimsAsync(role, CancellationToken.None);
+        claims = await _noSqlRoleStore.GetClaimsAsync(role, CancellationToken.None);
         
         Assert.Empty(claims);
     }

@@ -37,10 +37,10 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
             //     typeof(InMemoryRoleStore<NuagesApplicationRole<string>, string>));
 
             
-            var serviceDescriptorUser = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));
+            var serviceDescriptorUser = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlUserStore"));
             services.Remove(serviceDescriptorUser);
             
-            var serviceDescriptorRole = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoRoleStore"));
+            var serviceDescriptorRole = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlRoleStore"));
             services.Remove(serviceDescriptorRole);
             
             services.AddDbContext<TestDataContext>(options =>

@@ -17,8 +17,8 @@ namespace Nuages.AspNetIdentity.Stores.Mongo.Tests;
 [Collection("Mongo")]
 public class TestsUsersStore
 {
-    private readonly MongoRoleStore<NuagesApplicationRole<string>, string> _roleStore;
-    private readonly MongoUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string> _userStore;
+    private readonly MongoNoSqlRoleStore<NuagesApplicationRole<string>, string> _noSqlRoleStore;
+    private readonly MongoNoSqlUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string> _noSqlUserStore;
     
     public TestsUsersStore()
     {
@@ -44,8 +44,8 @@ public class TestsUsersStore
         var client = new MongoClient(options.ConnectionString);
         client.DropDatabase(options.Database);
         
-        _roleStore = new MongoRoleStore<NuagesApplicationRole<string>, string>(Options.Create(options));
-        _userStore = new MongoUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(Options.Create(options));
+        _noSqlRoleStore = new MongoNoSqlRoleStore<NuagesApplicationRole<string>, string>(Options.Create(options));
+        _noSqlUserStore = new MongoNoSqlUserStore<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(Options.Create(options));
     }
     
     private async Task<NuagesApplicationUser<string>> CreateDefaultUser()
@@ -60,7 +60,7 @@ public class TestsUsersStore
             NormalizedUserName = email.ToUpper()
         };
 
-        var res = await _userStore.CreateAsync(user, CancellationToken.None);
+        var res = await _noSqlUserStore.CreateAsync(user, CancellationToken.None);
 
         Assert.True(res.Succeeded);
 
@@ -75,7 +75,7 @@ public class TestsUsersStore
             Email = "user2@example.com"
         };
 
-        var res = await _userStore.CreateAsync(user, CancellationToken.None);
+        var res = await _noSqlUserStore.CreateAsync(user, CancellationToken.None);
 
         Assert.True(res.Succeeded);
 
@@ -88,18 +88,18 @@ public class TestsUsersStore
     {
         var user = await CreateDefaultUser();
         
-        Assert.NotNull(await _userStore.FindByEmailAsync(user.Email, CancellationToken.None));
-        Assert.NotNull(await _userStore.FindByIdAsync(user.Id, CancellationToken.None));
+        Assert.NotNull(await _noSqlUserStore.FindByEmailAsync(user.Email, CancellationToken.None));
+        Assert.NotNull(await _noSqlUserStore.FindByIdAsync(user.Id, CancellationToken.None));
 
-        await _userStore.SetSecurityStampAsync(user, "stamp", CancellationToken.None);
-        Assert.Equal("stamp",await _userStore.GetSecurityStampAsync(user, CancellationToken.None));
+        await _noSqlUserStore.SetSecurityStampAsync(user, "stamp", CancellationToken.None);
+        Assert.Equal("stamp",await _noSqlUserStore.GetSecurityStampAsync(user, CancellationToken.None));
         
-        user = await _userStore.FindByNameAsync(user.UserName, CancellationToken.None);
+        user = await _noSqlUserStore.FindByNameAsync(user.UserName, CancellationToken.None);
         Assert.NotNull(user);
-        var id = await _userStore.GetUserIdAsync(user, CancellationToken.None);
+        var id = await _noSqlUserStore.GetUserIdAsync(user, CancellationToken.None);
         Assert.Equal(user.Id, id);
         
-        await _userStore.DeleteAsync(user, CancellationToken.None);
+        await _noSqlUserStore.DeleteAsync(user, CancellationToken.None);
 
         user = await ReloadAsync(user);
         
@@ -112,19 +112,19 @@ public class TestsUsersStore
     {
         var user = await CreateDefaultUser();
         
-        Assert.Equal(0, await _userStore.GetAccessFailedCountAsync(user, CancellationToken.None));
+        Assert.Equal(0, await _noSqlUserStore.GetAccessFailedCountAsync(user, CancellationToken.None));
         
-        Assert.Equal(1, await _userStore.IncrementAccessFailedCountAsync(user, CancellationToken.None));
+        Assert.Equal(1, await _noSqlUserStore.IncrementAccessFailedCountAsync(user, CancellationToken.None));
 
         user = await ReloadAsync(user);
         
-        Assert.Equal(1, await _userStore.GetAccessFailedCountAsync(user, CancellationToken.None));
+        Assert.Equal(1, await _noSqlUserStore.GetAccessFailedCountAsync(user, CancellationToken.None));
 
-        await _userStore.ResetAccessFailedCountAsync(user, CancellationToken.None);
+        await _noSqlUserStore.ResetAccessFailedCountAsync(user, CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        Assert.Equal(0, await _userStore.GetAccessFailedCountAsync(user, CancellationToken.None));
+        Assert.Equal(0, await _noSqlUserStore.GetAccessFailedCountAsync(user, CancellationToken.None));
         
     }
 
@@ -135,19 +135,19 @@ public class TestsUsersStore
 
         const string newUserName = "test2@example.com";
         
-        await _userStore.SetEmailAsync(user, newUserName, CancellationToken.None);
-        await _userStore.SetNormalizedEmailAsync(user, newUserName.ToUpper(), CancellationToken.None);
+        await _noSqlUserStore.SetEmailAsync(user, newUserName, CancellationToken.None);
+        await _noSqlUserStore.SetNormalizedEmailAsync(user, newUserName.ToUpper(), CancellationToken.None);
         
-        await _userStore.SetEmailConfirmedAsync(user, true, CancellationToken.None);
+        await _noSqlUserStore.SetEmailConfirmedAsync(user, true, CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        Assert.Equal(newUserName, await _userStore.GetEmailAsync(user, CancellationToken.None));
+        Assert.Equal(newUserName, await _noSqlUserStore.GetEmailAsync(user, CancellationToken.None));
         
-        Assert.True(await _userStore.GetEmailConfirmedAsync(user, CancellationToken.None));
+        Assert.True(await _noSqlUserStore.GetEmailConfirmedAsync(user, CancellationToken.None));
         
-        Assert.Equal(user.Email.ToUpper(), await _userStore.GetNormalizedEmailAsync(user, CancellationToken.None));
-        Assert.Equal(user.UserName.ToUpper(), await _userStore.GetNormalizedUserNameAsync(user, CancellationToken.None));
+        Assert.Equal(user.Email.ToUpper(), await _noSqlUserStore.GetNormalizedEmailAsync(user, CancellationToken.None));
+        Assert.Equal(user.UserName.ToUpper(), await _noSqlUserStore.GetNormalizedUserNameAsync(user, CancellationToken.None));
     }
     
     [Fact]
@@ -157,13 +157,13 @@ public class TestsUsersStore
 
         const string newPhoneNUmber = "9999999999";
         
-        await _userStore.SetPhoneNumberAsync(user, newPhoneNUmber, CancellationToken.None);
-        await _userStore.SetPhoneNumberConfirmedAsync(user, true, CancellationToken.None);
+        await _noSqlUserStore.SetPhoneNumberAsync(user, newPhoneNUmber, CancellationToken.None);
+        await _noSqlUserStore.SetPhoneNumberConfirmedAsync(user, true, CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        Assert.Equal(newPhoneNUmber, await _userStore.GetPhoneNumberAsync(user, CancellationToken.None));
-        Assert.True(await _userStore.GetPhoneNumberConfirmedAsync(user, CancellationToken.None));
+        Assert.Equal(newPhoneNUmber, await _noSqlUserStore.GetPhoneNumberAsync(user, CancellationToken.None));
+        Assert.True(await _noSqlUserStore.GetPhoneNumberConfirmedAsync(user, CancellationToken.None));
     }
     
     [Fact]
@@ -171,11 +171,11 @@ public class TestsUsersStore
     {
         var user = await CreateDefaultUser();
 
-        await _userStore.SetTwoFactorEnabledAsync(user, true, CancellationToken.None);
+        await _noSqlUserStore.SetTwoFactorEnabledAsync(user, true, CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        Assert.True(await _userStore.GetTwoFactorEnabledAsync(user, CancellationToken.None));
+        Assert.True(await _noSqlUserStore.GetTwoFactorEnabledAsync(user, CancellationToken.None));
     }
     
     [Fact]
@@ -183,13 +183,13 @@ public class TestsUsersStore
     {
         var user = await CreateDefaultUser();
 
-        await _userStore.SetLockoutEnabledAsync(user, true, CancellationToken.None);
-        await _userStore.SetLockoutEndDateAsync(user, DateTimeOffset.Now, CancellationToken.None);
+        await _noSqlUserStore.SetLockoutEnabledAsync(user, true, CancellationToken.None);
+        await _noSqlUserStore.SetLockoutEndDateAsync(user, DateTimeOffset.Now, CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        Assert.True(await _userStore.GetLockoutEnabledAsync(user, CancellationToken.None));
-        Assert.NotNull(await _userStore.GetLockoutEndDateAsync(user, CancellationToken.None));
+        Assert.True(await _noSqlUserStore.GetLockoutEnabledAsync(user, CancellationToken.None));
+        Assert.NotNull(await _noSqlUserStore.GetLockoutEndDateAsync(user, CancellationToken.None));
     }
     
     [Fact]
@@ -197,12 +197,12 @@ public class TestsUsersStore
     {
         var user = await CreateDefaultUser();
 
-        await _userStore.SetPasswordHashAsync(user, "hash", CancellationToken.None);
+        await _noSqlUserStore.SetPasswordHashAsync(user, "hash", CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        Assert.True(await _userStore.HasPasswordAsync(user, CancellationToken.None));
-        Assert.NotNull(await _userStore.GetPasswordHashAsync(user, CancellationToken.None));
+        Assert.True(await _noSqlUserStore.HasPasswordAsync(user, CancellationToken.None));
+        Assert.NotNull(await _noSqlUserStore.GetPasswordHashAsync(user, CancellationToken.None));
     }
     
     [Fact]
@@ -210,22 +210,22 @@ public class TestsUsersStore
     {
         var user = await CreateDefaultUser();
 
-        Assert.Equal(0, await _userStore.CountCodesAsync(user, CancellationToken.None)); 
+        Assert.Equal(0, await _noSqlUserStore.CountCodesAsync(user, CancellationToken.None)); 
         
         var codes = new [] { "a", "b", "c" };
 
-        await _userStore.ReplaceCodesAsync(user, codes, CancellationToken.None);
+        await _noSqlUserStore.ReplaceCodesAsync(user, codes, CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        Assert.Equal(3, await _userStore.CountCodesAsync(user, CancellationToken.None)); 
+        Assert.Equal(3, await _noSqlUserStore.CountCodesAsync(user, CancellationToken.None)); 
        
-        Assert.False(await _userStore.RedeemCodeAsync(user, "bad_code", CancellationToken.None));
-        Assert.True(await _userStore.RedeemCodeAsync(user, codes.First(), CancellationToken.None));
+        Assert.False(await _noSqlUserStore.RedeemCodeAsync(user, "bad_code", CancellationToken.None));
+        Assert.True(await _noSqlUserStore.RedeemCodeAsync(user, codes.First(), CancellationToken.None));
         
         user = await ReloadAsync(user);
         
-        Assert.Equal(2, await _userStore.CountCodesAsync(user, CancellationToken.None)); 
+        Assert.Equal(2, await _noSqlUserStore.CountCodesAsync(user, CancellationToken.None)); 
     }
     
     [Fact]
@@ -233,20 +233,20 @@ public class TestsUsersStore
     {
         var user = await CreateDefaultUser();
 
-        await _userStore.SetAuthenticatorKeyAsync(user, "key", CancellationToken.None);
+        await _noSqlUserStore.SetAuthenticatorKeyAsync(user, "key", CancellationToken.None);
         
-        user = await _userStore.FindByIdAsync(user.Id, CancellationToken.None);
+        user = await _noSqlUserStore.FindByIdAsync(user.Id, CancellationToken.None);
         
-        Assert.Equal("key", await _userStore.GetAuthenticatorKeyAsync(user, CancellationToken.None));
+        Assert.Equal("key", await _noSqlUserStore.GetAuthenticatorKeyAsync(user, CancellationToken.None));
 
-        await _userStore.RemoveTokenAsync(user,
+        await _noSqlUserStore.RemoveTokenAsync(user,
             AuthenticatorInfo.AuthenticatorStoreLoginProvider,
             AuthenticatorInfo.AuthenticatorKeyTokenName,
             CancellationToken.None);
         
         user = await ReloadAsync(user);
 
-        Assert.Null(await _userStore.GetAuthenticatorKeyAsync(user, CancellationToken.None));
+        Assert.Null(await _noSqlUserStore.GetAuthenticatorKeyAsync(user, CancellationToken.None));
     }
     
     [Fact]
@@ -257,41 +257,41 @@ public class TestsUsersStore
         
         var claim = new Claim("claim", "value");
         
-        await _userStore.AddClaimsAsync(user, new[] { claim }, CancellationToken.None);
+        await _noSqlUserStore.AddClaimsAsync(user, new[] { claim }, CancellationToken.None);
         
         user = await ReloadAsync(user);
 
-        var claims = await _userStore.GetClaimsAsync(user, CancellationToken.None);
+        var claims = await _noSqlUserStore.GetClaimsAsync(user, CancellationToken.None);
         Assert.Equal(1, claims.Count);
 
-        var users = await _userStore.GetUsersForClaimAsync(claim, CancellationToken.None);
+        var users = await _noSqlUserStore.GetUsersForClaimAsync(claim, CancellationToken.None);
         
         Assert.Equal(1, users.Count);
 
         var claim2 = new Claim("claim2", "value2");
         
-        await _userStore.ReplaceClaimAsync(user, claim, claim2, CancellationToken.None);
+        await _noSqlUserStore.ReplaceClaimAsync(user, claim, claim2, CancellationToken.None);
         
-        users = await _userStore.GetUsersForClaimAsync(claim, CancellationToken.None);
+        users = await _noSqlUserStore.GetUsersForClaimAsync(claim, CancellationToken.None);
         
         Assert.Equal(0, users.Count);
         
-        users = await _userStore.GetUsersForClaimAsync(claim2, CancellationToken.None);
+        users = await _noSqlUserStore.GetUsersForClaimAsync(claim2, CancellationToken.None);
         
         Assert.Equal(1, users.Count);
         
-        await _userStore.RemoveClaimsAsync(user, new[] { claim2 }, CancellationToken.None);
+        await _noSqlUserStore.RemoveClaimsAsync(user, new[] { claim2 }, CancellationToken.None);
         
         user = await ReloadAsync(user);
         
-        claims = await _userStore.GetClaimsAsync(user, CancellationToken.None);
+        claims = await _noSqlUserStore.GetClaimsAsync(user, CancellationToken.None);
         Assert.Equal(0, claims.Count);
 
     }
 
     private async Task<NuagesApplicationUser<string>> ReloadAsync(IdentityUser<string> user)
     {
-        return await _userStore.FindByIdAsync(user.Id, CancellationToken.None);
+        return await _noSqlUserStore.FindByIdAsync(user.Id, CancellationToken.None);
     }
 
     [Fact]
@@ -302,31 +302,31 @@ public class TestsUsersStore
         var user = await CreateDefaultUser();
         await CreateDefaultUser2();
         
-        await _roleStore.CreateAsync(new NuagesApplicationRole<string>
+        await _noSqlRoleStore.CreateAsync(new NuagesApplicationRole<string>
         {
             Name = roleName
         }, CancellationToken.None);
 
-        await _userStore.AddToRoleAsync(user, roleName, CancellationToken.None);
+        await _noSqlUserStore.AddToRoleAsync(user, roleName, CancellationToken.None);
         
         user = await ReloadAsync(user);
 
-        var roles = await _userStore.GetRolesAsync(user, CancellationToken.None);
+        var roles = await _noSqlUserStore.GetRolesAsync(user, CancellationToken.None);
         
         Assert.Equal(1, roles.Count);
         
-        Assert.True(await _userStore.IsInRoleAsync(user, roleName, CancellationToken.None));
-        Assert.False(await _userStore.IsInRoleAsync(user, "bad_role", CancellationToken.None));
+        Assert.True(await _noSqlUserStore.IsInRoleAsync(user, roleName, CancellationToken.None));
+        Assert.False(await _noSqlUserStore.IsInRoleAsync(user, "bad_role", CancellationToken.None));
         
-        var users = await _userStore.GetUsersInRoleAsync(roleName.ToUpper(), CancellationToken.None);
+        var users = await _noSqlUserStore.GetUsersInRoleAsync(roleName.ToUpper(), CancellationToken.None);
         
         Assert.Equal(1, users.Count);
         
-        Assert.Equal(0, (await _userStore.GetUsersInRoleAsync("bad_role", CancellationToken.None)).Count);
+        Assert.Equal(0, (await _noSqlUserStore.GetUsersInRoleAsync("bad_role", CancellationToken.None)).Count);
 
-        await _userStore.RemoveFromRoleAsync(user, roleName, CancellationToken.None);
+        await _noSqlUserStore.RemoveFromRoleAsync(user, roleName, CancellationToken.None);
         
-        roles = await _userStore.GetRolesAsync(user, CancellationToken.None);
+        roles = await _noSqlUserStore.GetRolesAsync(user, CancellationToken.None);
         
         Assert.Equal(0, roles.Count);
         
@@ -338,21 +338,21 @@ public class TestsUsersStore
         var user = await CreateDefaultUser();
         await CreateDefaultUser2();
 
-        await _userStore.AddLoginAsync(user, new UserLoginInfo("provider", "key", "display"), CancellationToken.None);
+        await _noSqlUserStore.AddLoginAsync(user, new UserLoginInfo("provider", "key", "display"), CancellationToken.None);
 
         user = await ReloadAsync(user);
 
-        var logins = await _userStore.GetLoginsAsync(user, CancellationToken.None);
+        var logins = await _noSqlUserStore.GetLoginsAsync(user, CancellationToken.None);
         Assert.Equal(1, logins.Count);
 
-        Assert.NotNull(await _userStore.FindByLoginAsync("provider", "key", CancellationToken.None));
-        Assert.Null(await _userStore.FindByLoginAsync("provider", "bad_key", CancellationToken.None));
+        Assert.NotNull(await _noSqlUserStore.FindByLoginAsync("provider", "key", CancellationToken.None));
+        Assert.Null(await _noSqlUserStore.FindByLoginAsync("provider", "bad_key", CancellationToken.None));
 
-        await _userStore.RemoveLoginAsync(user, "provider", "key", CancellationToken.None);
+        await _noSqlUserStore.RemoveLoginAsync(user, "provider", "key", CancellationToken.None);
 
         user = await ReloadAsync(user);
         
-        logins = await _userStore.GetLoginsAsync(user, CancellationToken.None);
+        logins = await _noSqlUserStore.GetLoginsAsync(user, CancellationToken.None);
         Assert.Equal(0, logins.Count);
     }
 }

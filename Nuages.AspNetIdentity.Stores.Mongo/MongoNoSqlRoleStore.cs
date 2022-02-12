@@ -12,7 +12,7 @@ namespace Nuages.AspNetIdentity.Stores.Mongo;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 // ReSharper disable once UnusedType.Global
-public class MongoRoleStore<TRole, TKey> : RoleStoreBase<TRole, TKey>,
+public class MongoNoSqlRoleStore<TRole, TKey> : NoSqlRoleStoreBase<TRole, TKey>,
 IRoleClaimStore<TRole>,
 IQueryableRoleStore<TRole>
 where TRole : IdentityRole<TKey>
@@ -28,13 +28,7 @@ where TKey : IEquatable<TKey>
     // ReSharper disable once FieldCanBeMadeReadOnly.Global
     public static DeleteOptions DeleteOptions { get; } = new();
 
-    [ExcludeFromCodeCoverage]
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
-    }
-
-    public MongoRoleStore(IOptions<MongoIdentityOptions> options)
+    public MongoNoSqlRoleStore(IOptions<MongoIdentityOptions> options)
     {
         var client = new MongoClient(options.Value.ConnectionString);
         var database = client.GetDatabase(options.Value.Database);
@@ -53,6 +47,9 @@ where TKey : IEquatable<TKey>
     
     public async Task<IdentityResult> CreateAsync(TRole role, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         role.Id = ConvertIdFromString(ObjectId.GenerateNewId().ToString());
 
         await SetNormalizedRoleNameAsync(role, role.Name.ToUpper(), cancellationToken);
@@ -64,6 +61,9 @@ where TKey : IEquatable<TKey>
 
     public override async Task<IdentityResult> UpdateAsync(TRole role, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var replaceOneResult = await RolesCollection.ReplaceOneAsync(r => r.Id.Equals(role.Id), role, ReplaceOptions, cancellationToken);
 
         return ReturnUpdateResult(replaceOneResult);
@@ -72,6 +72,7 @@ where TKey : IEquatable<TKey>
     
     private IdentityResult ReturnUpdateResult(ReplaceOneResult replaceOneResult)
     {
+        
         if (replaceOneResult.IsAcknowledged || replaceOneResult.ModifiedCount != 0L)
             return IdentityResult.Success;
 
@@ -80,6 +81,9 @@ where TKey : IEquatable<TKey>
 
     public async Task<IdentityResult> DeleteAsync(TRole role, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var result = await RolesCollection.DeleteOneAsync(m => m.Id.Equals(role.Id), DeleteOptions, cancellationToken);
 
         return ReturnDeleteResult(result);
@@ -97,6 +101,9 @@ where TKey : IEquatable<TKey>
 
     public async Task AddClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         await RoleClaimsCollection.InsertOneAsync(new IdentityRoleClaim<TKey>
         {
             RoleId = role.Id,
@@ -108,6 +115,9 @@ where TKey : IEquatable<TKey>
 
     public async Task RemoveClaimAsync(TRole role, Claim claim, CancellationToken cancellationToken = new())
     {
+        cancellationToken.ThrowIfCancellationRequested();
+        ThrowIfDisposed();
+        
         var entity =
             RoleClaimsCollection.AsQueryable().FirstOrDefault(
                 uc => uc.RoleId.Equals(role.Id) && uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value);
