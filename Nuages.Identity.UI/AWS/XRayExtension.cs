@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using Amazon.XRay.Recorder.Core;
 
-namespace Nuages.Identity.UI.Controllers;
+namespace Nuages.Identity.UI.AWS;
 
 public static class XRayExtension
 {

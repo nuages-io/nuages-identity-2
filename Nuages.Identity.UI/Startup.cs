@@ -10,6 +10,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Core;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Identity.Services;
+using Nuages.Identity.UI.AWS;
 using Nuages.Identity.UI.OpenIdDict;
 using Nuages.Localization;
 using Nuages.Web;
@@ -32,7 +33,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
-
+        
         services.AddDataProtection()
             .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
 

@@ -10,6 +10,7 @@ using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
+using Nuages.Identity.UI.AWS;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
@@ -67,7 +68,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var id = Guid.NewGuid().ToString();
 
@@ -115,7 +116,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.Login2FAAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var id = Guid.NewGuid().ToString();
 
@@ -163,7 +164,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginRecoveryCodeAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var id = Guid.NewGuid().ToString();
 
@@ -211,7 +212,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.RegisterAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterResultModel
@@ -246,7 +247,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.RegisterExternalLoginAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterExternalLoginResultModel
@@ -280,7 +281,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ForgotPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ForgotPasswordResultModel
@@ -315,7 +316,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendEmailConfirmationAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new SendEmailConfirmationResultModel
@@ -351,7 +352,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.ResetPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ResetPasswordResultModel
@@ -385,7 +386,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.PasswordlessLoginAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new StartPasswordlessResultModel
@@ -419,7 +420,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.SendSMSCodeAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new SendSMSCodeResultModel
@@ -455,7 +456,7 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AccountController.LoginSMSAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var id = Guid.NewGuid().ToString();
 

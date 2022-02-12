@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Manage;
+using Nuages.Identity.UI.AWS;
 using Nuages.Web;
 
 namespace Nuages.Identity.UI.Controllers;
@@ -54,7 +54,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             _logger.LogInformation(
                 $"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
@@ -94,7 +94,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SetPasswordAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             _logger.LogInformation(
                 $"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
@@ -130,7 +130,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendEmailChangeMessageAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var res = await _sendEmailChangedConfirmationService.SendEmailChangeConfirmation(User.Sub()!, model.Email);
 
@@ -159,7 +159,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangeUsernameAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var res = await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
 
@@ -194,7 +194,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Disable2FaAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var res = await _mfaService.DisableMFAAsync(User.Sub()!);
 
@@ -224,7 +224,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Enable2FaAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var res = await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
 
@@ -259,7 +259,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.RemovePhoneAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, "", null);
 
@@ -295,7 +295,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var res = await _sendSmsVerificationCode.SendCode(User.Sub()!, model.PhoneNumber);
 
@@ -324,7 +324,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePhoneNumberAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
 
@@ -375,7 +375,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ResetRecoveryCodesAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             return await _mfaService.ResetRecoveryCodesAsync(User.Sub()!);
         }
@@ -401,7 +401,7 @@ public class ManageController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ForgetBrowserAsync");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             await _signInManager.ForgetTwoFactorClientAsync();
 
@@ -426,7 +426,7 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            
             if (model.LastName == "m")
                 throw new Exception("Hey yo");
             

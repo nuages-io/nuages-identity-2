@@ -1,5 +1,6 @@
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
+using Nuages.Identity.UI.AWS;
 using Nuages.Identity.UI.OpenIdDict;
 
 namespace Nuages.Identity.UI.Controllers;
@@ -30,7 +31,7 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Token");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             return await _tokenEndpoint.Exchange();
         }
@@ -54,7 +55,7 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Authorize");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             return await _authorizeEndpoint.Authorize();
         }
@@ -76,7 +77,7 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Logout");
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
             return await _logoutEndpoint.Logout();
         }
