@@ -105,7 +105,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
     // ReSharper disable once SuggestBaseTypeForParameter
     private async Task<IdentityResult> AddLoginAsync(NuagesApplicationUser<string> user, ExternalLoginInfo info)
     {
-        #if DEBUG
+    #if DEBUG
 
         // ReSharper disable once ConvertIfStatementToSwitchStatement
         if (info.LoginProvider == "invalid")
@@ -119,7 +119,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             return IdentityResult.Success;
         
         
-        #endif
+    #endif
         
         var res = await _userManager.AddLoginAsync(user, info);
 

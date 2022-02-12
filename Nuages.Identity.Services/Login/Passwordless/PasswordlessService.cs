@@ -1,9 +1,11 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Login.Passwordless;
@@ -14,16 +16,18 @@ public class PasswordlessService : IPasswordlessService
     private readonly NuagesSignInManager _signinManager;
     private readonly IMessageService _messageService;
     private readonly IStringLocalizer _localizer;
+    private readonly IRuntimeConfiguration _runtimeConfiguration;
     private readonly NuagesIdentityOptions _options;
 
     public PasswordlessService(NuagesUserManager userManager, NuagesSignInManager signinManager, 
         IMessageService messageService, IStringLocalizer localizer,
-        IOptions<NuagesIdentityOptions> options)
+        IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration)
     {
         _userManager = userManager;
         _signinManager = signinManager;
         _messageService = messageService;
         _localizer = localizer;
+        _runtimeConfiguration = runtimeConfiguration;
         _options = options.Value;
     }
     
@@ -123,9 +127,7 @@ public class PasswordlessService : IPasswordlessService
 
         return new StartPasswordlessResultModel
         {
-#if DEBUG
-            Url = url,
-#endif
+            Url = _runtimeConfiguration.IsTest ? url : null,
             Success = true
         };
     }
@@ -158,9 +160,9 @@ public class StartPasswordlessResultModel
     public SignInResult Result { get; set; } = null!;
     public FailedLoginReason? Reason { get; set; }
     
-#if !DEBUG
-    [System.Text.Json.Serialization.JsonIgnore]
-#endif
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+
     public string? Url { get; set; }
 }
 

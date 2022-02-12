@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.Email;
+using Nuages.Web;
 using Xunit;
 
 namespace Nuages.Identity.Services.Tests;
@@ -20,7 +21,7 @@ public class TestsSendEmailConfirmationService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(identityStuff.NuagesOptions));
+        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.SendEmailConfirmation(new SendEmailConfirmationModel
         {
@@ -45,7 +46,7 @@ public class TestsSendEmailConfirmationService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
         
-        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(identityStuff.NuagesOptions));
+        var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.SendEmailConfirmation(new SendEmailConfirmationModel
         {

@@ -1,12 +1,14 @@
 
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
+using Nuages.Web;
 
 namespace Nuages.Identity.Services.Password;
 
@@ -15,13 +17,16 @@ public class ForgotPasswordService : IForgotPasswordService
     private readonly NuagesUserManager _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IMessageService _messageService;
+    private readonly IRuntimeConfiguration _runtimeConfiguration;
     private readonly NuagesIdentityOptions _options;
 
-    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IMessageService messageService,  IOptions<NuagesIdentityOptions> options)
+    public ForgotPasswordService(NuagesUserManager userManager, IHttpContextAccessor httpContextAccessor, IMessageService messageService, 
+        IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration)
     {
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
         _messageService = messageService;
+        _runtimeConfiguration = runtimeConfiguration;
 
         _options = options.Value;
     }
@@ -51,10 +56,10 @@ public class ForgotPasswordService : IForgotPasswordService
         
         return new ForgotPasswordResultModel
         {
-#if DEBUG
-            Url = url,
-            Code = code,
-#endif
+
+            Url = _runtimeConfiguration.IsTest ? url : null,
+            Code = _runtimeConfiguration.IsTest ? code : null,
+
             Success = true // Fake success
         };
     }
@@ -84,12 +89,8 @@ public class ForgotPasswordResultModel
     public bool Success { get; set; }
     public string? Message { get; set; }
         
-#if !DEBUG
-    [System.Text.Json.Serialization.JsonIgnore]
-#endif
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Url { get; set; }
-#if !DEBUG
-    [System.Text.Json.Serialization.JsonIgnore]
-#endif
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Code { get; set; }
 }

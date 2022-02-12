@@ -1,9 +1,11 @@
 
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
@@ -18,17 +20,19 @@ public class SMSSendCodeService : ISMSSendCodeService
     private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
     private readonly ILogger<SMSSendCodeService> _logger;
+    private readonly IRuntimeConfiguration _runtimeConfiguration;
     private readonly NuagesIdentityOptions _options;
 
     public SMSSendCodeService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageService sender, 
-        IOptions<NuagesIdentityOptions> options,
-                    IStringLocalizer localizer, ILogger<SMSSendCodeService> logger)
+        IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer, ILogger<SMSSendCodeService> logger,
+        IRuntimeConfiguration runtimeConfiguration)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _sender = sender;
         _localizer = localizer;
         _logger = logger;
+        _runtimeConfiguration = runtimeConfiguration;
         _options = options.Value;
     }
 
@@ -70,9 +74,7 @@ public class SMSSendCodeService : ISMSSendCodeService
         
         return new SendSMSCodeResultModel
         {
-#if DEBUG
-            Code = code,
-#endif
+            Code = _runtimeConfiguration.IsTest ? code : null,
             Success = true
         };
     }
@@ -92,8 +94,6 @@ public class SendSMSCodeResultModel
     // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
     
-#if !DEBUG
-    [System.Text.Json.Serialization.JsonIgnore]
-#endif
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Code { get; set; }
 }

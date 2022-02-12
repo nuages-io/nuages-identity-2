@@ -1,10 +1,11 @@
 
 using System.Text;
-
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 
 using Nuages.AspNetIdentity.Core;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Email;
@@ -13,13 +14,15 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
 {
     private readonly NuagesUserManager _userManager;
     private readonly IMessageService _messageService;
+    private readonly IRuntimeConfiguration _runtimeConfiguration;
     private readonly NuagesIdentityOptions _options;
 
-    public SendEmailConfirmationService(NuagesUserManager userManager, IMessageService messageService, IOptions<NuagesIdentityOptions> options)
+    public SendEmailConfirmationService(NuagesUserManager userManager, IMessageService messageService, IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration)
     {
         _userManager = userManager;
        
         _messageService = messageService;
+        _runtimeConfiguration = runtimeConfiguration;
         _options = options.Value;
     }
     
@@ -50,9 +53,7 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
         
         return new SendEmailConfirmationResultModel
         {
-#if DEBUG
-            Url = url,
-#endif
+            Url = _runtimeConfiguration.IsTest ? url : null,
             Success = true // Fake success
             
         };
@@ -73,11 +74,7 @@ public class SendEmailConfirmationModel
 public class SendEmailConfirmationResultModel
 {
     public bool Success { get; set; }
-    
     public string? Message { get; set; }
-
-#if !DEBUG
-    [System.Text.Json.Serialization.JsonIgnore]
-#endif
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Url { get; set; }
 }

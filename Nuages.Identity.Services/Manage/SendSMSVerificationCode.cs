@@ -1,8 +1,10 @@
 
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Localization;
 
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
@@ -16,13 +18,16 @@ public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
     private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
     private readonly ILogger<SendSMSVerificationCodeService> _logger;
+    private readonly IRuntimeConfiguration _runtimeConfiguration;
 
-    public SendSMSVerificationCodeService(NuagesUserManager userManager, IMessageService sender, IStringLocalizer localizer, ILogger<SendSMSVerificationCodeService> logger)
+    public SendSMSVerificationCodeService(NuagesUserManager userManager, IMessageService sender, IStringLocalizer localizer,
+        ILogger<SendSMSVerificationCodeService> logger, IRuntimeConfiguration runtimeConfiguration)
     {
         _userManager = userManager;
         _sender = sender;
         _localizer = localizer;
         _logger = logger;
+        _runtimeConfiguration = runtimeConfiguration;
     }
 
     public async Task<SendSMSVerificationCodeResultModel> SendCode(string userId, string phoneNumber)
@@ -48,10 +53,8 @@ public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
         
         return new SendSMSVerificationCodeResultModel
         {
-            #if DEBUG
-            Code = code,
-            #endif
-            
+
+            Code = _runtimeConfiguration.IsTest ? code : null,
             Success = true
             
         };
@@ -67,9 +70,10 @@ public interface ISendSMSVerificationCodeService
 public class SendSMSVerificationCodeResultModel
 {
     public bool Success { get; set; }
-    #if DEBUG
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Code { get; set; }
-    #endif
+
     // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
 }

@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Manage;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 using Xunit;
 
@@ -25,7 +26,7 @@ public class TestsSendSmsVerificationCodeService
             .Callback(() => sendCalled = true);
         
         var service =
-            new SendSMSVerificationCodeService(identityStuff.UserManager, messageService.Object, new FakeStringLocalizer(), new Mock<ILogger<SendSMSVerificationCodeService>>().Object);
+            new SendSMSVerificationCodeService(identityStuff.UserManager, messageService.Object, new FakeStringLocalizer(), new Mock<ILogger<SendSMSVerificationCodeService>>().Object, new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.SendCode(user.Id, user.PhoneNumber);
         
@@ -41,7 +42,7 @@ public class TestsSendSmsVerificationCodeService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service =
-            new SendSMSVerificationCodeService(identityStuff.UserManager, new Mock<IMessageService>().Object, new FakeStringLocalizer(), new Mock<ILogger<SendSMSVerificationCodeService>>().Object);
+            new SendSMSVerificationCodeService(identityStuff.UserManager, new Mock<IMessageService>().Object, new FakeStringLocalizer(), new Mock<ILogger<SendSMSVerificationCodeService>>().Object, new Mock<IRuntimeConfiguration>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {

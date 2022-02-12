@@ -73,9 +73,9 @@ public static class OpenIdDictConfigExtensions
                     .EnableUserinfoEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
                     .EnableVerificationEndpointPassthrough()
-                    #if DEBUG
+                #if DEBUG
                     .DisableTransportSecurityRequirement()
-                    #endif
+                #endif
                     .EnableStatusCodePagesIntegration()
                     ;
             })

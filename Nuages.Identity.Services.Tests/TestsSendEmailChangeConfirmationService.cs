@@ -3,6 +3,7 @@ using Moq;
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Manage;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 using Xunit;
 
@@ -28,7 +29,8 @@ public class TestsSendEmailChangeConfirmationService
 
 
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, messageService.Object,
-          Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer());
+          Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer(), new Mock<IRuntimeConfiguration>().Object);
+        
 
         var res = await service.SendEmailChangeConfirmation(user.Id, newEmail);
         
@@ -52,7 +54,7 @@ public class TestsSendEmailChangeConfirmationService
             .Callback(() => sendCalled = true);
 
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, messageService.Object,
-            Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer());
+            Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer(), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.SendEmailChangeConfirmation(user.Id, user.Email);
         
@@ -84,7 +86,7 @@ public class TestsSendEmailChangeConfirmationService
 
 
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, messageService.Object,
-            Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer());
+            Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer(), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.SendEmailChangeConfirmation(user.Id, newEmail);
         
@@ -102,7 +104,7 @@ public class TestsSendEmailChangeConfirmationService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, new Mock<IMessageService>().Object,
-            Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer());
+            Options.Create(identityStuff.NuagesOptions)  , new FakeStringLocalizer(), new Mock<IRuntimeConfiguration>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {

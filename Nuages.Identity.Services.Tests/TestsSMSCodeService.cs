@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 using Xunit;
 
@@ -27,7 +28,7 @@ public class TestsSmsCodeService
 
         var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSSendCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object, new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.SendCode();
         
@@ -51,7 +52,7 @@ public class TestsSmsCodeService
 
         var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSSendCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object, new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.SendCode();
         
@@ -73,7 +74,7 @@ public class TestsSmsCodeService
 
         var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSSendCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object, new Mock<IRuntimeConfiguration>().Object);
 
         identityStuff.SignInManager.CurrentUser = null;
         
@@ -97,7 +98,7 @@ public class TestsSmsCodeService
 
         var service = new SMSSendCodeService(identityStuff.UserManager, identityStuff.SignInManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<ILogger<SMSSendCodeService>>().Object);
+            new Mock<ILogger<SMSSendCodeService>>().Object, new Mock<IRuntimeConfiguration>().Object);
 
         identityStuff.SignInManager.CurrentUser = null;
         

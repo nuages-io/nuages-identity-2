@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Password;
+using Nuages.Web;
 using Xunit;
 
 namespace Nuages.Identity.Services.Tests;
@@ -23,7 +24,7 @@ public class TestsForgetPasswordService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
 
-        var forgetPasswordService = new ForgotPasswordService(identityStuff.UserManager, MockHelpers.MockHttpContextAccessor().Object, messageService.Object, Options.Create(identityStuff.NuagesOptions));
+        var forgetPasswordService = new ForgotPasswordService(identityStuff.UserManager, MockHelpers.MockHttpContextAccessor().Object, messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await forgetPasswordService.StartForgotPassword(new ForgotPasswordModel
         {
@@ -49,7 +50,7 @@ public class TestsForgetPasswordService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
 
-        var forgetPasswordService = new ForgotPasswordService(identityStuff.UserManager, MockHelpers.MockHttpContextAccessor().Object, messageService.Object, Options.Create(identityStuff.NuagesOptions));
+        var forgetPasswordService = new ForgotPasswordService(identityStuff.UserManager, MockHelpers.MockHttpContextAccessor().Object, messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await forgetPasswordService.StartForgotPassword(new ForgotPasswordModel
         {

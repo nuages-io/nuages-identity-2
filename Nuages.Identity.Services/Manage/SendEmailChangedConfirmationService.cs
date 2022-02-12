@@ -1,11 +1,13 @@
 
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 
 namespace Nuages.Identity.Services.Manage;
@@ -15,15 +17,17 @@ public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationSe
     private readonly NuagesUserManager _userManager;
     private readonly IMessageService _messageService;
     private readonly IStringLocalizer _localizer;
+    private readonly IRuntimeConfiguration _runtimeConfiguration;
     private readonly NuagesIdentityOptions _options;
 
     public SendEmailChangeConfirmationService(NuagesUserManager userManager, IMessageService messageService, 
-        IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer)
+        IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer, IRuntimeConfiguration runtimeConfiguration)
     {
         _userManager = userManager;
        
         _messageService = messageService;
         _localizer = localizer;
+        _runtimeConfiguration = runtimeConfiguration;
         _options = options.Value;
     }
     
@@ -58,7 +62,6 @@ public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationSe
             };
         }
      
-       
         var code = await _userManager.GenerateChangeEmailTokenAsync(user, email);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         
@@ -71,10 +74,8 @@ public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationSe
         
         return new SendEmailChangeResultModel
         {
-            #if DEBUG
-            Code = code,
-            Url = url,
-            #endif
+            Code = _runtimeConfiguration.IsTest ? code : null,
+            Url = _runtimeConfiguration.IsTest ? url : null,
             Success = true // Fake success
         };
     }
@@ -93,10 +94,11 @@ public class SendEmailChangeModel
 
 public class SendEmailChangeResultModel
 {
-    #if DEBUG
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Code { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Url { get; set; }
-    #endif
+
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();
 }

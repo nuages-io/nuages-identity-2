@@ -14,6 +14,7 @@ using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.UI.OpenIdDict;
 using Nuages.Localization;
+using Nuages.Web;
 using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI;
@@ -33,6 +34,8 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
+        
         services.AddDataProtection()
             .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
 

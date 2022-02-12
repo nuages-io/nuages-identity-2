@@ -3,6 +3,7 @@ using Moq;
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Web;
 using Nuages.Web.Exceptions;
 using Xunit;
 
@@ -18,7 +19,7 @@ public class TestsPasswordlessService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var url = await service.GetPasswordlessUrl(user.Id);
         
@@ -34,7 +35,7 @@ public class TestsPasswordlessService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -58,7 +59,7 @@ public class TestsPasswordlessService
             .Callback(() => sendCalled = true);
         
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.StartPasswordless(new StartPasswordlessModel
         {
@@ -84,7 +85,7 @@ public class TestsPasswordlessService
             .Callback(() => sendCalled = true);
         
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.StartPasswordless(new StartPasswordlessModel
         {
@@ -113,7 +114,7 @@ public class TestsPasswordlessService
             .Callback(() => sendCalled = true);
         
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var res = await service.StartPasswordless(new StartPasswordlessModel
         {
@@ -136,7 +137,7 @@ public class TestsPasswordlessService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
             "passwordless-auth");
@@ -154,7 +155,7 @@ public class TestsPasswordlessService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         
         var url = await service.LoginPasswordLess("bad_token", user.Id);
@@ -172,7 +173,7 @@ public class TestsPasswordlessService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
-            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions));
+            new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
 
         var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
             "passwordless-auth");

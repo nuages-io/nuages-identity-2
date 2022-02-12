@@ -1,7 +1,8 @@
 using System.Net;
+using System.Text.Json;
 using System.Web;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Nuages.Identity.UI.Tests.Utilities;
+using Nuages.Web.Utilities;
 using Xunit;
 // ReSharper disable InconsistentNaming
 
@@ -17,7 +18,13 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
         _factory = factory;
     }
 
-    
+    public class TokenResult
+    {
+        public string? access_token { get; set; }
+        public string? token_type { get; set; }
+        public string? id_token { get; set; }
+        
+    }
     [Fact]
     public async Task ShouldLoginWithPasswordGrant()
     {
@@ -38,12 +45,7 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
         
         var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new
-        {
-            access_token = "",
-            token_type = "",
-            id_token = ""
-        })!;
+        var result = JsonSerializer.Deserialize<TokenResult>(content)!;
         
         Assert.NotNull(result.access_token);
         Assert.NotNull(result.id_token);
@@ -69,12 +71,7 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
         
         var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializerExtensions.DeserializeAnonymousType(content, new
-        {
-            access_token = (string?) null,
-            token_type = (string?) null,
-            id_token = (string?) null
-        })!;
+        var result = JsonSerializer.Deserialize<TokenResult>(content)!;
         
         Assert.NotNull(result.access_token);
         Assert.Null(result.id_token);
