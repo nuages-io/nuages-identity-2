@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+// ReSharper disable ContextualLoggerProblem
 
 namespace Nuages.AspNetIdentity.Core;
 
@@ -18,7 +19,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
     public NuagesSignInManager(UserManager<NuagesApplicationUser<string>> userManager, 
         IHttpContextAccessor contextAccessor, 
         IUserClaimsPrincipalFactory<NuagesApplicationUser<string>> claimsFactory, 
-        // ReSharper disable once ContextualLoggerProblem
+
         IOptions<IdentityOptions> optionsAccessor, 
         ILogger<SignInManager<NuagesApplicationUser<string>>> logger, 
         IAuthenticationSchemeProvider schemes, 

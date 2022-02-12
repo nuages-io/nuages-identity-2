@@ -289,7 +289,7 @@ public class TestsUsersStore
 
     }
 
-    private async Task<NuagesApplicationUser<string>> ReloadAsync(NuagesApplicationUser<string> user)
+    private async Task<NuagesApplicationUser<string>> ReloadAsync(IdentityUser<string> user)
     {
         return await _userStore.FindByIdAsync(user.Id, CancellationToken.None);
     }

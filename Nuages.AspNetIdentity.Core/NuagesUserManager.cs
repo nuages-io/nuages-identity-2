@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+// ReSharper disable ContextualLoggerProblem
 
 // ReSharper disable ClassNeverInstantiated.Global
 
@@ -15,9 +16,9 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
         IEnumerable<IUserValidator<NuagesApplicationUser<string>>> userValidators, 
         IEnumerable<IPasswordValidator<NuagesApplicationUser<string>>> passwordValidators, 
         ILookupNormalizer keyNormalizer,
-        IdentityErrorDescriber errors, IServiceProvider services, 
-        // ReSharper disable once ContextualLoggerProblem
-        ILogger<UserManager<NuagesApplicationUser<string>>> logger, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
+        IdentityErrorDescriber errors, IServiceProvider services,
+        ILogger<UserManager<NuagesApplicationUser<string>>> logger, 
+        IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
         base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;

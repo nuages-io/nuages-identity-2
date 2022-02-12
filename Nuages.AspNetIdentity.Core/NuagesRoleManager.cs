@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Identity;
+// ReSharper disable ContextualLoggerProblem
 
 namespace Nuages.AspNetIdentity.Core;
 

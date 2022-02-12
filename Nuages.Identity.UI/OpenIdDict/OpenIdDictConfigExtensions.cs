@@ -30,10 +30,10 @@ public static class OpenIdDictConfigExtensions
                     }
                     default:
                     {
-                        services.AddDbContext<OpenIdDictContext>(options =>
+                        services.AddDbContext<OpenIdDictContext>(contextOptions =>
                         {
-                            options.UseInMemoryDatabase("IdentityContext");
-                            options.UseOpenIddict();
+                            contextOptions.UseInMemoryDatabase("IdentityContext");
+                            contextOptions.UseOpenIddict();
                         });
                         
                         options.UseEntityFrameworkCore()
