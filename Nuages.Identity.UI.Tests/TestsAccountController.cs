@@ -13,6 +13,7 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Nuages.Identity.UI.Tests;
 
+[Collection("IntegrationTestUI")]
 public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryAnonymous<Startup>>
 {
     private readonly CustomWebApplicationFactoryAnonymous<Startup> _factory;

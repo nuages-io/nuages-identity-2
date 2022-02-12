@@ -49,11 +49,11 @@ public class CustomWebApplicationFactory<TStartup>
             var serviceDescriptorRole = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoRoleStore"));
             services.Remove(serviceDescriptorRole);
             
-            services.AddDbContext<IdentityDbContext<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>>(options =>
+            services.AddDbContext<TestDataContext>(options =>
                 options.UseInMemoryDatabase("IdentityContext"));
 
             var identityBuilder = new IdentityBuilder(typeof(NuagesApplicationUser<string>), typeof(NuagesApplicationRole<string>), services);
-            identityBuilder.AddEntityFrameworkStores<IdentityDbContext<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>>();
+            identityBuilder.AddEntityFrameworkStores<TestDataContext>();
             
             services.AddHostedService<IdentityDataSeeder>();
 

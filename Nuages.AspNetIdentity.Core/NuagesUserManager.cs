@@ -16,6 +16,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
         IEnumerable<IPasswordValidator<NuagesApplicationUser<string>>> passwordValidators, 
         ILookupNormalizer keyNormalizer,
         IdentityErrorDescriber errors, IServiceProvider services, 
+        // ReSharper disable once ContextualLoggerProblem
         ILogger<UserManager<NuagesApplicationUser<string>>> logger, IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
         base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {

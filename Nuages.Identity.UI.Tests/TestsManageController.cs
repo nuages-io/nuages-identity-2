@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Nuages.Identity.UI.Tests;
 
+[Collection("IntegrationTestUI")]
 public class TestsManageController : IClassFixture<CustomWebApplicationFactory<Startup>>
 {
     private readonly CustomWebApplicationFactory<Startup> _factory;

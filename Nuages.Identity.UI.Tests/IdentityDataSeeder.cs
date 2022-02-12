@@ -39,7 +39,7 @@ public class IdentityDataSeeder : IHostedService
         using var scope = _provider.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<NuagesUserManager>();
     
-        if (await userManager.FindByEmailAsync(AdminEmail) == null)
+        if (await userManager.FindByIdAsync(AdminId) == null)
         {
             var newUser = new NuagesApplicationUser<string>
             {
@@ -51,7 +51,7 @@ public class IdentityDataSeeder : IHostedService
             await userManager.CreateAsync(newUser, AdminPassword);
         }
         
-        if (await userManager.FindByEmailAsync(UserEmail) == null)
+        if (await userManager.FindByIdAsync(UserId) == null)
         {
             var newUser = new NuagesApplicationUser<string>
             {
@@ -64,7 +64,7 @@ public class IdentityDataSeeder : IHostedService
             
         }
         
-        if (await userManager.FindByEmailAsync(UserEmail_Unconfirmed) == null)
+        if (await userManager.FindByIdAsync(UserId_Unconfirmed) == null)
         {
             var newUser = new NuagesApplicationUser<string>
             {
@@ -77,7 +77,7 @@ public class IdentityDataSeeder : IHostedService
             
         }
         
-        if (await userManager.FindByEmailAsync(UserEmail_MFA) == null)
+        if (await userManager.FindByIdAsync(UserId_MFA) == null)
         {
             var newUser = new NuagesApplicationUser<string>
             {

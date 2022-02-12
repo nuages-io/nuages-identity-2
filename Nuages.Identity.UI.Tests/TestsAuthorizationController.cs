@@ -7,6 +7,7 @@ using Xunit;
 
 namespace Nuages.Identity.UI.Tests;
 
+[Collection("IntegrationTestUI")]
 public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFactory<Startup>>
 {
     private readonly CustomWebApplicationFactory<Startup> _factory;

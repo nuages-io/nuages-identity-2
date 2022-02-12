@@ -2,9 +2,11 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
+using Xunit;
 
 namespace Nuages.Identity.UI.Tests;
 
+[Collection("IntegrationTestUI")]
 public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
 {
     public TestAuthHandler(IOptionsMonitor<TestAuthHandlerOptions> options, 
