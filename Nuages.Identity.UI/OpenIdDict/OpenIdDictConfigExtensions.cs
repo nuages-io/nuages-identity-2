@@ -16,6 +16,8 @@ public static class OpenIdDictConfigExtensions
             // Register the OpenIddict core components.
             .AddCore(options =>
             {
+                var inMemmory = configuration.GetValue<bool>("Nuages:OpenIdDict:InMemory");
+                
                 options.UseMongoDb()
                     .UseDatabase(new MongoClient(configuration["Nuages:OpenIdDict:ConnectionString"])
                     .GetDatabase(configuration["Nuages:OpenIdDict:Database"]));

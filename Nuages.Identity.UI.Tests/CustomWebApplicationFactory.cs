@@ -23,6 +23,14 @@ public class CustomWebApplicationFactory<TStartup>
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.ConfigureAppConfiguration(builder =>
+        {
+            builder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("Nuages:OpenIdDict:InMemory", "True")
+            });
+        });
+        
         builder.ConfigureTestServices(services =>
         {
             services.AddAuthentication(options =>
@@ -48,13 +56,17 @@ public class CustomWebApplicationFactory<TStartup>
             
             var serviceDescriptorRole = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoRoleStore"));
             services.Remove(serviceDescriptorRole);
-            
+
             services.AddDbContext<TestDataContext>(options =>
-                options.UseInMemoryDatabase("IdentityContext"));
+            {
+                options.UseInMemoryDatabase("IdentityContext");
+                options.UseOpenIddict();
+            });
+               
 
             var identityBuilder = new IdentityBuilder(typeof(NuagesApplicationUser<string>), typeof(NuagesApplicationRole<string>), services);
             identityBuilder.AddEntityFrameworkStores<TestDataContext>();
-            
+
             services.AddHostedService<IdentityDataSeeder>();
 
             services.AddScoped<IRecaptchaValidator, DummyRecaptchaValidator>();

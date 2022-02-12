@@ -38,7 +38,10 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
             services.Remove(serviceDescriptorRole);
             
             services.AddDbContext<TestDataContext>(options =>
-                options.UseInMemoryDatabase("IdentityContext"));
+            {
+                options.UseInMemoryDatabase("IdentityContext");
+                options.UseOpenIddict();
+            });
 
             var identityBuilder = new IdentityBuilder(typeof(NuagesApplicationUser<string>), typeof(NuagesApplicationRole<string>), services);
             identityBuilder.AddEntityFrameworkStores<TestDataContext>();
