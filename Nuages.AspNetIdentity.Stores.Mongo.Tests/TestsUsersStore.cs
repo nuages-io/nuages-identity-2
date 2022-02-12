@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Nuages.AspNetIdentity.Core;
-using Nuages.AspNetIdentity.Stores.InMemory;
 using Xunit;
 
 namespace Nuages.AspNetIdentity.Stores.Mongo.Tests;

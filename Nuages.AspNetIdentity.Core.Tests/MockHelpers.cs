@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using Nuages.AspNetIdentity.Stores.InMemory;
 
 // ReSharper disable UnusedParameter.Local
 

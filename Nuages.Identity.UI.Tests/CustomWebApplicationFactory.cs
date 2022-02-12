@@ -1,12 +1,8 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nuages.AspNetIdentity.Core;
-using Nuages.AspNetIdentity.Stores.InMemory;
-using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Sender.API.Sdk;
 using Nuages.Web.Recaptcha;
 using Xunit;
