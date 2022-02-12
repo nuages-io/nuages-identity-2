@@ -1,22 +1,21 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace Nuages.AspNetIdentity.Stores.Mongo;
 
-
-public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService 
+public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
     where TUser : IdentityUser<TKey>
     where TRole : IdentityRole<TKey>
     where TKey : IEquatable<TKey>
 {
+    private readonly Collation _caseInsensitiveCollation;
     private readonly IdentityOptions _identityOptions;
 
     public MongoSchemaInitializer(IOptions<MongoIdentityOptions> options, IOptions<IdentityOptions> identityOptions)
     {
         _identityOptions = identityOptions.Value;
-        
+
         var client = new MongoClient(options.Value.ConnectionString);
         var database = client.GetDatabase(options.Value.Database);
 
@@ -27,20 +26,18 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
         UsersLoginsCollection = database.GetCollection<MongoIdentityUserLogin<TKey>>("AspNetUserLogins");
         UsersTokensCollection = database.GetCollection<MongoIdentityUserToken<TKey>>("AspNetUserTokens");
         UsersRolesCollection = database.GetCollection<IdentityUserRole<TKey>>("AspNetUserRoles");
-        
+
         _caseInsensitiveCollation = new Collation(options.Value.Locale, strength: CollationStrength.Primary);
     }
 
-    private IMongoCollection<TRole> RolesCollection { get;  }
-    private IMongoCollection<TUser> UsersCollection { get;  }
-    private IMongoCollection<IdentityUserRole<TKey>> UsersRolesCollection { get;  }
-    private IMongoCollection<MongoIdentityUserToken<TKey>> UsersTokensCollection { get;  }
-    private IMongoCollection<MongoIdentityUserLogin<TKey>> UsersLoginsCollection { get;  }
-    private IMongoCollection<MongoIdentityUserClaim<TKey>> UsersClaimsCollection { get;  }
-    private IMongoCollection<IdentityRoleClaim<TKey>> RolesClaimsCollection { get;  }
+    private IMongoCollection<TRole> RolesCollection { get; }
+    private IMongoCollection<TUser> UsersCollection { get; }
+    private IMongoCollection<IdentityUserRole<TKey>> UsersRolesCollection { get; }
+    private IMongoCollection<MongoIdentityUserToken<TKey>> UsersTokensCollection { get; }
+    private IMongoCollection<MongoIdentityUserLogin<TKey>> UsersLoginsCollection { get; }
+    private IMongoCollection<MongoIdentityUserClaim<TKey>> UsersClaimsCollection { get; }
+    private IMongoCollection<IdentityRoleClaim<TKey>> RolesClaimsCollection { get; }
 
-    private readonly Collation _caseInsensitiveCollation;
-    
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         await CreateRolesIndexes();
@@ -50,7 +47,11 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
         await CreateUsersLoginsIndexes();
         await CreateUsersClaimsIndexes();
         await CreateRolesClaimsIndexes();
+    }
 
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
     }
 
     private async Task CreateRolesClaimsIndexes()
@@ -65,7 +66,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Unique = false
                 })
         );
-        
+
         await RolesClaimsCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<IdentityRoleClaim<TKey>>(
                 Builders<IdentityRoleClaim<TKey>>.IndexKeys
@@ -93,7 +94,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Unique = false
                 })
         );
-        
+
         await UsersClaimsCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<MongoIdentityUserClaim<TKey>>(
                 Builders<MongoIdentityUserClaim<TKey>>.IndexKeys
@@ -121,7 +122,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Unique = false
                 })
         );
-        
+
         await UsersLoginsCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<MongoIdentityUserLogin<TKey>>(
                 Builders<MongoIdentityUserLogin<TKey>>.IndexKeys
@@ -167,7 +168,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Unique = true
                 })
         );
-        
+
         await UsersRolesCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<IdentityUserRole<TKey>>(
                 Builders<IdentityUserRole<TKey>>.IndexKeys
@@ -178,7 +179,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Unique = false
                 })
         );
-        
+
         await UsersRolesCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<IdentityUserRole<TKey>>(
                 Builders<IdentityUserRole<TKey>>.IndexKeys
@@ -204,7 +205,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Collation = _caseInsensitiveCollation
                 })
         );
-        
+
         await RolesCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<TRole>(
                 Builders<TRole>.IndexKeys
@@ -217,7 +218,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 })
         );
     }
-    
+
     private async Task CreateUsersIndexes()
     {
         await UsersCollection.Indexes.CreateOneAsync(
@@ -231,7 +232,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Collation = _caseInsensitiveCollation
                 })
         );
-        
+
         await UsersCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<TUser>(
                 Builders<TUser>.IndexKeys
@@ -243,7 +244,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Collation = _caseInsensitiveCollation
                 })
         );
-        
+
         await UsersCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<TUser>(
                 Builders<TUser>.IndexKeys
@@ -255,7 +256,7 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                     Collation = _caseInsensitiveCollation
                 })
         );
-        
+
         await UsersCollection.Indexes.CreateOneAsync(
             new CreateIndexModel<TUser>(
                 Builders<TUser>.IndexKeys
@@ -268,6 +269,4 @@ public class MongoSchemaInitializer<TUser, TRole, TKey> : IHostedService
                 })
         );
     }
-
-    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }

@@ -6,21 +6,19 @@ namespace Nuages.Identity.UI.OpenIdDict;
 public class OpenIdDictInitializeWorker : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
-   
+
     public OpenIdDictInitializeWorker(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         using var scope = _serviceProvider.CreateScope();
-        
+
         var manager = scope.ServiceProvider.GetRequiredService<IOpenIddictApplicationManager>();
 
         if (await manager.FindByClientIdAsync("postman-ui", cancellationToken) is null)
-        {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
                 ClientId = "postman-ui",
@@ -46,7 +44,7 @@ public class OpenIdDictInitializeWorker : IHostedService
                     Permissions.GrantTypes.RefreshToken,
                     Permissions.GrantTypes.Password,
                     Permissions.GrantTypes.ClientCredentials,
-                   // Permissions.GrantTypes.Implicit,
+                    // Permissions.GrantTypes.Implicit,
                     Permissions.GrantTypes.DeviceCode,
                     Permissions.ResponseTypes.Code,
                     Permissions.Scopes.Email,
@@ -58,10 +56,8 @@ public class OpenIdDictInitializeWorker : IHostedService
                     Requirements.Features.ProofKeyForCodeExchange
                 }
             }, cancellationToken);
-        }
-        
+
         if (await manager.FindByClientIdAsync("device", cancellationToken) == null)
-        {
             await manager.CreateAsync(new OpenIddictApplicationDescriptor
             {
                 ClientId = "device",
@@ -79,8 +75,10 @@ public class OpenIdDictInitializeWorker : IHostedService
                     Permissions.Scopes.Roles
                 }
             }, cancellationToken);
-        }
     }
 
-    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+    public Task StopAsync(CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
 }

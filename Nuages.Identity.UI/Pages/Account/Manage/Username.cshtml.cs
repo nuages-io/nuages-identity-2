@@ -1,5 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 using Microsoft.AspNetCore.Authorization;
@@ -14,8 +15,7 @@ namespace Nuages.Identity.UI.Pages.Account.Manage;
 [Authorize]
 public class UsernameModel : PageModel
 {
-    [TempData] 
-    public string Username { get; set; } = string.Empty;
+    [TempData] public string Username { get; set; } = string.Empty;
 
     public void OnGetAsync()
     {

@@ -14,7 +14,7 @@ public class LoginWithPasswordless : PageModel
     {
         _options = options.Value;
     }
-    
+
     public ActionResult OnGet()
     {
         if (!_options.EnablePasswordless)

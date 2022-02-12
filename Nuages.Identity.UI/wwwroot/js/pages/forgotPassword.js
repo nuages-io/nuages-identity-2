@@ -17,12 +17,12 @@ var App =
                     var e = self.email;
 
                     this.status = "sending";
-                    
+
                     fetch("/api/account/forgotPassword", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
                         body: JSON.stringify({
                                 email: e
@@ -34,8 +34,8 @@ var App =
 
                             self.email = null;
                             self.status = "done";
-                            
-                            if (!res.success) 
+
+                            if (!res.success)
                                 self.errors.push({message: res.message});
                         });
 
@@ -43,12 +43,12 @@ var App =
                 forgotPassword: function () {
 
                     var self = this;
-                    
+
                     this.errors = [];
                     formforgotPassword.classList.remove("was-validated");
 
                     email.setCustomValidity("");
-                    
+
                     var res = formforgotPassword.checkValidity();
                     if (res) {
                         grecaptcha.ready(function () {
@@ -70,7 +70,7 @@ var App =
                         var list = formforgotPassword.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }
@@ -79,12 +79,11 @@ var App =
         watch: {
             email(value) {
                 this.errors = [];
-                if (value != null)
-                {
-                    this.status = "";                    
+                if (value != null) {
+                    this.status = "";
                 }
-                
-                if (typeof(email) != "undefined")
+
+                if (typeof (email) != "undefined")
                     email.setCustomValidity("");
             }
         }

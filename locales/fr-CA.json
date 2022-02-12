@@ -1,266 +1,266 @@
 {
-	"2fa": {
-		"activate": "Activer",
-		"active": "L'authentification à deux facteurs est activée.",
-		"addPhone": "Ajouter un no. de téléphone de secours",
-		"clearPhoneConfirm": "Voulez-vous vraiment effacer le numéro de téléphone ?",
-		"clearPhoneTitle": "Effacer le numéro de téléphone",
-		"copy": "Copier",
-		"deactivate": "Désactiver",
-		"deactivateConfirmation": "Voulez-vous vraiment désactiver l'authentification à deux facteurs ?",
-		"deactivateTitle": "Désactiver l'authentification à deux facteurs",
-		"download": "Télécharger",
-		"fallback": "No. SMS de secours",
-		"forgetMachine": "Oublier",
-		"forgetMachineInstructions": "Un code à deux facteurs vous sera demandé lors de la prochaine connexion.",
-		"hideCodes": "Masquer les codes",
-		"inactive": "L'authentification à deux facteurs est inactive",
-		"instructions": "L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire à votre compte en exigeant plus qu'un simple mot de passe pour vous connecter",
-		"machineRemembered": "Cet appareil est gardé en rappel. Aucun code 2FA ne vous sera demandé.",
-		"recoveryCodesInstructions": "Les codes de récupération peuvent être utilisés pour accéder à votre compte si vous perdez l'accès à votre appareil et ne pouvez pas recevoir de codes d'authentification à deux facteurs",
-		"recoveryCodesWarning": "Traiter les codes de récupération avec le même niveau de sécurité que pour votre mot de passe!",
-		"resetCodes": "Réinitialiser les codes",
-		"resetCodesWarning": "Lorsque vous générez de nouveaux codes de récupération, vous devez télécharger ou copier les nouveaux codes. Vos anciens codes ne fonctionneront plus.",
-		"revoveryCodes": "Code de récupération",
-		"showCodes": "Afficher les codes",
-		"title": "Authentication à deux facteurs"
-	},
-	"addPhone": {
-		"code": "Code de vérification",
-		"instructions": "Fournir un numéro SMS de secours nous permettra d'envoyer vos codes d'authentification à deux facteurs à un autre appareil si vous perdez votre appareil principal.",
-		"instructions2": "Entrez le code de vérification que nous vous avons envoyé.",
-		"newPhoneNumber": "Numéro de téléphone SMS",
-		"sendMessage": "Ajouter # de secours",
-		"submit": "Vérifier le code",
-		"success": "Numéro de SMS de secours ajouté avec succès.",
-		"title": "Ajout d'un numéro de SMS de secours"
-	},
-	"cancel": "Annuler",
-	"changeEmail": {
-		"currentEmail": "Courriel actuel",
-		"error": "Le changement de courriel a échoué.",
-		"instructions": "Entrez le nouveau courriel. Un message vous sera tramis par courriel à votre nouvelle adresse afin de compléter le changement.",
-		"isNotChanged": "Le courriel n'a pas été changé.",
-		"newEmail": "Nouveau courriel",
-		"seeEmail": "Un courriel a été transmis à votre nouvelle adresse. Vous devez cliquer sur le lien inclus dans le courriel afin de compléter le changement.",
-		"submit": "Changer le courriel",
-		"success": "Le courriel a été changé avec succès.",
-		"title": "Changer votre courriel"
-	},
-	"changePassword": {
-		"currentPassword": "Mot de passe actuel",
-		"instructions": "Entrez votre mot de passe actuel et le nouveau mot de passe désiré.",
-		"password": "Nouveau mot de passe",
-		"passwordConfirm": "Confirmation du nouveau mot de passe",
-		"submit": "Modifier le mot de passe",
-		"success": "Votre mot de passe a été changé avec succès",
-		"title": "Changer votre mot de passe"
-	},
-	"changePhoneNumber": {
-		"smsMessage": "Le code de vérification est {0}",
-		"title": "Changer votre no. de téléphone"
-	},
-	"changeUsername": {
-		"currentUsername": "Nom d'utilisateur actuel",
-		"instructions": "Entrez le nom d'utilisateur désiré. Afin de changer pour un autre courriel, vous devez utiliser la fonction 'Changer mon courriel'.",
-		"mustNotBeAnEmail": "Le nouveau nom d'utilisateur ne peut être un courriel. Utilisez 'Changer votre courriel' afin de sélectionner un nouveau courriel en tant que nom d'utilisateur.",
-		"newUserName": "Nouveau nom d'utilisateur",
-		"submit": "Change le nom d'utilisateur",
-		"success": "Nom d'utilisateur changé avec succès.",
-		"title": "Changer votre nom d'utilisateur"
-	},
-	"clear": "Effacer",
-	"confirmEmail": {
-		"error": "Erreur lors de la confirmation de votre courriel.",
-		"success": "Merci d'avoir confirmé votre courriel.",
-		"title": "Confirmation de votre courriel"
-	},
-	"device": {
-		"confirm": "Voulez-vous donner accès à vos données à {0} (Accès demandés: {1})?",
-		"confirmCode": "Assurez-vous que le code affiché sur votre appareil est ",
-		"error": "L'autorisation de l'appareil à échouée",
-		"instructions": "Entrez le code fourni par l'application",
-		"rejectIfDifferentMessage": "Appuyez sur Non si le code ne correspond pas à celui affiché sur votre appareil.",
-		"success": "L'autorization de l'appareil à réussi. ",
-		"title": "Authorization d'un appareil"
-	},
-	"email": "Courriel",
-	"emailNotConfirmed": {
-		"message": "Votre courriel n'a pas été confirmé. Vérifier vos courriels afin de trouver le courriel de vérification. Vous pouvez également cliquer sur le bouton suivant afin de le recevoir à nouveau.",
-		"seeEmail": "Voir vos courriel afin de retrouver le messages de vérification",
-		"sendAgain": "Retransmettre le courriel",
-		"title": "Courriel non confirmé"
-	},
-	"enableAuthenticator": {
-		"downloadApp": " Téléchargez une application d'authentification à deux facteurs comme",
-		"enterKey": "ou entrez cette clé",
-		"instructions": "Suivre les étapes suivants afin d'utiliser un authentificateur",
-		"instructions2": "Une fois que vous avez scanné le code QR ou saisi la clé ci-dessus, votre application d'authentification à deux facteurs vous fournira un code unique. Entrez le code dans la boîte de confirmation ci-dessous.",
-		"scanCode": "Numériser le code QR",
-		"submit": "Vérifier",
-		"title": "Configuration d'un authentificateur"
-	},
-	"error": "Erreur",
-	"errorMessage": {
-		"exception": "Une erreur innatendue est survenue",
-		"invalidEmail": "Le courriel est invalide",
-		"no_access": {
-			"AccountNotConfirmed": "Votre compte n'est pas confirmé",
-			"emailNotConfirmed": "Votre courriel n'a pas été confirmé.",
-			"error": "Accès refusé",
-			"lockedOut": "Votre compte est vérouillé",
-			"notWithinDateRange": "Votre compte utilisateur est inactif en ce moment"
-		},
-		"recaptchaError": "Erreur de Recptcha",
-		"required": "Le champ [{0}] est requis.",
-		"userNameOrPasswordInvalid": "Nom d'utilisateur/courriel ou mot de pass invalide"
-	},
-	"externalLogin": {
-		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
-		"button": "Créer le compte",
-		"emailNotAvailable": "Aucun courriel disponible avec ces information de connexion. IMpossible de continuer.",
-		"instructions": "Vous êtes authentifié avec",
-		"instructions2": "Cliquez le bouton \"Créer le compte\" afin de créer votre compte et continuer avec la connexion.",
-		"lockout": "Le compte est vérouillé",
-		"title": "Enregistrement avec un compte externe"
-	},
-	"externalLogins": {
-		"addAnotherService": "Ajouter une autre connexion.",
-		"registeredConnections": "Connexions enregistrées",
-		"remove": "Supprimer",
-		"shortTitle": "Conn. externes",
-		"title": "Connexions externes"
-	},
-	"forgotPassword": {
-		"instructions": "Entrez le courriel associé à votre compte. Un courriel vous sera envoyé afin de vous permettre de choisir un nouveau mot de passe.",
-		"reset": "Ré-initialiser",
-		"seeEmail": "Voir vos courriel afin de retrouver le messages de ré-initialisation",
-		"title": "Ré-initialisation de votre mot de passe"
-	},
-	"go_home": "Retour à la page d'accueil",
-	"identity": {
-		"DefaultError": "Une erreur inconnue s'est produite.",
-		"DuplicateEmail": "Le courriel \"{0}\" est déjà utilisé.",
-		"DuplicateName": "Le nom {0} est déjà utilisé.",
-		"ExternalLoginExists": "Un utilisateur avec cette connexion externe existe déjà.",
-		"InvalidEmail": "Le courriel « {0} » est invalide.",
-		"InvalidToken": "Jeton invalide.",
-		"InvalidUserName": "Le nom d'utilisateur {0} n'est pas valide, il ne peut contenir que des lettres ou des chiffres.",
-		"LockoutNotEnabled": "Le verrouillage n'est pas activé pour cet utilisateur.",
-		"NoTokenProvider": "No IUserTokenProvider is registered.",
-		"NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
-		"PasswordMismatch": "Mot de passe incorrect.",
-		"PasswordRequireNonLetterOrDigit": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
-		"PasswordRequiresDigit": "Les mots de passe doivent avoir au moins un chiffre ('0' - '9').",
-		"PasswordRequiresLower": "Les mots de passe doivent avoir au moins une minuscule («a» - «z»).",
-		"PasswordRequiresNonAlphanumeric": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
-		"PasswordRequiresUpper": "Les mots de passe doivent avoir au moins une minuscule («A» - «Z»).",
-		"PasswordTooShort": "Les mots de passe doivent comporter au moins {0}  caractères.",
-		"PropertyTooShort": "{0} ne peut pas être nul ou vide.",
-		"RoleNotFound": "Le rôle {0} n'existe pas.",
-		"UserAlreadyHasPassword": "L'utilisateur a déjà défini un mot de passe.",
-		"UserAlreadyInRole": "Utilisateur déjà dans le rôle.",
-		"UserIdNotFound": "ID de l'utilisateur non trouvé.",
-		"UserNameNotFound": "L'utilisateur {0} n'existe pas.",
-		"UserNotInRole": "L'utilisateur n'est pas dans le rôle."
-	},
-	"login": {
-		"back": "Aller à la page de connexion",
-		"cantRemember": "Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
-		"connect": "Connection",
-		"continueWith": "Ou conitnuer avec",
-		"forgotPassword": "Mot de passe oublié?",
-		"mode": {
-			"email": "Votre courriel",
-			"userNameEmail": "Nom d'utilisateur ou courriel",
-			"userNameEmailPhone": "Nom d'utilisateur, courriel ou no. de téléphone"
-		},
-		"password": "Mot de passe",
-		"passwordless": "Sans mot de passe",
-		"rememberMe": "Se souvenir de moi",
-		"title": "Connection à votre compte"
-	},
-	"loginWithSMS": {
-		"connect": "Connection",
-		"instructions": "Un message texte vous sera transmis contenant un code de vérification. Cette fonction est disponible seulement si un no. de téléphone a été vérifié.",
-		"seeSMS": "Voir vos message textes pour le code",
-		"send": "Envoyer le code",
-		"title": "Connection avec Texto"
-	},
-	"logout": {
-		"title": "Fermer la session"
-	},
-	"mfa": {
-		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification?",
-		"appNotAvailableRecoveryCodes": "Connection avec une code de récupération.",
-		"appNotAvailableSMS": "Connection avec une clé Texto",
-		"instructions": "Votre compte est protégé par une application d'authentification. Entrée votgre code çi-bas.",
-		"rememberMachine": "Se rappeler de cette appareil",
-		"title": "Authentification à deux facteurs"
-	},
-	"or": "ou",
-	"password": "Mot de passe",
-	"passwordExpired": {
-		"instructions": "Votre mnot de passe est expiré ou doit être modifié. Choisissez un nouveau mot de passe.",
-		"submit": "Changer mon mot de passe",
-		"title": "Mot de passe expiré"
-	},
-	"passwordRequirement": {
-		"RequireDigit": "Requiert au moins un nombre [0-9]",
-		"RequireLowercase": "Requiert une lettre minuscule [a-z]",
-		"RequireNonAlphanumeric": "Requiert un caractère spécial qui n'est pas une lettre ou un nombre (Ex. $%*# etc.)",
-		"RequireUppercase": "Requiert une lettre majuscule [A-Z]",
-		"RequiredLength": "Requiert au moins {0} caractères",
-		"RequiredUniqueChars": "Requiert au moins {0} caractères différents",
-		"title": "Exigences du mot de passe"
-	},
-	"passwordless": {
-		"instructions": "Vous avez demandé de vous connecter sans mot de passe. Un lien de connection vous sera transmis par courriel.",
-		"message": "[{1}] Le code de vérification est {0}",
-		"seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",
-		"send": "Envoyer le lien",
-		"title": "Connection sans mot de passe"
-	},
-	"profile": {
-		"firstName": "Prénom",
-		"lastName": "Nom de famille",
-		"save": "Sauvegarder",
-		"success": "Le profil a été sauvegardé avec succès.",
-		"title": "Profile"
-	},
-	"recoveryCode": {
-		"instructions": "Vous avez demandé à vous connecter avec un code de récupération.",
-		"title": "Vérification du code de récupération"
-	},
-	"register": {
-		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
-		"button": "Créer le compte",
-		"continueWith": "Or enregistrez-vous avec",
-		"instructions": "Entrez votre courriel et choisissez un mot de passe.",
-		"passwordConfirmation": "Confirmation du mot de passe",
-		"passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",
-		"title": "Création d'un compte"
-	},
-	"resetPassword": {
-		"email": "Votre courriel",
-		"instructions": "Sélectionnez votre nouveau mot de passe",
-		"password": "Nouveau mot de passe",
-		"passwordConfirm": "Confirmation du nouveau mot de passe",
-		"passwordConfirmDoesNotMatch": "La confirmation du mot de passe ne correspond pas",
-		"reset": "Réinitialiser",
-		"success": "Votre mot de passe a été changé avec succès.",
-		"title": "Ré-initialisation du mot de passe"
-	},
-	"setPassword": {
-		"instructions": "Entrez le mot de passe désiré.",
-		"password": "Mot de passe",
-		"passwordConfirm": "Confirmation du mot de passe",
-		"submit": "Changer",
-		"success": "Votre mot de passe a été ajouté avec succès",
-		"title": "Ajout d'un mot de passe"
-	},
-	"submit": "Soumettre",
-	"username": "Nom d'utilisateur",
-	"warning": "Attention!",
-	"yourEmail": "Votre courriel"
+  "2fa": {
+    "activate": "Activer",
+    "active": "L'authentification à deux facteurs est activée.",
+    "addPhone": "Ajouter un no. de téléphone de secours",
+    "clearPhoneConfirm": "Voulez-vous vraiment effacer le numéro de téléphone ?",
+    "clearPhoneTitle": "Effacer le numéro de téléphone",
+    "copy": "Copier",
+    "deactivate": "Désactiver",
+    "deactivateConfirmation": "Voulez-vous vraiment désactiver l'authentification à deux facteurs ?",
+    "deactivateTitle": "Désactiver l'authentification à deux facteurs",
+    "download": "Télécharger",
+    "fallback": "No. SMS de secours",
+    "forgetMachine": "Oublier",
+    "forgetMachineInstructions": "Un code à deux facteurs vous sera demandé lors de la prochaine connexion.",
+    "hideCodes": "Masquer les codes",
+    "inactive": "L'authentification à deux facteurs est inactive",
+    "instructions": "L'authentification à deux facteurs ajoute une couche de sécurité supplémentaire à votre compte en exigeant plus qu'un simple mot de passe pour vous connecter",
+    "machineRemembered": "Cet appareil est gardé en rappel. Aucun code 2FA ne vous sera demandé.",
+    "recoveryCodesInstructions": "Les codes de récupération peuvent être utilisés pour accéder à votre compte si vous perdez l'accès à votre appareil et ne pouvez pas recevoir de codes d'authentification à deux facteurs",
+    "recoveryCodesWarning": "Traiter les codes de récupération avec le même niveau de sécurité que pour votre mot de passe!",
+    "resetCodes": "Réinitialiser les codes",
+    "resetCodesWarning": "Lorsque vous générez de nouveaux codes de récupération, vous devez télécharger ou copier les nouveaux codes. Vos anciens codes ne fonctionneront plus.",
+    "revoveryCodes": "Code de récupération",
+    "showCodes": "Afficher les codes",
+    "title": "Authentication à deux facteurs"
+  },
+  "addPhone": {
+    "code": "Code de vérification",
+    "instructions": "Fournir un numéro SMS de secours nous permettra d'envoyer vos codes d'authentification à deux facteurs à un autre appareil si vous perdez votre appareil principal.",
+    "instructions2": "Entrez le code de vérification que nous vous avons envoyé.",
+    "newPhoneNumber": "Numéro de téléphone SMS",
+    "sendMessage": "Ajouter # de secours",
+    "submit": "Vérifier le code",
+    "success": "Numéro de SMS de secours ajouté avec succès.",
+    "title": "Ajout d'un numéro de SMS de secours"
+  },
+  "cancel": "Annuler",
+  "changeEmail": {
+    "currentEmail": "Courriel actuel",
+    "error": "Le changement de courriel a échoué.",
+    "instructions": "Entrez le nouveau courriel. Un message vous sera tramis par courriel à votre nouvelle adresse afin de compléter le changement.",
+    "isNotChanged": "Le courriel n'a pas été changé.",
+    "newEmail": "Nouveau courriel",
+    "seeEmail": "Un courriel a été transmis à votre nouvelle adresse. Vous devez cliquer sur le lien inclus dans le courriel afin de compléter le changement.",
+    "submit": "Changer le courriel",
+    "success": "Le courriel a été changé avec succès.",
+    "title": "Changer votre courriel"
+  },
+  "changePassword": {
+    "currentPassword": "Mot de passe actuel",
+    "instructions": "Entrez votre mot de passe actuel et le nouveau mot de passe désiré.",
+    "password": "Nouveau mot de passe",
+    "passwordConfirm": "Confirmation du nouveau mot de passe",
+    "submit": "Modifier le mot de passe",
+    "success": "Votre mot de passe a été changé avec succès",
+    "title": "Changer votre mot de passe"
+  },
+  "changePhoneNumber": {
+    "smsMessage": "Le code de vérification est {0}",
+    "title": "Changer votre no. de téléphone"
+  },
+  "changeUsername": {
+    "currentUsername": "Nom d'utilisateur actuel",
+    "instructions": "Entrez le nom d'utilisateur désiré. Afin de changer pour un autre courriel, vous devez utiliser la fonction 'Changer mon courriel'.",
+    "mustNotBeAnEmail": "Le nouveau nom d'utilisateur ne peut être un courriel. Utilisez 'Changer votre courriel' afin de sélectionner un nouveau courriel en tant que nom d'utilisateur.",
+    "newUserName": "Nouveau nom d'utilisateur",
+    "submit": "Change le nom d'utilisateur",
+    "success": "Nom d'utilisateur changé avec succès.",
+    "title": "Changer votre nom d'utilisateur"
+  },
+  "clear": "Effacer",
+  "confirmEmail": {
+    "error": "Erreur lors de la confirmation de votre courriel.",
+    "success": "Merci d'avoir confirmé votre courriel.",
+    "title": "Confirmation de votre courriel"
+  },
+  "device": {
+    "confirm": "Voulez-vous donner accès à vos données à {0} (Accès demandés: {1})?",
+    "confirmCode": "Assurez-vous que le code affiché sur votre appareil est ",
+    "error": "L'autorisation de l'appareil à échouée",
+    "instructions": "Entrez le code fourni par l'application",
+    "rejectIfDifferentMessage": "Appuyez sur Non si le code ne correspond pas à celui affiché sur votre appareil.",
+    "success": "L'autorization de l'appareil à réussi. ",
+    "title": "Authorization d'un appareil"
+  },
+  "email": "Courriel",
+  "emailNotConfirmed": {
+    "message": "Votre courriel n'a pas été confirmé. Vérifier vos courriels afin de trouver le courriel de vérification. Vous pouvez également cliquer sur le bouton suivant afin de le recevoir à nouveau.",
+    "seeEmail": "Voir vos courriel afin de retrouver le messages de vérification",
+    "sendAgain": "Retransmettre le courriel",
+    "title": "Courriel non confirmé"
+  },
+  "enableAuthenticator": {
+    "downloadApp": " Téléchargez une application d'authentification à deux facteurs comme",
+    "enterKey": "ou entrez cette clé",
+    "instructions": "Suivre les étapes suivants afin d'utiliser un authentificateur",
+    "instructions2": "Une fois que vous avez scanné le code QR ou saisi la clé ci-dessus, votre application d'authentification à deux facteurs vous fournira un code unique. Entrez le code dans la boîte de confirmation ci-dessous.",
+    "scanCode": "Numériser le code QR",
+    "submit": "Vérifier",
+    "title": "Configuration d'un authentificateur"
+  },
+  "error": "Erreur",
+  "errorMessage": {
+    "exception": "Une erreur innatendue est survenue",
+    "invalidEmail": "Le courriel est invalide",
+    "no_access": {
+      "AccountNotConfirmed": "Votre compte n'est pas confirmé",
+      "emailNotConfirmed": "Votre courriel n'a pas été confirmé.",
+      "error": "Accès refusé",
+      "lockedOut": "Votre compte est vérouillé",
+      "notWithinDateRange": "Votre compte utilisateur est inactif en ce moment"
+    },
+    "recaptchaError": "Erreur de Recptcha",
+    "required": "Le champ [{0}] est requis.",
+    "userNameOrPasswordInvalid": "Nom d'utilisateur/courriel ou mot de pass invalide"
+  },
+  "externalLogin": {
+    "accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
+    "button": "Créer le compte",
+    "emailNotAvailable": "Aucun courriel disponible avec ces information de connexion. IMpossible de continuer.",
+    "instructions": "Vous êtes authentifié avec",
+    "instructions2": "Cliquez le bouton \"Créer le compte\" afin de créer votre compte et continuer avec la connexion.",
+    "lockout": "Le compte est vérouillé",
+    "title": "Enregistrement avec un compte externe"
+  },
+  "externalLogins": {
+    "addAnotherService": "Ajouter une autre connexion.",
+    "registeredConnections": "Connexions enregistrées",
+    "remove": "Supprimer",
+    "shortTitle": "Conn. externes",
+    "title": "Connexions externes"
+  },
+  "forgotPassword": {
+    "instructions": "Entrez le courriel associé à votre compte. Un courriel vous sera envoyé afin de vous permettre de choisir un nouveau mot de passe.",
+    "reset": "Ré-initialiser",
+    "seeEmail": "Voir vos courriel afin de retrouver le messages de ré-initialisation",
+    "title": "Ré-initialisation de votre mot de passe"
+  },
+  "go_home": "Retour à la page d'accueil",
+  "identity": {
+    "DefaultError": "Une erreur inconnue s'est produite.",
+    "DuplicateEmail": "Le courriel \"{0}\" est déjà utilisé.",
+    "DuplicateName": "Le nom {0} est déjà utilisé.",
+    "ExternalLoginExists": "Un utilisateur avec cette connexion externe existe déjà.",
+    "InvalidEmail": "Le courriel « {0} » est invalide.",
+    "InvalidToken": "Jeton invalide.",
+    "InvalidUserName": "Le nom d'utilisateur {0} n'est pas valide, il ne peut contenir que des lettres ou des chiffres.",
+    "LockoutNotEnabled": "Le verrouillage n'est pas activé pour cet utilisateur.",
+    "NoTokenProvider": "No IUserTokenProvider is registered.",
+    "NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
+    "PasswordMismatch": "Mot de passe incorrect.",
+    "PasswordRequireNonLetterOrDigit": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
+    "PasswordRequiresDigit": "Les mots de passe doivent avoir au moins un chiffre ('0' - '9').",
+    "PasswordRequiresLower": "Les mots de passe doivent avoir au moins une minuscule («a» - «z»).",
+    "PasswordRequiresNonAlphanumeric": "Les mots de passe doivent avoir au moins un caractère autre qu'une lettre ou un chiffre.",
+    "PasswordRequiresUpper": "Les mots de passe doivent avoir au moins une minuscule («A» - «Z»).",
+    "PasswordTooShort": "Les mots de passe doivent comporter au moins {0}  caractères.",
+    "PropertyTooShort": "{0} ne peut pas être nul ou vide.",
+    "RoleNotFound": "Le rôle {0} n'existe pas.",
+    "UserAlreadyHasPassword": "L'utilisateur a déjà défini un mot de passe.",
+    "UserAlreadyInRole": "Utilisateur déjà dans le rôle.",
+    "UserIdNotFound": "ID de l'utilisateur non trouvé.",
+    "UserNameNotFound": "L'utilisateur {0} n'existe pas.",
+    "UserNotInRole": "L'utilisateur n'est pas dans le rôle."
+  },
+  "login": {
+    "back": "Aller à la page de connexion",
+    "cantRemember": "Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
+    "connect": "Connection",
+    "continueWith": "Ou conitnuer avec",
+    "forgotPassword": "Mot de passe oublié?",
+    "mode": {
+      "email": "Votre courriel",
+      "userNameEmail": "Nom d'utilisateur ou courriel",
+      "userNameEmailPhone": "Nom d'utilisateur, courriel ou no. de téléphone"
+    },
+    "password": "Mot de passe",
+    "passwordless": "Sans mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "title": "Connection à votre compte"
+  },
+  "loginWithSMS": {
+    "connect": "Connection",
+    "instructions": "Un message texte vous sera transmis contenant un code de vérification. Cette fonction est disponible seulement si un no. de téléphone a été vérifié.",
+    "seeSMS": "Voir vos message textes pour le code",
+    "send": "Envoyer le code",
+    "title": "Connection avec Texto"
+  },
+  "logout": {
+    "title": "Fermer la session"
+  },
+  "mfa": {
+    "appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification?",
+    "appNotAvailableRecoveryCodes": "Connection avec une code de récupération.",
+    "appNotAvailableSMS": "Connection avec une clé Texto",
+    "instructions": "Votre compte est protégé par une application d'authentification. Entrée votgre code çi-bas.",
+    "rememberMachine": "Se rappeler de cette appareil",
+    "title": "Authentification à deux facteurs"
+  },
+  "or": "ou",
+  "password": "Mot de passe",
+  "passwordExpired": {
+    "instructions": "Votre mnot de passe est expiré ou doit être modifié. Choisissez un nouveau mot de passe.",
+    "submit": "Changer mon mot de passe",
+    "title": "Mot de passe expiré"
+  },
+  "passwordRequirement": {
+    "RequireDigit": "Requiert au moins un nombre [0-9]",
+    "RequireLowercase": "Requiert une lettre minuscule [a-z]",
+    "RequireNonAlphanumeric": "Requiert un caractère spécial qui n'est pas une lettre ou un nombre (Ex. $%*# etc.)",
+    "RequireUppercase": "Requiert une lettre majuscule [A-Z]",
+    "RequiredLength": "Requiert au moins {0} caractères",
+    "RequiredUniqueChars": "Requiert au moins {0} caractères différents",
+    "title": "Exigences du mot de passe"
+  },
+  "passwordless": {
+    "instructions": "Vous avez demandé de vous connecter sans mot de passe. Un lien de connection vous sera transmis par courriel.",
+    "message": "[{1}] Le code de vérification est {0}",
+    "seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",
+    "send": "Envoyer le lien",
+    "title": "Connection sans mot de passe"
+  },
+  "profile": {
+    "firstName": "Prénom",
+    "lastName": "Nom de famille",
+    "save": "Sauvegarder",
+    "success": "Le profil a été sauvegardé avec succès.",
+    "title": "Profile"
+  },
+  "recoveryCode": {
+    "instructions": "Vous avez demandé à vous connecter avec un code de récupération.",
+    "title": "Vérification du code de récupération"
+  },
+  "register": {
+    "accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
+    "button": "Créer le compte",
+    "continueWith": "Or enregistrez-vous avec",
+    "instructions": "Entrez votre courriel et choisissez un mot de passe.",
+    "passwordConfirmation": "Confirmation du mot de passe",
+    "passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",
+    "title": "Création d'un compte"
+  },
+  "resetPassword": {
+    "email": "Votre courriel",
+    "instructions": "Sélectionnez votre nouveau mot de passe",
+    "password": "Nouveau mot de passe",
+    "passwordConfirm": "Confirmation du nouveau mot de passe",
+    "passwordConfirmDoesNotMatch": "La confirmation du mot de passe ne correspond pas",
+    "reset": "Réinitialiser",
+    "success": "Votre mot de passe a été changé avec succès.",
+    "title": "Ré-initialisation du mot de passe"
+  },
+  "setPassword": {
+    "instructions": "Entrez le mot de passe désiré.",
+    "password": "Mot de passe",
+    "passwordConfirm": "Confirmation du mot de passe",
+    "submit": "Changer",
+    "success": "Votre mot de passe a été ajouté avec succès",
+    "title": "Ajout d'un mot de passe"
+  },
+  "submit": "Soumettre",
+  "username": "Nom d'utilisateur",
+  "warning": "Attention!",
+  "yourEmail": "Votre courriel"
 }

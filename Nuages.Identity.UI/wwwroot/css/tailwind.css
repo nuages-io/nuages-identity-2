@@ -7,36 +7,32 @@
     .was-validated input:invalid {
         @apply mt-1 block w-full border border-dashed rounded-md border-red-600 shadow-sm focus:border-red-600 focus:ring focus:ring-red-200 focus:ring-opacity-50;
     }
-    
-    .text-box
-    {
+
+    .text-box {
         @apply appearance-none block w-full px-3 py-2 border  border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
     }
-    
- 
+
+
     button.full {
-        @apply w-full flex 
+        @apply w-full flex
     }
-    
-    button.primary
-    {
+
+    button.primary {
         @apply justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 text-white bg-indigo-600 hover:bg-indigo-700  focus:ring-indigo-500
     }
 
-    button.danger
-    {
+    button.danger {
         @apply justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 text-white bg-red-600 hover:bg-red-700  focus:ring-red-500
     }
 
-    button.success
-    {
+    button.success {
         @apply justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 text-white bg-green-600 hover:bg-green-700  focus:ring-green-500
     }
-    
-    button.link
-    {
+
+    button.link {
         @apply font-medium text-indigo-600 hover:text-indigo-500 outline-none;
     }
+
     a {
         @apply font-medium text-indigo-600 hover:text-indigo-500
     }
@@ -48,19 +44,17 @@
     a.success {
         @apply justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 text-white bg-green-600 hover:bg-green-700  focus:ring-green-500  hover:text-white
     }
-    
-    .btn-simple
-    {
-        @apply  inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+
+    .btn-simple {
+        @apply inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
     }
-    
-    .page-header
-    {
+
+    .page-header {
         @apply text-3xl font-extrabold text-gray-900 mb-4;
     }
-    
-    select{
-        @apply  block w-full  mt-1  rounded-md  border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
+
+    select {
+        @apply block w-full  mt-1  rounded-md  border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
     }
 
 }

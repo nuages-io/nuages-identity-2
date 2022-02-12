@@ -1,6 +1,7 @@
 ﻿@page
+@using Nuages.Web.Recaptcha
 @model SMSLoginModel
-@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 
 @{
     ViewData["Title"] = Localizer["loginWithSMS.title"];
@@ -12,13 +13,13 @@
             <span>@Localizer["loginWithSMS.instructions"]</span>
             <partial name="Shared/ErrorList"/>
             <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="Code" required class="text-box" autocomplete=“off”>
-    
+
             <button v-on:click.prevent="login" class="primary full items-center" :disabled="status == 'sending'">
                 @Localizer["loginWithSMS:connect"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
             </button>
-            
+
         </fieldset>
-        
+
     </form>
     <div class="mt-4">
         <partial name="Shared/_Warning" model='new { Title = Localizer["warning"], Message = Localizer["login.cantRemember"] }'/>

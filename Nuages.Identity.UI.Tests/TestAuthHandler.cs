@@ -9,14 +9,14 @@ namespace Nuages.Identity.UI.Tests;
 [Collection("IntegrationTestUI")]
 public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
 {
-    public TestAuthHandler(IOptionsMonitor<TestAuthHandlerOptions> options, 
+    public const string UserId = "UserId";
+
+    public TestAuthHandler(IOptionsMonitor<TestAuthHandlerOptions> options,
         ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
         : base(options, logger, encoder, clock)
     {
     }
 
-    public const string UserId = "UserId";
-    
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         var claims = new List<Claim>
@@ -28,7 +28,7 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
 
 
         var identity = new ClaimsIdentity(claims, "Test");
-        
+
         var principal = new ClaimsPrincipal(identity);
         var ticket = new AuthenticationTicket(principal, "Test");
 

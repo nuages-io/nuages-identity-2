@@ -14,23 +14,19 @@ public class AudienceValidator : IAudienceValidator
     {
         _options = options.Value;
     }
-    
+
+    private bool HasAudiences => _options.Audiences != null && _options.Audiences.Any();
+
     public string? CheckAudience(OpenIddictRequest openIdDictRequest, IPrincipal? principal)
     {
         if (openIdDictRequest.Audiences != null)
         {
             foreach (var audience in openIdDictRequest.Audiences)
-            {
                 if (IsValidAudience(audience))
-                {
                     (principal!.Identity as ClaimsIdentity ?? throw new InvalidOperationException())
                         .AddClaim("aud", audience);
-                }
                 else
-                {
                     return "Invalid Audience provided";
-                }
-            }
         }
         else
         {
@@ -45,8 +41,6 @@ public class AudienceValidator : IAudienceValidator
     {
         return _options.Audiences != null && _options.Audiences.Contains(audience);
     }
-
-    private bool HasAudiences => _options.Audiences != null && _options.Audiences.Any();
 }
 
 public interface IAudienceValidator

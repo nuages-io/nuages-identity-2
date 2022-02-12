@@ -8,12 +8,11 @@ namespace Nuages.Identity.UI.Tests;
 public class TestsBasicPageUser
     : IClassFixture<CustomWebApplicationFactory<Startup>>
 {
-    private readonly CustomWebApplicationFactory<Startup>  _factory;
+    private readonly CustomWebApplicationFactory<Startup> _factory;
 
-    public TestsBasicPageUser(CustomWebApplicationFactory<Startup>  factory)
+    public TestsBasicPageUser(CustomWebApplicationFactory<Startup> factory)
     {
         _factory = factory;
-
     }
 
     [Theory]
@@ -32,7 +31,7 @@ public class TestsBasicPageUser
         var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue("Test");
-        
+
         //Act
         var response = await client.GetAsync(url);
 
@@ -44,7 +43,7 @@ public class TestsBasicPageUser
     [InlineData("/account/manage/setPassword")]
     public async Task Get_SecurePageIsRedirectForAnAuthenticatedUser(string url)
     {
-        var client = _factory.CreateClient( new WebApplicationFactoryClientOptions
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = false
         });

@@ -17,18 +17,21 @@ public class TestsRegisterService
         const string password = MockHelpers.StrongPassword;
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+
+        identityStuff.UserStore
+            .Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => IdentityResult.Success);
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = false;
-        
+
         var sendCalled = false;
-        
+
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(email, It.IsAny<string>(),
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
-        
-        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
+            new FakeStringLocalizer(),
             messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
@@ -37,33 +40,36 @@ public class TestsRegisterService
             Password = password,
             PasswordConfirm = password
         });
-        
+
         Assert.True(res.Success);
         Assert.False(res.ShowConfirmationMessage);
-        Assert.False( sendCalled);
+        Assert.False(sendCalled);
     }
-    
+
     [Fact]
     public async Task ShouldRegisterUserWithSuccessDoesNotLogin()
     {
         const string email = MockHelpers.TestEmail;
         const string password = MockHelpers.StrongPassword;
-        
+
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
+
+        identityStuff.UserStore
+            .Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => IdentityResult.Success);
         identityStuff.UserManager.Options.SignIn.RequireConfirmedEmail = true;
-        
-            
+
+
         var sendCalled = false;
-        
+
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(email, It.IsAny<string>(),
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
-        
-        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
+            new FakeStringLocalizer(),
             messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
@@ -72,31 +78,34 @@ public class TestsRegisterService
             Password = password,
             PasswordConfirm = password
         });
-        
+
         Assert.True(res.Success);
         Assert.True(res.ShowConfirmationMessage);
         Assert.True(sendCalled);
     }
-    
+
     [Fact]
     public async Task ShouldRegisterUserWithErrorAlreadyExists()
     {
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
-        
+
+        identityStuff.UserStore
+            .Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => IdentityResult.Success);
+
         var sendCalled = false;
-        
+
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
-        
-        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
+            new FakeStringLocalizer(),
             messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
@@ -105,31 +114,34 @@ public class TestsRegisterService
             Password = password,
             PasswordConfirm = password
         });
-        
+
         Assert.False(res.Success);
         Assert.Equal("register.userEmailAlreadyExists", res.Errors.Single());
         Assert.False(sendCalled);
     }
-    
+
     [Fact]
     public async Task ShouldRegisterUserWithErrorPasswordDoesNotMatch()
     {
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
-        
+
+        identityStuff.UserStore
+            .Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => IdentityResult.Success);
+
         var sendCalled = false;
-        
+
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(user.Email, It.IsAny<string>(),
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
-        
-        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
+            new FakeStringLocalizer(),
             messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
@@ -138,12 +150,12 @@ public class TestsRegisterService
             Password = password,
             PasswordConfirm = "bad_password"
         });
-        
+
         Assert.False(res.Success);
         Assert.Equal("register.passwordDoesNotMatch", res.Errors.Single());
         Assert.False(sendCalled);
     }
-    
+
     [Fact]
     public async Task ShouldRegisterUserWithErrorPasswordNotStrongEnough()
     {
@@ -151,17 +163,20 @@ public class TestsRegisterService
         const string email = MockHelpers.TestEmail;
 
         var identityStuff = MockHelpers.MockIdentityStuff(null);
-        
-        identityStuff.UserStore.Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>())).ReturnsAsync(() =>IdentityResult.Success);
-        
+
+        identityStuff.UserStore
+            .Setup(u => u.CreateAsync(It.IsAny<NuagesApplicationUser<string>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(() => IdentityResult.Success);
+
         var sendCalled = false;
-        
+
         var messageService = new Mock<IMessageService>();
         messageService.Setup(m => m.SendEmailUsingTemplate(email, It.IsAny<string>(),
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
-        
-        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager, new FakeStringLocalizer(),
+
+        var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
+            new FakeStringLocalizer(),
             messageService.Object, Options.Create(identityStuff.NuagesOptions));
 
         var res = await registerService.Register(new RegisterModel
@@ -170,7 +185,7 @@ public class TestsRegisterService
             Password = password,
             PasswordConfirm = password
         });
-        
+
         Assert.False(res.Success);
         Assert.Equal("identity.PasswordRequiresNonAlphanumeric", res.Errors[0]);
         Assert.Equal("identity.PasswordRequiresDigit", res.Errors[1]);

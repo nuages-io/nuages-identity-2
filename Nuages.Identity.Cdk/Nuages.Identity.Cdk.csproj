@@ -17,8 +17,8 @@
 
     <ItemGroup>
         <!-- CDK Construct Library dependencies -->
-        <PackageReference Include="Amazon.CDK.Lib" Version="2.12.0" />
-        <PackageReference Include="Constructs" Version="10.0.60" />
+        <PackageReference Include="Amazon.CDK.Lib" Version="2.12.0"/>
+        <PackageReference Include="Constructs" Version="10.0.60"/>
 
         <!-- jsii Roslyn analyzers (un-comment to obtain compile-time checks for missing required props
         <PackageReference Include="Amazon.Jsii.Analyzers" Version="*" PrivateAssets="all" />
@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="../README.md" Pack="true" PackagePath="\" />
+        <None Include="../README.md" Pack="true" PackagePath="\"/>
         <None Include="../LICENSE">
             <Pack>true</Pack>
             <PackagePath>/</PackagePath>

@@ -33,8 +33,7 @@ var App =
                             if (res.success) {
                                 self.email = null;
                                 self.status = "done";
-                                setTimeout(function()
-                                {
+                                setTimeout(function () {
                                     email.focus();
                                 });
                             } else
@@ -76,10 +75,10 @@ var App =
         watch: {
             email(value) {
                 this.errors = [];
-                
+
                 if (value != null)
                     this.status = "";
-                
+
                 email.setCustomValidity("");
             }
         }

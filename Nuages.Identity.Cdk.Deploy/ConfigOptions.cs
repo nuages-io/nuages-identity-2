@@ -1,5 +1,3 @@
-
-
 // ReSharper disable ClassNeverInstantiated.Global
 
 using System.Diagnostics.CodeAnalysis;
@@ -13,6 +11,6 @@ public class ConfigOptions
 
     public string DomainName { get; set; } = string.Empty;
     public string DomainNameApi { get; set; } = string.Empty;
-    
+
     public string CertificateArn { get; set; } = string.Empty;
 }

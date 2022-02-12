@@ -1,7 +1,5 @@
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
@@ -14,27 +12,26 @@ using Nuages.Web.Utilities;
 
 namespace Nuages.Identity.Services;
 
-
 public static class NuagesIdentityConfigExtensions
 {
     public static IdentityBuilder AddNuagesIdentityServices(this IdentityBuilder builder, IConfiguration configuration,
         Action<NuagesIdentityOptions> configure)
     {
         var services = builder.Services;
-        
+
         services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
-        
+
         services.AddSenderClient(configuration);
-        
+
         services.Configure(configure);
 
-        
+
         var userType = builder.UserType;
         var totpProvider = typeof(PasswordlessLoginProvider<>).MakeGenericType(userType);
         builder.AddTokenProvider("PasswordlessLoginProvider", totpProvider);
-        
+
         services.AddScoped<IEmailValidator, EmailValidator>();
-        
+
         //Anonymous
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
@@ -45,7 +42,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
         services.AddScoped<IPasswordlessService, PasswordlessService>();
         services.AddScoped<ISMSSendCodeService, SMSSendCodeService>();
-        
+
         //Manage
         services.AddScoped<IChangeEmailService, ChangeEmailService>();
         services.AddScoped<IChangeUserNameService, ChangeUserNameService>();
@@ -55,10 +52,10 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<ISendEmailChangeConfirmationService, SendEmailChangeConfirmationService>();
         services.AddScoped<IMFAService, MFAService>();
         services.AddScoped<IProfileService, ProfileService>();
-        
+
         services.AddScoped<IMessageService, MessageService>();
-        
-       
+
+
         return builder;
     }
 
@@ -70,6 +67,5 @@ public static class NuagesIdentityConfigExtensions
             .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme);
 
         return builder;
-
     }
 }

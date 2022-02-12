@@ -18,10 +18,7 @@ public partial class NuagesIdentityCdkStack
     {
         var role = CreateWebUiRole();
 
-        if (string.IsNullOrEmpty(AssetUi))
-        {
-            throw new Exception("AssetUi must be assigned");
-        }
+        if (string.IsNullOrEmpty(AssetUi)) throw new Exception("AssetUi must be assigned");
 
         // ReSharper disable once UnusedVariable
         var func = new Function(this, "WebUI", new FunctionProps
@@ -43,9 +40,10 @@ public partial class NuagesIdentityCdkStack
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));
 
         func.AddEventSource(new ApiEventSource("ANY", "/"));
-        
 
-        var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("WebUI"));
+
+        var webApi = (RestApi)Node.Children.Single(c =>
+            c.GetType() == typeof(RestApi) && ((RestApi)c).RestApiName.Contains("WebUI"));
 
         // var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
         // var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
@@ -64,7 +62,7 @@ public partial class NuagesIdentityCdkStack
         //      },
         //      //©©HealthCheckTags = null
         //  });
-        
+
         var domainName = (string)Node.TryGetContext("DomainName");
 
         if (!string.IsNullOrEmpty(domainName))
@@ -122,7 +120,6 @@ public partial class NuagesIdentityCdkStack
             throw new Exception("DomainName must be provided");
         }
     }
-    
 
 
     private Role CreateWebUiRole()
@@ -141,6 +138,4 @@ public partial class NuagesIdentityCdkStack
         role.AddManagedPolicy(CreateXrayRolePolicy("UI"));
         return role;
     }
-
-    
 }

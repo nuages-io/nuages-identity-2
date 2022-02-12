@@ -1,13 +1,13 @@
 
 
-            <div class="mt-4 pl-4" v-if="errors.length > 0" v-show="errors.length > 0" style="display: none">
-                <ul class="text-red-800 mb-3">
-                    <li class="flex " v-for="error in errors">
+<div class="mt-4 pl-4" v-if="errors.length > 0" v-show="errors.length > 0" style="display: none">
+    <ul class="text-red-800 mb-3">
+        <li class="flex " v-for="error in errors">
 
-                        <i class="fas fa-exclamation-circle text-red-700 hover:text-red-700 mt-1 mb-2"></i>
-                        <div class="ml-2 mr-2 mb-2">
-                            {{error.message}}
-                        </div>
-                    </li>
-                </ul>
+            <i class="fas fa-exclamation-circle text-red-700 hover:text-red-700 mt-1 mb-2"></i>
+            <div class="ml-2 mr-2 mb-2">
+                {{error.message}}
             </div>
+        </li>
+    </ul>
+</div>

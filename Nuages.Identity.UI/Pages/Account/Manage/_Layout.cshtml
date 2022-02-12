@@ -1,6 +1,6 @@
-﻿@using Nuages.AspNetIdentity
+﻿@using Nuages.Web.Recaptcha
 @using Nuages.AspNetIdentity.Core
-@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 @inject IOptions<NuagesIdentityOptions> IdentityOptions
 
 <!DOCTYPE html>
@@ -13,12 +13,12 @@
     <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/tailwind-output.css"/>
     <script src="https://kit.fontawesome.com/70b74b4315.js" crossorigin="anonymous"></script>
-    
+
 </head>
 <body class="w-full">
 
 <div class="w-full">
-     <partial name="_NavBar"/>
+    <partial name="_NavBar"/>
     <div class="min-h-full flex flex-col justify-start max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mt-6">
@@ -26,7 +26,6 @@
 
             <div class="flex flex-row">
                 <div class="basis-1/4">
-
 
 
                     <partial name="_LeftMenu"/>

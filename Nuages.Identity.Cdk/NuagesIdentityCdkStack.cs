@@ -8,41 +8,46 @@ namespace Nuages.Identity.CDK;
 [ExcludeFromCodeCoverage]
 public partial class NuagesIdentityCdkStack : Stack
 {
-    protected string AssetUi { get; set; } = "";
-    
-    protected string AssetApi { get; set; } = "";
-    
     // ReSharper disable once MemberCanBeProtected.Global
-    public NuagesIdentityCdkStack(Construct scope, string id, IStackProps props ) : base(scope, id, props)
+    public NuagesIdentityCdkStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
     {
-            
     }
+
+    protected string AssetUi { get; set; } = "";
+
+    protected string AssetApi { get; set; } = "";
 
     public void CreateTemplate()
     {
         CreateWebApi();
         CreateWebUi();
     }
-        
 
-    private ManagedPolicy CreateLambdaBasicExecutionRolePolicy(string suffix )
+
+    private ManagedPolicy CreateLambdaBasicExecutionRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("LambdaBasicExecutionRole" + suffix), new ManagedPolicyProps
         {
             Document = new PolicyDocument(new PolicyDocumentProps
             {
-                Statements = new []{ new PolicyStatement(new PolicyStatementProps
+                Statements = new[]
                 {
-                    Effect = Effect.ALLOW,
-                    Actions = new []{"logs:CreateLogGroup",
-                        "logs:CreateLogStream",
-                        "logs:PutLogEvents"},
-                    Resources = new []{"*"}
-                })}
+                    new PolicyStatement(new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[]
+                        {
+                            "logs:CreateLogGroup",
+                            "logs:CreateLogStream",
+                            "logs:PutLogEvents"
+                        },
+                        Resources = new[] { "*" }
+                    })
+                }
             })
         });
     }
-      
+
     private static string GetBaseDomain(string domainName)
     {
         var tokens = domainName.Split('.');
@@ -50,96 +55,114 @@ public partial class NuagesIdentityCdkStack : Stack
         if (tokens.Length != 3)
             return domainName;
 
-        var tok  = new List<string>(tokens);
+        var tok = new List<string>(tokens);
         var remove = tokens.Length - 2;
         tok.RemoveRange(0, remove);
 
-        return tok[0] + "." + tok[1];                                
+        return tok[0] + "." + tok[1];
     }
-    
+
     // ReSharper disable once InconsistentNaming
-    private ManagedPolicy CreateSESRolePolicy(string suffix )
+    private ManagedPolicy CreateSESRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("SESRole" + suffix), new ManagedPolicyProps
         {
             Document = new PolicyDocument(new PolicyDocumentProps
             {
-                Statements = new []{ new PolicyStatement(new PolicyStatementProps
+                Statements = new[]
                 {
-                    Effect = Effect.ALLOW,
-                    Actions = new []{"ses:*"},
-                    Resources = new []{"*"}
-                })}
+                    new PolicyStatement(new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] { "ses:*" },
+                        Resources = new[] { "*" }
+                    })
+                }
             })
         });
     }
-    
-    private ManagedPolicy CreateSnsRolePolicy(string suffix )
+
+    private ManagedPolicy CreateSnsRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("SNSRole" + suffix), new ManagedPolicyProps
         {
             Document = new PolicyDocument(new PolicyDocumentProps
             {
-                Statements = new []{ new PolicyStatement(new PolicyStatementProps
+                Statements = new[]
                 {
-                    Effect = Effect.ALLOW,
-                    Actions = new []{"sns:*"},
-                    Resources = new []{"*"}
-                })}
+                    new PolicyStatement(new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] { "sns:*" },
+                        Resources = new[] { "*" }
+                    })
+                }
             })
         });
     }
 
-    private ManagedPolicy CreateSystemsManagerParametersRolePolicy(string suffix )
+    private ManagedPolicy CreateSystemsManagerParametersRolePolicy(string suffix)
     {
-        return new ManagedPolicy(this, MakeId("SystemsManagerParametersRole"+ suffix), new ManagedPolicyProps
+        return new ManagedPolicy(this, MakeId("SystemsManagerParametersRole" + suffix), new ManagedPolicyProps
         {
             Document = new PolicyDocument(new PolicyDocumentProps
             {
-                Statements = new []{ new PolicyStatement(new PolicyStatementProps
+                Statements = new[]
                 {
-                    Effect = Effect.ALLOW,
-                    Actions = new []{"ssm:GetParametersByPath", "ssm:PutParameter"},
-                    Resources = new []{"*"}
-                })}
+                    new PolicyStatement(new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] { "ssm:GetParametersByPath", "ssm:PutParameter" },
+                        Resources = new[] { "*" }
+                    })
+                }
             })
         });
     }
-    
-    
+
+
     private ManagedPolicy CreateS3RolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("S3Role" + suffix), new ManagedPolicyProps
         {
             Document = new PolicyDocument(new PolicyDocumentProps
             {
-                Statements = new []{ new PolicyStatement(new PolicyStatementProps
+                Statements = new[]
                 {
-                    Effect = Effect.ALLOW,
-                    Actions = new []{"s3:*",
-                        "s3-object-lambda:*"},
-                    Resources = new []{"*"}
-                })}
+                    new PolicyStatement(new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[]
+                        {
+                            "s3:*",
+                            "s3-object-lambda:*"
+                        },
+                        Resources = new[] { "*" }
+                    })
+                }
             })
         });
     }
-    
+
     private ManagedPolicy CreateXrayRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("Xray" + suffix), new ManagedPolicyProps
         {
             Document = new PolicyDocument(new PolicyDocumentProps
             {
-                Statements = new []{ new PolicyStatement(new PolicyStatementProps
+                Statements = new[]
                 {
-                    Effect = Effect.ALLOW,
-                    Actions = new []{"xray:*"},
-                    Resources = new []{"*"}
-                })}
+                    new PolicyStatement(new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] { "xray:*" },
+                        Resources = new[] { "*" }
+                    })
+                }
             })
         });
     }
-    
+
     private IManagedPolicy CreateLambdaFullAccessRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("LambdaFullAccessRole" + suffix), new ManagedPolicyProps
@@ -213,5 +236,4 @@ public partial class NuagesIdentityCdkStack : Stack
     {
         return $"{StackName}-{id}";
     }
-
 }

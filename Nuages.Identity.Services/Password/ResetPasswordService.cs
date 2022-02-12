@@ -1,7 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
-
 using Nuages.AspNetIdentity.Core;
 
 
@@ -11,34 +10,30 @@ namespace Nuages.Identity.Services.Password;
 
 public class ResetPasswordService : IResetPasswordService
 {
-    private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
+    private readonly NuagesUserManager _userManager;
 
     public ResetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _localizer = localizer;
     }
-    
+
     public async Task<ResetPasswordResultModel> Reset(ResetPasswordModel model)
     {
         if (model.Password != model.PasswordConfirm)
-        {
             return new ResetPasswordResultModel
             {
                 Success = false,
                 Errors = new List<string> { _localizer.GetString("resetPassword:passwordConfirmDoesNotMatch") }
             };
-        }
-        
+
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
-        {
             return new ResetPasswordResultModel
             {
                 Success = true //Fake Success
             };
-        }
 
         var c = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Code));
 
@@ -46,15 +41,15 @@ public class ResetPasswordService : IResetPasswordService
         if (result.Succeeded)
         {
             user.UserMustChangePassword = false;
-            
+
             await _userManager.UpdateAsync(user);
-            
+
             return new ResetPasswordResultModel
             {
                 Success = true
             };
         }
-        
+
         var res = new ResetPasswordResultModel
         {
             Success = false,
@@ -81,6 +76,7 @@ public class ResetPasswordModel
 public class ResetPasswordResultModel
 {
     public bool Success { get; set; }
+
     // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
 }

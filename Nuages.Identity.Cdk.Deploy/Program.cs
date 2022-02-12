@@ -19,17 +19,17 @@ sealed class Program
         var configManager = new ConfigurationManager();
 
         var builder = configManager
-            .AddJsonFile("appsettings.json",  false, true)
-            .AddJsonFile("appsettings.prod.json",  false, true)
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.prod.json", false, true)
             .AddEnvironmentVariables();
-        
+
         var configuration = builder.Build();
 
         var options = configuration.Get<ConfigOptions>();
-            
+
         var app = new App();
-            
-            
+
+
         var stack = new MyNuagesSenderCdkStack(app, options.StackName, new StackProps
         {
             Env = new Environment
@@ -38,13 +38,13 @@ sealed class Program
                 Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
             }
         });
-            
-        stack.Node.SetContext("DomainName",  options.DomainName);
-        stack.Node.SetContext("DomainNameApi",  options.DomainNameApi);
-        stack.Node.SetContext("CertificateArn",  options.CertificateArn);
-        
+
+        stack.Node.SetContext("DomainName", options.DomainName);
+        stack.Node.SetContext("DomainNameApi", options.DomainNameApi);
+        stack.Node.SetContext("CertificateArn", options.CertificateArn);
+
         stack.CreateTemplate();
-            
+
         app.Synth();
     }
 }

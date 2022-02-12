@@ -5,8 +5,8 @@ namespace Nuages.Identity.Services;
 
 public static class IdentityResultExtensions
 {
-   public static List<string> Localize(this IEnumerable<IdentityError> list, IStringLocalizer localizer)
-   {
-      return list.Select(e => localizer[$"identity.{e.Code}"].Value).ToList();
-   }
+    public static List<string> Localize(this IEnumerable<IdentityError> list, IStringLocalizer localizer)
+    {
+        return list.Select(e => localizer[$"identity.{e.Code}"].Value).ToList();
+    }
 }

@@ -1,10 +1,8 @@
-
 using System.Text;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
@@ -14,24 +12,26 @@ namespace Nuages.Identity.UI.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-
 public class ManageController : Controller
 {
     private readonly IChangePasswordService _changePasswordService;
-    private readonly NuagesUserManager _userManager;
-    private readonly NuagesSignInManager _signInManager;
-    private readonly ISendEmailChangeConfirmationService _sendEmailChangedConfirmationService;
     private readonly IChangeUserNameService _changeUserNameService;
+    private readonly ILogger<ManageController> _logger;
     private readonly IMFAService _mfaService;
     private readonly IChangePhoneNumberService _phoneNumberService;
-    private readonly ISendSMSVerificationCodeService _sendSmsVerificationCode;
     private readonly IProfileService _profileService;
-    private readonly ILogger<ManageController> _logger;
+    private readonly ISendEmailChangeConfirmationService _sendEmailChangedConfirmationService;
+    private readonly ISendSMSVerificationCodeService _sendSmsVerificationCode;
+    private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _stringLocalizer;
+    private readonly NuagesUserManager _userManager;
 
-    public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager, NuagesSignInManager signInManager,
-        ISendEmailChangeConfirmationService sendEmailChangedConfirmationService, IChangeUserNameService changeUserNameService,
-        IMFAService mfaService, IChangePhoneNumberService phoneNumberService, ISendSMSVerificationCodeService sendSmsVerificationCode,
+    public ManageController(IChangePasswordService changePasswordService, NuagesUserManager userManager,
+        NuagesSignInManager signInManager,
+        ISendEmailChangeConfirmationService sendEmailChangedConfirmationService,
+        IChangeUserNameService changeUserNameService,
+        IMFAService mfaService, IChangePhoneNumberService phoneNumberService,
+        ISendSMSVerificationCodeService sendSmsVerificationCode,
         IProfileService profileService,
         ILogger<ManageController> logger, IStringLocalizer stringLocalizer)
     {
@@ -47,7 +47,7 @@ public class ManageController : Controller
         _logger = logger;
         _stringLocalizer = stringLocalizer;
     }
-    
+
     [HttpPost("changePassword")]
     public async Task<ChangePasswordResultModel> ChangePasswordAsync([FromBody] ChangePasswordModel model)
     {
@@ -55,10 +55,12 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePasswordAsync");
 
-            _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
+            _logger.LogInformation(
+                $"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
-            var res = await _changePasswordService.ChangePasswordAsync(User.Sub()!, model.CurrentPassword, model.NewPassword, model.NewPasswordConfirm);
-            
+            var res = await _changePasswordService.ChangePasswordAsync(User.Sub()!, model.CurrentPassword,
+                model.NewPassword, model.NewPasswordConfirm);
+
             _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
 
             if (res.Success)
@@ -66,52 +68,18 @@ public class ManageController : Controller
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
                 await _signInManager.RefreshSignInAsync(user);
             }
-            
-            return res;
-        }
-        catch (Exception e)
-        {
-            AWSXRayRecorder.Instance.AddException(e);
-            _logger.LogError(e, e.Message);
-            
-            return new ChangePasswordResultModel
-            {
-                Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
-            };
-        }
-        finally
-        {
-           AWSXRayRecorder.Instance.EndSubsegment();
-        }
-    }
-    
-    [HttpPost("setPassword")]
-    public async Task<ChangePasswordResultModel> SetPasswordAsync([FromBody] ChangePasswordModel model)
-    {
-        try
-        {
-            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SetPasswordAsync");
-
-            _logger.LogInformation($"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
-
-            var res = await _changePasswordService.AddPasswordAsync(User.Sub()!, model.NewPassword, model.NewPasswordConfirm);
-            
-            _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
 
             return res;
         }
         catch (Exception e)
         {
             AWSXRayRecorder.Instance.AddException(e);
-           
             _logger.LogError(e, e.Message);
-            
-            
+
             return new ChangePasswordResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -119,7 +87,43 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
+    [HttpPost("setPassword")]
+    public async Task<ChangePasswordResultModel> SetPasswordAsync([FromBody] ChangePasswordModel model)
+    {
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SetPasswordAsync");
+
+            _logger.LogInformation(
+                $"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
+
+            var res = await _changePasswordService.AddPasswordAsync(User.Sub()!, model.NewPassword,
+                model.NewPasswordConfirm);
+
+            _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
+
+            return res;
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            _logger.LogError(e, e.Message);
+
+
+            return new ChangePasswordResultModel
+            {
+                Success = false,
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
+            };
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+    }
+
     [HttpPost("sendEmailChange")]
     public async Task<SendEmailChangeResultModel> SendEmailChangeMessageAsync([FromBody] SendEmailChangeModel model)
     {
@@ -135,11 +139,11 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new SendEmailChangeResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -155,7 +159,7 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangeUsernameAsync");
-            
+
             var res = await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
 
             if (res.Success)
@@ -163,18 +167,18 @@ public class ManageController : Controller
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
                 await _signInManager.RefreshSignInAsync(user);
             }
-            
+
             return res;
         }
         catch (Exception e)
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new ChangeUserNameResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -182,7 +186,7 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpDelete("disable2Fa")]
     [AllowAnonymous]
     public async Task<DisableMFAResultModel> Disable2FaAsync()
@@ -190,26 +194,26 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Disable2FaAsync");
-            
+
             var res = await _mfaService.DisableMFAAsync(User.Sub()!);
 
-            
+
             return res;
         }
         catch (Exception e)
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new DisableMFAResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
         {
-           AWSXRayRecorder.Instance.EndSubsegment();
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -220,7 +224,7 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.Enable2FaAsync");
-            
+
             var res = await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
 
             if (res.Success)
@@ -228,18 +232,18 @@ public class ManageController : Controller
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
                 await _signInManager.RefreshSignInAsync(user);
             }
-            
+
             return res;
         }
         catch (Exception e)
         {
-           AWSXRayRecorder.Instance.AddException(e);
+            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new MFAResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -247,7 +251,7 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpDelete("removePhone")]
     [AllowAnonymous]
     public async Task<ChangePhoneNumberResultModel> RemovePhoneAsync()
@@ -255,7 +259,7 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.RemovePhoneAsync");
-            
+
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, "", null);
 
             if (res.Success)
@@ -263,18 +267,18 @@ public class ManageController : Controller
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
                 await _signInManager.RefreshSignInAsync(user);
             }
-            
+
             return res;
         }
         catch (Exception e)
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new ChangePhoneNumberResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -282,15 +286,16 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpPost("sendPhoneChangeMessage")]
     [AllowAnonymous]
-    public async Task<SendSMSVerificationCodeResultModel> SendPhoneChangeVerificationAsync([FromBody] SendSMSVerificationCodeModel model)
+    public async Task<SendSMSVerificationCodeResultModel> SendPhoneChangeVerificationAsync(
+        [FromBody] SendSMSVerificationCodeModel model)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SendPhoneChangeVerificationAsync");
-            
+
             var res = await _sendSmsVerificationCode.SendCode(User.Sub()!, model.PhoneNumber);
 
             return res;
@@ -299,11 +304,11 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new SendSMSVerificationCodeResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -311,7 +316,7 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpPost("changePhoneNumber")]
     [AllowAnonymous]
     public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync([FromBody] ChangePhoneNumberModel model)
@@ -319,7 +324,7 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ChangePhoneNumberAsync");
-            
+
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
 
             return res;
@@ -328,11 +333,11 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new ChangePhoneNumberResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -340,7 +345,7 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpGet("downloadRecoveryCodes")]
     public async Task<ActionResult> DownloadRecoveryCodesAsync()
     {
@@ -362,10 +367,8 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.EndSubsegment();
         }
-        
-      
     }
-    
+
     [HttpPost("resetRecoveryCodes")]
     public async Task<MFAResultModel> ResetRecoveryCodesAsync()
     {
@@ -379,11 +382,11 @@ public class ManageController : Controller
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new MFAResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally
@@ -391,7 +394,7 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpPost("forgetBrowser")]
     public async Task<bool> ForgetBrowserAsync()
     {
@@ -400,14 +403,14 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.ForgetBrowserAsync");
 
             await _signInManager.ForgetTwoFactorClientAsync();
-            
+
             return true;
         }
         catch (Exception e)
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return false;
         }
         finally
@@ -415,25 +418,25 @@ public class ManageController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpPost("saveProfile")]
     public async Task<SaveProfileResultModel> SaveProfileAsync([FromBody] SaveProfileModel model)
     {
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("ManageController.SaveProfileAsync");
-            
+
             return await _profileService.SaveProfile(User.Sub()!, model);
         }
         catch (Exception e)
         {
             AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
-            
+
             return new SaveProfileResultModel
             {
                 Success = false,
-                Errors = new List<string> { _stringLocalizer["errorMessage:exception"]}
+                Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
         }
         finally

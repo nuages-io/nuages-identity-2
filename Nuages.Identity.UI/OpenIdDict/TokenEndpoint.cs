@@ -4,18 +4,18 @@ using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI.OpenIdDict;
 
-public class TokenEndpoint  : ITokenEndpoint
+public class TokenEndpoint : ITokenEndpoint
 {
     private readonly IAuthorizationCodeFlowHandler _codeFlowHandler;
+    private readonly IHttpContextAccessor _contextAccessor;
     private readonly IClientCredentialsFlowHandler _credentialsFlowHandler;
     private readonly IDeviceFlowHandler _deviceFlowHandler;
     private readonly IPasswordFlowHandler _passwordFlowHandler;
-    private readonly IHttpContextAccessor _contextAccessor;
 
-    public TokenEndpoint( IAuthorizationCodeFlowHandler codeFlowHandler,
+    public TokenEndpoint(IAuthorizationCodeFlowHandler codeFlowHandler,
         IClientCredentialsFlowHandler credentialsFlowHandler,
         IDeviceFlowHandler deviceFlowHandler,
-        IPasswordFlowHandler  passwordFlowHandler, IHttpContextAccessor contextAccessor)
+        IPasswordFlowHandler passwordFlowHandler, IHttpContextAccessor contextAccessor)
     {
         _codeFlowHandler = codeFlowHandler;
         _credentialsFlowHandler = credentialsFlowHandler;
@@ -23,6 +23,7 @@ public class TokenEndpoint  : ITokenEndpoint
         _passwordFlowHandler = passwordFlowHandler;
         _contextAccessor = contextAccessor;
     }
+
     public async Task<IActionResult> Exchange()
     {
         var request = _contextAccessor.HttpContext!.GetOpenIddictServerRequest() ??

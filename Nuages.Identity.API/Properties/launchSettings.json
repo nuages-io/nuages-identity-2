@@ -1,8 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/launchsettings.json",
-
   "profiles": {
-
     "Nuages.Identity.API": {
       "commandName": "Project",
       "launchBrowser": true,

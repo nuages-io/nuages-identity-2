@@ -1,6 +1,7 @@
 ﻿@page
+@using Nuages.Web.Recaptcha
 @model ExternalLoginModel
-@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 
 @{
     ViewData["Title"] = Localizer["externalLogin:title"];

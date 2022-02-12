@@ -3,22 +3,22 @@ var App =
         data() {
             return {
                 password: "",
-                confirmPassword : "",
+                confirmPassword: "",
                 errors: [],
                 status: ""
             }
         },
         mounted() {
-            password.focus();              
+            password.focus();
         },
         methods:
             {
                 doSetPassword: function () {
-                    var self = this;                    
-                    
+                    var self = this;
+
                     var p = self.password;
                     var c = self.passwordConfirm;
-                                                           
+
                     fetch("/api/manage/setPassword", {
                         method: "POST",
                         headers: {
@@ -32,40 +32,37 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-                            
+
                             if (res.success) {
-                                
+
                                 self.password = null;
                                 self.passwordConfirm = null;
-                                
+
                                 self.status = "done";
                                 self.errors = [];
-                                
-                                setTimeout(function()
-                                {
+
+                                setTimeout(function () {
                                     password.focus();
                                 })
-                            }
-                            else
-                            {
+                            } else {
                                 self.status = "error";
-                                var err = res.errors.map(function(m) {
-                                    return { message : m}
+                                var err = res.errors.map(function (m) {
+                                    return {message: m}
                                 });
                                 self.errors = err;
                             }
                         });
                 },
                 setPassword: function () {
-                   
+
                     var self = this;
-                    
+
                     this.errors = [];
                     formSetPassword.classList.remove("was-validated");
-                                     
+
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
-                    
+
                     var res = formSetPassword.checkValidity();
                     if (res) {
                         this.status = "sending";
@@ -86,13 +83,13 @@ var App =
 
                         list.forEach((element) => {
 
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
                     }
                 }
             },
         watch: {
-          
+
             password(value) {
                 this.errors = this.errors.filter(a => a.id !== "password");
                 if (value != null)

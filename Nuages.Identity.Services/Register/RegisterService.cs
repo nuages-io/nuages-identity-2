@@ -2,7 +2,6 @@ using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 
@@ -10,50 +9,46 @@ namespace Nuages.Identity.Services.Register;
 
 public class RegisterService : IRegisterService
 {
-    private readonly NuagesUserManager _userManager;
-    private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _localizer;
     private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly NuagesUserManager _userManager;
 
-    public RegisterService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer, 
+    public RegisterService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer,
         IMessageService messageService, IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _localizer = localizer;
-     
+
         _messageService = messageService;
         _options = options.Value;
     }
-    
+
     public async Task<RegisterResultModel> Register(RegisterModel model)
     {
         if (model.Password != model.PasswordConfirm)
-        {
             return new RegisterResultModel
             {
                 Success = false,
-                Errors =new List<string>{ _localizer["register.passwordDoesNotMatch"]}
+                Errors = new List<string> { _localizer["register.passwordDoesNotMatch"] }
             };
-        }
 
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user != null)
-        {
             return new RegisterResultModel
             {
                 Success = false,
-                Errors =new List<string> {_localizer["register.userEmailAlreadyExists"]}
+                Errors = new List<string> { _localizer["register.userEmailAlreadyExists"] }
             };
-        }
 
         user = new NuagesApplicationUser<string>
         {
             Email = model.Email,
             UserName = model.Email
         };
-        
+
         var res = await _userManager.CreateAsync(user, model.Password);
 
         if (res.Succeeded)
@@ -62,7 +57,7 @@ public class RegisterService : IRegisterService
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
             var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
-            
+
             if (_userManager.Options.SignIn.RequireConfirmedEmail)
             {
                 _messageService.SendEmailUsingTemplate(model.Email, "Confirm_Email", new Dictionary<string, string>
@@ -76,7 +71,7 @@ public class RegisterService : IRegisterService
                     Success = true
                 };
             }
-            
+
             await _signInManager.SignInAsync(user, false);
 
             return new RegisterResultModel
@@ -105,6 +100,7 @@ public class RegisterModel
     public string Password { get; set; } = string.Empty;
     public string PasswordConfirm { get; set; } = string.Empty;
 }
+
 public class RegisterResultModel
 {
     public bool Success { get; set; }

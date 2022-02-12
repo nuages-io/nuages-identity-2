@@ -23,11 +23,11 @@
                 <select v-model="dialCode">
                     @foreach (var c in Model.Codes)
                     {
-                        <option value="@c.dial_code">@(c.name + " (" + c.dial_code + ")")</option>        
+                        <option value="@c.dial_code">@(c.name + " (" + c.dial_code + ")")</option>
                     }
-                    
+
                 </select>
-               
+
                 <input id="phone" name="phone" type="text" autofocus="" v-model="phone" placeholder="@Localizer["addPhone:newPhoneNumber"]" required class="text-box">
                 <button v-on:click.prevent="sendPhoneChangeMessage" class="primary full" :disabled="status == 'sending'">
                     @Localizer["addPhone:sendMessage"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>

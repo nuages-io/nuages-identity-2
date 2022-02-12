@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 using Nuages.Web;
@@ -12,14 +11,14 @@ namespace Nuages.Identity.Services.Login.Passwordless;
 
 public class PasswordlessService : IPasswordlessService
 {
-    private readonly NuagesUserManager _userManager;
-    private readonly NuagesSignInManager _signinManager;
-    private readonly IMessageService _messageService;
     private readonly IStringLocalizer _localizer;
-    private readonly IRuntimeConfiguration _runtimeConfiguration;
+    private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
+    private readonly IRuntimeConfiguration _runtimeConfiguration;
+    private readonly NuagesSignInManager _signinManager;
+    private readonly NuagesUserManager _userManager;
 
-    public PasswordlessService(NuagesUserManager userManager, NuagesSignInManager signinManager, 
+    public PasswordlessService(NuagesUserManager userManager, NuagesSignInManager signinManager,
         IMessageService messageService, IStringLocalizer localizer,
         IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration)
     {
@@ -30,7 +29,7 @@ public class PasswordlessService : IPasswordlessService
         _runtimeConfiguration = runtimeConfiguration;
         _options = options.Value;
     }
-    
+
     public async Task<string> GetPasswordlessUrl(string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
@@ -39,34 +38,21 @@ public class PasswordlessService : IPasswordlessService
 
         return await GetPasswordlessUrl(user);
     }
-    
-    private async Task<string> GetPasswordlessUrl(NuagesApplicationUser<string> user)
-    {
-        var token = await _userManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
-            "passwordless-auth");
-       
-        var baseUrl = _options.Authority;
-        
-        return $"{baseUrl}/account/passwordlessLogin?token={token}&userId={user.Id}";
-
-    }
 
     public async Task<PasswordlessResultModel> LoginPasswordLess(string token, string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
 
-        var isValid = await _userManager.VerifyUserTokenAsync(user, "PasswordlessLoginProvider", "passwordless-auth", token);
+        var isValid =
+            await _userManager.VerifyUserTokenAsync(user, "PasswordlessLoginProvider", "passwordless-auth", token);
         if (!isValid)
-        {
             return new PasswordlessResultModel
             {
                 Success = false
             };
-        }
 
         var result = await _signinManager.CustomPreSignInCheck(user);
         if (result is { Succeeded: false })
-        {
             return new PasswordlessResultModel
             {
                 Result = result,
@@ -74,8 +60,7 @@ public class PasswordlessService : IPasswordlessService
                 Message = _localizer[LoginService.GetMessageKey(user.LastFailedLoginReason)],
                 Success = false
             };
-        }
-        
+
         await UpdateSecurityStampAsync(user);
 
         result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
@@ -87,28 +72,18 @@ public class PasswordlessService : IPasswordlessService
         };
     }
 
-    
-    private async Task UpdateSecurityStampAsync(NuagesApplicationUser<string> user)
-    {
-        if (_userManager.SupportsUserSecurityStamp)
-            await _userManager.UpdateSecurityStampAsync(user);
-    }
-
     public async Task<StartPasswordlessResultModel> StartPasswordless(StartPasswordlessModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
-        {
             return new StartPasswordlessResultModel
             {
                 Success = true //Fake success
             };
-        }
 
         var result = await _signinManager.CustomPreSignInCheck(user);
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         if (result is { Succeeded: false })
-        {
             return new StartPasswordlessResultModel
             {
                 Result = result,
@@ -116,13 +91,12 @@ public class PasswordlessService : IPasswordlessService
                 Message = _localizer[LoginService.GetMessageKey(user.LastFailedLoginReason)],
                 Success = false
             };
-        }
-        
+
         var url = await GetPasswordlessUrl(user);
 
         _messageService.SendEmailUsingTemplate(user.Email, "Passwordless_Login", new Dictionary<string, string>
         {
-            { "Link", url}
+            { "Link", url }
         });
 
         return new StartPasswordlessResultModel
@@ -130,6 +104,23 @@ public class PasswordlessService : IPasswordlessService
             Url = _runtimeConfiguration.IsTest ? url : null,
             Success = true
         };
+    }
+
+    private async Task<string> GetPasswordlessUrl(NuagesApplicationUser<string> user)
+    {
+        var token = await _userManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
+            "passwordless-auth");
+
+        var baseUrl = _options.Authority;
+
+        return $"{baseUrl}/account/passwordlessLogin?token={token}&userId={user.Id}";
+    }
+
+
+    private async Task UpdateSecurityStampAsync(NuagesApplicationUser<string> user)
+    {
+        if (_userManager.SupportsUserSecurityStamp)
+            await _userManager.UpdateSecurityStampAsync(user);
     }
 }
 
@@ -159,18 +150,17 @@ public class StartPasswordlessResultModel
     public string? Message { get; set; }
     public SignInResult Result { get; set; } = null!;
     public FailedLoginReason? Reason { get; set; }
-    
+
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 
     public string? Url { get; set; }
 }
 
-
 public class GetPasswordlessUrlResultModel
 {
     public bool Success { get; set; }
     public string Url { get; set; } = string.Empty;
-    
+
     public string? Message { get; set; }
 }

@@ -1,266 +1,266 @@
 {
-	"2fa": {
-		"activate": "Activate",
-		"active": "Two-factor authentication is enabled.",
-		"addPhone": "Add falback phone number",
-		"clearPhoneConfirm": "Are you sure you want to clear the phone number?",
-		"clearPhoneTitle": "Clear phone number",
-		"copy": "Copy",
-		"deactivate": "Deactivate",
-		"deactivateConfirmation": "Are you sure you want to deactivate Two Factor Authentication?",
-		"deactivateTitle": "Deactivate Two Factor Authentication",
-		"download": "Download",
-		"fallback": "Fallback SMS number",
-		"forgetMachine": "Forget",
-		"forgetMachineInstructions": "You will be asked for a two-factor code at next login.",
-		"hideCodes": "Hide codes",
-		"inactive": "Two-factor authentication is inactive",
-		"instructions": "Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in",
-		"machineRemembered": "This device is remembered. No 2FA code will be asked.",
-		"recoveryCodesInstructions": "Recovery codes can be used to access your account in the event you lose access to your device and cannot receive two-factor authentication codes",
-		"recoveryCodesWarning": "Treat your recovery codes with the same level of attention as you would your password!",
-		"resetCodes": "Reset codes",
-		"resetCodesWarning": "When you generate new recovery codes, you must download or copy the new codes. Your old codes won’t work anymore.",
-		"revoveryCodes": "Recovery codes",
-		"showCodes": "Show codes",
-		"title": "Two-factor authentication"
-	},
-	"addPhone": {
-		"code": "Verification code",
-		"instructions": "Providing a fallback SMS number will allow us to send your two-factor authentication codes to an alternate device if you lose your primary device.",
-		"instructions2": "Enter the verification code we sent you.",
-		"newPhoneNumber": "SMS phone number",
-		"sendMessage": "Add fallback #",
-		"submit": "Verify code",
-		"success": "Fallback SMS number added with success.",
-		"title": "Add a falback SMS number"
-	},
-	"cancel": "Cancel",
-	"changeEmail": {
-		"currentEmail": "Current email",
-		"error": "Email change failed.",
-		"instructions": "Enter the new email. A message will be emailed to your new address to complete the change.",
-		"isNotChanged": "The email has not been changed.",
-		"newEmail": "New email",
-		"seeEmail": "An email has been sent to your new address. You must click on the link included in the email to complete the change.",
-		"submit": "Change email",
-		"success": "The email has been changed successfully.",
-		"title": "Change your email"
-	},
-	"changePassword": {
-		"currentPassword": "Current password",
-		"instructions": "Enter your current password and the new desired password.",
-		"password": "New password",
-		"passwordConfirm": "New password confirmation",
-		"submit": "Change password",
-		"success": "Your password has been successfully changed",
-		"title": "Change your password"
-	},
-	"changePhoneNumber": {
-		"smsMessage": "Verification code is {0}",
-		"title": "Change your phone #"
-	},
-	"changeUsername": {
-		"currentUsername": "Current Username",
-		"instructions": "Enter the desired username. In order to change to another email, you must use the 'Change my email' function.",
-		"mustNotBeAnEmail": "The new username cannot be an email. Use 'Change your email' to select a new email as the username.",
-		"newUserName": "New Username",
-		"submit": "Change Username",
-		"success": "Username changed successfully.",
-		"title": "Change your username"
-	},
-	"clear": "Clear",
-	"confirmEmail": {
-		"error": "Error confirming your email.",
-		"success": "Thank you for confirming your email.",
-		"title": "Confirmation of your email"
-	},
-	"device": {
-		"confirm": "Do you want to grant {0} access to your data? (scopes requested: {1})",
-		"confirmCode": "Make sure that the code displayed on the device is",
-		"error": "Device authorization failed",
-		"instructions": "Enter the user code given by the client application",
-		"rejectIfDifferentMessage": "If the two codes don't match, press \"No\" to reject the authorization demand.",
-		"success": "Device authorization successful.",
-		"title": "Device authorization"
-	},
-	"email": "Email",
-	"emailNotConfirmed": {
-		"message": "Your email has not been confirmed. Check your emails to find the verification email. You can also click on the following button to receive it again.",
-		"seeEmail": "See your email to find the verification messages",
-		"sendAgain": "Resend email",
-		"title": "Unconfirmed email"
-	},
-	"enableAuthenticator": {
-		"downloadApp": " Download a two-factor authenticator app like",
-		"enterKey": "or enter this key",
-		"instructions": "To use an authenticator app go through the following steps",
-		"instructions2": "Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.",
-		"scanCode": "Scan the QR Code ",
-		"submit": "Verify",
-		"title": "Configure authenticator"
-	},
-	"error": "Error",
-	"errorMessage": {
-		"exception": "An unexpected error has occurred",
-		"invalidEmail": "Email is invalid",
-		"no_access": {
-			"AccountNotConfirmed": "You account is not confirmed",
-			"emailNotConfirmed": "Email not confirmed.",
-			"error": "Access denied",
-			"lockedOut": "Your account is locked",
-			"notWithinDateRange": "Your user account is currently inactive "
-		},
-		"recaptchaError": "Recaptcha error",
-		"required": "The [{0}] field is required.",
-		"userNameOrPasswordInvalid": "Invalid username / email or password"
-	},
-	"externalLogin": {
-		"accountCreated": "Your account was created. Please check your emails to find the confirmation message for your email address.",
-		"button": "Register",
-		"emailNotAvailable": "No email available with this login information. Impossible to continue.",
-		"instructions": "You've successfully authenticated with",
-		"instructions2": "Click the \"Register\" button to create your account and continue the login process.",
-		"lockout": "The account is locked",
-		"title": "Register using an external account"
-	},
-	"externalLogins": {
-		"addAnotherService": "Add another service to log in.",
-		"registeredConnections": "Registered connections",
-		"remove": "Remove",
-		"shortTitle": "External logins",
-		"title": "External logins"
-	},
-	"forgotPassword": {
-		"instructions": "Enter the email associated with your account. An email message will be sent to you allowing you to choose a new password.",
-		"reset": "Reset",
-		"seeEmail": "See your email to find the reset messages",
-		"title": "Reset your password"
-	},
-	"go_home": "Back to the home page",
-	"identity": {
-		"DefaultError": "An unknown failure has occured.",
-		"DuplicateEmail": "Email '{0}' is already taken.",
-		"DuplicateName": "Name {0} is already taken.",
-		"ExternalLoginExists": "A user with that external login already exists.",
-		"InvalidEmail": "Email '{0}' is invalid.",
-		"InvalidToken": "Invalid token.",
-		"InvalidUserName": "User name {0} is invalid, can only contain letters or digits.",
-		"LockoutNotEnabled": "Lockout is not enabled for this user.",
-		"NoTokenProvider": "No IUserTokenProvider is registered.",
-		"NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
-		"PasswordMismatch": "Incorrect password.",
-		"PasswordRequireNonLetterOrDigit": "Passwords must have at least one non letter or digit character.",
-		"PasswordRequiresDigit": "Passwords must have at least one digit ('0'-'9').",
-		"PasswordRequiresLower": "Passwords must have at least one lowercase ('a'-'z').",
-		"PasswordRequiresNonAlphanumeric": "Passwords must have at least one non letter or digit character.",
-		"PasswordRequiresUpper": "Passwords must have at least one lowercase letter (\"A\" - \"Z\").",
-		"PasswordTooShort": "Passwords must be at least {0} characters.",
-		"PropertyTooShort": "{0} cannot be null or empty.",
-		"RoleNotFound": "Role {0} does not exist.",
-		"UserAlreadyHasPassword": "User already has a password set.",
-		"UserAlreadyInRole": "User already in role.",
-		"UserIdNotFound": "UserId not found.",
-		"UserNameNotFound": "User {0} does not exist.",
-		"UserNotInRole": "User is not in role."
-	},
-	"login": {
-		"back": "Go to login page",
-		"cantRemember": "This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.",
-		"connect": "Connection",
-		"continueWith": "Or continue with",
-		"forgotPassword": "Forgot Your Password?",
-		"mode": {
-			"email": "Your email",
-			"userNameEmail": "Username or email",
-			"userNameEmailPhone": "Username, email or phone #"
-		},
-		"password": "Password",
-		"passwordless": "Passwordless",
-		"rememberMe": "Remember me",
-		"title": "Log in to your account"
-	},
-	"loginWithSMS": {
-		"connect": "Connection",
-		"instructions": "A text message will be sent to you containing a verification code. This function is only available if you have a verified phone number configured.",
-		"seeSMS": "Verify your text message for the code",
-		"send": "Send code",
-		"title": "SMS Log in"
-	},
-	"logout": {
-		"title": "Log out"
-	},
-	"mfa": {
-		"appNotAvailable": "Don't have access to your authenticator device?",
-		"appNotAvailableRecoveryCodes": "Log in with a recovery code.",
-		"appNotAvailableSMS": "Log in with SMS key",
-		"instructions": "Your login is protected with an authenticator app. Enter your authenticator code below.",
-		"rememberMachine": "Remember this device",
-		"title": "Two-factor authentication"
-	},
-	"or": "or",
-	"password": "Password",
-	"passwordExpired": {
-		"instructions": "Your password has expired or needs to be changed. Choose a new password.",
-		"submit": "Change my password",
-		"title": "Password expired"
-	},
-	"passwordRequirement": {
-		"RequireDigit": "Requires at least 1anumber [0-9]",
-		"RequireLowercase": "Requires a lowercase letter [a-z]",
-		"RequireNonAlphanumeric": "Requires a special character that is not a letter or a number (Ex. $% * # Etc.)",
-		"RequireUppercase": "Requires an uppercase letter [A-Z]",
-		"RequiredLength": "Requires at least {0} characters",
-		"RequiredUniqueChars": "Requires at least {0} different characters",
-		"title": "Password requirements"
-	},
-	"passwordless": {
-		"instructions": "You have requested to log in without a password. A log in link will be sent to you by email.",
-		"message": "[{1}] Verification code is {0}",
-		"seeEmail": "Check your emails to find the passwordless connection link",
-		"send": "Send Link",
-		"title": "Passwordless login"
-	},
-	"profile": {
-		"firstName": "First Name",
-		"lastName": "Last Name",
-		"save": "Save",
-		"success": "The profile has been saved successfully.",
-		"title": "Profile"
-	},
-	"recoveryCode": {
-		"instructions": "You have requested to log in with a recovery code.",
-		"title": "Recovery code verification"
-	},
-	"register": {
-		"accountCreated": "Your account was created. Please check your emails to find the email address confirmation message.",
-		"button": "Register",
-		"continueWith": "Or register with ",
-		"instructions": "Enter your email and choose a password.",
-		"passwordConfirmation": "Password Confirmation",
-		"passwordMustMatch": "Password and confirmation must be the same",
-		"title": "Register"
-	},
-	"resetPassword": {
-		"email": "Your email",
-		"instructions": "Select your new password",
-		"password": "New password",
-		"passwordConfirm": "New password confirmation",
-		"passwordConfirmDoesNotMatch": "Password confirmation does not match",
-		"reset": "Reset",
-		"success": "Your password has been successfully changed.",
-		"title": "Reset password"
-	},
-	"setPassword": {
-		"instructions": "Enter the desired password.",
-		"password": "Password",
-		"passwordConfirm": "Password confirmation",
-		"submit": "Update",
-		"success": "Your password has been successfully added",
-		"title": "Add a password"
-	},
-	"submit": "Submit",
-	"username": "Username",
-	"warning": "Warning!",
-	"yourEmail": "Your email"
+  "2fa": {
+    "activate": "Activate",
+    "active": "Two-factor authentication is enabled.",
+    "addPhone": "Add falback phone number",
+    "clearPhoneConfirm": "Are you sure you want to clear the phone number?",
+    "clearPhoneTitle": "Clear phone number",
+    "copy": "Copy",
+    "deactivate": "Deactivate",
+    "deactivateConfirmation": "Are you sure you want to deactivate Two Factor Authentication?",
+    "deactivateTitle": "Deactivate Two Factor Authentication",
+    "download": "Download",
+    "fallback": "Fallback SMS number",
+    "forgetMachine": "Forget",
+    "forgetMachineInstructions": "You will be asked for a two-factor code at next login.",
+    "hideCodes": "Hide codes",
+    "inactive": "Two-factor authentication is inactive",
+    "instructions": "Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in",
+    "machineRemembered": "This device is remembered. No 2FA code will be asked.",
+    "recoveryCodesInstructions": "Recovery codes can be used to access your account in the event you lose access to your device and cannot receive two-factor authentication codes",
+    "recoveryCodesWarning": "Treat your recovery codes with the same level of attention as you would your password!",
+    "resetCodes": "Reset codes",
+    "resetCodesWarning": "When you generate new recovery codes, you must download or copy the new codes. Your old codes won’t work anymore.",
+    "revoveryCodes": "Recovery codes",
+    "showCodes": "Show codes",
+    "title": "Two-factor authentication"
+  },
+  "addPhone": {
+    "code": "Verification code",
+    "instructions": "Providing a fallback SMS number will allow us to send your two-factor authentication codes to an alternate device if you lose your primary device.",
+    "instructions2": "Enter the verification code we sent you.",
+    "newPhoneNumber": "SMS phone number",
+    "sendMessage": "Add fallback #",
+    "submit": "Verify code",
+    "success": "Fallback SMS number added with success.",
+    "title": "Add a falback SMS number"
+  },
+  "cancel": "Cancel",
+  "changeEmail": {
+    "currentEmail": "Current email",
+    "error": "Email change failed.",
+    "instructions": "Enter the new email. A message will be emailed to your new address to complete the change.",
+    "isNotChanged": "The email has not been changed.",
+    "newEmail": "New email",
+    "seeEmail": "An email has been sent to your new address. You must click on the link included in the email to complete the change.",
+    "submit": "Change email",
+    "success": "The email has been changed successfully.",
+    "title": "Change your email"
+  },
+  "changePassword": {
+    "currentPassword": "Current password",
+    "instructions": "Enter your current password and the new desired password.",
+    "password": "New password",
+    "passwordConfirm": "New password confirmation",
+    "submit": "Change password",
+    "success": "Your password has been successfully changed",
+    "title": "Change your password"
+  },
+  "changePhoneNumber": {
+    "smsMessage": "Verification code is {0}",
+    "title": "Change your phone #"
+  },
+  "changeUsername": {
+    "currentUsername": "Current Username",
+    "instructions": "Enter the desired username. In order to change to another email, you must use the 'Change my email' function.",
+    "mustNotBeAnEmail": "The new username cannot be an email. Use 'Change your email' to select a new email as the username.",
+    "newUserName": "New Username",
+    "submit": "Change Username",
+    "success": "Username changed successfully.",
+    "title": "Change your username"
+  },
+  "clear": "Clear",
+  "confirmEmail": {
+    "error": "Error confirming your email.",
+    "success": "Thank you for confirming your email.",
+    "title": "Confirmation of your email"
+  },
+  "device": {
+    "confirm": "Do you want to grant {0} access to your data? (scopes requested: {1})",
+    "confirmCode": "Make sure that the code displayed on the device is",
+    "error": "Device authorization failed",
+    "instructions": "Enter the user code given by the client application",
+    "rejectIfDifferentMessage": "If the two codes don't match, press \"No\" to reject the authorization demand.",
+    "success": "Device authorization successful.",
+    "title": "Device authorization"
+  },
+  "email": "Email",
+  "emailNotConfirmed": {
+    "message": "Your email has not been confirmed. Check your emails to find the verification email. You can also click on the following button to receive it again.",
+    "seeEmail": "See your email to find the verification messages",
+    "sendAgain": "Resend email",
+    "title": "Unconfirmed email"
+  },
+  "enableAuthenticator": {
+    "downloadApp": " Download a two-factor authenticator app like",
+    "enterKey": "or enter this key",
+    "instructions": "To use an authenticator app go through the following steps",
+    "instructions2": "Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below.",
+    "scanCode": "Scan the QR Code ",
+    "submit": "Verify",
+    "title": "Configure authenticator"
+  },
+  "error": "Error",
+  "errorMessage": {
+    "exception": "An unexpected error has occurred",
+    "invalidEmail": "Email is invalid",
+    "no_access": {
+      "AccountNotConfirmed": "You account is not confirmed",
+      "emailNotConfirmed": "Email not confirmed.",
+      "error": "Access denied",
+      "lockedOut": "Your account is locked",
+      "notWithinDateRange": "Your user account is currently inactive "
+    },
+    "recaptchaError": "Recaptcha error",
+    "required": "The [{0}] field is required.",
+    "userNameOrPasswordInvalid": "Invalid username / email or password"
+  },
+  "externalLogin": {
+    "accountCreated": "Your account was created. Please check your emails to find the confirmation message for your email address.",
+    "button": "Register",
+    "emailNotAvailable": "No email available with this login information. Impossible to continue.",
+    "instructions": "You've successfully authenticated with",
+    "instructions2": "Click the \"Register\" button to create your account and continue the login process.",
+    "lockout": "The account is locked",
+    "title": "Register using an external account"
+  },
+  "externalLogins": {
+    "addAnotherService": "Add another service to log in.",
+    "registeredConnections": "Registered connections",
+    "remove": "Remove",
+    "shortTitle": "External logins",
+    "title": "External logins"
+  },
+  "forgotPassword": {
+    "instructions": "Enter the email associated with your account. An email message will be sent to you allowing you to choose a new password.",
+    "reset": "Reset",
+    "seeEmail": "See your email to find the reset messages",
+    "title": "Reset your password"
+  },
+  "go_home": "Back to the home page",
+  "identity": {
+    "DefaultError": "An unknown failure has occured.",
+    "DuplicateEmail": "Email '{0}' is already taken.",
+    "DuplicateName": "Name {0} is already taken.",
+    "ExternalLoginExists": "A user with that external login already exists.",
+    "InvalidEmail": "Email '{0}' is invalid.",
+    "InvalidToken": "Invalid token.",
+    "InvalidUserName": "User name {0} is invalid, can only contain letters or digits.",
+    "LockoutNotEnabled": "Lockout is not enabled for this user.",
+    "NoTokenProvider": "No IUserTokenProvider is registered.",
+    "NoTwoFactorProvider": "No IUserTwoFactorProvider for '{0}' is registered.",
+    "PasswordMismatch": "Incorrect password.",
+    "PasswordRequireNonLetterOrDigit": "Passwords must have at least one non letter or digit character.",
+    "PasswordRequiresDigit": "Passwords must have at least one digit ('0'-'9').",
+    "PasswordRequiresLower": "Passwords must have at least one lowercase ('a'-'z').",
+    "PasswordRequiresNonAlphanumeric": "Passwords must have at least one non letter or digit character.",
+    "PasswordRequiresUpper": "Passwords must have at least one lowercase letter (\"A\" - \"Z\").",
+    "PasswordTooShort": "Passwords must be at least {0} characters.",
+    "PropertyTooShort": "{0} cannot be null or empty.",
+    "RoleNotFound": "Role {0} does not exist.",
+    "UserAlreadyHasPassword": "User already has a password set.",
+    "UserAlreadyInRole": "User already in role.",
+    "UserIdNotFound": "UserId not found.",
+    "UserNameNotFound": "User {0} does not exist.",
+    "UserNotInRole": "User is not in role."
+  },
+  "login": {
+    "back": "Go to login page",
+    "cantRemember": "This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.",
+    "connect": "Connection",
+    "continueWith": "Or continue with",
+    "forgotPassword": "Forgot Your Password?",
+    "mode": {
+      "email": "Your email",
+      "userNameEmail": "Username or email",
+      "userNameEmailPhone": "Username, email or phone #"
+    },
+    "password": "Password",
+    "passwordless": "Passwordless",
+    "rememberMe": "Remember me",
+    "title": "Log in to your account"
+  },
+  "loginWithSMS": {
+    "connect": "Connection",
+    "instructions": "A text message will be sent to you containing a verification code. This function is only available if you have a verified phone number configured.",
+    "seeSMS": "Verify your text message for the code",
+    "send": "Send code",
+    "title": "SMS Log in"
+  },
+  "logout": {
+    "title": "Log out"
+  },
+  "mfa": {
+    "appNotAvailable": "Don't have access to your authenticator device?",
+    "appNotAvailableRecoveryCodes": "Log in with a recovery code.",
+    "appNotAvailableSMS": "Log in with SMS key",
+    "instructions": "Your login is protected with an authenticator app. Enter your authenticator code below.",
+    "rememberMachine": "Remember this device",
+    "title": "Two-factor authentication"
+  },
+  "or": "or",
+  "password": "Password",
+  "passwordExpired": {
+    "instructions": "Your password has expired or needs to be changed. Choose a new password.",
+    "submit": "Change my password",
+    "title": "Password expired"
+  },
+  "passwordRequirement": {
+    "RequireDigit": "Requires at least 1anumber [0-9]",
+    "RequireLowercase": "Requires a lowercase letter [a-z]",
+    "RequireNonAlphanumeric": "Requires a special character that is not a letter or a number (Ex. $% * # Etc.)",
+    "RequireUppercase": "Requires an uppercase letter [A-Z]",
+    "RequiredLength": "Requires at least {0} characters",
+    "RequiredUniqueChars": "Requires at least {0} different characters",
+    "title": "Password requirements"
+  },
+  "passwordless": {
+    "instructions": "You have requested to log in without a password. A log in link will be sent to you by email.",
+    "message": "[{1}] Verification code is {0}",
+    "seeEmail": "Check your emails to find the passwordless connection link",
+    "send": "Send Link",
+    "title": "Passwordless login"
+  },
+  "profile": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "save": "Save",
+    "success": "The profile has been saved successfully.",
+    "title": "Profile"
+  },
+  "recoveryCode": {
+    "instructions": "You have requested to log in with a recovery code.",
+    "title": "Recovery code verification"
+  },
+  "register": {
+    "accountCreated": "Your account was created. Please check your emails to find the email address confirmation message.",
+    "button": "Register",
+    "continueWith": "Or register with ",
+    "instructions": "Enter your email and choose a password.",
+    "passwordConfirmation": "Password Confirmation",
+    "passwordMustMatch": "Password and confirmation must be the same",
+    "title": "Register"
+  },
+  "resetPassword": {
+    "email": "Your email",
+    "instructions": "Select your new password",
+    "password": "New password",
+    "passwordConfirm": "New password confirmation",
+    "passwordConfirmDoesNotMatch": "Password confirmation does not match",
+    "reset": "Reset",
+    "success": "Your password has been successfully changed.",
+    "title": "Reset password"
+  },
+  "setPassword": {
+    "instructions": "Enter the desired password.",
+    "password": "Password",
+    "passwordConfirm": "Password confirmation",
+    "submit": "Update",
+    "success": "Your password has been successfully added",
+    "title": "Add a password"
+  },
+  "submit": "Submit",
+  "username": "Username",
+  "warning": "Warning!",
+  "yourEmail": "Your email"
 }

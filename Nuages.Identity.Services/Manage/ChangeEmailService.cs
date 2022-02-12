@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Localization;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Web.Exceptions;
 
@@ -9,56 +8,50 @@ namespace Nuages.Identity.Services.Manage;
 
 public class ChangeEmailService : IChangeEmailService
 {
-    private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
+    private readonly NuagesUserManager _userManager;
 
     public ChangeEmailService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _localizer = localizer;
     }
-    
+
     public async Task<ChangeEmailResultModel> ChangeEmailAsync(string userId, string email, string? token)
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(email);
-        
+
         var existing = await _userManager.FindByEmailAsync(email);
         if (existing != null)
         {
             if (existing.Id == userId)
-            {
                 return new ChangeEmailResultModel
                 {
                     Success = false,
-                    Errors = new List<string> { _localizer["changeEmail:isNotChanged"]}
+                    Errors = new List<string> { _localizer["changeEmail:isNotChanged"] }
                 };
-            }
-           
+
             return new ChangeEmailResultModel
             {
                 Success = false,
-                Errors = new List<string> { _localizer["changeEmail:emailAlreadyUsed"]}
-
+                Errors = new List<string> { _localizer["changeEmail:emailAlreadyUsed"] }
             };
         }
-        
+
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
         var changeUserName = user.NormalizedEmail == user.NormalizedUserName;
-        
+
         if (string.IsNullOrEmpty(token))
             token = await _userManager.GenerateChangeEmailTokenAsync(user, email);
 
         var res = await _userManager.ChangeEmailAsync(user, email, token);
 
-        if (changeUserName)
-        {
-            res = await _userManager.SetUserNameAsync(user, email);
-        }
-        
+        if (changeUserName) res = await _userManager.SetUserNameAsync(user, email);
+
         return new ChangeEmailResultModel
         {
             Success = res.Succeeded,

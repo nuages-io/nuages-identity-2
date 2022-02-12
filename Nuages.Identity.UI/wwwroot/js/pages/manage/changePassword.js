@@ -38,17 +38,16 @@ var App =
                         .then(res => {
 
                             if (res.success) {
-                                
-                                
+
+
                                 self.currentPassword = null;
                                 self.password = null;
                                 self.passwordConfirm = null;
 
                                 self.status = "done";
                                 self.errors = [];
-                                
-                                setTimeout(function()
-                                {
+
+                                setTimeout(function () {
                                     currentPassword.focus();
                                 });
                             } else {
@@ -63,9 +62,9 @@ var App =
                 changePassword: function () {
 
                     var self = this;
-                    this.status = "";                    
+                    this.status = "";
                     this.errors = [];
-                    
+
                     formChangePassword.classList.remove("was-validated");
 
                     currentPassword.setCustomValidity("");
@@ -112,16 +111,16 @@ var App =
             },
             password(value) {
                 this.errors = this.errors.filter(a => a.id !== "password");
-               
+
                 if (value != null)
                     this.status = "";
-                
+
                 password.setCustomValidity("");
             },
             passwordConfirm(value) {
-                
+
                 this.errors = this.errors.filter(a => a.id !== "passwordConfirm");
-               
+
                 if (value != null)
                     this.status = "";
 

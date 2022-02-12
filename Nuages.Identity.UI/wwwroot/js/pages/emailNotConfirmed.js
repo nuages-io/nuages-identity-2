@@ -1,17 +1,16 @@
 var App =
     {
-        data(){
+        data() {
             return {
                 errors: [],
-                status : ""
+                status: ""
             }
         },
         methods:
             {
-                send : function()
-                {
+                send: function () {
                     var self = this;
-                    
+
                     this.status = "sending";
 
                     grecaptcha.ready(function () {
@@ -21,10 +20,9 @@ var App =
                                     method: "POST",
                                     headers: {
                                         'Content-Type': 'application/json',
-                                        'X-Custom-RecaptchaToken' : token
+                                        'X-Custom-RecaptchaToken': token
                                     },
-                                    body: JSON.stringify({
-                                        }
+                                    body: JSON.stringify({}
                                     )
                                 }).then(response => response.json())
                                 .then(res => {
@@ -32,8 +30,8 @@ var App =
                                 });
                         });
                     });
-                    
-                            
+
+
                 }
             }
     };

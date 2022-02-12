@@ -1,42 +1,40 @@
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 using Nuages.Web.Exceptions;
+
 // ReSharper disable InconsistentNaming
 
 namespace Nuages.Identity.Services.Login;
 
 public class LoginService : ILoginService
 {
-    private readonly NuagesUserManager _userManager;
+    private readonly IMessageService _messageService;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _stringLocalizer;
-    private readonly IMessageService _messageService;
+    private readonly NuagesUserManager _userManager;
 
-    public LoginService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer stringLocalizer, IMessageService messageService)
+    public LoginService(NuagesUserManager userManager, NuagesSignInManager signInManager,
+        IStringLocalizer stringLocalizer, IMessageService messageService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _stringLocalizer = stringLocalizer;
         _messageService = messageService;
     }
-    
+
     public async Task<LoginResultModel> LoginAsync(LoginModel model)
     {
         var user = await _userManager.FindAsync(model.UserNameOrEmail);
         if (user == null)
-        {
             return new LoginResultModel
             {
                 Result = new SignInResultModel(SignInResult.Failed),
                 Reason = FailedLoginReason.UserNameOrPasswordInvalid,
                 Message = _stringLocalizer["errorMessage:userNameOrPasswordInvalid"]
             };
-        }
-        
+
         var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password,
             true);
 
@@ -58,24 +56,19 @@ public class LoginService : ILoginService
                     user.LockoutMessageSent = true;
                     await _userManager.UpdateAsync(user);
                 }
-                
             }
             else
             {
                 if (user.LastFailedLoginReason == FailedLoginReason.EmailNotConfirmed)
-                {
                     await _signInManager.SignInEmailNotVerified(user);
-                }
             }
         }
-        
+
         if (result == SignInResult.Success)
-        {
             return new LoginResultModel
             {
                 Success = true
             };
-        }
 
         return new LoginResultModel
         {
@@ -89,24 +82,20 @@ public class LoginService : ILoginService
     public async Task<LoginResultModel> Login2FAAsync(Login2FAModel model)
     {
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null)
-        {
-            throw new NotFoundException("UserNotFound");
-        }
+        if (user == null) throw new NotFoundException("UserNotFound");
 
-        var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, model.RememberMachine);
+        var result =
+            await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, model.RememberMachine);
 
         if (result == SignInResult.Success)
-        {
             return new LoginResultModel
             {
                 Success = true
             };
-        }
 
         user.LastFailedLoginReason = FailedLoginReason.FailedMfa;
         await _userManager.UpdateAsync(user);
-        
+
         return new LoginResultModel
         {
             Result = new SignInResultModel(result),
@@ -115,26 +104,21 @@ public class LoginService : ILoginService
             Reason = user.LastFailedLoginReason
         };
     }
-    
+
     public async Task<LoginResultModel> LoginRecoveryCodeAsync(LoginRecoveryCodeModel model)
     {
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null)
-        {
-            throw new NotFoundException("UserNotFound");
-        }
+        if (user == null) throw new NotFoundException("UserNotFound");
 
         var recoveryCode = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
         var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
         if (result == SignInResult.Success)
-        {
             return new LoginResultModel
             {
                 Success = true
             };
-        }
 
         user.LastFailedLoginReason = FailedLoginReason.FailedRecoveryCode;
         await _userManager.UpdateAsync(user);
@@ -147,26 +131,21 @@ public class LoginService : ILoginService
             Reason = user.LastFailedLoginReason
         };
     }
-    
+
     public async Task<LoginResultModel> LoginSMSAsync(LoginSMSModel model)
     {
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null)
-        {
-            throw new NotFoundException("UserNotFound");
-        }
+        if (user == null) throw new NotFoundException("UserNotFound");
 
         var code = model.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
 
         var result = await _signInManager.TwoFactorSignInAsync("Phone", code, false, false);
 
         if (result == SignInResult.Success)
-        {
             return new LoginResultModel
             {
                 Success = true
             };
-        }
 
         user.LastFailedLoginReason = FailedLoginReason.FailedSms;
         await _userManager.UpdateAsync(user);
@@ -180,17 +159,17 @@ public class LoginService : ILoginService
         };
     }
 
-    
+
     private string? GetMessage(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once ConvertIfStatementToReturnStatement
         if (failedLoginReason == null)
             return null;
-        
+
         return _stringLocalizer[GetMessageKey(failedLoginReason)];
     }
-    
-    
+
+
     public static string GetMessageKey(FailedLoginReason? failedLoginReason)
     {
         // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
@@ -208,7 +187,7 @@ public class LoginService : ILoginService
             {
                 return $"errorMessage:{failedLoginReason}";
             }
-            
+
             // case FailedLoginReason.PasswordMustBeChanged:
             // case FailedLoginReason.PhoneNotConfirmed:
             // case FailedLoginReason.PasswordExpired:
@@ -227,8 +206,6 @@ public class LoginService : ILoginService
     }
 }
 
-
-
 public interface ILoginService
 {
     Task<LoginResultModel> LoginAsync(LoginModel model);
@@ -245,7 +222,6 @@ public class LoginModel
     public string Password { get; set; } = null!;
 
     public bool RememberMe { get; set; }
-
 }
 
 public class Login2FAModel
@@ -254,19 +230,16 @@ public class Login2FAModel
 
     public bool RememberMe { get; set; }
     public bool RememberMachine { get; set; }
-    
 }
 
 public class LoginRecoveryCodeModel
 {
     public string Code { get; set; } = null!;
-    
 }
 
 public class LoginSMSModel
 {
     public string Code { get; set; } = null!;
-    
 }
 
 public class LoginResultModel
@@ -274,7 +247,7 @@ public class LoginResultModel
     public bool Success { get; set; }
     public SignInResultModel Result { get; set; } = null!;
     public string? Message { get; set; }
-    
+
     public FailedLoginReason Reason { get; set; }
 }
 
@@ -283,8 +256,8 @@ public class SignInResultModel
     // ReSharper disable once UnusedMember.Global
     public SignInResultModel()
     {
-        
     }
+
     public SignInResultModel(SignInResult result)
     {
         Succeeded = result.Succeeded;
@@ -295,8 +268,10 @@ public class SignInResultModel
 
     // ReSharper disable once MemberCanBePrivate.Global
     public bool Succeeded { get; set; }
+
     // ReSharper disable once MemberCanBePrivate.Global
     public bool IsLockedOut { get; set; }
+
     // ReSharper disable once MemberCanBePrivate.Global
     public bool IsNotAllowed { get; set; }
     public bool RequiresTwoFactor { get; set; }

@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Nuages.Identity.UI.Pages;
@@ -18,6 +19,7 @@ public class ErrorModel : PageModel
     {
         _logger = logger;
     }
+
     public string RequestId { get; set; } = null!;
 
     //public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
@@ -28,7 +30,7 @@ public class ErrorModel : PageModel
         var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
         if (feature != null)
             _logger.LogError(feature.Error, feature.Error.Message);
-        
+
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
     }
 }

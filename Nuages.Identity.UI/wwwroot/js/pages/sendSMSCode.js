@@ -2,7 +2,7 @@ var App =
     {
         data() {
             return {
-              
+
                 errors: [],
                 status: ""
             }
@@ -11,28 +11,27 @@ var App =
             {
                 doLoginSMS: function (token) {
                     var self = this;
-                 
+
                     this.status = "sending";
-                    
+
                     fetch("/api/account/sendSMSCode", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
-                        body: JSON.stringify({
-                            }
+                        body: JSON.stringify({}
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
                             self.status = "done";
-                            
+
                             if (res.success) {
-                               window.location = "/Account/LoginWithSMS?returnUrl=" + returnUrl;
+                                window.location = "/Account/LoginWithSMS?returnUrl=" + returnUrl;
                             } else
-                                self.errors = res.errors.map(function(m) {
-                                    return { message : m}
+                                self.errors = res.errors.map(function (m) {
+                                    return {message: m}
                                 });
                         });
 
@@ -40,11 +39,11 @@ var App =
                 loginSMS: function () {
 
                     var self = this;
-                    
+
                     this.errors = [];
                     formLoginSMS.classList.remove("was-validated");
-                   
-                    
+
+
                     var res = formLoginSMS.checkValidity();
                     if (res) {
                         grecaptcha.ready(function () {
@@ -54,12 +53,12 @@ var App =
                         });
                     } else {
                         formLoginSMS.classList.add("was-validated");
-                      
+
 
                         var list = formLoginSMS.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }

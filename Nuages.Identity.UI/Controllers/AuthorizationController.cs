@@ -1,4 +1,3 @@
-
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.UI.OpenIdDict;
@@ -10,9 +9,9 @@ namespace Nuages.Identity.UI.Controllers;
 public class AuthorizationController : Controller
 {
     private readonly IAuthorizeEndpoint _authorizeEndpoint;
+    private readonly ILogger<AuthorizationController> _logger;
     private readonly ILogoutEndpoint _logoutEndpoint;
     private readonly ITokenEndpoint _tokenEndpoint;
-    private readonly ILogger<AuthorizationController> _logger;
 
     public AuthorizationController(
         IAuthorizeEndpoint authorizeEndpoint,
@@ -25,14 +24,14 @@ public class AuthorizationController : Controller
         _logger = logger;
     }
 
-    [HttpPost("token"), Produces("application/json")]
+    [HttpPost("token")]
+    [Produces("application/json")]
     public async Task<IActionResult> Token()
     {
         try
         {
-            
             AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Token");
-            
+
             return await _tokenEndpoint.Exchange();
         }
         catch (Exception e)
@@ -47,7 +46,7 @@ public class AuthorizationController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
-    
+
     [HttpGet("authorize")]
     [HttpPost("authorize")]
     [IgnoreAntiforgeryToken]
@@ -56,7 +55,7 @@ public class AuthorizationController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Authorize");
-            
+
             return await _authorizeEndpoint.Authorize();
         }
         catch (Exception e)
@@ -78,7 +77,7 @@ public class AuthorizationController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment("AuthorizationController.Logout");
-            
+
             return await _logoutEndpoint.Logout();
         }
         catch (Exception e)
@@ -93,5 +92,4 @@ public class AuthorizationController : Controller
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
- 
 }

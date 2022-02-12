@@ -1,4 +1,3 @@
-
 using System.Diagnostics.CodeAnalysis;
 using Amazon.CDK;
 using Constructs;

@@ -5,29 +5,31 @@
     ViewData["Title"] = Localizer["changeUsername:title"];
 }
 
-<div id="app" >
- <h2 class="page-header">@Localizer["changeUsername.title"]</h2>
-    
+<div id="app">
+    <h2 class="page-header">@Localizer["changeUsername.title"]</h2>
+
     <form method="POST" v-on:submit.prevent="changeUsername" id="formChangeUsername">
-        <fieldset :disabled="status == 'sending'"  class="space-y-4">
+        <fieldset :disabled="status == 'sending'" class="space-y-4">
             <span class="text-gray-500">@Localizer["changeUsername:instructions"]</span>
             <div>
                 <strong>@Localizer["changeUsername:currentUsername"]</strong>&nbsp;
                 <span >{{currentUserName}}</span>
             </div>
-    
+
             <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
-                <span class="text-green-700 font-medium"><i class="fas fa-check"></i> @Localizer["changeUsername:success"]</span>
+                <span class="text-green-700 font-medium">
+                    <i class="fas fa-check"></i> @Localizer["changeUsername:success"]
+                </span>
             </div>
-    
+
             <partial name="Shared/ErrorList"/>
-    
+
             <input id="username" name="username" type="text" autofocus="" v-model="username" placeholder="@Localizer["changeUsername:newUserName"]" required class="text-box">
             <button v-on:click.prevent="changeUsername" class="primary full items-center" :disabled="status == 'sending'">
                 @Localizer["changeUsername:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
             </button>
         </fieldset>
-       
+
     </form>
 
 </div>

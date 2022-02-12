@@ -3,22 +3,22 @@ var App =
         data() {
             return {
                 lastName: lastNameValue,
-                firstName : firstNameValue,
+                firstName: firstNameValue,
                 errors: [],
                 status: ""
             }
         },
         mounted() {
-            lastName.focus();              
+            lastName.focus();
         },
         methods:
             {
                 doSaveProfile: function () {
-                    var self = this;                    
-                    
+                    var self = this;
+
                     var l = self.lastName;
                     var f = self.firstName;
-                                                           
+
                     fetch("/api/manage/saveProfile", {
                         method: "POST",
                         headers: {
@@ -32,33 +32,30 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-                            
-                            if (res.success) {                                
+
+                            if (res.success) {
                                 self.status = "done";
                                 self.errors = [];
-                                
-                                setTimeout(function()
-                                {
+
+                                setTimeout(function () {
                                     lastName.focus();
                                 })
-                            }
-                            else
-                            {
+                            } else {
                                 self.status = "error";
-                                var err = res.errors.map(function(m) {
-                                    return { message : m}
+                                var err = res.errors.map(function (m) {
+                                    return {message: m}
                                 });
                                 self.errors = err;
                             }
                         });
                 },
                 saveProfile: function () {
-                   
+
                     var self = this;
-                    
+
                     this.errors = [];
                     formProfile.classList.remove("was-validated");
-                                               
+
                     var res = formProfile.checkValidity();
                     if (res) {
                         this.status = "sending";
@@ -71,13 +68,13 @@ var App =
 
                         list.forEach((element) => {
 
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
                     }
                 }
             },
         watch: {
-          
+
             lastName(value) {
                 this.errors = this.errors.filter(a => a.id !== "lastName");
                 if (value != null)

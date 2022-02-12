@@ -6,7 +6,6 @@ namespace Nuages.Identity.UI.OpenIdDict;
 
 public static class ClaimsDestinations
 {
-    
     public static IEnumerable<string> GetDestinations(Claim claim, ClaimsPrincipal principal)
     {
         // Note: by default, claims are NOT automatically included in the access and identity tokens.
@@ -47,7 +46,7 @@ public static class ClaimsDestinations
                 yield break;
         }
     }
-    
+
     public static IEnumerable<string> GetDestinations(Claim claim)
     {
         // Note: by default, claims are NOT automatically included in the access and identity tokens.
@@ -58,7 +57,8 @@ public static class ClaimsDestinations
         {
             OpenIddictConstants.Claims.Name or
                 OpenIddictConstants.Claims.Subject
-                => ImmutableArray.Create(OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken),
+                => ImmutableArray.Create(OpenIddictConstants.Destinations.AccessToken,
+                    OpenIddictConstants.Destinations.IdentityToken),
 
             _ => ImmutableArray.Create(OpenIddictConstants.Destinations.AccessToken)
         };

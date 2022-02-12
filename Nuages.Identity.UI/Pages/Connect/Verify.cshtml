@@ -1,6 +1,6 @@
 @page
-@using Microsoft.Extensions.Primitives
 @inject IHttpContextAccessor ContextAccessor;
+@using Microsoft.Extensions.Primitives
 @model Nuages.Identity.UI.Pages.Connect.Verify
 
 @{
@@ -9,50 +9,48 @@
 
 
 @if (string.IsNullOrEmpty(Model!.UserCode) || !string.IsNullOrEmpty(Model!.Error))
+{
+    @if (!string.IsNullOrEmpty(Model.Error) && !string.IsNullOrEmpty(Model.ErrorDescription))
     {
-        @if (!string.IsNullOrEmpty(Model.Error) && !string.IsNullOrEmpty(Model.ErrorDescription))
+        <div class="mb-2">
+            <partial name="Shared/_Error" model='new { Title = Localizer["error"], Message = Model.Error }'/>
+        </div>
+    }
+
+    <form method="get" class="flex flex-col space-y-2">
+        <p>@Localizer["device.instructions"]</p>
+        <div class="form-check">
+            <input id="user_code" name="user_code" type="text" placeholder="@Localizer["device:code"]" required class="text-box" autofocus="autofocus">
+        </div>
+
+        <button class="button primary" type="submit" value="Submit">@Localizer["submit"]</button>
+    </form>
+}
+else
+{
+    <form method="post" class="flex flex-col space-y-4">
+        <p >@Localizer["device.confirm", Model.ApplicationName, Model.Scope] </p>
+        <p >
+            @Localizer["device.confirmCode"]
+        </p>
+        <p class="text-center">
+            <strong class="text-lg">@Model.UserCode</strong>
+        </p>
+        <p>
+            @Localizer["device.rejectIfDifferentMessage"]
+        </p>
+
+        @* Flow the request parameters so they can be received by the VerifyAccept/VerifyReject actions: *@
+        @foreach (var parameter in ContextAccessor.HttpContext!.Request.HasFormContentType ?
+            (IEnumerable<KeyValuePair<string, StringValues>>)ContextAccessor.HttpContext.Request.Form : ContextAccessor.HttpContext.Request.Query)
         {
-            <div class="mb-2">
-                 <partial name="Shared/_Error" model='new { Title = Localizer["error"], Message = Model.Error }'/>
-            </div>
-           
+            <input type="hidden" name="@parameter.Key" value="@parameter.Value"/>
         }
 
-        <form  method="get" class="flex flex-col space-y-2">
-            <p>@Localizer["device.instructions"]</p>
-            <div class="form-check">
-                <input id="user_code" name="user_code" type="text" placeholder="@Localizer["device:code"]" required class="text-box" autofocus="autofocus">
-            </div>
+        <div class="flex flex-row space-x-2 justify-center">
+            <button class="primary" name="submit.Accept" type="submit" value="Yes">@Localizer["yes"]</button>
+            <button class="primary" name="submit.Deny" type="submit" value="No">@Localizer["no"]</button>
+        </div>
 
-            <button class="button primary" type="submit" value="Submit">@Localizer["submit"]</button>
-        </form>
-    }
-    else
-    {
- 
-        <form method="post"  class="flex flex-col space-y-4">
-           <p >@Localizer["device.confirm", Model.ApplicationName, Model.Scope] </p>
-            <p >
-                @Localizer["device.confirmCode"] 
-            </p>
-            <p class="text-center">
-                <strong class="text-lg">@Model.UserCode</strong>
-            </p>
-            <p>
-                @Localizer["device.rejectIfDifferentMessage"] 
-            </p>
-
-            @* Flow the request parameters so they can be received by the VerifyAccept/VerifyReject actions: *@
-            @foreach (var parameter in ContextAccessor.HttpContext!.Request.HasFormContentType ?
-                (IEnumerable<KeyValuePair<string, StringValues>>)ContextAccessor.HttpContext.Request.Form : ContextAccessor.HttpContext.Request.Query)
-            {
-                <input type="hidden" name="@parameter.Key" value="@parameter.Value"/>
-            }
-
-            <div class="flex flex-row space-x-2 justify-center">
-                 <button class="primary" name="submit.Accept" type="submit" value="Yes">@Localizer["yes"]</button>
-                    <button class="primary" name="submit.Deny" type="submit" value="No">@Localizer["no"]</button>
-            </div>
-           
-        </form>
-    }
+    </form>
+}

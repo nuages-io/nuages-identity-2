@@ -18,10 +18,7 @@ public partial class NuagesIdentityCdkStack
     {
         var role = CreateWebApiRole();
 
-        if (string.IsNullOrEmpty(AssetApi))
-        {
-            throw new Exception("AssetApi must be assigned");
-        }
+        if (string.IsNullOrEmpty(AssetApi)) throw new Exception("AssetApi must be assigned");
 
         // ReSharper disable once UnusedVariable
         var func = new Function(this, "WebAPI", new FunctionProps
@@ -42,8 +39,9 @@ public partial class NuagesIdentityCdkStack
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));
         func.AddEventSource(new ApiEventSource("ANY", "/"));
 
-        var webApi = (RestApi)Node.Children.Single(c => c.GetType() == typeof(RestApi) && ((RestApi) c).RestApiName.Contains("WebAPI"));
-        
+        var webApi = (RestApi)Node.Children.Single(c =>
+            c.GetType() == typeof(RestApi) && ((RestApi)c).RestApiName.Contains("WebAPI"));
+
         //var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
         //var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
 
@@ -61,7 +59,7 @@ public partial class NuagesIdentityCdkStack
         //     },
         //     //©©HealthCheckTags = null
         // });
-        
+
         var domainName = (string)Node.TryGetContext("DomainNameApi");
 
         if (!string.IsNullOrEmpty(domainName))
@@ -134,8 +132,7 @@ public partial class NuagesIdentityCdkStack
         role.AddManagedPolicy(CreateSESRolePolicy("API"));
         role.AddManagedPolicy(CreateSnsRolePolicy("API"));
         role.AddManagedPolicy(CreateXrayRolePolicy("API"));
-        
+
         return role;
     }
-
 }

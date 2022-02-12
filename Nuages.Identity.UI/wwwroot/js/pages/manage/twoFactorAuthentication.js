@@ -1,34 +1,32 @@
 var App =
     {
         data() {
-            return {                
+            return {
                 showDeactivate: false,
                 showRemovePhone: false,
                 showCodes: false,
                 recoveryCodesString: recoveryCodesString,
                 recoveryCodes: recoveryCodes,
-                isRemembered : isRemembered,
+                isRemembered: isRemembered,
                 errors: [],
                 status: ""
             }
         },
         mounted() {
-            
+
         },
         methods:
             {
-                copy ()
-                {
-                    navigator.clipboard.writeText(this.recoveryCodesString).then(function() {
+                copy() {
+                    navigator.clipboard.writeText(this.recoveryCodesString).then(function () {
                         /* clipboard successfully set */
-                    }, function() {
+                    }, function () {
                         /* clipboard write failed */
                     });
                 },
-                resetCodes()
-                {
+                resetCodes() {
                     var self = this;
-                    
+
                     fetch("/api/manage/resetRecoveryCodes", {
                         method: "POST",
                         headers: {
@@ -38,18 +36,15 @@ var App =
                         .then(response => response.json())
                         .then(res => {
                             if (res.success) {
-                                
+
                                 self.recoveryCodes = res.codes;
                                 self.showCodes = true;
-                            } 
-                            else
-                            {
-                                
+                            } else {
+
                             }
                         });
-                }, 
-                forgetBrowser()
-                {
+                },
+                forgetBrowser() {
                     var self = this;
 
                     fetch("/api/manage/forgetBrowser", {
@@ -70,8 +65,7 @@ var App =
                             // }
                         });
                 },
-                disable2Fa()
-                {
+                disable2Fa() {
                     //Call API
                     this.status = "sending";
 
@@ -89,12 +83,11 @@ var App =
                                 self.status = "";
 
                             res.errors.forEach((element) => {
-                                self.errors.push({ message : element});
+                                self.errors.push({message: element});
                             });
                         });
                 },
-                removePhone()
-                {
+                removePhone() {
                     //Call API
                     this.status = "sending";
 
@@ -112,11 +105,11 @@ var App =
                                 self.status = "";
 
                             res.errors.forEach((element) => {
-                                self.errors.push({ message : element});
+                                self.errors.push({message: element});
                             });
                         });
-                }               
-                
+                }
+
             }
     };
 

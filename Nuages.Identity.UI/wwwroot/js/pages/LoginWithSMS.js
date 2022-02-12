@@ -24,7 +24,7 @@ var App =
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
                         body: JSON.stringify({
                                 code: c
@@ -39,7 +39,7 @@ var App =
                             } else
 
                                 switch (res.reason) {
-                                                             
+
                                     default: {
                                         this.status = "";
                                         //NotWithinDateRange,

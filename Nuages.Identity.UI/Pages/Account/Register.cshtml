@@ -1,14 +1,13 @@
 ﻿@page
+@using Nuages.Web.Recaptcha
 @model Nuages.Identity.UI.Pages.Account.RegisterModel
-@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 @inject IOptions<UIOptions> UIOptions
 
 @{
     ViewData["title"] = Localizer["register:title"];
 
 }
-
-
 
 
 <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
@@ -22,22 +21,22 @@
 
     <span>@Localizer["register:instructions"]</span>
     <partial name="Shared/ErrorList"/>
-    
-    <fieldset class="space-y-4"  :disabled="status == 'sending'">
-         <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box" type="email">
-            <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
-            <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
-            <button v-on:click.prevent="register" class="primary full items-center"  :disabled="status == 'sending'">
-                @Localizer["register:button"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-            </button>
-            <partial name="Shared/PasswordRequirements"/>
+
+    <fieldset class="space-y-4" :disabled="status == 'sending'">
+        <input id="email" name="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box" type="email">
+        <input id="password" name="password" type="password" v-model="password" placeholder="@Localizer["login:password"]" autocomplete="current-password" required class="text-box ">
+        <input id="passwordConfirm" name="passwordConfirm" type="password" v-model="passwordConfirm" placeholder="@Localizer["register:passwordConfirmation"]" autocomplete="current-password" required class="text-box ">
+        <button v-on:click.prevent="register" class="primary full items-center" :disabled="status == 'sending'">
+            @Localizer["register:button"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+        </button>
+        <partial name="Shared/PasswordRequirements"/>
     </fieldset>
-   
+
 </form>
 
 @if (Model.ExternalLogins.Count > 0)
 {
-    <div class="relative mt-6"  v-if="status != 'done'">
+    <div class="relative mt-6" v-if="status != 'done'">
         <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300"></div>
         </div>
@@ -47,13 +46,13 @@
             </span>
         </div>
     </div>
-    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4"  v-if="status != 'done'">
+    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4" v-if="status != 'done'">
         <ul>
 
             @foreach (var provider in Model.ExternalLogins)
             {
                 <li>
-                    <button type="submit" name="provider" value="@provider.Name"  class="btn-simple">
+                    <button type="submit" name="provider" value="@provider.Name" class="btn-simple">
                         <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
                         @provider.DisplayName
                     </button>

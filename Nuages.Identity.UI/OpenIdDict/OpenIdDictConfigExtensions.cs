@@ -8,11 +8,12 @@ namespace Nuages.Identity.UI.OpenIdDict;
 
 public static class OpenIdDictConfigExtensions
 {
-    public static void AddNuagesOpenIdDict(this IServiceCollection services, IConfiguration configuration, Action<OpenIdDictOptions> configure)
+    public static void AddNuagesOpenIdDict(this IServiceCollection services, IConfiguration configuration,
+        Action<OpenIdDictOptions> configure)
     {
         services.Configure<OpenIdDictOptions>(configuration.GetSection("Nuages:OpenIdDict"));
         services.Configure(configure);
-        
+
         services.AddOpenIddict()
             // Register the OpenIddict core components.
             .AddCore(options =>
@@ -35,14 +36,13 @@ public static class OpenIdDictConfigExtensions
                             contextOptions.UseInMemoryDatabase("IdentityContext");
                             contextOptions.UseOpenIddict();
                         });
-                        
+
                         options.UseEntityFrameworkCore()
                             .UseDbContext<OpenIdDictContext>();
-                        
+
                         break;
                     }
                 }
-                
             })
             // Register the OpenIddict server components.
             .AddServer(options =>
@@ -56,7 +56,7 @@ public static class OpenIdDictConfigExtensions
                     .SetUserinfoEndpointUris("/connect/userinfo")
                     .SetAuthorizationEndpointUris("/connect/authorize")
                     .SetLogoutEndpointUris("/connect/logout");
-                
+
                 // Mark the "email", "profile" and "roles" scopes as supported scopes.
                 options.RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile,
                     OpenIddictConstants.Scopes.Roles);
@@ -73,9 +73,9 @@ public static class OpenIdDictConfigExtensions
                     .EnableUserinfoEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
                     .EnableVerificationEndpointPassthrough()
-                #if DEBUG
+#if DEBUG
                     .DisableTransportSecurityRequirement()
-                #endif
+#endif
                     .EnableStatusCodePagesIntegration()
                     ;
             })
@@ -94,5 +94,4 @@ public static class OpenIdDictConfigExtensions
 
         services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, OpenIddictServerOptionsInitializer>();
     }
-
 }

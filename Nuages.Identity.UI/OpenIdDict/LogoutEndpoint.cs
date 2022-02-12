@@ -5,7 +5,7 @@ using OpenIddict.Server.AspNetCore;
 
 namespace Nuages.Identity.UI.OpenIdDict;
 
-public class LogoutEndpoint  : ILogoutEndpoint
+public class LogoutEndpoint : ILogoutEndpoint
 {
     private readonly NuagesSignInManager _signInManager;
 
@@ -13,7 +13,8 @@ public class LogoutEndpoint  : ILogoutEndpoint
     {
         _signInManager = signInManager;
     }
-    public async Task<IActionResult> Logout() 
+
+    public async Task<IActionResult> Logout()
     {
         // Ask ASP.NET Core Identity to delete the local and external cookies created
         // when the user agent is redirected from the external identity provider
@@ -23,9 +24,9 @@ public class LogoutEndpoint  : ILogoutEndpoint
         // Returning a SignOutResult will ask OpenIddict to redirect the user agent
         // to the post_logout_redirect_uri specified by the client application or to
         // the RedirectUri specified in the authentication properties if none was set.
-        return new SignOutResult (
-             new[] { OpenIddictServerAspNetCoreDefaults.AuthenticationScheme },
-             new AuthenticationProperties
+        return new SignOutResult(
+            new[] { OpenIddictServerAspNetCoreDefaults.AuthenticationScheme },
+            new AuthenticationProperties
             {
                 RedirectUri = "/"
             });

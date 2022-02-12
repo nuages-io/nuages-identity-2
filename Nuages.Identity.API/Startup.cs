@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json.Serialization;
 using Amazon;
@@ -11,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-
+using NSwag;
 using Nuages.AspNetIdentity.Core;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Identity.Services;
@@ -21,15 +20,12 @@ using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.API;
 
-
 public class Startup
 {
     private readonly IWebHostEnvironment _env;
 
     public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
-       
-        
         Configuration = configuration;
         _env = env;
     }
@@ -40,7 +36,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
-        
+
         services.AddDataProtection()
             .PersistKeysToAWSSystemsManager("Nuages.Identity.API/DataProtection");
 
@@ -73,34 +69,33 @@ public class Startup
 
 
         services.AddNuagesAspNetIdentity(
-            identity =>
-            {
-                identity.User = new UserOptions
+                identity =>
                 {
-                    RequireUniqueEmail = true /* Not the default*/
-                };
+                    identity.User = new UserOptions
+                    {
+                        RequireUniqueEmail = true /* Not the default*/
+                    };
 
-                identity.ClaimsIdentity = new ClaimsIdentityOptions
-                {
-                    RoleClaimType = OpenIddictConstants.Claims.Role,
-                    UserNameClaimType = OpenIddictConstants.Claims.Name,
-                    UserIdClaimType = OpenIddictConstants.Claims.Subject
-                };
+                    identity.ClaimsIdentity = new ClaimsIdentityOptions
+                    {
+                        RoleClaimType = OpenIddictConstants.Claims.Role,
+                        UserNameClaimType = OpenIddictConstants.Claims.Name,
+                        UserIdClaimType = OpenIddictConstants.Claims.Subject
+                    };
 
-                identity.SignIn = new SignInOptions
-                {
-                    RequireConfirmedEmail = false,
-                    RequireConfirmedPhoneNumber = false, //MUST be false
-                    RequireConfirmedAccount = false //MUST be false
-                };
-            })
-            .AddNuagesIdentityServices(Configuration, _ =>{})
+                    identity.SignIn = new SignInOptions
+                    {
+                        RequireConfirmedEmail = false,
+                        RequireConfirmedPhoneNumber = false, //MUST be false
+                        RequireConfirmedAccount = false //MUST be false
+                    };
+                })
+            .AddNuagesIdentityServices(Configuration, _ => { })
             .AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
             {
-                
                 options.ConnectionString = Configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = Configuration["Nuages:Mongo:Database"];
-                
+
                 BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
                 {
                     cm.AutoMap();
@@ -110,9 +105,9 @@ public class Startup
                 });
             });
 
-        
+
         var identityOptions = Configuration.GetSection("Nuages:Identity").Get<NuagesIdentityOptions>();
-        
+
         services.AddAuthentication(options =>
         {
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -188,13 +183,13 @@ public class Startup
                 document.Info.Version = "v1";
                 document.Info.Title = "Nuages Sender Service";
 
-                document.Info.Contact = new NSwag.OpenApiContact
+                document.Info.Contact = new OpenApiContact
                 {
                     Name = "Nuages.io",
                     Email = string.Empty,
                     Url = "https://github.com/nuages-io/nuages-sender"
                 };
-                document.Info.License = new NSwag.OpenApiLicense
+                document.Info.License = new OpenApiLicense
                 {
                     Name = "Use under LICENCE",
                     Url = "http://www.apache.org/licenses/LICENSE-2.0"

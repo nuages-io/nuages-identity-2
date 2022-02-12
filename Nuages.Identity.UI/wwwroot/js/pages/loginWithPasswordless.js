@@ -17,12 +17,12 @@ var App =
                     var e = self.email;
 
                     this.status = "sending";
-                    
+
                     fetch("/api/account/passwordlessLogin", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
                         body: JSON.stringify({
                                 email: e
@@ -34,25 +34,24 @@ var App =
 
 
                             self.status = "done";
-                            
-                            if (!res.success)
-                            {
+
+                            if (!res.success) {
                                 self.errors.push({message: res.message});
                             }
-                            
-                               
+
+
                         });
 
                 },
                 sendPasswordlessInfo: function () {
 
                     var self = this;
-                    
+
                     this.errors = [];
                     formPasswordless.classList.remove("was-validated");
 
                     email.setCustomValidity("");
-                    
+
                     var res = formPasswordless.checkValidity();
                     if (res) {
                         grecaptcha.ready(function () {
@@ -74,7 +73,7 @@ var App =
                         var list = formPasswordless.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }

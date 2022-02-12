@@ -4,61 +4,64 @@
     ViewData["Title"] = Localizer["enableAuthenticator.title"];
 }
 
-<div  id="app">
+<div id="app">
     <h2 class="page-header">@Localizer["enableAuthenticator.title"]</h2>
-    
-    <div class="space-y-4 flex flex-col" >
-         <div class="text-gray-500">@Localizer["enableAuthenticator.instructions"]</div>
-            
-            <div class="space-y-2">
-                <STRONG>@Localizer["enableAuthenticator.scanCode"]</STRONG>
-                <div id="qrCode" class="justify-center"></div>
-                <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
-            </div>
-    
-         <span class="text-gray-500"> @Localizer["enableAuthenticator.enterKey"]</span>
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800">
-                @Model.SharedKey
-            </span>
+
+    <div class="space-y-4 flex flex-col">
+        <div class="text-gray-500">@Localizer["enableAuthenticator.instructions"]</div>
+
+        <div class="space-y-2">
+            <STRONG>@Localizer["enableAuthenticator.scanCode"]</STRONG>
+            <div id="qrCode" class="justify-center"></div>
+            <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
+        </div>
+
+        <span class="text-gray-500"> @Localizer["enableAuthenticator.enterKey"]</span>
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800">
+            @Model.SharedKey
+        </span>
         <p class="text-gray-500">
             @Localizer["enableAuthenticator.instructions2"]
         </p>
-            <div>
-                  <partial name="Shared/ErrorList"/>
-                  <form class="mt-4" id="formCode" method="post" v-on:submit.prevent="verifyCode">
-                      <fieldset :disabled="status == 'sending'" class="flex flex-row space-x-2">
-                           <input id="code" name="code" required class="text-box " v-model="code"/>
-                            <button type="button" class="primary items-center w-36" v-on:click.prevent="verifyCode" :disabled="status == 'sending'">@Localizer["enableAuthenticator:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-                            </button>
-                      </fieldset>
-                  </form>
-            </div>
+        <div>
+            <partial name="Shared/ErrorList"/>
+            <form class="mt-4" id="formCode" method="post" v-on:submit.prevent="verifyCode">
+                <fieldset :disabled="status == 'sending'" class="flex flex-row space-x-2">
+                    <input id="code" name="code" required class="text-box " v-model="code"/>
+                    <button type="button" class="primary items-center w-36" v-on:click.prevent="verifyCode" :disabled="status == 'sending'">
+                        @Localizer["enableAuthenticator:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+                    </button>
+                </fieldset>
+            </form>
+        </div>
     </div>
-   
-  
+
+
 </div>
 
 @section RightNav
 {
-    <div><strong>  @Localizer["enableAuthenticator.downloadApp"]</strong>
-                   
-            
-                    <ul class="list-disc ml-4 mt-2">
-                        <li>Microsoft Authenticator</li>
-                        <li>Google Authenticator</li>
-                        <li>Authy</li>
-                        <li>LastPass Authenticator</li>
-                        <li>Duo Mobile</li>
-                    </ul>
-                </div>
+    <div>
+        <strong> @Localizer["enableAuthenticator.downloadApp"]</strong>
+
+
+        <ul class="list-disc ml-4 mt-2">
+            <li>Microsoft Authenticator</li>
+            <li>Google Authenticator</li>
+            <li>Authy</li>
+            <li>LastPass Authenticator</li>
+            <li>Duo Mobile</li>
+        </ul>
+    </div>
 }
+
 @section Scripts {
 
     <script>
       var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
     </script>
-  
-    
+
+
     <script src="/js/pages/manage/enableAuthenticator.js"></script>
     <script src="/lib/qrcode.js"></script>
     <script src="/js/qr.js"></script>

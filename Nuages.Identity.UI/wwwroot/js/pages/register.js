@@ -7,7 +7,7 @@ var App =
                 passwordConfirm: "",
                 errors: [],
                 action: "",
-                status : ""
+                status: ""
             }
         },
         mounted() {
@@ -25,7 +25,7 @@ var App =
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
                         body: JSON.stringify({
                                 email: e,
@@ -37,25 +37,20 @@ var App =
                         .then(response => response.json())
                         .then(res => {
                             if (res.success) {
-                                if (res.showConfirmationMessage)
-                                {
+                                if (res.showConfirmationMessage) {
                                     self.status = "done";
-                                }
-                                else
-                                {
+                                } else {
                                     window.location = returnUrl;
                                 }
-                                
-                            } 
-                            else
-                            {
+
+                            } else {
                                 self.status = "";
 
                                 res.errors.forEach((element) => {
-                                    self.errors.push({ message : element});
+                                    self.errors.push({message: element});
                                 });
                             }
-                               
+
                         });
 
                 },
@@ -65,21 +60,20 @@ var App =
 
                     self.errors = [];
                     self.status = "sending";
-                    
+
                     formRegister.classList.remove("was-validated");
 
                     email.setCustomValidity("");
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
 
-                    if (self.password !== self.passwordConfirm && self.passwordConfirm !== "")
-                    {
+                    if (self.password !== self.passwordConfirm && self.passwordConfirm !== "") {
                         passwordConfirm.setCustomValidity(passwordMustMatch);
                     }
-                    
+
                     var res = formRegister.checkValidity();
                     if (res) {
-                        
+
 
                         grecaptcha.ready(function () {
                             grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
@@ -89,7 +83,7 @@ var App =
                     } else {
 
                         self.status = "";
-                        
+
                         formRegister.classList.add("was-validated");
 
                         if (!email.validity.valid) {
@@ -113,7 +107,7 @@ var App =
 
                         list.forEach((element) => {
 
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }

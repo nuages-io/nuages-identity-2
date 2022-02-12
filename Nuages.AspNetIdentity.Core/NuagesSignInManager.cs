@@ -1,10 +1,10 @@
-
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+
 // ReSharper disable ContextualLoggerProblem
 
 namespace Nuages.AspNetIdentity.Core;
@@ -16,15 +16,14 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
     private readonly NuagesIdentityOptions _nuagesIdentityOptions;
 
     // ReSharper disable once MemberCanBeProtected.Global
-    public NuagesSignInManager(UserManager<NuagesApplicationUser<string>> userManager, 
-        IHttpContextAccessor contextAccessor, 
-        IUserClaimsPrincipalFactory<NuagesApplicationUser<string>> claimsFactory, 
-
-        IOptions<IdentityOptions> optionsAccessor, 
-        ILogger<SignInManager<NuagesApplicationUser<string>>> logger, 
-        IAuthenticationSchemeProvider schemes, 
-        IUserConfirmation<NuagesApplicationUser<string>> confirmation, 
-        IOptions<NuagesIdentityOptions> nuagesIdentityOptions) : 
+    public NuagesSignInManager(UserManager<NuagesApplicationUser<string>> userManager,
+        IHttpContextAccessor contextAccessor,
+        IUserClaimsPrincipalFactory<NuagesApplicationUser<string>> claimsFactory,
+        IOptions<IdentityOptions> optionsAccessor,
+        ILogger<SignInManager<NuagesApplicationUser<string>>> logger,
+        IAuthenticationSchemeProvider schemes,
+        IUserConfirmation<NuagesApplicationUser<string>> confirmation,
+        IOptions<NuagesIdentityOptions> nuagesIdentityOptions) :
         base(userManager, contextAccessor, claimsFactory, optionsAccessor, logger, schemes, confirmation)
     {
         _confirmation = confirmation;
@@ -33,22 +32,23 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
     public override async Task<bool> CanSignInAsync(NuagesApplicationUser<string> user)
     {
-        if (!await CheckStartEndAsync(user)) 
+        if (!await CheckStartEndAsync(user))
             return false;
 
-        if (!await CheckEmailAsync(user)) 
+        if (!await CheckEmailAsync(user))
             return false;
-        
-        if (!await CheckPhoneNumberAsync(user)) 
+
+        if (!await CheckPhoneNumberAsync(user))
             return false;
-        
+
         return await CheckAccountAsync(user);
     }
-    
-    public override async Task<SignInResult> CheckPasswordSignInAsync(NuagesApplicationUser<string> user, string password, bool lockoutOnFailure)
+
+    public override async Task<SignInResult> CheckPasswordSignInAsync(NuagesApplicationUser<string> user,
+        string password, bool lockoutOnFailure)
     {
         var res = await base.CheckPasswordSignInAsync(user, password, lockoutOnFailure);
-        
+
         if (res.Succeeded)
         {
             if (!await CheckPasswordAsync(user))
@@ -66,15 +66,15 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         return res;
     }
 
-    public  async Task<bool> CheckAccountAsync(NuagesApplicationUser<string> user)
+    public async Task<bool> CheckAccountAsync(NuagesApplicationUser<string> user)
     {
         if (Options.SignIn.RequireConfirmedAccount && !await _confirmation.IsConfirmedAsync(UserManager, user))
         {
             user.LastFailedLoginReason = FailedLoginReason.AccountNotConfirmed;
 
             await UserManager.UpdateAsync(user);
-            
-           
+
+
             return false;
         }
 
@@ -111,7 +111,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         if (Options.SignIn.RequireConfirmedEmail && !await UserManager.IsEmailConfirmedAsync(user))
         {
             user.LastFailedLoginReason = FailedLoginReason.EmailNotConfirmed;
-            
+
             await UserManager.UpdateAsync(user);
 
             return false;
@@ -119,8 +119,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
         return true;
     }
-    
-    
+
 
     private async Task<bool> CheckPasswordAsync(NuagesApplicationUser<string> user)
     {
@@ -132,21 +131,18 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
             var newCode = UserManager.GeneratePasswordResetTokenAsync(user).Result;
             newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
-            
-            await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
-            
+
+            await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme,
+                StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
+
             return false;
         }
 
         if (_nuagesIdentityOptions.EnableAutoPasswordExpiration)
         {
-            if (!user.LastPasswordChangedDate.HasValue)
-            {
-                throw new NotSupportedException("PasswordWasNeverSet");
-            }
+            if (!user.LastPasswordChangedDate.HasValue) throw new NotSupportedException("PasswordWasNeverSet");
 
             if (user.EnableAutoExpirePassword)
-            {
                 if (DateTimeOffset.UtcNow >
                     user.LastPasswordChangedDate.Value.AddDays(_nuagesIdentityOptions.AutoExpirePasswordDelayInDays))
                 {
@@ -156,12 +152,12 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
                     var newCode = UserManager.GeneratePasswordResetTokenAsync(user).Result;
                     newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
-                    
-                    await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme, StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
-                    
+
+                    await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme,
+                        StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
+
                     return false;
                 }
-            }
         }
 
         return true;
@@ -170,7 +166,6 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
     public async Task<bool> CheckStartEndAsync(NuagesApplicationUser<string> user)
     {
         if (user.ValidFrom.HasValue)
-        {
             if (user.ValidFrom > DateTimeOffset.UtcNow)
             {
                 user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
@@ -179,10 +174,8 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
                 return false;
             }
-        }
 
         if (user.ValidTo.HasValue)
-        {
             if (DateTime.UtcNow > user.ValidTo)
             {
                 user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
@@ -191,13 +184,13 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
                 return false;
             }
-        }
 
         return true;
     }
 
-    
-    public override async Task SignInWithClaimsAsync(NuagesApplicationUser<string> user, AuthenticationProperties authenticationProperties,
+
+    public override async Task SignInWithClaimsAsync(NuagesApplicationUser<string> user,
+        AuthenticationProperties authenticationProperties,
         IEnumerable<Claim> additionalClaims)
     {
         user.LastLogin = DateTime.UtcNow;
@@ -207,7 +200,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         user.AccessFailedCount = 0;
 
         await UserManager.UpdateAsync(user);
-        
+
         await base.SignInWithClaimsAsync(user, authenticationProperties, additionalClaims);
     }
 
@@ -216,18 +209,20 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         user.LastFailedLoginReason = FailedLoginReason.LockedOut;
 
         await UserManager.UpdateAsync(user);
-        
+
         return await base.LockedOut(user);
     }
 
-    public  Task<SignInResult> CustomSignInOrTwoFactorAsync(NuagesApplicationUser<string> user, bool isPersistent, string? loginProvider = null, bool bypassTwoFactor = false)
+    public Task<SignInResult> CustomSignInOrTwoFactorAsync(NuagesApplicationUser<string> user, bool isPersistent,
+        string? loginProvider = null, bool bypassTwoFactor = false)
     {
         return base.SignInOrTwoFactorAsync(user, isPersistent, loginProvider, bypassTwoFactor);
     }
 
     public async Task SignInEmailNotVerified(NuagesApplicationUser<string> user)
     {
-        await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme, StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email ));
+        await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme,
+            StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email));
     }
 
     public async Task<SignInResult> CustomPreSignInCheck(NuagesApplicationUser<string> user)
@@ -242,12 +237,12 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         await Context.SignOutAsync(NuagesIdentityConstants.EmailNotVerifiedScheme);
         await Context.SignOutAsync(NuagesIdentityConstants.ResetPasswordScheme);
         await Context.SignOutAsync(NuagesIdentityConstants.PasswordExpiredScheme);
-        
+
         await base.SignOutAsync();
     }
 }
 
-public static class NuagesIdentityConstants 
+public static class NuagesIdentityConstants
 {
     public const string EmailNotVerifiedScheme = "EmailNotVerifiedScheme";
     public const string ResetPasswordScheme = "ResetPasswordScheme";

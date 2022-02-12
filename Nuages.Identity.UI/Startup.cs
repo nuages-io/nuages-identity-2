@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Identity.Services;
@@ -19,11 +17,10 @@ using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI;
 
-
 public class Startup
 {
-    private readonly IWebHostEnvironment _env;
     private readonly IConfiguration _configuration;
+    private readonly IWebHostEnvironment _env;
 
     public Startup(IConfiguration configuration, IWebHostEnvironment env)
     {
@@ -35,7 +32,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
-        
+
         services.AddDataProtection()
             .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
 
@@ -59,7 +56,7 @@ public class Startup
                         UserNameClaimType = OpenIddictConstants.Claims.Name,
                         UserIdClaimType = OpenIddictConstants.Claims.Subject
                     };
-                    
+
 
                     identity.SignIn = new SignInOptions
                     {
@@ -68,18 +65,15 @@ public class Startup
                         RequireConfirmedAccount = false //MUST be false
                     };
                 })
-            .AddNuagesIdentityServices(_configuration, _ =>{})
-            //.AddInMemoryStores<NuagesApplicationUser, NuagesApplicationRole, string>();
-            
+            .AddNuagesIdentityServices(_configuration, _ => { })
             .AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
             {
                 options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = _configuration["Nuages:Mongo:Database"];
-                
+
                 ModelMapper.MapModel<string>();
-            
+
                 if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser<string>)))
-                {
                     BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
                     {
                         cm.AutoMap();
@@ -87,11 +81,9 @@ public class Startup
                         cm.MapMember(c => c.LastFailedLoginReason)
                             .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
                     });
-                }
             });
-        
-            
-            
+
+
         services.AddNuagesAuthentication()
             .AddGoogle(googleOptions =>
             {
@@ -100,25 +92,25 @@ public class Startup
             });
 
         // ReSharper disable once UnusedParameter.Local
-        
+
         services
             .AddMvc()
             .AddJsonOptions(jsonOptions =>
             {
                 jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             })
-             .AddNuagesLocalization(_configuration)
+            .AddNuagesLocalization(_configuration)
             ;
 
         services.AddHttpContextAccessor();
 
-        services.AddWebOptimizer( !_env.IsDevelopment(),  !_env.IsDevelopment());
+        services.AddWebOptimizer(!_env.IsDevelopment(), !_env.IsDevelopment());
 
         services.AddUI(_configuration);
 
         services.AddHealthChecks();
-        
-        
+
+
         services.AddScoped<IAudienceValidator, AudienceValidator>();
         services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
         services.AddScoped<IAuthorizeEndpoint, AuthorizeEndpoint>();
@@ -129,9 +121,8 @@ public class Startup
         services.AddScoped<ITokenEndpoint, TokenEndpoint>();
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
-        
-        services.AddNuagesOpenIdDict(_configuration, _ => { });
 
+        services.AddNuagesOpenIdDict(_configuration, _ => { });
     }
 
     [ExcludeFromCodeCoverage]

@@ -10,17 +10,19 @@ namespace Nuages.Identity.UI.OpenIdDict;
 public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
 {
     private readonly IOpenIddictApplicationManager _applicationManager;
-    private readonly IOpenIddictScopeManager _scopeManager;
     private readonly IAudienceValidator _audienceValidator;
+    private readonly IOpenIddictScopeManager _scopeManager;
 
-    public ClientCredentialsFlowHandler(IOpenIddictApplicationManager applicationManager, IOpenIddictScopeManager scopeManager,
+    public ClientCredentialsFlowHandler(IOpenIddictApplicationManager applicationManager,
+        IOpenIddictScopeManager scopeManager,
         IAudienceValidator audienceValidator)
     {
         _applicationManager = applicationManager;
         _scopeManager = scopeManager;
         _audienceValidator = audienceValidator;
     }
-     public async Task<IActionResult> ProcessClientCredentialsFlow(
+
+    public async Task<IActionResult> ProcessClientCredentialsFlow(
         OpenIddictRequest openIdDictRequest)
     {
         if (openIdDictRequest.IsClientCredentialsGrantType())
@@ -30,9 +32,7 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
 
             var application = await _applicationManager.FindByClientIdAsync(openIdDictRequest.ClientId!);
             if (application == null)
-            {
                 throw new InvalidOperationException("The application details cannot be found in the database.");
-            }
 
             // Create a new ClaimsIdentity containing the claims that
             // will be used to create an id_token, a token or a code.
@@ -81,11 +81,8 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
 
                 return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
-            
-            foreach (var claim in principal.Claims)
-            {
-                claim.SetDestinations(ClaimsDestinations.GetDestinations(claim));
-            }
+
+            foreach (var claim in principal.Claims) claim.SetDestinations(ClaimsDestinations.GetDestinations(claim));
 
             return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }

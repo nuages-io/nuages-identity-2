@@ -1,6 +1,7 @@
 ﻿@page
+@using Nuages.Web.Recaptcha
 @model Nuages.Identity.UI.Pages.Account.Manage.EmailModel
-@inject IOptions<Nuages.Web.Recaptcha.GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 
 @{
     ViewData["Title"] = Localizer["changeEmail:title"];
@@ -9,7 +10,7 @@
 <div id="app">
     <h2 class="page-header">@Localizer["changeEmail.title"]</h2>
 
-    <form  method="POST" v-on:submit.prevent="changeEmail" id="formChangeEmail">
+    <form method="POST" v-on:submit.prevent="changeEmail" id="formChangeEmail">
         <fieldset :disabled="status == 'sending'" class="space-y-4">
             <span class="text-gray-500">@Localizer["changeEmail:instructions"]</span>
             <div>

@@ -4,92 +4,88 @@ var App =
             return {
                 email: emailInitialValue,
                 password: "",
-                confirmPassword : "",
+                confirmPassword: "",
                 errors: [],
                 status: ""
             }
         },
         mounted() {
-            
+
             if (this.email === "")
                 email.focus();
-           else
-            {
+            else {
                 password.focus();
             }
-              
+
         },
         methods:
             {
                 doResetPassword: function (token) {
-                    var self = this;                    
-                    
+                    var self = this;
+
                     var e = self.email;
                     var p = self.password;
                     var c = self.passwordConfirm;
-                                       
-                    
+
+
                     fetch("/api/account/resetPassword", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
                         body: JSON.stringify({
                                 email: e,
                                 password: p,
                                 passwordConfirm: c,
-                                code : code
+                                code: code
                             }
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
-                            
+
                             if (res.success) {
-                                
+
                                 self.status = "done";
                                 self.errors = [];
-                            }
-                            else
-                            {
+                            } else {
                                 self.status = "error";
 
-                                self.errors = res.errors.map(function(m) {
-                                    return { message : m}
+                                self.errors = res.errors.map(function (m) {
+                                    return {message: m}
                                 });
                             }
                         });
                 },
                 resetPassword: function () {
-                   
+
                     var self = this;
-                    
+
                     this.errors = [];
                     formResetPassword.classList.remove("was-validated");
 
                     if (typeof email !== 'undefined')
                         email.setCustomValidity("");
-                    
+
                     password.setCustomValidity("");
                     passwordConfirm.setCustomValidity("");
-                    
+
                     var res = formResetPassword.checkValidity();
                     if (res) {
 
                         this.status = "sending";
-                        
+
                         grecaptcha.ready(function () {
                             grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
                                 self.doResetPassword(token);
                             });
                         });
                     } else {
-                        
+
                         formResetPassword.classList.add("was-validated");
 
-                        if (typeof email !== 'undefined')
-                        {
+                        if (typeof email !== 'undefined') {
                             if (!email.validity.valid) {
                                 if (email.validity.valueMissing) {
                                     email.setCustomValidity(emailRequiredMessage);
@@ -111,7 +107,7 @@ var App =
 
                         list.forEach((element) => {
 
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
 
                     }
@@ -121,9 +117,9 @@ var App =
             email(value) {
 
                 this.errors = this.errors.filter(a => a.id !== "email");
-               
+
                 this.status = "";
-                
+
                 email.setCustomValidity("");
             },
             password(value) {
@@ -133,7 +129,7 @@ var App =
             },
             passwordConfirm(value) {
                 this.errors = this.errors.filter(a => a.id !== "passwordConfirm");
-                
+
                 this.status = "";
                 passwordCustom.setCustomValidity("");
             }

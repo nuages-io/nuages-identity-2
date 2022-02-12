@@ -7,13 +7,12 @@ var App =
                 errors: [],
                 remember: false,
                 action: "",
-                status : ""
+                status: ""
             }
         },
         mounted() {
             userNameOrEmail.focus();
-            setTimeout(function()
-            {
+            setTimeout(function () {
                 userNameOrEmail.value = "";
             })
         },
@@ -29,7 +28,7 @@ var App =
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken' : token
+                            'X-Custom-RecaptchaToken': token
                         },
                         body: JSON.stringify({
                                 userNameOrEmail: e,
@@ -40,16 +39,15 @@ var App =
                     })
                         .then(response => response.json())
                         .then(res => {
-                           
-                            
+
+
                             if (res.success) {
                                 window.location = returnUrl;
                             } else
-                                
+
                                 switch (res.reason) {
                                     case "PasswordExpired":
-                                    case "PasswordMustBeChanged": 
-                                    {
+                                    case "PasswordMustBeChanged": {
                                         window.location = "/account/resetpassword?expired=true";
                                         break;
                                     }
@@ -60,15 +58,14 @@ var App =
                                     case "PhoneNotConfirmed": {
                                         window.location = "/account/phonenotconfirmed";
                                         break;
-                                    }                                   
+                                    }
                                     default: {
-                                        
-                                        if (res.result.requiresTwoFactor === true)
-                                        {
+
+                                        if (res.result.requiresTwoFactor === true) {
                                             window.location = "/account/loginwith2fa?returnUrl=" + returnUrl;
                                             break;
                                         }
-                                        
+
                                         this.status = "";
                                         //NotWithinDateRange,
                                         //AccountNotConfirmed,
@@ -83,7 +80,7 @@ var App =
 
                 },
                 login: function () {
-                    
+
                     this.errors = [];
                     formLogin.classList.remove("was-validated");
 
@@ -103,7 +100,7 @@ var App =
                         });
                     } else {
 
-                        
+
                         formLogin.classList.add("was-validated");
 
                         if (!userNameOrEmail.validity.valid) {
@@ -121,7 +118,7 @@ var App =
                         var list = formLogin.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
                     }
                 }

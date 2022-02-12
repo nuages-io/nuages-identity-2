@@ -1,8 +1,20 @@
 <ul class=" list-inside space-y-2">
-    <li> <a href="~/account/manage/profile" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/profile" ? "font-extrabold" : "")">@Localizer["profile:title"]</a></li>        
-    <li> <a href="~/account/manage/changePassword" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant().EndsWith("password") ? "font-extrabold" : "")">@Localizer["password"]</a></li>
-    <li> <a href="~/account/manage/email" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/email" ? "font-extrabold" : "")">@Localizer["changeEmail:title"]</a></li>
-    <li> <a href="~/account/manage/username" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/username" ? "font-extrabold" : "")">@Localizer["changeUsername:title"]</a></li>
-    <li> <a href="~/account/manage/twoFactorAuthentication" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/twofactorauthentication" ? "font-extrabold" : "")">@Localizer["mfa:title"]</a></li>
-    <li> <a href="~/account/manage/externalLogins" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/externallogins" ? "font-extrabold" : "")">@Localizer["externalLogins:shortTitle"]</a></li>
+    <li>
+        <a href="~/account/manage/profile" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/profile" ? "font-extrabold" : "")">@Localizer["profile:title"]</a>
+    </li>
+    <li>
+        <a href="~/account/manage/changePassword" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant().EndsWith("password") ? "font-extrabold" : "")">@Localizer["password"]</a>
+    </li>
+    <li>
+        <a href="~/account/manage/email" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/email" ? "font-extrabold" : "")">@Localizer["changeEmail:title"]</a>
+    </li>
+    <li>
+        <a href="~/account/manage/username" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/username" ? "font-extrabold" : "")">@Localizer["changeUsername:title"]</a>
+    </li>
+    <li>
+        <a href="~/account/manage/twoFactorAuthentication" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/twofactorauthentication" ? "font-extrabold" : "")">@Localizer["mfa:title"]</a>
+    </li>
+    <li>
+        <a href="~/account/manage/externalLogins" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/externallogins" ? "font-extrabold" : "")">@Localizer["externalLogins:shortTitle"]</a>
+    </li>
 </ul>

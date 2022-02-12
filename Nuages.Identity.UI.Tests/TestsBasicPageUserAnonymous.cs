@@ -5,21 +5,20 @@ namespace Nuages.Identity.UI.Tests;
 public class TestsBasicPageUserAnonymous
     : IClassFixture<CustomWebApplicationFactoryAnonymous<Startup>>
 {
-    private readonly CustomWebApplicationFactoryAnonymous<Startup>  _factory;
+    private readonly CustomWebApplicationFactoryAnonymous<Startup> _factory;
 
-    public TestsBasicPageUserAnonymous(CustomWebApplicationFactoryAnonymous<Startup>  factory)
+    public TestsBasicPageUserAnonymous(CustomWebApplicationFactoryAnonymous<Startup> factory)
     {
         _factory = factory;
-
     }
 
     [Theory]
-     [InlineData("/")]
-     [InlineData("/Index")]
-     [InlineData("/account/login")]
+    [InlineData("/")]
+    [InlineData("/Index")]
+    [InlineData("/account/login")]
     [InlineData("/account/forgotpassword")]
-     [InlineData("/account/register")]
-     [InlineData("/account/loginWithPasswordless")]
+    [InlineData("/account/register")]
+    [InlineData("/account/loginWithPasswordless")]
     [InlineData("/account/emailNotConfirmed")]
     [InlineData("/account/logout")]
     [InlineData("/error")]
@@ -36,5 +35,4 @@ public class TestsBasicPageUserAnonymous
         Assert.Equal("text/html; charset=utf-8",
             response.Content.Headers.ContentType!.ToString());
     }
-
 }

@@ -1,7 +1,5 @@
-
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Localization;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Email;
 using Nuages.Web;
@@ -14,13 +12,14 @@ namespace Nuages.Identity.Services.Manage;
 
 public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
 {
-    private readonly NuagesUserManager _userManager;
-    private readonly IMessageService _sender;
     private readonly IStringLocalizer _localizer;
     private readonly ILogger<SendSMSVerificationCodeService> _logger;
     private readonly IRuntimeConfiguration _runtimeConfiguration;
+    private readonly IMessageService _sender;
+    private readonly NuagesUserManager _userManager;
 
-    public SendSMSVerificationCodeService(NuagesUserManager userManager, IMessageService sender, IStringLocalizer localizer,
+    public SendSMSVerificationCodeService(NuagesUserManager userManager, IMessageService sender,
+        IStringLocalizer localizer,
         ILogger<SendSMSVerificationCodeService> logger, IRuntimeConfiguration runtimeConfiguration)
     {
         _userManager = userManager;
@@ -34,12 +33,9 @@ public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
     {
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(userId);
         ArgumentNullOrEmptyException.ThrowIfNullOrEmpty(phoneNumber);
-        
+
         var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-        {
-            throw new NotFoundException("UswerNotFound");
-        }
+        if (user == null) throw new NotFoundException("UswerNotFound");
 
         phoneNumber = phoneNumber.Replace("+", "").Replace("+", " ").Replace("+", "-");
 
@@ -48,15 +44,13 @@ public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
         var message = _localizer["changePhoneNumber:smsMessage", code];
 
         _logger.LogInformation($"Message : {message} No: {phoneNumber}");
-        
+
         _sender.SendSms(phoneNumber, message);
-        
+
         return new SendSMSVerificationCodeResultModel
         {
-
             Code = _runtimeConfiguration.IsTest ? code : null,
             Success = true
-            
         };
     }
 }
@@ -77,7 +71,6 @@ public class SendSMSVerificationCodeResultModel
     // ReSharper disable once CollectionNeverQueried.Global
     public List<string> Errors { get; set; } = new();
 }
-
 
 public class SendSMSVerificationCodeModel
 {

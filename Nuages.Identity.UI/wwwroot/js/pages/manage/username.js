@@ -18,38 +18,37 @@ var App =
                     var u = self.username;
 
                     this.status = "sending";
-                    
+
                     fetch("/api/manage/changeUsername", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            newUsername: u
+                                newUsername: u
                             }
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
-                            
+
                             if (res.success) {
 
                                 self.currentUserName = self.username;
-                               
+
                                 updateUserName(self.currentUserName);
-                                
+
                                 self.username = null;
                                 self.status = "done";
 
-                                setTimeout(function()
-                                {
+                                setTimeout(function () {
                                     username.focus();
                                 })
                             } else
                                 self.status = "";
 
                             res.errors.forEach((element) => {
-                                self.errors.push({ message : element});
+                                self.errors.push({message: element});
                             });
                         });
 
@@ -60,10 +59,10 @@ var App =
                     formChangeUsername.classList.remove("was-validated");
 
                     username.setCustomValidity("");
-                    
+
                     var res = formChangeUsername.checkValidity();
                     if (res) {
-                       this.doChangeUsername();
+                        this.doChangeUsername();
                     } else {
                         formChangeUsername.classList.add("was-validated");
 
@@ -74,7 +73,7 @@ var App =
                         var list = formChangeUsername.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
                     }
                 }
@@ -84,7 +83,7 @@ var App =
                 this.errors = [];
                 if (value != null)
                     this.status = "";
-                
+
                 username.setCustomValidity("");
             }
         }

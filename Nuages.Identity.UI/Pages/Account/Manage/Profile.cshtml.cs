@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Web;
 using Nuages.Web.Exceptions;
@@ -19,7 +18,10 @@ public class Profile : PageModel
     {
         _userManager = userManager;
     }
-    
+
+    // ReSharper disable once MemberCanBePrivate.Global
+    public NuagesApplicationUser<string>? CurrentUser { get; set; }
+
     public async Task<IActionResult> OnGetAsync()
     {
         var user = await _userManager.FindByIdAsync(User.Sub()!);
@@ -28,7 +30,4 @@ public class Profile : PageModel
 
         return Page();
     }
-
-    // ReSharper disable once MemberCanBePrivate.Global
-    public NuagesApplicationUser<string>? CurrentUser { get; set; }
 }

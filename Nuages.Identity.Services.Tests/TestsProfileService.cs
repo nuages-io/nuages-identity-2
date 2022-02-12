@@ -12,30 +12,30 @@ public class TestsProfileService
     public async Task ShouldSaveProfileWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
-        
+
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
 
         const string newLastName = "LastName";
         const string newFirstName = "FirstName";
-        
+
         var res = await profileService.SaveProfile(user.Id, new SaveProfileModel
         {
             FirstName = newFirstName,
             LastName = newLastName
         });
-        
+
         Assert.True(res.Success);
         Assert.Equal(newLastName, user.LastName);
         Assert.Equal(newFirstName, user.FirstName);
     }
-    
+
     [Fact]
     public async Task ShouldSaveProfileWithFailure()
     {
         var user = MockHelpers.CreateDefaultUser();
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
@@ -47,20 +47,19 @@ public class TestsProfileService
                 FirstName = "FirstName",
                 LastName = "LastName"
             });
-            
         });
-        
     }
-    
+
     [Fact]
     public async Task ShouldSaveProfileWithFailureAndErrors()
     {
         var user = MockHelpers.CreateDefaultUser();
-        
-        var identityStuff = MockHelpers.MockIdentityStuff(user);
-        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync( () => IdentityResult.Failed(new IdentityError { Code = "error", Description = "error"}) );
 
-        
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+        identityStuff.UserStore.Setup(u => u.UpdateAsync(user, It.IsAny<CancellationToken>())).ReturnsAsync(() =>
+            IdentityResult.Failed(new IdentityError { Code = "error", Description = "error" }));
+
+
         var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
 
         var res = await profileService.SaveProfile(user.Id, new SaveProfileModel
@@ -68,9 +67,8 @@ public class TestsProfileService
             FirstName = "FirstName",
             LastName = "LastName"
         });
-        
+
         Assert.False(res.Success);
         Assert.Equal("identity.error", res.Errors.Single());
-
     }
 }

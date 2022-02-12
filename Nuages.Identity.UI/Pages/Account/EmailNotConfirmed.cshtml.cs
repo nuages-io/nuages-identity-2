@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-
 using Nuages.AspNetIdentity.Core;
 
 
@@ -14,6 +13,5 @@ public class EmailNotConfirmed : PageModel
 {
     public void OnGet()
     {
-      
     }
 }

@@ -1,12 +1,12 @@
 @page
 @model Nuages.Identity.UI.Pages.Account.Manage.Profile
 @{
-    ViewData["Title"] = @Localizer["profile:title"];
+    ViewData["Title"] = Localizer["profile:title"];
 }
 
 <div id="app">
     <h2 class="page-header">@Localizer["profile:title"]</h2>
-    
+
     <form class="space-y-4" method="POST" v-on:submit.prevent="saveProfile" id="formProfile">
         @* <span class="text-gray-500">@Localizer["setPassword:instructions"]</span> *@
         <partial name="Shared/ErrorList"/>
@@ -15,15 +15,15 @@
                 <i class="fas fa-check"></i> @Localizer["profile:success"]
             </span>
         </div>
-        <fieldset class="space-y-4"  :disabled="status == 'sending'" >
+        <fieldset class="space-y-4" :disabled="status == 'sending'">
             <input id="lastName" name="lastName" type="text" v-model="lastName" placeholder="@Localizer["profile:lastName"]" class="text-box ">
-            <input id="firstName" name="firstName" type="text" v-model="firstName" placeholder="@Localizer["profile:firstName"]"  class="text-box ">
+            <input id="firstName" name="firstName" type="text" v-model="firstName" placeholder="@Localizer["profile:firstName"]" class="text-box ">
             <button v-on:click.prevent="saveProfile" class="primary full items-center" :disabled="status == 'sending'">
                 @Localizer["profile:save"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
             </button>
         </fieldset>
-      
-        
+
+
     </form>
 </div>
 

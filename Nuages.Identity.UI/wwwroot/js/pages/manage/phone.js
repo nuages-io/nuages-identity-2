@@ -17,34 +17,33 @@ var App =
                 doSendPhoneChangeMessage: function () {
                     var self = this;
                     var p = self.dialCode + self.phone;
-            
+
                     this.status = "sending";
-                    
+
                     fetch("/api/manage/sendPhoneChangeMessage", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            phoneNumber: p
+                                phoneNumber: p
                             }
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
-                            
+
                             if (res.success) {
                                 self.status = "sent";
-                                setTimeout(function()
-                                {
+                                setTimeout(function () {
                                     code.focus();
                                 }, 0);
-                                
+
                             } else
                                 self.status = "";
 
                             res.errors.forEach((element) => {
-                                self.errors.push({ message : element});
+                                self.errors.push({message: element});
                             });
                         });
                 },
@@ -54,10 +53,10 @@ var App =
                     formAddPhone.classList.remove("was-validated");
 
                     phone.setCustomValidity("");
-                    
+
                     var res = formAddPhone.checkValidity();
                     if (res) {
-                       this.doSendPhoneChangeMessage();
+                        this.doSendPhoneChangeMessage();
                     } else {
                         formAddPhone.classList.add("was-validated");
 
@@ -68,7 +67,7 @@ var App =
                         var list = formAddPhone.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
                     }
                 },
@@ -76,7 +75,7 @@ var App =
                     var self = this;
                     var p = self.dialCode + self.phone;
                     var c = self.code;
-                    
+
                     this.status = "sending";
 
                     fetch("/api/manage/changePhoneNumber", {
@@ -85,8 +84,8 @@ var App =
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            phoneNumber: p,
-                            token: c
+                                phoneNumber: p,
+                                token: c
                             }
                         )
                     })
@@ -99,7 +98,7 @@ var App =
                                 self.status = "sent";
 
                             res.errors.forEach((element) => {
-                                self.errors.push({ message : element});
+                                self.errors.push({message: element});
                             });
                         });
                 },
@@ -109,7 +108,7 @@ var App =
                     formAddPhone.classList.remove("was-validated");
 
                     code.setCustomValidity("");
-                    
+
                     var res = formAddPhone.checkValidity();
                     if (res) {
                         this.doAddPhone();
@@ -123,7 +122,7 @@ var App =
                         var list = formAddPhone.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
-                            this.errors.push({ message : element.validationMessage, id : element.id});
+                            this.errors.push({message: element.validationMessage, id: element.id});
                         });
                     }
                 }

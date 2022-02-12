@@ -17,7 +17,7 @@ public class CustomWebApplicationFactory<TStartup>
     : WebApplicationFactory<TStartup> where TStartup : class
 {
     public string DefaultUserId { get; set; } = IdentityDataSeeder.UserId;
-    
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureAppConfiguration(configurationBuilder =>
@@ -27,7 +27,7 @@ public class CustomWebApplicationFactory<TStartup>
                 new("Nuages:OpenIdDict:Storage", "InMemory")
             });
         });
-        
+
         builder.ConfigureTestServices(services =>
         {
             services.AddAuthentication(options =>
@@ -40,10 +40,12 @@ public class CustomWebApplicationFactory<TStartup>
                     "Test", options => { options.DefaultUserId = DefaultUserId; });
 
 
-            var serviceDescriptorUser = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlUserStore"));
+            var serviceDescriptorUser = services.First(s =>
+                s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlUserStore"));
             services.Remove(serviceDescriptorUser);
-            
-            var serviceDescriptorRole = services.First(s =>  s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlRoleStore"));
+
+            var serviceDescriptorRole = services.First(s =>
+                s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlRoleStore"));
             services.Remove(serviceDescriptorRole);
 
             services.AddDbContext<TestDataContext>(options =>
@@ -51,9 +53,10 @@ public class CustomWebApplicationFactory<TStartup>
                 options.UseInMemoryDatabase("IdentityContext");
                 options.UseOpenIddict();
             });
-               
 
-            var identityBuilder = new IdentityBuilder(typeof(NuagesApplicationUser<string>), typeof(NuagesApplicationRole<string>), services);
+
+            var identityBuilder = new IdentityBuilder(typeof(NuagesApplicationUser<string>),
+                typeof(NuagesApplicationRole<string>), services);
             identityBuilder.AddEntityFrameworkStores<TestDataContext>();
 
             services.AddHostedService<IdentityDataSeeder>();

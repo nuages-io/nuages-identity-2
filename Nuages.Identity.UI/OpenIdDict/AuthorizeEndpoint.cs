@@ -1,24 +1,27 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Nuages.AspNetIdentity.Core;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
+using SignInResult = Microsoft.AspNetCore.Mvc.SignInResult;
 
 namespace Nuages.Identity.UI.OpenIdDict;
 
 public class AuthorizeEndpoint : IAuthorizeEndpoint
 {
-    private readonly NuagesUserManager _userManager;
-    private readonly NuagesSignInManager _signInManager;
-    private readonly IHttpContextAccessor _contextAccessor;
     private readonly IOpenIddictApplicationManager _applicationManager;
     private readonly IOpenIddictAuthorizationManager _authorizationManager;
-    private readonly IOpenIddictScopeManager _scopeManager;
+    private readonly IHttpContextAccessor _contextAccessor;
     private readonly IOpenIddictServerRequestProvider _openIddictServerRequestProvider;
+    private readonly IOpenIddictScopeManager _scopeManager;
+    private readonly NuagesSignInManager _signInManager;
+    private readonly NuagesUserManager _userManager;
 
-    public AuthorizeEndpoint(NuagesUserManager userManager, NuagesSignInManager signInManager, IHttpContextAccessor contextAccessor,
-        IOpenIddictApplicationManager applicationManager, IOpenIddictAuthorizationManager authorizationManager, 
+    public AuthorizeEndpoint(NuagesUserManager userManager, NuagesSignInManager signInManager,
+        IHttpContextAccessor contextAccessor,
+        IOpenIddictApplicationManager applicationManager, IOpenIddictAuthorizationManager authorizationManager,
         IOpenIddictScopeManager scopeManager, IOpenIddictServerRequestProvider openIddictServerRequestProvider)
     {
         _userManager = userManager;
@@ -29,14 +32,14 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
         _scopeManager = scopeManager;
         _openIddictServerRequestProvider = openIddictServerRequestProvider;
     }
-    
+
     public async Task<IActionResult> Authorize()
     {
         var openIdRequest = _openIddictServerRequestProvider.GetOpenIddictServerRequest() ??
-                      throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
+                            throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
         var httpRequest = _contextAccessor.HttpContext!.Request;
-        
+
         // If prompt=login was specified by the client application,
         // immediately return the user agent to the login page.
         if (openIdRequest.HasPrompt(OpenIddictConstants.Prompts.Login))
@@ -51,9 +54,9 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
 
             parameters.Add(KeyValuePair.Create(OpenIddictConstants.Parameters.Prompt, new StringValues(prompt)));
 
-            return new ChallengeResult (
-                 new[] { Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme },
-                 new AuthenticationProperties
+            return new ChallengeResult(
+                new[] { IdentityConstants.ApplicationScheme },
+                new AuthenticationProperties
                 {
                     RedirectUri = httpRequest.PathBase + httpRequest.Path + QueryString.Create(parameters)
                 });
@@ -62,7 +65,7 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
         // Retrieve the user principal stored in the authentication cookie.
         // If a max_age parameter was provided, ensure that the cookie is not too old.
         // If the user principal can't be extracted or the cookie is too old, redirect the user to the login page.
-        var result = await _contextAccessor.HttpContext.AuthenticateAsync(Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme);
+        var result = await _contextAccessor.HttpContext.AuthenticateAsync(IdentityConstants.ApplicationScheme);
         if ( /*result == null ||*/ !result.Succeeded || openIdRequest.MaxAge != null &&
             result.Properties?.IssuedUtc != null &&
             DateTimeOffset.UtcNow - result.Properties.IssuedUtc > TimeSpan.FromSeconds(openIdRequest.MaxAge.Value))
@@ -70,19 +73,18 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
             // If the client application requested promptless authentication,
             // return an error indicating that the user is not logged in.
             if (openIdRequest.HasPrompt(OpenIddictConstants.Prompts.None))
-            {
-                return new ForbidResult (
-                     new[] { OpenIddictServerAspNetCoreDefaults.AuthenticationScheme },
-                     new AuthenticationProperties(new Dictionary<string, string?>
+                return new ForbidResult(
+                    new[] { OpenIddictServerAspNetCoreDefaults.AuthenticationScheme },
+                    new AuthenticationProperties(new Dictionary<string, string?>
                     {
-                        [OpenIddictServerAspNetCoreConstants.Properties.Error] = OpenIddictConstants.Errors.LoginRequired,
+                        [OpenIddictServerAspNetCoreConstants.Properties.Error] =
+                            OpenIddictConstants.Errors.LoginRequired,
                         [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = "The user is not logged in."
                     }));
-            }
 
-            return new ChallengeResult (
-                 new[] { Microsoft.AspNetCore.Identity.IdentityConstants.ApplicationScheme },
-                 new AuthenticationProperties
+            return new ChallengeResult(
+                new[] { IdentityConstants.ApplicationScheme },
+                new AuthenticationProperties
                 {
                     RedirectUri = httpRequest.PathBase + httpRequest.Path + QueryString.Create(
                         httpRequest.HasFormContentType ? httpRequest.Form.ToList() : httpRequest.Query.ToList())
@@ -105,7 +107,7 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
             OpenIddictConstants.Statuses.Valid,
             OpenIddictConstants.AuthorizationTypes.Permanent,
             openIdRequest.GetScopes()).ToListAsync();
-        
+
         var principal =
             await _signInManager.CreateUserPrincipalAsync(user);
 
@@ -126,11 +128,9 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
         principal.SetAuthorizationId(await _authorizationManager.GetIdAsync(authorization));
 
         foreach (var claim in principal.Claims)
-        {
             claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
-        }
 
-        return new SignInResult (OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
+        return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
     }
 }
 

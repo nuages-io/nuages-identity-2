@@ -1,5 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
+
 #nullable disable
 
 using System.Text.Json;
@@ -15,8 +16,9 @@ namespace Nuages.Identity.UI.Pages.Account.Manage;
 [Authorize]
 public class PhoneModel : PageModel
 {
-    [TempData] 
-    public string PhoneNumber { get; set; } = string.Empty;
+    [TempData] public string PhoneNumber { get; set; } = string.Empty;
+
+    public CountryCode[] Codes { get; set; } = Array.Empty<CountryCode>();
 
     public void OnGetAsync()
     {
@@ -37,8 +39,6 @@ public class PhoneModel : PageModel
             };
         }
     }
-
-    public CountryCode[] Codes { get; set; } = Array.Empty<CountryCode>();
 }
 
 // ReSharper disable once ClassNeverInstantiated.Global
@@ -46,8 +46,7 @@ public class CountryCode
 {
     // ReSharper disable once InconsistentNaming
     public string name { get; set; }
+
     // ReSharper disable once InconsistentNaming
     public string dial_code { get; set; }
-
-    
 }

@@ -11,7 +11,7 @@ public class TestsResetPasswordService
     public async Task ShouldResetPasswordWithSuccess()
     {
         const string password = MockHelpers.StrongPassword;
-        
+
         var user = MockHelpers.CreateDefaultUser();
         user.EmailConfirmed = false;
 
@@ -21,7 +21,7 @@ public class TestsResetPasswordService
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        
+
         var res = await resetService.Reset(new ResetPasswordModel
         {
             Email = user.Email,
@@ -29,24 +29,24 @@ public class TestsResetPasswordService
             Password = password,
             PasswordConfirm = password
         });
-        
+
         Assert.True(res.Success);
     }
-    
+
     [Fact]
     public async Task ShouldResetPasswordWithError()
     {
         const string password = MockHelpers.StrongPassword;
-        
+
         var user = MockHelpers.CreateDefaultUser();
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        
+
         var res = await resetService.Reset(new ResetPasswordModel
         {
             Email = "bad_email",
@@ -54,25 +54,25 @@ public class TestsResetPasswordService
             Password = password,
             PasswordConfirm = password
         });
-        
+
         Assert.True(res.Success);
         Assert.True(!res.Errors.Any());
     }
-    
+
     [Fact]
     public async Task ShouldResetPasswordWithErrorNotCOmplexEnough()
     {
         const string password = "password";
-        
+
         var user = MockHelpers.CreateDefaultUser();
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        
+
         var res = await resetService.Reset(new ResetPasswordModel
         {
             Email = user.Email,
@@ -80,28 +80,28 @@ public class TestsResetPasswordService
             Password = password,
             PasswordConfirm = password
         });
-        
+
         Assert.False(res.Success);
         Assert.Equal("identity.PasswordRequiresNonAlphanumeric", res.Errors[0]);
         Assert.Equal("identity.PasswordRequiresDigit", res.Errors[1]);
         Assert.Equal("identity.PasswordRequiresUpper", res.Errors[2]);
     }
-    
+
     [Fact]
     public async Task ShouldResetPasswordWithErrorPasswordDoesnotMatch()
     {
         const string password = MockHelpers.StrongPassword;
-        
+
         var user = MockHelpers.CreateDefaultUser();
         user.EmailConfirmed = false;
-        
+
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        
+
         var res = await resetService.Reset(new ResetPasswordModel
         {
             Email = user.Email,
@@ -109,7 +109,7 @@ public class TestsResetPasswordService
             Password = password,
             PasswordConfirm = "bad_password"
         });
-        
+
         Assert.False(res.Success);
         Assert.Equal("resetPassword:passwordConfirmDoesNotMatch", res.Errors.Single());
     }

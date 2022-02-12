@@ -8,22 +8,22 @@ namespace Nuages.Identity.UI.OpenIdDict;
 
 public class PasswordFlowHandler : IPasswordFlowHandler
 {
+    private readonly IAudienceValidator _audienceValidator;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
-    private readonly IAudienceValidator _audienceValidator;
 
-    public PasswordFlowHandler(NuagesSignInManager signInManager, NuagesUserManager userManager, IAudienceValidator audienceValidator)
+    public PasswordFlowHandler(NuagesSignInManager signInManager, NuagesUserManager userManager,
+        IAudienceValidator audienceValidator)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _audienceValidator = audienceValidator;
     }
-    
+
     public async Task<IActionResult> ProcessPasswordFlow(OpenIddictRequest request)
     {
         if (request.IsPasswordGrantType())
         {
-           
             // Validate the username/password parameters and ensure the account is not locked out.
             var result =
                 await _signInManager.PasswordSignInAsync(request.Username!, request.Password!,
@@ -41,7 +41,7 @@ public class PasswordFlowHandler : IPasswordFlowHandler
             }
 
             var user = await _userManager.FindByNameAsync(request.Username!);
-            
+
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.
             var principal = await _signInManager.CreateUserPrincipalAsync(user);
@@ -66,13 +66,11 @@ public class PasswordFlowHandler : IPasswordFlowHandler
 
                 return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
-            
-            foreach (var claim in principal.Claims)
-            {
-                claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
-            }
 
-            return new SignInResult (OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
+            foreach (var claim in principal.Claims)
+                claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
+
+            return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }
 
         throw new Exception("Wrong grant type");

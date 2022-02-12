@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Localization;
-
 using Nuages.AspNetIdentity.Core;
 using Nuages.Web.Exceptions;
 
@@ -7,28 +6,25 @@ namespace Nuages.Identity.Services.Manage;
 
 public class ProfileService : IProfileService
 {
-    private readonly NuagesUserManager _userManager;
     private readonly IStringLocalizer _localizer;
+    private readonly NuagesUserManager _userManager;
 
     public ProfileService(NuagesUserManager userManager, IStringLocalizer localizer)
     {
         _userManager = userManager;
         _localizer = localizer;
     }
-    
+
     public async Task<SaveProfileResultModel> SaveProfile(string id, SaveProfileModel model)
     {
         var user = await _userManager.FindByIdAsync(id);
-        if (user == null)
-        {
-            throw new NotFoundException("UserNotFound");
-        }
+        if (user == null) throw new NotFoundException("UserNotFound");
 
         user.LastName = model.LastName;
         user.FirstName = model.FirstName;
 
         var res = await _userManager.UpdateAsync(user);
-        
+
         return new SaveProfileResultModel
         {
             Success = res.Succeeded,
@@ -53,4 +49,3 @@ public class SaveProfileResultModel
     public bool Success { get; set; }
     public List<string> Errors { get; set; } = new();
 }
-
