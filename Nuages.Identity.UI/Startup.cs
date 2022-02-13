@@ -66,7 +66,6 @@ public class Startup
                         UserIdClaimType = OpenIddictConstants.Claims.Subject
                     };
 
-
                     identity.SignIn = new SignInOptions
                     {
                         RequireConfirmedEmail = true,
@@ -79,8 +78,6 @@ public class Startup
             {
                 options.ConnectionString = _configuration["Nuages:Mongo:ConnectionString"];
                 options.Database = _configuration["Nuages:Mongo:Database"];
-
-                ModelMapper.MapModel<string>();
 
                 if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser<string>)))
                     BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
