@@ -37,11 +37,11 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
 
 
             var serviceDescriptorUser = services.First(s =>
-                s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlUserStore"));
+                s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));
             services.Remove(serviceDescriptorUser);
 
             var serviceDescriptorRole = services.First(s =>
-                s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoNoSqlRoleStore"));
+                s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoRoleStore"));
             services.Remove(serviceDescriptorRole);
 
             services.AddDbContext<TestDataContext>(options =>

@@ -24,7 +24,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Nuages.AspNetIdentity.Stores\Nuages.AspNetIdentity.Stores.csproj"/>
         <ProjectReference Include="..\Nuages.AspNetIdentity.Core\Nuages.AspNetIdentity.Core.csproj"/>
     </ItemGroup>
 
