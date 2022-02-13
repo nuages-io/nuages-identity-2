@@ -1,8 +1,10 @@
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 using Nuages.Identity.UI.OpenIdDict;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -38,36 +40,53 @@ public class Verify : PageModel
 
     public async Task<IActionResult> OnGet()
     {
-        var request = HttpContext.GetOpenIddictServerRequest() ??
-                      throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
-
-        // If the user code was not specified in the query string (e.g as part of the verification_uri_complete),
-        // render a form to ask the user to enter the user code manually (non-digit chars are automatically ignored).
-        if (string.IsNullOrEmpty(request.UserCode)) return Page();
-
-        // Retrieve the claims principal associated with the user code.
-        var result = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
-        if (result.Succeeded)
+ 
+        
+        try
         {
-            // Retrieve the application details from the database using the client_id stored in the principal.
-            var application =
-                await _applicationManager.FindByClientIdAsync(
-                    result.Principal.GetClaim(OpenIddictConstants.Claims.ClientId)!) ??
-                throw new InvalidOperationException(
-                    "Details concerning the calling client application cannot be found.");
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            var request = HttpContext.GetOpenIddictServerRequest() ??
+                          throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
-            ApplicationName = await _applicationManager.GetLocalizedDisplayNameAsync(application) ?? string.Empty;
-            Scope = string.Join(" ", result.Principal.GetScopes());
-            UserCode = request.UserCode;
+            // If the user code was not specified in the query string (e.g as part of the verification_uri_complete),
+            // render a form to ask the user to enter the user code manually (non-digit chars are automatically ignored).
+            if (string.IsNullOrEmpty(request.UserCode)) return Page();
 
-            // Render a form asking the user to confirm the authorization demand.
+            // Retrieve the claims principal associated with the user code.
+            var result = await HttpContext.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            if (result.Succeeded)
+            {
+                // Retrieve the application details from the database using the client_id stored in the principal.
+                var application =
+                    await _applicationManager.FindByClientIdAsync(
+                        result.Principal.GetClaim(OpenIddictConstants.Claims.ClientId)!) ??
+                    throw new InvalidOperationException(
+                        "Details concerning the calling client application cannot be found.");
+
+                ApplicationName = await _applicationManager.GetLocalizedDisplayNameAsync(application) ?? string.Empty;
+                Scope = string.Join(" ", result.Principal.GetScopes());
+                UserCode = request.UserCode;
+
+                // Render a form asking the user to confirm the authorization demand.
+                return Page();
+            }
+
+            Error = OpenIddictConstants.Errors.InvalidToken;
+            ErrorDescription = "The specified user code is not valid. Please make sure you typed it correctly.";
+            // Redisplay the form when the user code is not valid.
             return Page();
         }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
 
-        Error = OpenIddictConstants.Errors.InvalidToken;
-        ErrorDescription = "The specified user code is not valid. Please make sure you typed it correctly.";
-        // Redisplay the form when the user code is not valid.
-        return Page();
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 
     public async Task<IActionResult> OnPost()

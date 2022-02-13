@@ -1,6 +1,8 @@
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 
@@ -17,13 +19,28 @@ public class PasswordlessLogin : PageModel
 
     public virtual async Task<IActionResult> OnGet(string token, string userId)
     {
-        var res = await _passwordlessService.LoginPasswordLess(token, userId);
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            var res = await _passwordlessService.LoginPasswordLess(token, userId);
 
-        if (res.Success)
-            return Redirect("/");
+            if (res.Success)
+                return Redirect("/");
 
-        if (res.Result.RequiresTwoFactor) return Redirect("/account/loginwith2fa?returnUrl=/");
+            if (res.Result.RequiresTwoFactor) return Redirect("/account/loginwith2fa?returnUrl=/");
 
-        return Unauthorized();
+            return Unauthorized();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 }

@@ -4,11 +4,13 @@
 #nullable disable
 
 using System.Security.Claims;
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 
@@ -27,48 +29,65 @@ public class ResetPasswordModel : PageModel
 
     public async Task<ActionResult> OnGet(string code = null, bool expired = false)
     {
-        ViewData["expired"] = expired;
-        ViewData["email"] = "";
-
-        if (!expired)
+        try
         {
-            if (code == null) return BadRequest("A code must be supplied for password reset.");
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            ViewData["expired"] = expired;
+            ViewData["email"] = "";
 
-            ViewData["Instructions"] = _localizer["resetPassword:instructions"];
-            ViewData["Title"] = _localizer["resetPassword.title"];
-            ViewData["Submit"] = _localizer["resetPassword:reset"];
-
-            var res = await _contextAccessor.HttpContext!.AuthenticateAsync(NuagesIdentityConstants
-                .ResetPasswordScheme);
-            if (res.Succeeded)
+            if (!expired)
             {
+                if (code == null) return BadRequest("A code must be supplied for password reset.");
+
+                ViewData["Instructions"] = _localizer["resetPassword:instructions"];
+                ViewData["Title"] = _localizer["resetPassword.title"];
+                ViewData["Submit"] = _localizer["resetPassword:reset"];
+
+                var res = await _contextAccessor.HttpContext!.AuthenticateAsync(NuagesIdentityConstants
+                    .ResetPasswordScheme);
+                if (res.Succeeded)
+                {
+                    var email = res.Principal!.FindFirstValue(ClaimTypes.Email);
+
+                    ViewData["email"] = email;
+                }
+
+                ViewData["code"] = code;
+            }
+            else
+            {
+                var res = await _contextAccessor.HttpContext!.AuthenticateAsync(NuagesIdentityConstants
+                    .PasswordExpiredScheme);
+                if (!res.Succeeded)
+                    return Unauthorized();
+
+                ViewData["Instructions"] = _localizer["passwordExpired:instructions"];
+                ViewData["Title"] = _localizer["passwordExpired.title"];
+                ViewData["Submit"] = _localizer["passwordExpired:submit"];
+
                 var email = res.Principal!.FindFirstValue(ClaimTypes.Email);
 
                 ViewData["email"] = email;
+
+                var newCode = res.Principal!.FindFirstValue(ClaimTypes.UserData);
+
+                ViewData["code"] = newCode;
             }
 
-            ViewData["code"] = code;
+            return Page();
         }
-        else
+        catch (Exception e)
         {
-            var res = await _contextAccessor.HttpContext!.AuthenticateAsync(NuagesIdentityConstants
-                .PasswordExpiredScheme);
-            if (!res.Succeeded)
-                return Unauthorized();
+            AWSXRayRecorder.Instance.AddException(e);
 
-            ViewData["Instructions"] = _localizer["passwordExpired:instructions"];
-            ViewData["Title"] = _localizer["passwordExpired.title"];
-            ViewData["Submit"] = _localizer["passwordExpired:submit"];
-
-            var email = res.Principal!.FindFirstValue(ClaimTypes.Email);
-
-            ViewData["email"] = email;
-
-            var newCode = res.Principal!.FindFirstValue(ClaimTypes.UserData);
-
-            ViewData["code"] = newCode;
+            throw;
         }
-
-        return Page();
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
+        
     }
 }

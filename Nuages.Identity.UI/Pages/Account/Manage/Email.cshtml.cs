@@ -3,10 +3,12 @@
 
 #nullable disable
 
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 using Nuages.Web;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -30,10 +32,25 @@ public class EmailModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.FindByIdAsync(User.Sub()!);
-        Email = user.Email;
-        EmailVerified = user.EmailConfirmed;
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
-        return Page();
+            var user = await _userManager.FindByIdAsync(User.Sub()!);
+            Email = user.Email;
+            EmailVerified = user.EmailConfirmed;
+
+            return Page();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -35,22 +37,40 @@ public class Login : PageModel
 
     public async Task<ActionResult> OnGetAsync(string? returnUrl = null)
     {
-        if (User.Identity is { IsAuthenticated: true })
+       
+        
+        try
         {
-            if (string.IsNullOrEmpty(returnUrl))
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            if (User.Identity is { IsAuthenticated: true })
+            {
+                if (string.IsNullOrEmpty(returnUrl))
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return Redirect(returnUrl!);
+                return Redirect(returnUrl!);
+            }
+
+            ReturnUrl = returnUrl ?? Url.Content("~/");
+
+            UserNamePlaceHolder =
+                _stringLocalizer[
+                    _nuagesIdentityOptions.SupportsLoginWithEmail ? "Login:Mode:userNameEmail" : "Login:Mode:email"];
+
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            return Page();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
         }
 
-        ReturnUrl = returnUrl ?? Url.Content("~/");
-
-        UserNamePlaceHolder =
-            _stringLocalizer[
-                _nuagesIdentityOptions.SupportsLoginWithEmail ? "Login:Mode:userNameEmail" : "Login:Mode:email"];
-
-        ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-        return Page();
     }
 }

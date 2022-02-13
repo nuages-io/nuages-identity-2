@@ -3,11 +3,13 @@
 
 #nullable disable
 
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Manage;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -40,20 +42,38 @@ public class TwoFactorAuthenticationModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+       
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-        HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
-        Is2FaEnabled = await _userManager.GetTwoFactorEnabledAsync(user) && HasAuthenticator;
+            HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
+            Is2FaEnabled = await _userManager.GetTwoFactorEnabledAsync(user) && HasAuthenticator;
 
-        IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
-        RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
+            IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
+            RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
-        RecoveryCodes = await _mfaService.GetRecoveryCodes(user.Id);
-        RecoveryCodesString = RecoveryCodes.Any() ? string.Join(",", RecoveryCodes) : "";
+            RecoveryCodes = await _mfaService.GetRecoveryCodes(user.Id);
+            RecoveryCodesString = RecoveryCodes.Any() ? string.Join(",", RecoveryCodes) : "";
 
-        if (user.PhoneNumberConfirmed) FallbackNumber = user.PhoneNumber;
+            if (user.PhoneNumberConfirmed) FallbackNumber = user.PhoneNumber;
 
-        return Page();
+            return Page();
+
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+
     }
 }

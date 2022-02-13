@@ -3,9 +3,11 @@
 
 #nullable disable
 
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 
@@ -24,10 +26,25 @@ public class LogoutModel : PageModel
 
     public async Task<IActionResult> OnGet(string returnUrl = null)
     {
-        await _signInManager.SignOutAsync();
-        _logger.LogInformation("User logged out.");
-        if (returnUrl != null) return LocalRedirect(returnUrl);
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            if (returnUrl != null) return LocalRedirect(returnUrl);
 
-        return Redirect("~/");
+            return Redirect("~/");
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 }

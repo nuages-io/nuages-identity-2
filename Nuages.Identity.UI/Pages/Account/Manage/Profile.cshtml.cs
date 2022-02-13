@@ -1,7 +1,9 @@
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 using Nuages.Web;
 using Nuages.Web.Exceptions;
 
@@ -24,10 +26,26 @@ public class Profile : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.FindByIdAsync(User.Sub()!);
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            var user = await _userManager.FindByIdAsync(User.Sub()!);
 
-        CurrentUser = user ?? throw new NotFoundException("UserNotFound");
+            CurrentUser = user ?? throw new NotFoundException("UserNotFound");
 
-        return Page();
+            return Page();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+       
     }
 }

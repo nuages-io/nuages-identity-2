@@ -4,11 +4,13 @@
 #nullable disable
 
 using System.Text;
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
 using Nuages.Identity.Services.Manage;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -34,15 +36,31 @@ public class EnableAuthenticatorModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null) NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
-        var url = await _mfaService.GetMFAUrlAsync(user!.Id);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-        SharedKey = FormatKey(url.Key);
-        AuthenticatorUri = url.Url;
+            var url = await _mfaService.GetMFAUrlAsync(user!.Id);
 
-        return Page();
+            SharedKey = FormatKey(url.Key);
+            AuthenticatorUri = url.Url;
+
+            return Page();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 
     private static string FormatKey(string unformattedKey)

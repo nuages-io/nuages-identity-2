@@ -1,7 +1,9 @@
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -24,14 +26,29 @@ public class LoginWithSMS : PageModel
 
     public async Task<IActionResult> OnGet(string? returnUrl = null)
     {
-        if (!_options.EnablePhoneFallback) return Forbid();
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            if (!_options.EnablePhoneFallback) return Forbid();
 
-        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
 
-        if (user == null) throw new InvalidOperationException("Unable to load two-factor authentication user.");
+            if (user == null) throw new InvalidOperationException("Unable to load two-factor authentication user.");
 
-        ReturnUrl = returnUrl ?? "~/";
+            ReturnUrl = returnUrl ?? "~/";
 
-        return Page();
+            return Page();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
     }
 }

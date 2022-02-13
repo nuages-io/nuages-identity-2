@@ -3,10 +3,12 @@
 
 #nullable disable
 
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.Email;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -30,12 +32,29 @@ public class ConfirmEmailModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(string userId, string code)
     {
-        if (userId == null || code == null) return RedirectToPage("/Index");
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            if (userId == null || code == null) return RedirectToPage("/Index");
 
-        var res = await _confirmEmailService.Confirm(userId, code);
+            var res = await _confirmEmailService.Confirm(userId, code);
 
-        StatusMessage = res ? _localizer["confirmEmail:success"] : _localizer["confirmEmail:error"];
+            StatusMessage = res ? _localizer["confirmEmail:success"] : _localizer["confirmEmail:error"];
 
-        return Page();
+            return Page();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
+       
     }
 }

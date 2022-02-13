@@ -3,12 +3,14 @@
 
 #nullable disable
 
+using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -42,73 +44,138 @@ public class ExternalLoginsModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
 
-        CurrentLogins = await _userManager.GetLoginsAsync(user);
-        OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
-            .Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
-            .ToList();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-        string passwordHash = null;
-        if (_userStore is IUserPasswordStore<NuagesApplicationUser<string>> userPasswordStore)
-            passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
+            CurrentLogins = await _userManager.GetLoginsAsync(user);
+            OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
+                .Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
+                .ToList();
 
-        ShowRemoveButton = passwordHash != null || CurrentLogins.Count > 1;
-        return Page();
+            string passwordHash = null;
+            if (_userStore is IUserPasswordStore<NuagesApplicationUser<string>> userPasswordStore)
+                passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
+
+            ShowRemoveButton = passwordHash != null || CurrentLogins.Count > 1;
+            return Page();
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
+       
     }
 
     public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
-        var result = await _userManager.RemoveLoginAsync(user, loginProvider, providerKey);
-        if (!result.Succeeded)
+        try
         {
-            StatusMessage = "The external login was not removed.";
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+
+            var result = await _userManager.RemoveLoginAsync(user, loginProvider, providerKey);
+            if (!result.Succeeded)
+            {
+                StatusMessage = "The external login was not removed.";
+                return RedirectToPage();
+            }
+
+            await _signInManager.RefreshSignInAsync(user);
+            StatusMessage = "The external login was removed.";
             return RedirectToPage();
         }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
 
-        await _signInManager.RefreshSignInAsync(user);
-        StatusMessage = "The external login was removed.";
-        return RedirectToPage();
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
     }
 
     public async Task<IActionResult> OnPostLinkLoginAsync(string provider)
     {
-        // Clear the existing external cookie to ensure a clean login process
-        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+        try
+        {
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-        // Request a redirect to the external login provider to link a login for the current user
-        var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
-        var properties =
-            _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl,
-                _userManager.GetUserId(User));
-        return new ChallengeResult(provider, properties);
+            // Request a redirect to the external login provider to link a login for the current user
+            var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
+            var properties =
+                _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl,
+                    _userManager.GetUserId(User));
+            return new ChallengeResult(provider, properties);
+        }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
+
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
     }
 
     public async Task<IActionResult> OnGetLinkLoginCallbackAsync()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-
-        var userId = await _userManager.GetUserIdAsync(user);
-        var info = await _signInManager.GetExternalLoginInfoAsync(userId);
-        if (info == null) throw new InvalidOperationException("Unexpected error occurred loading external login info.");
-
-        var result = await _userManager.AddLoginAsync(user, info);
-        if (!result.Succeeded)
+        try
         {
-            StatusMessage =
-                "The external login was not added. External logins can only be associated with one account.";
+            AWSXRayRecorder.Instance.BeginSubsegment();
+            
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+
+            var userId = await _userManager.GetUserIdAsync(user);
+            var info = await _signInManager.GetExternalLoginInfoAsync(userId);
+            if (info == null) throw new InvalidOperationException("Unexpected error occurred loading external login info.");
+
+            var result = await _userManager.AddLoginAsync(user, info);
+            if (!result.Succeeded)
+            {
+                StatusMessage =
+                    "The external login was not added. External logins can only be associated with one account.";
+                return RedirectToPage();
+            }
+
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            StatusMessage = "The external login was added.";
             return RedirectToPage();
         }
+        catch (Exception e)
+        {
+            AWSXRayRecorder.Instance.AddException(e);
 
-        // Clear the existing external cookie to ensure a clean login process
-        await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-        StatusMessage = "The external login was added.";
-        return RedirectToPage();
+            throw;
+        }
+        finally
+        {
+            AWSXRayRecorder.Instance.EndSubsegment();
+        }
+        
     }
 }
