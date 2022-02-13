@@ -1,9 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.WebEncoders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
@@ -32,6 +35,11 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
+        services.Configure<WebEncoderOptions>(options => 
+        {
+            options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All);
+        });
+        
         services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
         
         services.AddDataProtection()
