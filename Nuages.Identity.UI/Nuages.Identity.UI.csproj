@@ -22,7 +22,7 @@
         <PackageReference Include="AWS.Logger.NLog" Version="3.0.0" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="0.0.2" />
+        <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="0.0.3" />
         <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.MongoDb" Version="3.1.1" />
