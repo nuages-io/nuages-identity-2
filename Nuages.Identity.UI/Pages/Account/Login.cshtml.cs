@@ -37,8 +37,6 @@ public class Login : PageModel
 
     public async Task<ActionResult> OnGetAsync(string? returnUrl = null)
     {
-       
-        
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();

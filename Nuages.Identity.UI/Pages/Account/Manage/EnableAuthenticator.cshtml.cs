@@ -36,7 +36,6 @@ public class EnableAuthenticatorModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();

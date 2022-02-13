@@ -55,7 +55,8 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             _logger.LogInformation(
                 $"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
@@ -95,7 +96,8 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             _logger.LogInformation(
                 $"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
 
@@ -131,7 +133,8 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var res = await _sendEmailChangedConfirmationService.SendEmailChangeConfirmation(User.Sub()!, model.Email);
 
             return res;
@@ -160,7 +163,8 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var res = await _changeUserNameService.ChangeUserNameAsync(User.Sub()!, model.NewUserName);
 
             if (res.Success)
@@ -225,7 +229,8 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var res = await _mfaService.EnableMFAAsync(User.Sub()!, model.Code);
 
             if (res.Success)
@@ -296,7 +301,8 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var res = await _sendSmsVerificationCode.SendCode(User.Sub()!, model.PhoneNumber);
 
             return res;
@@ -325,7 +331,8 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var res = await _phoneNumberService.ChangePhoneNumberAsync(User.Sub()!, model.PhoneNumber, model.Token);
 
             return res;
@@ -426,9 +433,9 @@ public class ManageController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
             
-            if (model.LastName == "m")
-                throw new Exception("Hey yo");
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
             
             return await _profileService.SaveProfile(User.Sub()!, model);
         }

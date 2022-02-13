@@ -70,6 +70,8 @@ public class AccountController : Controller
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
 
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
@@ -117,7 +119,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
@@ -165,7 +168,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
@@ -213,7 +217,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterResultModel
                 {
@@ -282,7 +287,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ForgotPasswordResultModel
                 {
@@ -317,7 +323,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new SendEmailConfirmationResultModel
                 {
@@ -353,7 +360,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ResetPasswordResultModel
                 {
@@ -387,7 +395,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new StartPasswordlessResultModel
                 {
@@ -457,7 +466,8 @@ public class AccountController : Controller
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            AWSXRayRecorder.Instance.AddMetadata("model", model);
+            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation($"Initiate login SMS : ID = {id} {model.Code} RecaptchaToken = {recaptchaToken}");

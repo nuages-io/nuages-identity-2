@@ -57,7 +57,7 @@ public class ExternalLoginModel : PageModel
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
+            
             var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
@@ -80,7 +80,6 @@ public class ExternalLoginModel : PageModel
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
-
 
             returnUrl ??= Url.Content("~/");
 
