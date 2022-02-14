@@ -4,11 +4,12 @@ namespace Nuages.AspNetIdentity.Core;
 
 public static class NuagesAspNetIdentityExtensions
 {
-    public static IdentityBuilder AddNuagesAspNetIdentity(this IServiceCollection services,
-        Action<IdentityOptions> identityOptions)
+    public static IdentityBuilder AddNuagesAspNetIdentity<TUser, TRole>(this IServiceCollection services,
+        Action<IdentityOptions> identityOptions) where TUser : class
+        where TRole : class
     {
         var identityBuilder =
-            services.AddIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(identityOptions);
+            services.AddIdentity<TUser, TRole>(identityOptions);
 
         identityBuilder
             .AddUserManager<NuagesUserManager>()

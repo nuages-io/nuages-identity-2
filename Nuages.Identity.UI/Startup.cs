@@ -51,7 +51,7 @@ public class Startup
 
         ConfigureXRay();
 
-        services.AddNuagesAspNetIdentity(
+        services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(
                 identity =>
                 {
                     identity.User = new UserOptions
