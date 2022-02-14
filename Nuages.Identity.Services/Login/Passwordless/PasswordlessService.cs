@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Web;
 using Nuages.Web.Exceptions;
@@ -134,7 +134,7 @@ public class PasswordlessResultModel
 
 public interface IPasswordlessService
 {
-    Task<string> GetPasswordlessUrl(string userId);
+    //Task<string> GetPasswordlessUrl(string userId);
     Task<PasswordlessResultModel> LoginPasswordLess(string token, string userId);
     Task<StartPasswordlessResultModel> StartPasswordless(StartPasswordlessModel model);
 }
@@ -155,12 +155,4 @@ public class StartPasswordlessResultModel
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
 
     public string? Url { get; set; }
-}
-
-public class GetPasswordlessUrlResultModel
-{
-    public bool Success { get; set; }
-    public string Url { get; set; } = string.Empty;
-
-    public string? Message { get; set; }
 }

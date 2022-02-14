@@ -1,4 +1,4 @@
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming

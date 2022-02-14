@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Sender.API.Sdk;
 using Nuages.Web;
 using Nuages.Web.Recaptcha;

@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Options;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Localization.CultureProvider;
 using Nuages.Sender.API.Sdk;
 

@@ -1,14 +1,15 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Nuages.Identity.Services.AspNetIdentity;
 using Xunit;
 
-namespace Nuages.AspNetIdentity.Core.Tests;
+namespace Nuages.Identity.Services.Tests.AspNetIdentity;
 
 [Collection("InMemoryTests")]
 public class TestNuagesSignInManager
 {
     private readonly NuagesApplicationUser<string> _defaultUser;
-    private readonly MockHelpers.MockIdentity _identityStuff;
+    private readonly MockHelpersAspNetIdentity.MockIdentity _identityStuff;
 
     public TestNuagesSignInManager()
     {
@@ -19,7 +20,7 @@ public class TestNuagesSignInManager
             UserName = "test"
         };
 
-        _identityStuff = MockHelpers.MockIdentityStuff();
+        _identityStuff = MockHelpersAspNetIdentity.MockIdentityStuff();
         _identityStuff.DataContext.Database.EnsureDeleted();
     }
 
@@ -72,7 +73,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthErrorMustChangePassword()
     {
-        const string password = MockHelpers.StrongPassword;
+        const string password = MockHelpersAspNetIdentity.StrongPassword;
 
         _defaultUser.UserMustChangePassword = true;
         Assert.True((await _identityStuff.UserManager.CreateAsync(_defaultUser)).Succeeded);
@@ -97,7 +98,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckhoneNUmberWithSuccess()
     {
-        _defaultUser.PhoneNumber = MockHelpers.PhoneNumber;
+        _defaultUser.PhoneNumber = MockHelpersAspNetIdentity.PhoneNumber;
         _defaultUser.PhoneNumberConfirmed = true;
         Assert.True((await _identityStuff.UserManager.CreateAsync(_defaultUser)).Succeeded);
 
@@ -111,7 +112,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPhoneNumberWithErrorNotConfirm()
     {
-        _defaultUser.PhoneNumber = MockHelpers.PhoneNumber;
+        _defaultUser.PhoneNumber = MockHelpersAspNetIdentity.PhoneNumber;
         _defaultUser.PhoneNumberConfirmed = false;
         Assert.True((await _identityStuff.UserManager.CreateAsync(_defaultUser)).Succeeded);
 
@@ -127,7 +128,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCanSignInWithSuccess()
     {
-        _defaultUser.PhoneNumber = MockHelpers.PhoneNumber;
+        _defaultUser.PhoneNumber = MockHelpersAspNetIdentity.PhoneNumber;
         _defaultUser.PhoneNumberConfirmed = true;
         Assert.True((await _identityStuff.UserManager.CreateAsync(_defaultUser)).Succeeded);
 
@@ -196,7 +197,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthErrorPasswordExpired()
     {
-        const string password = MockHelpers.StrongPassword;
+        const string password = MockHelpersAspNetIdentity.StrongPassword;
 
         _defaultUser.EnableAutoExpirePassword = true;
         _defaultUser.PasswordHash = _identityStuff.UserManager.PasswordHasher.HashPassword(_defaultUser, password);
@@ -218,7 +219,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthExceptionPasswordDateNotProvided()
     {
-        const string password = MockHelpers.StrongPassword;
+        const string password = MockHelpersAspNetIdentity.StrongPassword;
 
         _defaultUser.EnableAutoExpirePassword = true;
         _defaultUser.PasswordHash = _identityStuff.UserManager.PasswordHasher.HashPassword(_defaultUser, password);
@@ -241,7 +242,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthSuccessPasswordExpiredButNotEnabled()
     {
-        const string password = MockHelpers.StrongPassword;
+        const string password = MockHelpersAspNetIdentity.StrongPassword;
 
         _defaultUser.EnableAutoExpirePassword = false;
         _defaultUser.LastPasswordChangedDate = DateTime.Now.AddYears(-2);
@@ -261,7 +262,7 @@ public class TestNuagesSignInManager
     [Fact]
     public async Task ShouldCheckPasswordSignInAsyncWIthSuccessPasswordNotExpired()
     {
-        const string password = MockHelpers.StrongPassword;
+        const string password = MockHelpersAspNetIdentity.StrongPassword;
 
         _defaultUser.EnableAutoExpirePassword = true;
         _defaultUser.LastPasswordChangedDate = DateTime.Now.AddHours(-1);

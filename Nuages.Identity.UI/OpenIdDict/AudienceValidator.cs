@@ -1,7 +1,7 @@
 using System.Security.Claims;
 using System.Security.Principal;
 using Microsoft.Extensions.Options;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI.OpenIdDict;

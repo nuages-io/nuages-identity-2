@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 // ReSharper disable ContextualLoggerProblem
 
-namespace Nuages.AspNetIdentity.Core;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 // ReSharper disable once ClassNeverInstantiated.Global
 public class NuagesRoleManager : RoleManager<NuagesApplicationRole<string>>

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Options;
 using Moq;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;

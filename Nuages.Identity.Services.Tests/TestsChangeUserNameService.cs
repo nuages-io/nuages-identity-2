@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Moq;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web.Exceptions;
 using Nuages.Web.Utilities;

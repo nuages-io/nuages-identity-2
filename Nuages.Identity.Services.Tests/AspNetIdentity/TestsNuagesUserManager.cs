@@ -1,12 +1,13 @@
+using Nuages.Identity.Services.AspNetIdentity;
 using Xunit;
 
-namespace Nuages.AspNetIdentity.Core.Tests;
+namespace Nuages.Identity.Services.Tests.AspNetIdentity;
 
 [Collection("InMemoryTests")]
 public class TestsNuagesUserManager
 {
     private readonly NuagesApplicationUser<string> _defaultUser;
-    private readonly MockHelpers.MockIdentity _identityStuff;
+    private readonly MockHelpersAspNetIdentity.MockIdentity _identityStuff;
 
     public TestsNuagesUserManager()
     {
@@ -16,7 +17,7 @@ public class TestsNuagesUserManager
             UserName = "test"
         };
 
-        _identityStuff = MockHelpers.MockIdentityStuff();
+        _identityStuff = MockHelpersAspNetIdentity.MockIdentityStuff();
 
         _identityStuff.DataContext.Database.EnsureDeleted();
     }
@@ -55,7 +56,7 @@ public class TestsNuagesUserManager
 
         Assert.True(res.Succeeded);
 
-        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpers.StrongPassword);
+        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpersAspNetIdentity.StrongPassword);
 
         Assert.True(res.Succeeded);
     }
@@ -67,11 +68,11 @@ public class TestsNuagesUserManager
 
         Assert.True(res.Succeeded);
 
-        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpers.StrongPassword);
+        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpersAspNetIdentity.StrongPassword);
 
         Assert.True(res.Succeeded);
 
-        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpers.StrongPassword);
+        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpersAspNetIdentity.StrongPassword);
 
         Assert.False(res.Succeeded);
     }
@@ -84,12 +85,12 @@ public class TestsNuagesUserManager
 
         Assert.True(res.Succeeded);
 
-        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpers.StrongPassword);
+        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpersAspNetIdentity.StrongPassword);
 
         Assert.True(res.Succeeded);
 
-        res = await _identityStuff.UserManager.ChangePasswordAsync(_defaultUser, MockHelpers.StrongPassword,
-            MockHelpers.StrongPassword + "New");
+        res = await _identityStuff.UserManager.ChangePasswordAsync(_defaultUser, MockHelpersAspNetIdentity.StrongPassword,
+            MockHelpersAspNetIdentity.StrongPassword + "New");
 
         Assert.True(res.Succeeded);
     }
@@ -101,12 +102,12 @@ public class TestsNuagesUserManager
 
         Assert.True(res.Succeeded);
 
-        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpers.StrongPassword);
+        res = await _identityStuff.UserManager.AddPasswordAsync(_defaultUser, MockHelpersAspNetIdentity.StrongPassword);
 
         Assert.True(res.Succeeded);
 
-        res = await _identityStuff.UserManager.ChangePasswordAsync(_defaultUser, MockHelpers.StrongPassword,
-            MockHelpers.WeakPassword);
+        res = await _identityStuff.UserManager.ChangePasswordAsync(_defaultUser, MockHelpersAspNetIdentity.StrongPassword,
+            MockHelpersAspNetIdentity.WeakPassword);
 
         Assert.False(res.Succeeded);
     }

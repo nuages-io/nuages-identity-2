@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Web.Exceptions;
 
@@ -138,8 +138,8 @@ public interface IChangePasswordService
     Task<ChangePasswordResultModel> ChangePasswordAsync(string userid, string currentPassword, string newPassword,
         string newPasswordConfirmation);
 
-    Task<ChangePasswordResultModel> AdminChangePasswordAsync(string userId, string newPassword,
-        string newPasswordConfirmation, bool mustChangePassword, bool sendByEmail, string? token);
+    // Task<ChangePasswordResultModel> AdminChangePasswordAsync(string userId, string newPassword,
+    //     string newPasswordConfirmation, bool mustChangePassword, bool sendByEmail, string? token);
 }
 
 public class ChangePasswordModel
@@ -148,9 +148,6 @@ public class ChangePasswordModel
 
     public string NewPassword { get; set; } = string.Empty;
     public string NewPasswordConfirm { get; set; } = string.Empty;
-
-    public bool MustChangePassword { get; set; }
-    public bool SendByEmail { get; set; }
 }
 
 public class ChangePasswordResultModel

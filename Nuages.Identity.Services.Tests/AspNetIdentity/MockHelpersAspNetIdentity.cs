@@ -7,12 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using Nuages.Identity.Services.AspNetIdentity;
 
 // ReSharper disable UnusedParameter.Local
 
-namespace Nuages.AspNetIdentity.Core.Tests;
+namespace Nuages.Identity.Services.Tests.AspNetIdentity;
 
-public static class MockHelpers
+public static class MockHelpersAspNetIdentity
 {
     public const string StrongPassword = "ThisIsAStrongPassword789*$#$$$";
     public const string WeakPassword = "password";

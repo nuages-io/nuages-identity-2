@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.AspNetIdentity.Core;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEquatable<TKey>
 {

@@ -6,7 +6,7 @@
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.AspNetIdentity.Core;
+using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global

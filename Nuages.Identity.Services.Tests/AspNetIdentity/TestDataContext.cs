@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
+using Nuages.Identity.Services.AspNetIdentity;
 
-namespace Nuages.AspNetIdentity.Core.Tests;
+namespace Nuages.Identity.Services.Tests.AspNetIdentity;
 
 public class TestDataContext : IdentityDbContext<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>
 {
