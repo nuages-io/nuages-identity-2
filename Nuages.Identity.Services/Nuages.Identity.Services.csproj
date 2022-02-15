@@ -6,7 +6,7 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Nuages.Localization" Version="1.3.1" />
+        <PackageReference Include="Nuages.Localization" Version="1.4.0" />
         <PackageReference Include="Nuages.Sender.API.Sdk" Version="1.2.3" />
         <PackageReference Include="Nuages.Web" Version="1.3.10" />
         <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
