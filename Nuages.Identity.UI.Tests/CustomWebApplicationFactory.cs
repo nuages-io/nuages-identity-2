@@ -38,8 +38,7 @@ public class CustomWebApplicationFactory<TStartup>
                 })
                 .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(
                     "Test", options => { options.DefaultUserId = DefaultUserId; });
-
-
+            
             var serviceDescriptorUser = services.First(s =>
                 s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));
             services.Remove(serviceDescriptorUser);
@@ -53,7 +52,6 @@ public class CustomWebApplicationFactory<TStartup>
                 options.UseInMemoryDatabase("IdentityContext");
                 options.UseOpenIddict();
             });
-
 
             var identityBuilder = new IdentityBuilder(typeof(NuagesApplicationUser<string>),
                 typeof(NuagesApplicationRole<string>), services);

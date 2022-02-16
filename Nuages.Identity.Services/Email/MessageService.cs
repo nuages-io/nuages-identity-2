@@ -22,6 +22,9 @@ public class MessageService : IMessageService
     public void SendEmailUsingTemplate(string to, string template, IDictionary<string, string>? fields = null,
         string? language = null)
     {
+        if (to.ToLower().Contains("@example.com"))
+            return;
+        
         fields ??= new Dictionary<string, string>();
 
         if (!fields.ContainsKey("AppName")) fields["AppName"] = _options.Name;

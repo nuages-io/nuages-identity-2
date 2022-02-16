@@ -17,4 +17,5 @@ public class NuagesIdentityOptions
     public bool SupportsLoginWithEmail { get; set; } = true;
 
     public bool AutoConfirmExternalLogin { get; set; }
+
 }

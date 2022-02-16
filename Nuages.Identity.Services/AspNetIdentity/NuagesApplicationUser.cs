@@ -1,9 +1,21 @@
+using System.ComponentModel;
 using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEquatable<TKey>
 {
+    public NuagesApplicationUser()
+    {
+        Id = StringToKey(Guid.NewGuid().ToString());
+        SecurityStamp = Guid.NewGuid().ToString();
+    }
+    
+    protected virtual TKey StringToKey(string id)
+    {
+        return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
+    }
+    
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }
 

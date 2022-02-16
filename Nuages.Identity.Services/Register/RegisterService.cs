@@ -53,13 +53,13 @@ public class RegisterService : IRegisterService
 
         if (res.Succeeded)
         {
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-            var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
-
-            if (_userManager.Options.SignIn.RequireConfirmedEmail)
+            if (_userManager.Options.SignIn.RequireConfirmedEmail && !user.EmailConfirmed)
             {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
+                
                 _messageService.SendEmailUsingTemplate(model.Email, "Confirm_Email", new Dictionary<string, string>
                 {
                     { "Link", url }
