@@ -26,7 +26,7 @@ public partial class NuagesIdentityCdkStack
             FunctionName = MakeId("WebUI"),
             Code = Code.FromAsset(AssetUi),
             Handler = "Nuages.Identity.UI::Nuages.Identity.UI.LambdaEntryPoint::FunctionHandlerAsync",
-            Runtime = Runtime.DOTNET_CORE_3_1,
+            Runtime = new Runtime("dotnet6"),
             Role = role,
             Timeout = Duration.Seconds(30),
             Environment = new Dictionary<string, string>
