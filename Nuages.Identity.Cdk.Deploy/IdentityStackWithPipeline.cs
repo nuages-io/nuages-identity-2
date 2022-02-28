@@ -18,19 +18,20 @@ public class IdentityStackWithPipeline : Stack
     public static void Create(Construct scope, IConfiguration configuration)
     {
         // ReSharper disable once ObjectCreationAsStatement
-        new IdentityStackWithPipeline(scope, $"{configuration["StackName"]}-PipelineStack", configuration, new StackProps
-        {
-            Env = new Amazon.CDK.Environment
+        new IdentityStackWithPipeline(scope, $"{configuration["StackName"]}-PipelineStack", configuration,
+            new StackProps
             {
-                Account = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
-                Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
-            }
-        });
+                Env = new Amazon.CDK.Environment
+                {
+                    Account = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
+                    Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
+                }
+            });
     }
 
-    private IdentityStackWithPipeline(Construct scope, string id, IConfiguration configuration, IStackProps props) : base(scope, id, props)
+    private IdentityStackWithPipeline(Construct scope, string id, IConfiguration configuration, IStackProps props) :
+        base(scope, id, props)
     {
-
         var pipeline = new CodePipeline(this, "pipeline", new CodePipelineProps
         {
             PipelineName = $"{configuration["StackName"]}-Pipeline",
@@ -38,7 +39,7 @@ public class IdentityStackWithPipeline : Stack
             {
                 RolePolicy = new PolicyStatement[]
                 {
-                    new (new PolicyStatementProps
+                    new(new PolicyStatementProps
                     {
                         Effect = Effect.ALLOW,
                         Actions = new[]
@@ -47,7 +48,7 @@ public class IdentityStackWithPipeline : Stack
                         },
                         Resources = new[] { "*" }
                     }),
-                    new (new PolicyStatementProps
+                    new(new PolicyStatementProps
                     {
                         Effect = Effect.ALLOW,
                         Actions = new[] { "ssm:GetParametersByPath", "appconfig:GetConfiguration" },
@@ -65,9 +66,8 @@ public class IdentityStackWithPipeline : Stack
                             Authentication = SecretValue.PlainText(configuration["GithubToken"]),
                             Trigger = GitHubTrigger.WEBHOOK
                         }),
-                    Commands = new []
+                    Commands = new[]
                     {
-                        "npm install",
                         "npm install -g aws-cdk",
                         "cdk synth"
                     }
@@ -83,7 +83,13 @@ public class IdentityStackWithPipeline : Stack
                             {
                                 "install", new Dictionary<string, object>
                                 {
-                                    { "commands", new [] { "/usr/local/bin/dotnet-install.sh --channel LTS"} }
+                                    {
+                                        "commands", new[]
+                                        {
+                                            "npm install",
+                                            "/usr/local/bin/dotnet-install.sh --channel LTS"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -91,7 +97,7 @@ public class IdentityStackWithPipeline : Stack
                 }),
                 RolePolicy = new PolicyStatement[]
                 {
-                    new (new PolicyStatementProps
+                    new(new PolicyStatementProps
                     {
                         Effect = Effect.ALLOW,
                         Actions = new[]
@@ -100,7 +106,7 @@ public class IdentityStackWithPipeline : Stack
                         },
                         Resources = new[] { "*" }
                     }),
-                    new (new PolicyStatementProps
+                    new(new PolicyStatementProps
                     {
                         Effect = Effect.ALLOW,
                         Actions = new[] { "ssm:GetParametersByPath", "appconfig:GetConfiguration" },
@@ -109,7 +115,7 @@ public class IdentityStackWithPipeline : Stack
                 }
             }
         });
-            
+
         // new CfnWebhook(this, "gitHubWebHook", new CfnWebhookProps
         // {
         //     Authentication = "GITHUB_HMAC",
@@ -132,7 +138,7 @@ public class IdentityStackWithPipeline : Stack
         //     TargetPipelineVersion = 1,
         //     RegisterWithThirdParty = true
         // });
-        
+
         pipeline.AddStage(new PipelineAppStage(this, "Deploy", configuration, new Amazon.CDK.StageProps
         {
             Env = new Amazon.CDK.Environment
@@ -154,7 +160,8 @@ public class IdentityStackWithPipeline : Stack
 
     private class PipelineAppStage : Stage
     {
-        public PipelineAppStage(Construct scope, string id, IConfiguration configuration, Amazon.CDK.IStageProps props) : base(scope, id, props)
+        public PipelineAppStage(Construct scope, string id, IConfiguration configuration, Amazon.CDK.IStageProps props)
+            : base(scope, id, props)
         {
             IdentityStack.CreateStack(this, configuration);
         }
