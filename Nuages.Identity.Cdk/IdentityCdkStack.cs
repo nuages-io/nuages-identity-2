@@ -109,7 +109,7 @@ public partial class IdentityCdkStack : Stack
                     new PolicyStatement(new PolicyStatementProps
                     {
                         Effect = Effect.ALLOW,
-                        Actions = new[] { "ssm:GetParametersByPath", "ssm:PutParameter" },
+                        Actions = new[] { "ssm:GetParametersByPath", "appconfig:GetConfiguration"  },
                         Resources = new[] { "*" }
                     })
                 }
