@@ -86,7 +86,6 @@ public class IdentityStackWithPipeline : Stack
                                     {
                                         "commands", new[]
                                         {
-                                            "npm install",
                                             "/usr/local/bin/dotnet-install.sh --channel LTS"
                                         }
                                     }
