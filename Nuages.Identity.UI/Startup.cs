@@ -104,8 +104,7 @@ public class Startup
             {
                 jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             })
-            .AddNuagesLocalization(_configuration)
-            ;
+            .AddNuagesLocalization(_configuration);
 
         services.AddHttpContextAccessor();
 

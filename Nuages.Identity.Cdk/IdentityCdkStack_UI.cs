@@ -12,7 +12,7 @@ using CfnDomainNameProps = Amazon.CDK.AWS.Apigatewayv2.CfnDomainNameProps;
 
 namespace Nuages.Identity.CDK;
 
-public partial class NuagesIdentityCdkStack
+public partial class IdentityCdkStack
 {
     private void CreateWebUi()
     {

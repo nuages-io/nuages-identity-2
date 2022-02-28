@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Amazon.Lambda.AspNetCoreServer;
 using NLog.Web;
 using Nuages.Localization.Storage.Config.Sources;
+using Nuages.Web;
 
 namespace Nuages.Identity.UI;
 
@@ -48,33 +49,30 @@ public class LambdaEntryPoint :
         builder.ConfigureAppConfiguration((_, configBuilder) =>
         {
             configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
-#if !DEBUG
-            configBuilder.AddJsonFile("appsettings.prod.json", false, true);
-#endif
 
             configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
             configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
 
-            var name = Environment.GetEnvironmentVariable("Nuages__Identity__StackName");
-
-            if (name != null)
+            var configuration = configBuilder.Build();
+            
+            var config = configuration.GetSection("ApplicationConfig").Get<ApplicationConfig>();
+        
+            if (config.ParameterStore.Enabled)
+            {
                 configBuilder.AddSystemsManager(configureSource =>
                 {
-                    // Parameter Store prefix to pull configuration data from.
-                    configureSource.Path = $"/{name}";
-
-                    // Reload configuration data every 5 minutes.
-                    configureSource.ReloadAfter = TimeSpan.FromMinutes(15);
-
-                    // Configure if the configuration data is optional.
+                    configureSource.Path = config.ParameterStore.Path;
                     configureSource.Optional = true;
-
-                    configureSource.OnLoadException += _ =>
-                    {
-                        // Add custom error handling. For example, look at the exceptionContext.Exception and decide
-                        // whether to ignore the error or tell the provider to attempt to reload.
-                    };
                 });
+            }
+
+            if (config.AppConfig.Enabled)
+            {
+                configBuilder.AddAppConfig(config.AppConfig.ApplicationId,  
+                    config.AppConfig.EnvironmentId, 
+                    config.AppConfig.ConfigProfileId,true);
+            }
+
         }).UseNLog();
     }
 }

@@ -6,17 +6,17 @@ using Constructs;
 namespace Nuages.Identity.CDK;
 
 [ExcludeFromCodeCoverage]
-public partial class NuagesIdentityCdkStack : Stack
+public partial class IdentityCdkStack : Stack
 {
     // ReSharper disable once MemberCanBeProtected.Global
-    public NuagesIdentityCdkStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
+    public IdentityCdkStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
     {
     }
 
     protected string AssetUi { get; set; } = "";
     protected string AssetApi { get; set; } = "";
 
-    public void CreateTemplate()
+    protected void CreateTemplate()
     {
         CreateWebUi();
     }
