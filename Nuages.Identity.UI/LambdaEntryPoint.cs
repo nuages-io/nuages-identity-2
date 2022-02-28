@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using Amazon.Lambda.AspNetCoreServer;
 using NLog.Web;
 using Nuages.Localization.Storage.Config.Sources;
@@ -57,6 +58,8 @@ public class LambdaEntryPoint :
             
             var config = configuration.GetSection("ApplicationConfig").Get<ApplicationConfig>();
         
+            Console.WriteLine(JsonSerializer.Serialize(config));
+            
             if (config.ParameterStore.Enabled)
             {
                 configBuilder.AddSystemsManager(configureSource =>
