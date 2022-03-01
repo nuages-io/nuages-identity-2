@@ -1,8 +1,10 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Identity;
+// ReSharper disable VirtualMemberCallInConstructor
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
+// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEquatable<TKey>
 {
     public NuagesApplicationUser()
