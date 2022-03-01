@@ -117,6 +117,15 @@ public class IdentityStackWithPipeline : Stack
             }
         });
 
+        pipeline.AddStage(new PipelineAppStage(this, "Deploy", configuration, new StageProps
+        {
+            Env = new Amazon.CDK.Environment
+            {
+                Account = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
+                Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
+            }
+        }));
+        
         pipeline.BuildPipeline();
         
         var arn = configuration["NotificationTargetArn"];
@@ -153,14 +162,7 @@ public class IdentityStackWithPipeline : Stack
             });
         }
 
-        pipeline.AddStage(new PipelineAppStage(this, "Deploy", configuration, new StageProps
-        {
-            Env = new Amazon.CDK.Environment
-            {
-                Account = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
-                Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
-            }
-        }));
+      
 
         // pipeline.AddStage(new PipelineWebhookStage(this, "CreateWebHook", configuration, new Amazon.CDK.StageProps
         // {
