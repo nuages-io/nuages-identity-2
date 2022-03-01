@@ -51,7 +51,6 @@ public class Startup
 
         ConfigureXRay();
 
-        Console.WriteLine(JsonSerializer.Serialize(_configuration.AsEnumerable()));
         services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(
                 identity =>
                 {

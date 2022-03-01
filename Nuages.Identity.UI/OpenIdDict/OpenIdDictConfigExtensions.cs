@@ -21,7 +21,7 @@ public static class OpenIdDictConfigExtensions
                 var storage = configuration.GetValue<string>("Nuages:OpenIdDict:Storage");
                 switch (storage)
                 {
-                    case "Mongo":
+                    case "MongoDb":
                     {
                         options.UseMongoDb()
                             .UseDatabase(new MongoClient(configuration["Nuages:OpenIdDict:ConnectionString"])
@@ -29,7 +29,7 @@ public static class OpenIdDictConfigExtensions
 
                         break;
                     }
-                    default:
+                    case "InMemory":
                     {
                         services.AddDbContext<OpenIdDictContext>(contextOptions =>
                         {
@@ -41,6 +41,10 @@ public static class OpenIdDictConfigExtensions
                             .UseDbContext<OpenIdDictContext>();
 
                         break;
+                    }
+                    default:
+                    {
+                        throw new Exception("Storage not supported");
                     }
                 }
             })
