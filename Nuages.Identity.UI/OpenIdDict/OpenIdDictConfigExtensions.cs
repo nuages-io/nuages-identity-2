@@ -51,9 +51,9 @@ public static class OpenIdDictConfigExtensions
             // Register the OpenIddict server components.
             .AddServer(options =>
             {
-#if DEBUG
+//#if DEBUG
                 options.DisableAccessTokenEncryption();
-#endif
+//#endif
                 options.SetDeviceEndpointUris("/connect/device")
                     .SetVerificationEndpointUris("/connect/verify")
                     .SetTokenEndpointUris("/connect/token")
