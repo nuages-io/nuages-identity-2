@@ -114,6 +114,27 @@ public class IdentityStackWithPipeline : Stack
                         Resources = new[] { "*" }
                     })
                 }
+            },
+            SelfMutationCodeBuildDefaults = new CodeBuildOptions
+            {
+                RolePolicy = new PolicyStatement[]
+                {
+                    new (new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[]
+                        {
+                            "route53:*"
+                        },
+                        Resources = new[] { "*" }
+                    }),
+                    new (new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] { "ssm:GetParametersByPath", "appconfig:GetConfiguration" },
+                        Resources = new[] { "*" }
+                    })
+                }
             }
         });
 
