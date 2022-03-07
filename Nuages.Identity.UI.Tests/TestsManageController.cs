@@ -10,13 +10,13 @@ using Xunit;
 namespace Nuages.Identity.UI.Tests;
 
 [Collection("IntegrationTestUI")]
-public class TestsManageController : IClassFixture<CustomWebApplicationFactory<Startup>>
+public class TestsManageController : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly CustomWebApplicationFactory<Startup> _factory;
+    private readonly CustomWebApplicationFactory<Program> _factory;
     private readonly JsonSerializerOptions _options;
     private readonly NuagesUserManager _userManager;
 
-    public TestsManageController(CustomWebApplicationFactory<Startup> factory)
+    public TestsManageController(CustomWebApplicationFactory<Program> factory)
     {
         _factory = factory;
 

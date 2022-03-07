@@ -6,11 +6,11 @@ using Xunit;
 namespace Nuages.Identity.UI.Tests;
 
 public class TestsBasicPageUser
-    : IClassFixture<CustomWebApplicationFactory<Startup>>
+    : IClassFixture<CustomWebApplicationFactory<Program>>
 {
-    private readonly CustomWebApplicationFactory<Startup> _factory;
+    private readonly CustomWebApplicationFactory<Program> _factory;
 
-    public TestsBasicPageUser(CustomWebApplicationFactory<Startup> factory)
+    public TestsBasicPageUser(CustomWebApplicationFactory<Program> factory)
     {
         _factory = factory;
     }
