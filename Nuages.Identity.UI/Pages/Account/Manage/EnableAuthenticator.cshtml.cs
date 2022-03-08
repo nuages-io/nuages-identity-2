@@ -33,7 +33,8 @@ public class EnableAuthenticatorModel : PageModel
 
     public string SharedKey { get; set; }
     public string AuthenticatorUri { get; set; }
-
+    public string Username { get; set; }
+    
     public async Task<IActionResult> OnGetAsync()
     {
         try
@@ -48,6 +49,8 @@ public class EnableAuthenticatorModel : PageModel
             SharedKey = FormatKey(url.Key);
             AuthenticatorUri = url.Url;
 
+            Username = User.Identity!.Name;
+            
             return Page();
         }
         catch (Exception e)
@@ -61,6 +64,8 @@ public class EnableAuthenticatorModel : PageModel
             AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
+
+    
 
     private static string FormatKey(string unformattedKey)
     {

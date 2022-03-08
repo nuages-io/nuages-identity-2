@@ -56,13 +56,6 @@ var App =
                         .then(response => response.json())
                         .then(res => {
                             self.isRemembered = false;
-                            // if (res) {
-                            //    
-                            // }
-                            // else
-                            // {
-                            //
-                            // }
                         });
                 },
                 disable2Fa() {

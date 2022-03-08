@@ -42,10 +42,9 @@ var App =
                                 })
                             } else {
                                 self.status = "error";
-                                var err = res.errors.map(function (m) {
+                                self.errors = res.errors.map(function (m) {
                                     return {message: m}
                                 });
-                                self.errors = err;
                             }
                         });
                 },

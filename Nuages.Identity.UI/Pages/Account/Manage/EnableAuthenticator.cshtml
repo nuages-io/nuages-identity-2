@@ -36,7 +36,9 @@
         </div>
     </div>
 
-
+      <button type="button" class="primary items-center w-36" v-on:click.prevent="makeCredentialOptions" >
+            makeCredentialOptions<i class="fas fa-spinner fa-spin ml-2"  style="display: none"></i>
+        </button>
 </div>
 
 @section RightNav
@@ -59,6 +61,7 @@
 
     <script>
       var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
+      var userName = "@Model.Username";
     </script>
 
 

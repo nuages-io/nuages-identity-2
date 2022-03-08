@@ -10,6 +10,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
+using Nuages.Fido2;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.UI;
@@ -29,7 +30,7 @@ if (builder.Environment.IsDevelopment())
 {
     configBuilder.AddJsonFile("appsettings.local.json", false, true);
 }
-  
+
 configBuilder.AddEnvironmentVariables();
 
 configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
@@ -130,6 +131,7 @@ services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicatio
     });
 
 
+
 services.AddNuagesAuthentication()
     .AddGoogle(googleOptions =>
     {
@@ -141,8 +143,19 @@ services.AddNuagesAuthentication()
 
 services
     .AddMvc()
-    .AddJsonOptions(jsonOptions => { jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); })
+    .AddJsonOptions(jsonOptions => { jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter()); })
     .AddNuagesLocalization(configuration);
+
+
+    
+services.AddNuagesFido2(options =>
+{
+    options.ServerDomain = configuration["fido2:serverDomain"];
+    options.ServerName = "Nuages";
+    options.Origins = new HashSet<string> { configuration["fido2:origin"] };
+    options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
+    options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
+});
 
 services.AddHttpContextAccessor();
 
@@ -151,7 +164,6 @@ services.AddWebOptimizer(!builder.Environment.IsDevelopment(), !builder.Environm
 services.AddUI(configuration);
 
 services.AddHealthChecks();
-
 
 services.AddScoped<IAudienceValidator, AudienceValidator>();
 services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
@@ -166,8 +178,6 @@ services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProv
 
 services.AddNuagesOpenIdDict(configuration, _ => { });
 
-
-
 var app = builder.Build();
 
 if (builder.Environment.IsDevelopment())
@@ -180,6 +190,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSession();
 
 app.UseWebOptimizer();
 app.UseHttpsRedirection();

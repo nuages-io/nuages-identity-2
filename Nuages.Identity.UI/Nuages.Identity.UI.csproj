@@ -23,13 +23,14 @@
         <PackageReference Include="AWS.Logger.NLog" Version="3.0.0" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="Macross.Json.Extensions" Version="2.2.0" />
         <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="1.0.4" />
         <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.MongoDb" Version="3.1.1" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Nuages.Web" Version="1.3.13" />
+        <PackageReference Include="Nuages.Web" Version="1.3.14" />
         <PackageReference Include="Nuages.Localization" Version="1.4.2" />
     </ItemGroup>
     <ItemGroup>
@@ -48,6 +49,7 @@
         <InternalsVisibleTo Include="Nuages.Identity.UI.Tests" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Nuages.Fido2\Nuages.Fido2.csproj" />
         <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
     </ItemGroup>
     <ItemGroup>
