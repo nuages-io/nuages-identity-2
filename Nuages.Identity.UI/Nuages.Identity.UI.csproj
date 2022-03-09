@@ -34,9 +34,9 @@
         <PackageReference Include="Nuages.Localization" Version="1.4.2" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.2" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.3" />
         
         <PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
         <PackageReference Include="NLog" Version="4.7.14" />
@@ -50,6 +50,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Nuages.Fido2.AspNetIdentity\Nuages.Fido2.AspNetIdentity.csproj" />
+        <ProjectReference Include="..\Nuages.Fido2.Storage.EntityFramework\Nuages.Fido2.Storage.EntityFramework.csproj" />
         <ProjectReference Include="..\Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj" />
         <ProjectReference Include="..\Nuages.Fido2\Nuages.Fido2.csproj" />
         <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />

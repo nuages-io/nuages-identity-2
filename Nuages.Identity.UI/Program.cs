@@ -12,6 +12,7 @@ using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Fido2;
 using Nuages.Fido2.AspNetIdentity;
+using Nuages.Fido2.Storage.EntityFramework;
 using Nuages.Fido2.Storage.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -149,19 +150,21 @@ services
     .AddNuagesLocalization(configuration);
 
 
-    
+
 services.AddNuagesFido2(options =>
-{
-    options.ServerDomain = configuration["fido2:serverDomain"];
-    options.ServerName = configuration["fido2:serverName"];
-    options.Origins = new HashSet<string> { configuration["fido2:origin"] };
-    options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
-    options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
-}).AddFido2MongoStorage(config =>
-{
-    config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
-})
-.AddAspNetIdentityStores<NuagesApplicationUser<string>, string>();
+    {
+        options.ServerDomain = configuration["fido2:serverDomain"];
+        options.ServerName = configuration["fido2:serverName"];
+        options.Origins = new HashSet<string> { configuration["fido2:origin"] };
+        options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
+        options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
+    })
+    .AddAspNetIdentityStores<NuagesApplicationUser<string>, string>()
+    .AddFido2MongoStorage(config =>
+    {
+        config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
+    });
+    //.AddFido2InMemoryStorage("Fido2");
 
 services.AddHttpContextAccessor();
 
