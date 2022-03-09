@@ -11,10 +11,4 @@
       <PackageReference Include="Fido2.AspNet" Version="3.0.0-beta2" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Nuages.Fido2.Storage\Nuages.Fido2.Storage.csproj" />
-    </ItemGroup>
-
-    
-
 </Project>

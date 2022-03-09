@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2", "Nuages.Fido2\Nuages.Fido2.csproj", "{331B91BD-4920-4631-B137-83E54216C8FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.Storage", "Nuages.Fido2.Storage\Nuages.Fido2.Storage.csproj", "{8AF2DF3F-1F65-47C4-9C0A-4A85FE539883}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.Storage.Mongo", "Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj", "{7B2B11B9-0621-49AB-96BB-009408E9B4F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.AspNetIdentity", "Nuages.Fido2.AspNetIdentity\Nuages.Fido2.AspNetIdentity.csproj", "{C55B954C-3302-41DA-9397-04063EBA77EB}"
@@ -62,10 +60,6 @@ Global
 		{331B91BD-4920-4631-B137-83E54216C8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{331B91BD-4920-4631-B137-83E54216C8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{331B91BD-4920-4631-B137-83E54216C8FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AF2DF3F-1F65-47C4-9C0A-4A85FE539883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AF2DF3F-1F65-47C4-9C0A-4A85FE539883}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AF2DF3F-1F65-47C4-9C0A-4A85FE539883}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AF2DF3F-1F65-47C4-9C0A-4A85FE539883}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7B2B11B9-0621-49AB-96BB-009408E9B4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B2B11B9-0621-49AB-96BB-009408E9B4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B2B11B9-0621-49AB-96BB-009408E9B4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
