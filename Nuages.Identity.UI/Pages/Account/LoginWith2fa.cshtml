@@ -46,7 +46,12 @@
                     <a id="recovery-code-login" asp-page="./SendSMSCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableSMS"]</a>
                 </li>
             }
-
+            @if (UIOptions.Value.EnableFido2)
+            {
+                <li>
+                    <a id="recovery-code-login" asp-page="./LoginWithSecurityKey" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["loginWithSecurityKeys.title"]</a>
+                </li>
+            }
         </ul>
     </div>
 </div>

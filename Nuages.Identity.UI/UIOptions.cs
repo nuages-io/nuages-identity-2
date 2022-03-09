@@ -18,6 +18,7 @@ public class UIOptions
     public bool EnablePasswordless { get; set; } = true;
     public bool EnablePhoneFallback { get; set; } = true;
     public bool Enable2FARememberDevice { get; set; } = true;
+    public bool EnableFido2 { get; set; } = true;
 }
 
 public static class UIConfigExtension

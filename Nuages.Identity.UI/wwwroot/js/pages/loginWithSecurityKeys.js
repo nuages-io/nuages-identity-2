@@ -1,0 +1,106 @@
+var App =
+    {
+        data() {
+            return {
+                code: "",
+                errors: [],
+                remember: rememberMe,
+                rememberMachine: false,
+                action: "",
+                status: ""
+            }
+        },
+        mounted() {
+            code.focus();
+            setTimeout(function () {
+                code.value = "";
+            })
+        },
+        methods:
+            {
+                doLogin: function (token) {
+                    // var self = this;
+                    // var c = self.code;
+                    // var r = self.remember;
+                    // var m = self.rememberMachine;
+                    //
+                    // fetch("/api/account/login2fa", {
+                    //     method: "POST",
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         'X-Custom-RecaptchaToken': token
+                    //     },
+                    //     body: JSON.stringify({
+                    //             code: c,
+                    //             rememberMe: r,
+                    //             rememberMachine: m
+                    //         }
+                    //     )
+                    // })
+                    //     .then(response => response.json())
+                    //     .then(res => {
+                    //
+                    //         if (res.success) {
+                    //             window.location = returnUrl;
+                    //         } else
+                    //
+                    //             switch (res.reason) {
+                    //
+                    //                 default: {
+                    //                     this.status = "";
+                    //                     //NotWithinDateRange,
+                    //                     //AccountNotConfirmed,
+                    //                     //PasswordNeverSet,
+                    //                     //RecaptchaError,
+                    //                     //LockedOut
+                    //                     self.errors.push({message: res.message});
+                    //                     break;
+                    //                 }
+                    //             }
+                    //     });
+
+                },
+                login: function () {
+
+                    // this.errors = [];
+                    // formLogin.classList.remove("was-validated");
+                    //
+                    // code.setCustomValidity("");
+                    //
+                    // var res = formLogin.checkValidity();
+                    // if (res) {
+                    //
+                    //     this.status = "sending";
+                    //     var self = this;
+                    //
+                    //     grecaptcha.ready(function () {
+                    //         grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                    //             self.doLogin(token);
+                    //         });
+                    //     });
+                    // } else {
+                    //     formLogin.classList.add("was-validated");
+                    //
+                    //     if (!code.validity.valid) {
+                    //         code.setCustomValidity(codeRequiredMessage);
+                    //     }
+                    //
+                    //     var list = formLogin.querySelectorAll("input:invalid");
+                    //
+                    //     list.forEach((element) => {
+                    //         this.errors.push({message: element.validationMessage, id: element.id});
+                    //     });
+                    // }
+                }
+            },
+        watch: {
+            code(value) {
+                this.errors = this.errors.filter(a => a.id !== "code");
+                this.action = "";
+                code.setCustomValidity("");
+            },
+
+        }
+    };
+
+Vue.createApp(App).mount('#app')

@@ -292,6 +292,23 @@
                         </translations>
                     </concept_node>
                     <concept_node>
+                        <name>loginWithAuthenticator</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
                         <name>machineRemembered</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
@@ -2627,6 +2644,45 @@
                     </concept_node>
                     <concept_node>
                         <name>send</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                    <concept_node>
+                        <name>title</name>
+                        <definition_loaded>false</definition_loaded>
+                        <description/>
+                        <comment/>
+                        <default_text/>
+                        <translations>
+                            <translation>
+                                <language>en-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                            <translation>
+                                <language>fr-CA</language>
+                                <approved>false</approved>
+                            </translation>
+                        </translations>
+                    </concept_node>
+                </children>
+            </folder_node>
+            <folder_node>
+                <name>loginWithSecurityKeys</name>
+                <children>
+                    <concept_node>
+                        <name>notAvailable</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>
                         <comment/>
