@@ -79,4 +79,20 @@ public class MongoFido2Storage : IFido2Storage
             AaGuid = aaguid
         };
     }
+    
+    public Task<IFido2Credential?> GetCredentialByIdAsync(byte[] id)
+    {
+        throw new NotImplementedException();
+        //return _storedCredentials.FirstOrDefault(c => c.Descriptor.Id.AsSpan().SequenceEqual(id));
+    }
+
+    public  Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] argsUserHandle, object cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateCounterAsync(byte[] resCredentialId, uint resCounter)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -15,4 +15,9 @@ public interface IFido2Storage
 
     IFido2Credential CreateCredential(PublicKeyCredentialDescriptor publicKeyCredentialDescriptor, 
         byte[] resultPublicKey, byte[] userId, uint resultCounter, string credType, DateTime now, Guid resultAaguid);
+
+    Task<IFido2Credential?> GetCredentialByIdAsync(byte[] id);
+    
+    Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] argsUserHandle, object cancellationToken);
+    Task UpdateCounterAsync(byte[] resCredentialId, uint resCounter);
 }

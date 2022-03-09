@@ -67,13 +67,14 @@
 @section Scripts
 {
     <script>
-       
         var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
         var rememberMe = @Model.RememberMe.ToString().ToLower();
+        var userName = "@Model.Username";
     </script>
 
     <script src="/js/pages/fido2/helpers.js"></script>
     <script src="/js/pages/loginWithSecurityKeys.js"></script>
+    <script src="/js/pages/fido2/mfa.login.js"></script>
 }

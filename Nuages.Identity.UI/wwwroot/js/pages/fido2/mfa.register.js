@@ -36,15 +36,15 @@ async function handleAddSecurityKey(data) {
 
     console.log("Credential Options Formatted", makeCredentialOptions);
 
-    Swal.fire({
-        title: 'Registering...',
-        text: 'Tap your security key to finish registration.',
-        imageUrl: "/images/securitykey.min.svg",
-        showCancelButton: true,
-        showConfirmButton: false,
-        focusConfirm: false,
-        focusCancel: false
-    });
+    // Swal.fire({
+    //     title: 'Registering...',
+    //     text: 'Tap your security key to finish registration.',
+    //     imageUrl: "/images/securitykey.min.svg",
+    //     showCancelButton: true,
+    //     showConfirmButton: false,
+    //     focusConfirm: false,
+    //     focusCancel: false
+    // });
 
 
     console.log("Creating PublicKeyCredential...");
@@ -74,9 +74,9 @@ async function handleAddSecurityKey(data) {
 async function fetchMakeCredentialOptions(formData) {
     let response = await fetch('/api/fido2/makeCredentialOptions', {
         method: 'POST', // or 'PUT'
-        body: formData, // data can be `string` or {object}!
+        body: JSON.stringify(formData), // data can be `string` or {object}!
         headers: {
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     });
 
@@ -122,12 +122,12 @@ async function registerNewCredential(newCredential) {
     }
 
     // show success 
-    Swal.fire({
-        title: 'Registration Successful!',
-        text: 'You\'ve registered successfully.',
-        type: 'success',
-        timer: 2000
-    });
+    // Swal.fire({
+    //     title: 'Registration Successful!',
+    //     text: 'You\'ve registered successfully.',
+    //     type: 'success',
+    //     timer: 2000
+    // });
 
     // redirect to dashboard?
     //window.location.href = "/dashboard/" + state.user.displayName;

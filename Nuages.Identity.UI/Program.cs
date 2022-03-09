@@ -159,7 +159,7 @@ services.AddNuagesFido2(options =>
         options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
         options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
     })
-    .AddAspNetIdentityStores<NuagesApplicationUser<string>, string>()
+    .AddAspNetIdentity<NuagesApplicationUser<string>, string>()
     .AddFido2MongoStorage(config =>
     {
         config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];

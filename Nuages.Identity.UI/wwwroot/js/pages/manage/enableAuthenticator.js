@@ -70,7 +70,7 @@ var App =
                 addSecurityKey()
                 {
                     //Call API
-                    this.status = "sending";
+                   // this.status = "sending";
 
                     var self = this;
                     var u = self.userName;

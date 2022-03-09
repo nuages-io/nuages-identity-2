@@ -97,6 +97,10 @@
 
 
     </div>
+    
+    <button type="button" class="primary items-center w-36" v-on:click.prevent="addSecurityKey" >
+        makeCredentialOptions<i class="fas fa-spinner fa-spin ml-2"  style="display: none"></i>
+    </button>
 }
 else
 {
@@ -229,7 +233,10 @@ else
     var recoveryCodesString = "@Model.RecoveryCodesString";
     var recoveryCodes = "@Model.RecoveryCodesString".split(",");
     var isRemembered = @Model.IsMachineRemembered.ToString().ToLower();
-    
+    var userName = "@Model.Username";
     </script>
+    
+    <script src="/js/pages/fido2/helpers.js"></script>
+    <script src="/js/pages/fido2/mfa.register.js"></script>
     <script src="/js/pages/manage/twoFactorAuthentication.js"></script>
 }

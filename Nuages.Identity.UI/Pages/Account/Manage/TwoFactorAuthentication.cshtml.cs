@@ -36,7 +36,8 @@ public class TwoFactorAuthenticationModel : PageModel
     public bool Is2FaEnabled { get; set; }
     public bool IsMachineRemembered { get; set; }
     public string RecoveryCodesString { get; set; }
-
+    public string? Username { get; set; }
+    
     public List<string> RecoveryCodes { get; set; } = new();
     public string FallbackNumber { get; set; }
 
@@ -61,6 +62,8 @@ public class TwoFactorAuthenticationModel : PageModel
 
             if (user.PhoneNumberConfirmed) FallbackNumber = user.PhoneNumber;
 
+            Username = user.UserName;
+            
             return Page();
 
         }
@@ -76,4 +79,5 @@ public class TwoFactorAuthenticationModel : PageModel
         }
 
     }
+
 }

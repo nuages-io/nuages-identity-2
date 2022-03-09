@@ -1,5 +1,6 @@
 using Fido2NetLib;
 using Fido2NetLib.Objects;
+using Microsoft.AspNetCore.Mvc;
 using Nuages.Fido2.Models;
 using Nuages.Fido2.Storage;
 
@@ -73,10 +74,8 @@ public class Fido2Service : IFido2Service
             return users.Count <= 0;
         }
 
-        // 2. Verify and make the credentials
         var success = await _fido2.MakeNewCredentialAsync(attestationResponse, options, Callback);
 
-        // 3. Store the credentials in db
         var credential = _fido2Storage.CreateCredential(new PublicKeyCredentialDescriptor(success.Result.CredentialId), 
             success.Result.PublicKey,
             success.Result.User.Id,
@@ -87,7 +86,55 @@ public class Fido2Service : IFido2Service
 
         await _fido2Storage.AddCredentialToUserAsync(options.User, credential);
         
-        // 4. return "ok" to the client
         return success;
+    }
+
+    public async Task<AssertionOptions> AssertionOptionAsync(AssertionOptionsRequest request)
+    {
+        var user = await _fido2Storage.GetUserAsync(request.UserName) ?? throw new ArgumentException("Username was not registered");
+
+        var existingCredentials = (await _fido2Storage.GetCredentialsByUserAsync(user)).ToList().Select(c => c.Descriptor).ToList();
+        
+        var exts = new AuthenticationExtensionsClientInputs()
+        { 
+            UserVerificationMethod = true 
+        };
+        
+        var options = _fido2.GetAssertionOptions(
+            existingCredentials,
+            request.UserVerification ?? UserVerificationRequirement.Preferred,
+            exts
+        );
+
+        _contextAccessor.HttpContext!.Session.SetString("fido2.assertionOptions", options.ToJson());
+
+       return options;
+    }
+
+    public async Task<AssertionVerificationResult> MakeAssertionAsync(AuthenticatorAssertionRawResponse clientResponse, CancellationToken cancellationToken)
+    {
+        // 1. Get the assertion options we sent the client
+        var jsonOptions = _contextAccessor.HttpContext!.Session.GetString("fido2.assertionOptions");
+        var options = AssertionOptions.FromJson(jsonOptions);
+
+        // 2. Get registered credential from database
+        var creds = await _fido2Storage.GetCredentialByIdAsync(clientResponse.Id) ?? throw new Exception("Unknown credentials");
+
+        // 3. Get credential counter from database
+        var storedCounter = creds.SignatureCounter;
+
+        IsUserHandleOwnerOfCredentialIdAsync callback = async (args) =>
+        {
+            var storedCreds = await _fido2Storage.GetCredentialsByUserHandleAsync(args.UserHandle, cancellationToken);
+            return storedCreds.Exists(c => c.Descriptor.Id.SequenceEqual(args.CredentialId));
+        };
+        
+        // 5. Make the assertion
+        var res = await _fido2.MakeAssertionAsync(clientResponse, options, creds.PublicKey, storedCounter, callback);
+
+        // 6. Store the updated counter
+        await _fido2Storage.UpdateCounterAsync(res.CredentialId, res.Counter);
+
+        return res;
     }
 }

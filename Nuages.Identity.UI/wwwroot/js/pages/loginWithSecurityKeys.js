@@ -6,15 +6,16 @@ var App =
                 errors: [],
                 remember: rememberMe,
                 rememberMachine: false,
+                userName: userName,
                 action: "",
                 status: ""
             }
         },
         mounted() {
-            code.focus();
-            setTimeout(function () {
-                code.value = "";
-            })
+            // code.focus();
+            // setTimeout(function () {
+            //     code.value = "";
+            // })
         },
         methods:
             {
@@ -62,6 +63,13 @@ var App =
                 },
                 login: function () {
 
+                    var self = this;
+                    var u = self.userName;
+
+                    handleSignInSubmit({
+                        UserName: u
+                    });
+                    
                     // this.errors = [];
                     // formLogin.classList.remove("was-validated");
                     //
@@ -94,11 +102,11 @@ var App =
                 }
             },
         watch: {
-            code(value) {
-                this.errors = this.errors.filter(a => a.id !== "code");
-                this.action = "";
-                code.setCustomValidity("");
-            },
+            // code(value) {
+            //     this.errors = this.errors.filter(a => a.id !== "code");
+            //     this.action = "";
+            //     code.setCustomValidity("");
+            // },
 
         }
     };

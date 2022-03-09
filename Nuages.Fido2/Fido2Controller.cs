@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Fido2NetLib;
+using Fido2NetLib.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Fido2.Models;
 
@@ -10,11 +11,13 @@ namespace Nuages.Fido2;
 public class Fido2Controller : Controller
 {
     private readonly IFido2Service _fido2Service;
+    private readonly IFido2SignInManager _signInManager;
     private readonly ILogger<Fido2Controller> _logger;
 
-    public Fido2Controller(IFido2Service fido2Service, ILogger<Fido2Controller> logger)
+    public Fido2Controller(IFido2Service fido2Service, IFido2SignInManager signInManager, ILogger<Fido2Controller> logger)
     {
         _fido2Service = fido2Service;
+        _signInManager = signInManager;
         _logger = logger;
     }
     
@@ -45,6 +48,53 @@ public class Fido2Controller : Controller
             _logger.LogError(e, e.Message);
 
             throw;
+        }
+    }
+    
+    [HttpPost]
+    [Route("assertionOptions")]
+    public async Task<JsonResult> AssertionOptionsPost([FromBody] AssertionOptionsRequest request)
+    {
+        try
+        {
+            try
+            {
+                var options = await _fido2Service.AssertionOptionAsync(request);
+
+                return Json(options, new JsonSerializerOptions());
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, e.Message);
+
+                throw;
+            }
+        }
+
+        catch (Exception e)
+        {
+            return Json(new AssertionOptions { Status = "error", ErrorMessage = e.Message });
+        }
+    }
+    
+    [HttpPost]
+    [Route("makeAssertion")]
+    public async Task<JsonResult> MakeAssertion([FromBody] AuthenticatorAssertionRawResponse clientResponse, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var res = await _fido2Service.MakeAssertionAsync(clientResponse, cancellationToken);
+
+            if (res.Status == "ok")
+            {
+                await _signInManager.SignInAsync();
+            }
+                
+            return Json(res, new JsonSerializerOptions());
+        }
+        catch (Exception e)
+        {
+            return Json(new AssertionVerificationResult { Status = "error", ErrorMessage = e.Message });
         }
     }
 }
