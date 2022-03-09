@@ -49,6 +49,8 @@
         <InternalsVisibleTo Include="Nuages.Identity.UI.Tests" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Nuages.Fido2.AspNetIdentity\Nuages.Fido2.AspNetIdentity.csproj" />
+        <ProjectReference Include="..\Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj" />
         <ProjectReference Include="..\Nuages.Fido2\Nuages.Fido2.csproj" />
         <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
     </ItemGroup>

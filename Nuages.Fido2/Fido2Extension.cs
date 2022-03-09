@@ -4,10 +4,9 @@ namespace Nuages.Fido2;
 
 public static class Fido2Extension
 {
-    public static void AddNuagesFido2(this IServiceCollection services,  Action<Fido2Configuration> setupAction)
+    public static IFido2Builder AddNuagesFido2(this IServiceCollection services,  Action<Fido2Configuration> setupAction)
     {
         services.AddScoped<IFido2Service, Fido2Service>();
-        services.AddScoped<IFido2Storage, Fido2InMemoryStorage>();
         
         services.AddDistributedMemoryCache();
         services.AddSession(options =>
@@ -26,5 +25,7 @@ public static class Fido2Extension
         {
             config.AddFidoMetadataRepository();
         });
+
+        return new Fido2Builder(services);
     }
 }

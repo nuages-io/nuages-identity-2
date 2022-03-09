@@ -1,9 +1,9 @@
 using System.Text.Json;
+using Fido2NetLib;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Fido2;
 using Nuages.Fido2.Models;
 
-namespace Nuages.Identity.UI.Controllers;
+namespace Nuages.Fido2;
 
 [ApiController]
 [Route("api/fido2")]
@@ -33,12 +33,12 @@ public class Fido2Controller : Controller
         }
     }
     
-    [HttpPost("registerNewCredential")]
-    public async Task RegisrerNewCredentiakl([FromBody] RegisterCredentialRequest registerCredentialRequest)
+    [HttpPost("makeCredential")]
+    public async Task<Fido2NetLib.Fido2.CredentialMakeResult> MakeCredential([FromBody] AuthenticatorAttestationRawResponse attestationResponse, CancellationToken cancellationToken)
     {
         try
         {
-            await _fido2Service.RegisterNewCredentialAsync(registerCredentialRequest);
+            return await _fido2Service.MakeNewCredentialAsync(attestationResponse, cancellationToken);
         }
         catch (Exception e)
         {

@@ -1,13 +1,19 @@
 using Fido2NetLib.Objects;
-using Nuages.Fido2.Models;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Nuages.Fido2.Storage.Mongo;
 
+#nullable disable
+
 public class Fido2Credential : IFido2Credential
 {
+    [BsonId]
     public string Id { get; set; }
     
     public byte[] UserId { get; set; }
+    
+    public string UserIdBase64 { get; set; }
+    
     public PublicKeyCredentialDescriptor Descriptor { get; set; }
     public byte[] PublicKey { get; set; }
     public byte[] UserHandle { get; set; }

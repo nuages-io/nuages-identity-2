@@ -74,7 +74,7 @@ var App =
 
                     var self = this;
                     var u = self.userName;
-console.log(u);
+
                     fetch("/api/fido2/makeCredentialOptions", {
                         method: "POST",
                         headers: {
@@ -119,13 +119,11 @@ console.log(u);
                                 let newCredential;
                                 try {
                                     
-                                    console.log(makeCredentialOptions);
-                                    
                                     newCredential = await navigator.credentials.create({
                                         publicKey: makeCredentialOptions
                                     })
-                                    
-                                    console.log("yo");
+
+                                    await registerNewCredential(newCredential);
                                 } catch (e) {
                                     var msg = "Could not create credentials in browser. Probably because the username is already registered with your authenticator. Please change username or authenticator."
                                     console.error(msg, e);
@@ -214,3 +212,63 @@ coerceToBase64Url = function (thing) {
     return thing;
 };
 
+async function registerNewCredential(newCredential) {
+    // Move data into Arrays incase it is super long
+    let attestationObject = new Uint8Array(newCredential.response.attestationObject);
+    let clientDataJSON = new Uint8Array(newCredential.response.clientDataJSON);
+    let rawId = new Uint8Array(newCredential.rawId);
+
+    const data = {
+        id: newCredential.id,
+        rawId: coerceToBase64Url(rawId),
+        type: newCredential.type,
+        extensions: newCredential.getClientExtensionResults(),
+        response: {
+            AttestationObject: coerceToBase64Url(attestationObject),
+            clientDataJson: coerceToBase64Url(clientDataJSON)
+        }
+    };
+
+    let response;
+    try {
+        response = await registerCredentialWithServer(data);
+    } catch (e) {
+        showErrorAlert(e);
+    }
+
+    console.log("Credential Object", response);
+
+    // show error
+    if (response.status !== "ok") {
+        console.log("Error creating credential");
+        console.log(response.errorMessage);
+        showErrorAlert(response.errorMessage);
+        return;
+    }
+
+    // show success 
+    Swal.fire({
+        title: 'Registration Successful!',
+        text: 'You\'ve registered successfully.',
+        type: 'success',
+        timer: 2000
+    });
+
+    // redirect to dashboard?
+    //window.location.href = "/dashboard/" + state.user.displayName;
+}
+
+async function registerCredentialWithServer(formData) {
+    let response = await fetch('/api/fido2/makeCredential', {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(formData), // data can be `string` or {object}!
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let data = await response.json();
+
+    return data;
+}
