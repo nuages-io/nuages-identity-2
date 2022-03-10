@@ -18,11 +18,11 @@
 
             <partial name="Shared/ErrorList"/>
 
-            <div  class="space-y-4" >
-                <span class="text-gray-500 ">@Localizer["addPhone:instructions2"]</span>
-                <input id="nickName" name="nickName" type="text" autofocus="" v-model="nickName" placeholder="@Localizer["addSecurityKey:nickName"]" required class="text-box">
-                <button v-on:click.prevent="addKey" class="primary full" :disabled="status == 'sending'">
-                    @Localizer["addSecurityKey:addKey"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+            <div  class="space-y-4" v-if="status == ''">
+                <span class="text-gray-500 ">@Localizer["addSecurityKey:instructions"]</span>
+                <input id="nickname" name="nickname" type="text" autofocus="" v-model="nickname" placeholder="@Localizer["addSecurityKey:nickName"]" required class="text-box">
+                <button v-on:click.prevent="addSecurityKey" class="primary full" >
+                    @Localizer["addSecurityKey:addKey"]
                 </button>
             </div>
         </fieldset>
@@ -33,10 +33,13 @@
 
 @section Scripts
 {
+    
     <script>
-        var phoneRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["addPhone:newPhoneNumber"])";  
-        var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";  
-         
+     var nickNameRequiredMessage = "@string.Format(Localizer["addSecurityKey.nickNameRequiredMessage"])";  
+    var userName = "@Model.Username";
     </script>
-    <script src="/js/pages/manage/phone.js"></script>
+    
+    <script src="/js/pages/fido2/helpers.js"></script>
+    <script src="/js/pages/fido2/mfa.register.js"></script>
+    <script src="/js/pages/manage/securityKey.js"></script>
 }

@@ -1,5 +1,5 @@
 
-async function handleAddSecurityKey(data) {
+async function handleAddSecurityKey(data, callback) {
     
     // send to server for registering
     let makeCredentialOptions;
@@ -8,17 +8,16 @@ async function handleAddSecurityKey(data) {
 
     } catch (e) {
         console.error(e);
-        //let msg = "Something wen't really wrong";
-        //showErrorAlert(msg);
+        let msg = "Something wen't really wrong";
+        callback("error", msg);
     }
-
 
     console.log("Credential Options Object", makeCredentialOptions);
 
     if (makeCredentialOptions.status !== "ok") {
         console.log("Error creating credential options");
         console.log(makeCredentialOptions.errorMessage);
-        //showErrorAlert(makeCredentialOptions.errorMessage);
+        callback("error", makeCredentialOptions.errorMessage);
         return;
     }
 
@@ -36,16 +35,7 @@ async function handleAddSecurityKey(data) {
 
     console.log("Credential Options Formatted", makeCredentialOptions);
 
-    // Swal.fire({
-    //     title: 'Registering...',
-    //     text: 'Tap your security key to finish registration.',
-    //     imageUrl: "/images/securitykey.min.svg",
-    //     showCancelButton: true,
-    //     showConfirmButton: false,
-    //     focusConfirm: false,
-    //     focusCancel: false
-    // });
-
+    callback("registering");
 
     console.log("Creating PublicKeyCredential...");
 
@@ -57,9 +47,8 @@ async function handleAddSecurityKey(data) {
     } catch (e) {
         var msg = "Could not create credentials in browser. Probably because the username is already registered with your authenticator. Please change username or authenticator."
         console.error(msg, e);
-        //showErrorAlert(msg, e);
+        callback("error", msg);
     }
-
 
     console.log("PublicKeyCredential Created", newCredential);
 
@@ -67,7 +56,7 @@ async function handleAddSecurityKey(data) {
         registerNewCredential(newCredential);
 
     } catch (e) {
-        //showErrorAlert(err.message ? err.message : err);
+        callback("error", e.message);
     }
 }
 
@@ -80,14 +69,11 @@ async function fetchMakeCredentialOptions(formData) {
         }
     });
 
-    let data = await response.json();
-
-    return data;
+    return await response.json();
 }
 
-
 // This should be used to verify the auth data with the server
-async function registerNewCredential(newCredential) {
+async function registerNewCredential(newCredential, callback) {
     // Move data into Arrays incase it is super long
     let attestationObject = new Uint8Array(newCredential.response.attestationObject);
     let clientDataJSON = new Uint8Array(newCredential.response.clientDataJSON);
@@ -108,7 +94,7 @@ async function registerNewCredential(newCredential) {
     try {
         response = await registerCredentialWithServer(data);
     } catch (e) {
-        //showErrorAlert(e);
+        callback("error", e)
     }
 
     console.log("Credential Object", response);
@@ -117,20 +103,12 @@ async function registerNewCredential(newCredential) {
     if (response.status !== "ok") {
         console.log("Error creating credential");
         console.log(response.errorMessage);
-        //showErrorAlert(response.errorMessage);
-        return;
+
+        callback("error", response.errorMessage)
     }
-
-    // show success 
-    // Swal.fire({
-    //     title: 'Registration Successful!',
-    //     text: 'You\'ve registered successfully.',
-    //     type: 'success',
-    //     timer: 2000
-    // });
-
-    // redirect to dashboard?
-    //window.location.href = "/dashboard/" + state.user.displayName;
+    else {
+        callback("success")
+    }
 }
 
 async function registerCredentialWithServer(formData) {
@@ -143,7 +121,5 @@ async function registerCredentialWithServer(formData) {
         }
     });
 
-    let data = await response.json();
-
-    return data;
+    return await response.json();
 }

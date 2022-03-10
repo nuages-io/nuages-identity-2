@@ -47,7 +47,7 @@ public class TwoFactorAuthenticationModel : PageModel
     public string FallbackNumber { get; set; } = null!;
 
     public bool SecurityKeysEnabled { get; set; }
-    public List<IFido2Credential> SecurityKeys { get; set; }
+    public List<IFido2Credential> SecurityKeys { get; set; } = new();
     
     public async Task<IActionResult> OnGetAsync()
     {
@@ -58,15 +58,6 @@ public class TwoFactorAuthenticationModel : PageModel
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
-            HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
-            Is2FaEnabled = await _userManager.GetTwoFactorEnabledAsync(user) && HasAuthenticator;
-
-            IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
-            RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
-
-            RecoveryCodes = await _mfaService.GetRecoveryCodes(user.Id);
-            RecoveryCodesString = RecoveryCodes.Any() ? string.Join(",", RecoveryCodes) : "";
-
             if (_fido2Service != null)
             {
                 SecurityKeysEnabled = true;
@@ -74,7 +65,18 @@ public class TwoFactorAuthenticationModel : PageModel
                     await _fido2Service.GetSecurityKeysForUser(Encoding.UTF8.GetBytes(user.Id));
             }
             
-            if (user.PhoneNumberConfirmed) FallbackNumber = user.PhoneNumber;
+            HasAuthenticator = await _userManager.GetAuthenticatorKeyAsync(user) != null;
+            
+            Is2FaEnabled = await _userManager.GetTwoFactorEnabledAsync(user) && HasAuthenticator;
+
+            IsMachineRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user);
+            RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
+
+            RecoveryCodes = await _mfaService.GetRecoveryCodes(user.Id);
+            RecoveryCodesString = RecoveryCodes.Any() ? string.Join(",", RecoveryCodes) : "";
+            
+            if (user.PhoneNumberConfirmed) 
+                FallbackNumber = user.PhoneNumber;
 
             Username = user.UserName;
             

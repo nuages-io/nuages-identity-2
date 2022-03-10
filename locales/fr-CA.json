@@ -39,7 +39,10 @@
 		"title": "Ajout d'un numéro de SMS de secours"
 	},
 	"addSecurityKey": {
-		"nickName": "Entrez un nom pour la clé de sécurité",
+		"addKey": "Ajouter",
+		"instructions": "Entrez un nom pour votre clé de sécurité",
+		"nickName": "Entrez un nom pour votre clé de sécurité",
+		"nickNameRequiredMessage": "Le nom de la clé est requis",
 		"title": "Clé de sécurité"
 	},
 	"cancel": "Annuler",

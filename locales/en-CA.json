@@ -39,7 +39,10 @@
 		"title": "Add a falback SMS number"
 	},
 	"addSecurityKey": {
-		"nickName": "Enter a name for the security key",
+		"addKey": "Add",
+		"instructions": "Enter a name for your security key",
+		"nickName": "Enter a name for your security key",
+		"nickNameRequiredMessage": "Key name is required",
 		"title": "Security Key"
 	},
 	"cancel": "Cancel",
