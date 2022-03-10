@@ -21,4 +21,7 @@ public class Fido2Credential : IFido2Credential
     public string CredType { get; set; }
     public DateTime RegDate { get; set; }
     public Guid AaGuid { get; set; }
+    
+    public string  DescriptorIdBase64 { get; set; }
+    public string  UserHandleBase64 { get; set; }
 }

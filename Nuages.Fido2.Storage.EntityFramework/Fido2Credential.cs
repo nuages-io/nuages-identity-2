@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 using System.Text.Json;
 using Fido2NetLib.Objects;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Nuages.Fido2.Storage.EntityFramework;
 
@@ -19,11 +22,25 @@ public class Fido2Credential : IFido2Credential
     public DateTime RegDate { get; set; }
     public Guid AaGuid { get; set; }
 
+    public string  DescriptorIdBase64 { get; set; }
+    public string DescriptorType { get; set; }
+    public string  DescriptorTransports { get; set; }
+    
+    public string  UserHandleBase64 { get; set; }
+    
     [NotMapped]
     public PublicKeyCredentialDescriptor Descriptor
     {
-        get { return string.IsNullOrWhiteSpace(DescriptorJson) ? null : JsonSerializer.Deserialize<PublicKeyCredentialDescriptor>(DescriptorJson); }
-        set => DescriptorJson = JsonSerializer.Serialize(value);
+        get => string.IsNullOrWhiteSpace(DescriptorJson) ? null : JsonSerializer.Deserialize<PublicKeyCredentialDescriptor>(DescriptorJson);
+        set
+        {
+            DescriptorJson = JsonSerializer.Serialize(value);
+
+            DescriptorIdBase64 = Convert.ToBase64String(value.Id);
+            DescriptorType = value.Type?.ToString();
+            DescriptorTransports = value.Transports == null ? null : string.Join(",", value.Transports);
+        }
     }
+
     public string DescriptorJson { get; set; }
 }

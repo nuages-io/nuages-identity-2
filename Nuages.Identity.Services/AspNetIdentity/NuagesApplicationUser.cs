@@ -1,5 +1,7 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Identity;
+using Nuages.Identity.Services.Login;
+
 // ReSharper disable VirtualMemberCallInConstructor
 
 namespace Nuages.Identity.Services.AspNetIdentity;
@@ -37,4 +39,6 @@ public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEqua
     public string? FirstName { get; set; }
 
     public bool LockoutMessageSent { get; set; }
+
+    public MfaMethod? PreferredMfaMethod { get; set; }
 }

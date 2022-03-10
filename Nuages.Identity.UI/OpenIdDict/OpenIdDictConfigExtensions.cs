@@ -14,6 +14,19 @@ public static class OpenIdDictConfigExtensions
         services.Configure<OpenIdDictOptions>(configuration.GetSection("Nuages:OpenIdDict"));
         services.Configure(configure);
 
+        
+        services.AddScoped<IAudienceValidator, AudienceValidator>();
+        services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
+        services.AddScoped<IAuthorizeEndpoint, AuthorizeEndpoint>();
+        services.AddScoped<IClientCredentialsFlowHandler, ClientCredentialsFlowHandler>();
+        services.AddScoped<IDeviceFlowHandler, DeviceFlowHandler>();
+        services.AddScoped<ILogoutEndpoint, LogoutEndpoint>();
+        services.AddScoped<IPasswordFlowHandler, PasswordFlowHandler>();
+        services.AddScoped<ITokenEndpoint, TokenEndpoint>();
+
+        services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
+
+        
         services.AddOpenIddict()
             // Register the OpenIddict core components.
             .AddCore(options =>

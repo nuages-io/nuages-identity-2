@@ -25,7 +25,7 @@ public class Fido2UserStore<TUser, TKey> : IFido2UserStore
             {
                 Name = userName,
                 DisplayName = userName,
-                Id = Encoding.UTF8.GetBytes(user.Id.ToString()!)
+                Id = Encoding.UTF8.GetBytes(await _userManager.GetUserIdAsync(user))
             };
         }
 

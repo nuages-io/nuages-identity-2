@@ -23,9 +23,14 @@ public class UIOptions
 
 public static class UIConfigExtension
 {
-    public static void AddUI(this IServiceCollection services, IConfiguration configuration)
+    public static void AddUI(this IServiceCollection services, IConfiguration configuration, Action<UIOptions>? setupAction = null)
     {
         services.Configure<UIOptions>(configuration.GetSection("Nuages:UI"));
+
+        if (setupAction != null)
+        {
+            services.Configure(setupAction);
+        }
 
         services.AddGoogleRecaptcha(configuration);
     }

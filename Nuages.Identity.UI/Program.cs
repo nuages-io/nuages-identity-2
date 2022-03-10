@@ -131,9 +131,21 @@ services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicatio
                 cm.MapMember(c => c.LastFailedLoginReason)
                     .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
             });
-    });
-
-
+    })
+    .AddNuagesFido2<NuagesApplicationUser<string>, string>(options =>
+    {
+        options.ServerDomain = configuration["fido2:serverDomain"];
+        options.ServerName = configuration["fido2:serverName"];
+        options.Origins = new HashSet<string> { configuration["fido2:origin"] };
+        options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
+        options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
+    })
+    .AddFido2MongoStorage(config =>
+    {
+        config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
+    })
+    //.AddFido2InMemoryStorage("Fido2")
+    ;
 
 services.AddNuagesAuthentication()
     .AddGoogle(googleOptions =>
@@ -150,22 +162,6 @@ services
     .AddNuagesLocalization(configuration);
 
 
-
-services.AddNuagesFido2(options =>
-    {
-        options.ServerDomain = configuration["fido2:serverDomain"];
-        options.ServerName = configuration["fido2:serverName"];
-        options.Origins = new HashSet<string> { configuration["fido2:origin"] };
-        options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
-        options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
-    })
-    .AddAspNetIdentity<NuagesApplicationUser<string>, string>()
-    .AddFido2MongoStorage(config =>
-    {
-        config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
-    });
-    //.AddFido2InMemoryStorage("Fido2");
-
 services.AddHttpContextAccessor();
 
 services.AddWebOptimizer(!builder.Environment.IsDevelopment(), !builder.Environment.IsDevelopment());
@@ -173,17 +169,6 @@ services.AddWebOptimizer(!builder.Environment.IsDevelopment(), !builder.Environm
 services.AddUI(configuration);
 
 services.AddHealthChecks();
-
-services.AddScoped<IAudienceValidator, AudienceValidator>();
-services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
-services.AddScoped<IAuthorizeEndpoint, AuthorizeEndpoint>();
-services.AddScoped<IClientCredentialsFlowHandler, ClientCredentialsFlowHandler>();
-services.AddScoped<IDeviceFlowHandler, DeviceFlowHandler>();
-services.AddScoped<ILogoutEndpoint, LogoutEndpoint>();
-services.AddScoped<IPasswordFlowHandler, PasswordFlowHandler>();
-services.AddScoped<ITokenEndpoint, TokenEndpoint>();
-
-services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
 
 services.AddNuagesOpenIdDict(configuration, _ => { });
 

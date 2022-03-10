@@ -41,7 +41,8 @@ public class Fido2StorageEntityFramework : IFido2Storage
         
         newCredential.UserId = user.Id;
         newCredential.UserIdBase64 = Convert.ToBase64String(user.Id);
-
+        newCredential.UserHandleBase64 = Convert.ToBase64String(credential.UserHandle);
+        
         await _context.Fido2Credentials.AddAsync(newCredential);
         await _context.SaveChangesAsync();
     }
@@ -69,17 +70,28 @@ public class Fido2StorageEntityFramework : IFido2Storage
     
     public Task<IFido2Credential?> GetCredentialByIdAsync(byte[] id)
     {
-        throw new NotImplementedException();
-        //return _storedCredentials.FirstOrDefault(c => c.Descriptor.Id.AsSpan().SequenceEqual(id));
+        var base64Id = Convert.ToBase64String(id);
+        
+        return Task.FromResult((IFido2Credential?)_context.Fido2Credentials
+            .FirstOrDefault(c => c.DescriptorIdBase64 == base64Id));
     }
 
-    public Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] argsUserHandle, object cancellationToken)
+    public Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] userHandle, object cancellationToken)
     {
-        throw new NotImplementedException();
+        var base64Handle = Convert.ToBase64String(userHandle);
+        
+        return Task.FromResult(_context.Fido2Credentials.Where(c => c.UserHandleBase64 == base64Handle).ToList().Select(c => (IFido2Credential) c).ToList());
     }
 
-    public Task UpdateCounterAsync(byte[] resCredentialId, uint resCounter)
+    public async Task UpdateCounterAsync(byte[] credentialId, uint counter)
     {
-        throw new NotImplementedException();
+        var cred = await GetCredentialByIdAsync(credentialId);
+
+        if (cred != null)
+        {
+            cred.SignatureCounter = counter;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

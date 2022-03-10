@@ -15,7 +15,7 @@ namespace Nuages.Identity.UI.Pages.Account;
 // ReSharper disable once InconsistentNaming
 public class LoginWithSecurityKeyModel : PageModel
 {
-    public string? Username { get; set; }
+    public string Username { get; set; }
     
     private readonly NuagesSignInManager _signInManager;
 

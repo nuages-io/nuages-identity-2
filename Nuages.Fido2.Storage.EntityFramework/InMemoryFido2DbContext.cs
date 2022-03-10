@@ -4,7 +4,7 @@ namespace Nuages.Fido2.Storage.EntityFramework;
 
 public class InMemoryFido2DbContext : DbContext
 {
-    public DbSet<Fido2Credential> Fido2Credentials { get; set; } 
+    public DbSet<Fido2Credential> Fido2Credentials { get; set; } = null!;
     
     public InMemoryFido2DbContext(DbContextOptions context) : base(context)
     {
