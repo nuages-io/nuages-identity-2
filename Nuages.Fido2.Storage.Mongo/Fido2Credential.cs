@@ -12,8 +12,6 @@ public class Fido2Credential : IFido2Credential
     
     public byte[] UserId { get; set; }
     
-    public string UserIdBase64 { get; set; }
-    
     public PublicKeyCredentialDescriptor Descriptor { get; set; }
     public byte[] PublicKey { get; set; }
     public byte[] UserHandle { get; set; }
@@ -22,6 +20,5 @@ public class Fido2Credential : IFido2Credential
     public DateTime RegDate { get; set; }
     public Guid AaGuid { get; set; }
     
-    public string  DescriptorIdBase64 { get; set; }
-    public string  UserHandleBase64 { get; set; }
+    public string DisplayName { get; set; }
 }

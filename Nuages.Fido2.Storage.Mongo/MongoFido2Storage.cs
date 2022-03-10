@@ -28,16 +28,22 @@ public class MongoFido2Storage : IFido2Storage
 
     public Task<List<IFido2Credential>> GetCredentialsByUserAsync(Fido2User user)
     {
-        var idBase64 = Convert.ToBase64String(user.Id);
-
-        var res = _credentialCollection.AsQueryable().Where(c => c.UserIdBase64 == idBase64).ToList();
+        var res = _credentialCollection.AsQueryable().Where(c => c.UserId == user.Id).ToList();
         
         return Task.FromResult(res.Select(c => (IFido2Credential) c).ToList());
     }
 
-    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] argsCredentialId, object cancellationToken)
+    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId, object cancellationToken)
     {
-        return Task.FromResult(new List<Fido2User>());
+        var creds = _credentialCollection.AsQueryable()
+            .Where(c => c.Descriptor.Id == credentialId);
+
+        return Task.FromResult(creds.Select(c => new Fido2User
+        {
+            DisplayName = c.DisplayName,
+            Name = c.DisplayName,
+            Id = c.UserId
+        }).ToList());
     }
 
     public async Task AddCredentialToUserAsync(Fido2User user, IFido2Credential credential)
@@ -45,9 +51,7 @@ public class MongoFido2Storage : IFido2Storage
         var newCredential = (Fido2Credential)credential;
         
         newCredential.UserId = user.Id;
-        newCredential.UserIdBase64 = Convert.ToBase64String(user.Id);
-        newCredential.DescriptorIdBase64 = Convert.ToBase64String(credential.Descriptor.Id);
-        newCredential.UserHandleBase64 = Convert.ToBase64String(credential.UserHandle);
+        newCredential.DisplayName = user.DisplayName;
         
         await _credentialCollection.InsertOneAsync(newCredential);
     }
@@ -87,14 +91,12 @@ public class MongoFido2Storage : IFido2Storage
         var base64Id = Convert.ToBase64String(id);
         
         return Task.FromResult((IFido2Credential?)_credentialCollection.AsQueryable()
-                            .FirstOrDefault(c => c.DescriptorIdBase64 == base64Id));
+                            .FirstOrDefault(c => c.Descriptor.Id == id));
     }
 
     public  Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] userHandle, object cancellationToken)
     {
-        var base64Handle = Convert.ToBase64String(userHandle);
-        
-        return Task.FromResult(_credentialCollection.AsQueryable().Where(c => c.UserHandleBase64 == base64Handle).ToList().Select(c => (IFido2Credential) c).ToList());
+        return Task.FromResult(_credentialCollection.AsQueryable().Where(c => c.UserHandle == userHandle).ToList().Select(c => (IFido2Credential) c).ToList());
     }
 
     public async Task UpdateCounterAsync(byte[] credentialId, uint counter)

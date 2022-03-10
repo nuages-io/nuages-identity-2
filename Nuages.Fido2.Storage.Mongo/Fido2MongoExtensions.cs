@@ -10,6 +10,8 @@ public static class Fido2MongoExtensions
 
         builder.Services.AddScoped<IFido2Storage, MongoFido2Storage>();
 
+        builder.Services.AddHostedService<MongoSchemaInitializer>();
+        
         return builder;
     }
 }

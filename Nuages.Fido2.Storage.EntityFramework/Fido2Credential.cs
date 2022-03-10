@@ -12,7 +12,6 @@ namespace Nuages.Fido2.Storage.EntityFramework;
 public class Fido2Credential : IFido2Credential
 {
     public string Id { get; set; }
-    public string Username { get; set; }
     public byte[] UserId { get; set; }
     public string UserIdBase64 { get; set; }
     public byte[] PublicKey { get; set; }
@@ -27,6 +26,8 @@ public class Fido2Credential : IFido2Credential
     public string  DescriptorTransports { get; set; }
     
     public string  UserHandleBase64 { get; set; }
+    
+    public string DisplayName { get; set; }
     
     [NotMapped]
     public PublicKeyCredentialDescriptor Descriptor

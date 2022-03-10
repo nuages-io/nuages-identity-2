@@ -1,6 +1,5 @@
 using Fido2NetLib;
 using Fido2NetLib.Objects;
-using Microsoft.AspNetCore.Mvc;
 using Nuages.Fido2.Models;
 using Nuages.Fido2.Storage;
 
@@ -136,5 +135,10 @@ public class Fido2Service : IFido2Service
         await _fido2Storage.UpdateCounterAsync(res.CredentialId, res.Counter);
 
         return res;
+    }
+
+    public async Task<List<IFido2Credential>> GetSecurityKeysForUser(Fido2User user)
+    {
+        return await _fido2Storage.GetCredentialsByUserAsync(user);
     }
 }

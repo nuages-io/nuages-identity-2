@@ -30,9 +30,19 @@ public class Fido2StorageEntityFramework : IFido2Storage
         return res.Select(c => (IFido2Credential) c).ToList();
     }
 
-    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] argsCredentialId, object cancellationToken)
+    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId, object cancellationToken)
     {
-        return Task.FromResult(new List<Fido2User>());
+        var idBase64 = Convert.ToBase64String(credentialId);
+        
+        var creds = _context.Fido2Credentials
+            .Where(c => c.DescriptorIdBase64 == idBase64);
+
+        return Task.FromResult(creds.Select(c => new Fido2User
+        {
+            DisplayName = c.DisplayName,
+            Name = c.DisplayName,
+            Id = c.UserId
+        }).ToList());
     }
 
     public async Task AddCredentialToUserAsync(Fido2User user, IFido2Credential credential)
@@ -42,6 +52,7 @@ public class Fido2StorageEntityFramework : IFido2Storage
         newCredential.UserId = user.Id;
         newCredential.UserIdBase64 = Convert.ToBase64String(user.Id);
         newCredential.UserHandleBase64 = Convert.ToBase64String(credential.UserHandle);
+        newCredential.DisplayName = user.DisplayName;
         
         await _context.Fido2Credentials.AddAsync(newCredential);
         await _context.SaveChangesAsync();
