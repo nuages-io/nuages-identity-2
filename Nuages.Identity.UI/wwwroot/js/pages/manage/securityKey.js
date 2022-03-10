@@ -59,14 +59,17 @@ var App =
                     {
                         case "success":
                         {
+                            this.status = "done";
                             break;
                         }
                         case "registering":
                         {
+                            this.status = "registering";
                             break;
                         }
                         case "error":
                         {
+                            this.status = "";
                             this.errors.push({message: data});
                             break;
                         }
@@ -76,7 +79,6 @@ var App =
         watch: {
             nickname(value) {
                 this.errors = [];
-                //this.status = "";
                 nickname.setCustomValidity("");
             }
         }

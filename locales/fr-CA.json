@@ -43,7 +43,9 @@
 		"instructions": "Entrez un nom pour votre clé de sécurité",
 		"nickName": "Entrez un nom pour votre clé de sécurité",
 		"nickNameRequiredMessage": "Le nom de la clé est requis",
-		"title": "Clé de sécurité"
+		"success": "Clé ajoutée avec succès",
+		"title": "Clé de sécurité",
+		"waiting": "En attente de la clé de sécurité"
 	},
 	"cancel": "Annuler",
 	"changeEmail": {

@@ -102,25 +102,7 @@ var App =
                                 self.errors.push({message: element});
                             });
                         });
-                },
-                addSecurityKey()
-                {
-                    //Call API
-                    //this.status = "sending";
-
-                    var self = this;
-                    var u = self.userName;
-
-                    handleAddSecurityKey({
-                        UserName: u,
-                        DisplayName: u,
-                        AttestationType: "none",
-                        UserVerification: "preferred",
-                        AuthType: null,
-                        RequireResidentKey: false
-                    });
                 }
-
             }
     };
 

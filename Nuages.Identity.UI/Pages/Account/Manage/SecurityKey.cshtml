@@ -16,6 +16,12 @@
                 </span>
             </div>
 
+            <div class="mb-4 p-4" v-if="status == 'registering'" v-show="status == 'registering'" style="display: none">
+                <span class="text-3xl">
+                    <i class="fas fa-spinner fa-spin"></i> @Localizer["addSecurityKey:waiting"]
+                </span>
+            </div>
+            
             <partial name="Shared/ErrorList"/>
 
             <div  class="space-y-4" v-if="status == ''">

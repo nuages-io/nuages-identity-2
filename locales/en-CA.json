@@ -43,7 +43,9 @@
 		"instructions": "Enter a name for your security key",
 		"nickName": "Enter a name for your security key",
 		"nickNameRequiredMessage": "Key name is required",
-		"title": "Security Key"
+		"success": "Key successfully added",
+		"title": "Security Key",
+		"waiting": "Waiting for security key"
 	},
 	"cancel": "Cancel",
 	"changeEmail": {
