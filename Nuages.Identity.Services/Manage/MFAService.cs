@@ -49,6 +49,8 @@ public class MFAService : IMFAService
         await _userManager.RemoveAuthenticationTokenAsync(user, LoginProvider,
             RecoveryCodes);
 
+        await _userManager.SetPhoneNumberAsync(user, "");
+        
         var url = $"{_options.Authority}/account/manage/twoFactorAuthentication";
 
         _messageService.SendEmailUsingTemplate(user.Email, "2FA_Disabled", new Dictionary<string, string>

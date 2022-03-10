@@ -1,12 +1,13 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-#nullable disable
-
+using System.Text;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Nuages.Fido2;
+using Nuages.Fido2.Storage;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
 using Nuages.Identity.UI.AWS;
@@ -22,28 +23,34 @@ public class TwoFactorAuthenticationModel : PageModel
     private readonly IMFAService _mfaService;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
-
+    private readonly IFido2Service? _fido2Service;
+    
     public TwoFactorAuthenticationModel(
-        NuagesUserManager userManager, NuagesSignInManager signInManager, IMFAService mfaService)
+        NuagesUserManager userManager, NuagesSignInManager signInManager, IMFAService mfaService, IEnumerable<IFido2Service> fido2Service)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mfaService = mfaService;
+
+        _fido2Service = fido2Service.FirstOrDefault();
+
     }
 
     public bool HasAuthenticator { get; set; }
     public int RecoveryCodesLeft { get; set; }
     public bool Is2FaEnabled { get; set; }
     public bool IsMachineRemembered { get; set; }
-    public string RecoveryCodesString { get; set; }
-    public string Username { get; set; }
+    public string RecoveryCodesString { get; set; } = null!;
+    public string Username { get; set; } = null!;
     
     public List<string> RecoveryCodes { get; set; } = new();
-    public string FallbackNumber { get; set; }
+    public string FallbackNumber { get; set; } = null!;
 
+    public bool SecurityKeysEnabled { get; set; }
+    public List<IFido2Credential> SecurityKeys { get; set; }
+    
     public async Task<IActionResult> OnGetAsync()
     {
-       
         try
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
@@ -60,12 +67,18 @@ public class TwoFactorAuthenticationModel : PageModel
             RecoveryCodes = await _mfaService.GetRecoveryCodes(user.Id);
             RecoveryCodesString = RecoveryCodes.Any() ? string.Join(",", RecoveryCodes) : "";
 
+            if (_fido2Service != null)
+            {
+                SecurityKeysEnabled = true;
+                SecurityKeys =
+                    await _fido2Service.GetSecurityKeysForUser(Encoding.UTF8.GetBytes(user.Id));
+            }
+            
             if (user.PhoneNumberConfirmed) FallbackNumber = user.PhoneNumber;
 
             Username = user.UserName;
             
             return Page();
-
         }
         catch (Exception e)
         {
@@ -80,4 +93,5 @@ public class TwoFactorAuthenticationModel : PageModel
 
     }
 
+    
 }

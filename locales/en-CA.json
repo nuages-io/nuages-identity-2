@@ -3,6 +3,7 @@
 		"activate": "Activate",
 		"active": "Two-factor authentication is enabled.",
 		"addPhone": "Add falback phone number",
+		"addSecurityKey": "Add a new security key",
 		"clearPhoneConfirm": "Are you sure you want to clear the phone number?",
 		"clearPhoneTitle": "Clear phone number",
 		"copy": "Copy",
@@ -23,6 +24,7 @@
 		"resetCodes": "Reset codes",
 		"resetCodesWarning": "When you generate new recovery codes, you must download or copy the new codes. Your old codes won’t work anymore.",
 		"revoveryCodes": "Recovery codes",
+		"securityKeys": "Security keys",
 		"showCodes": "Show codes",
 		"title": "Two-factor authentication"
 	},
@@ -35,6 +37,10 @@
 		"submit": "Verify code",
 		"success": "Fallback SMS number added with success.",
 		"title": "Add a falback SMS number"
+	},
+	"addSecurityKey": {
+		"nickName": "Enter a name for the security key",
+		"title": "Security Key"
 	},
 	"cancel": "Cancel",
 	"changeEmail": {

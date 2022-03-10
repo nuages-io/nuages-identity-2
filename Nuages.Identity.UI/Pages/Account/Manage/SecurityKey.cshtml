@@ -1,0 +1,42 @@
+﻿@page
+@model Nuages.Identity.UI.Pages.Account.Manage.SecurityKeyModel
+
+@{
+    ViewData["Title"] = Localizer["addSecurityKey:title"];
+}
+
+<div id="app">
+    <h2 class="page-header">@Localizer["addSecurityKey.title"]</h2>
+
+    <form method="POST" v-on:submit.prevent="addSecurityKey" id="formAddSecurityKey">
+        <fieldset  class="space-y-4">
+            <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
+                <span class="text-green-700 font-medium">
+                    <i class="fas fa-check"></i> @Localizer["addSecurityKey:success"]
+                </span>
+            </div>
+
+            <partial name="Shared/ErrorList"/>
+
+            <div  class="space-y-4" >
+                <span class="text-gray-500 ">@Localizer["addPhone:instructions2"]</span>
+                <input id="nickName" name="nickName" type="text" autofocus="" v-model="nickName" placeholder="@Localizer["addSecurityKey:nickName"]" required class="text-box">
+                <button v-on:click.prevent="addKey" class="primary full" :disabled="status == 'sending'">
+                    @Localizer["addSecurityKey:addKey"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+                </button>
+            </div>
+        </fieldset>
+
+    </form>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        var phoneRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["addPhone:newPhoneNumber"])";  
+        var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";  
+         
+    </script>
+    <script src="/js/pages/manage/phone.js"></script>
+}

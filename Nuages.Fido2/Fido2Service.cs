@@ -137,8 +137,9 @@ public class Fido2Service : IFido2Service
         return res;
     }
 
-    public async Task<List<IFido2Credential>> GetSecurityKeysForUser(Fido2User user)
+    public async Task<List<IFido2Credential>> GetSecurityKeysForUser(byte[] userId)
     {
+        var user = new Fido2User { Id = userId };
         return await _fido2Storage.GetCredentialsByUserAsync(user);
     }
 }

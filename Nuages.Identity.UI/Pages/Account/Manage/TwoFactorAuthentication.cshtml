@@ -31,6 +31,33 @@
         </div>
         <hr/>
 
+        @if (Model.SecurityKeysEnabled)
+        {
+            <div class="space-y-4">
+                <div class="space-x-4 flex justify-between items-center">
+                    <span >@Localizer["2fa.securityKeys"]</span>
+                    @* <button type="button" class="link items-center" v-on:click.prevent="addSecurityKey"> *@
+                    @*     @Localizer["2fa.addSecurityKey"] *@
+                    @* </button> *@
+                    
+                    <a href="~/Account/Manage/SecurityKey">
+                        @Localizer["2fa.addSecurityKey"]
+                    </a>
+                </div>
+                @foreach (var k in Model.SecurityKeys)
+                {
+                    <div class="flex flex-row justify-between text-sm">
+                        <span  ><i class="fa-solid fa-key"></i>
+                            @k.DisplayName
+                        </span>
+                        <button type="button" class="link">
+                          @Localizer["externalLogins.remove"] <i class="fas fa-trash ml-2"></i>
+                      </button>
+                    </div>
+                }
+            </div>
+            <hr/>
+        }
 
         <div class="flex flex-col space-y-4">
             <div class=" flex justify-between items-center">
@@ -97,11 +124,8 @@
 
 
     </div>
-    
-    <button type="button" class="primary items-center w-36" v-on:click.prevent="addSecurityKey" >
-        makeCredentialOptions<i class="fas fa-spinner fa-spin ml-2"  style="display: none"></i>
-    </button>
 }
+
 else
 {
     <div class="flex justify-between items-center">

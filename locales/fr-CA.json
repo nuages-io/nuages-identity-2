@@ -3,6 +3,7 @@
 		"activate": "Activer",
 		"active": "L'authentification à deux facteurs est activée.",
 		"addPhone": "Ajouter un no. de téléphone de secours",
+		"addSecurityKey": "Ajouter une nouvelle clé de sécurité",
 		"clearPhoneConfirm": "Voulez-vous vraiment effacer le numéro de téléphone ?",
 		"clearPhoneTitle": "Effacer le numéro de téléphone",
 		"copy": "Copier",
@@ -23,6 +24,7 @@
 		"resetCodes": "Réinitialiser les codes",
 		"resetCodesWarning": "Lorsque vous générez de nouveaux codes de récupération, vous devez télécharger ou copier les nouveaux codes. Vos anciens codes ne fonctionneront plus.",
 		"revoveryCodes": "Code de récupération",
+		"securityKeys": "Clés de sécurité",
 		"showCodes": "Afficher les codes",
 		"title": "Authentication à deux facteurs"
 	},
@@ -35,6 +37,10 @@
 		"submit": "Vérifier le code",
 		"success": "Numéro de SMS de secours ajouté avec succès.",
 		"title": "Ajout d'un numéro de SMS de secours"
+	},
+	"addSecurityKey": {
+		"nickName": "Entrez un nom pour la clé de sécurité",
+		"title": "Clé de sécurité"
 	},
 	"cancel": "Annuler",
 	"changeEmail": {
