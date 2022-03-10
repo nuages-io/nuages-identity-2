@@ -5,9 +5,8 @@ using Nuages.Fido2.Storage;
 
 namespace Nuages.Fido2.AspNetIdentity;
 
-public class Fido2UserStore<TUser, TKey> : IFido2UserStore 
-                where TKey : IEquatable<TKey> 
-                where TUser : IdentityUser<TKey>
+public class Fido2UserStore<TUser> : IFido2UserStore 
+                where TUser : class
 {
     private readonly UserManager<TUser> _userManager;
 

@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Nuages.Fido2.AspNetIdentity;
 
-public class Fido2SignInManager<TUser, TKey>  : IFido2SignInManager  where TKey : IEquatable<TKey> 
-    where TUser : IdentityUser<TKey>
+public class Fido2SignInManager<TUser>  : IFido2SignInManager 
+    where TUser : class
 {
     private readonly SignInManager<TUser> _signInManager;
 

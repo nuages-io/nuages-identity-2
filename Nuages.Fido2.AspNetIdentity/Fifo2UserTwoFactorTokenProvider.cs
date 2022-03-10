@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 namespace Nuages.Fido2.AspNetIdentity;
 
 
-public class Fifo2UserTwoFactorTokenProvider<TUser, TKey> : IUserTwoFactorTokenProvider<TUser>  
-    where TKey : IEquatable<TKey> 
-    where TUser : IdentityUser<TKey>
+public class Fifo2UserTwoFactorTokenProvider<TUser> : IUserTwoFactorTokenProvider<TUser>  
+
+    where TUser : class
 {
     public Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
     {

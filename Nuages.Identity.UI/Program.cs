@@ -10,9 +10,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
-using Nuages.Fido2;
 using Nuages.Fido2.AspNetIdentity;
-using Nuages.Fido2.Storage.EntityFramework;
 using Nuages.Fido2.Storage.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -117,7 +115,6 @@ services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicatio
                 RequireConfirmedAccount = false //MUST be false
             };
         })
-    .AddNuagesIdentityServices(configuration, _ => { })
     .AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
     {
         options.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
@@ -132,7 +129,8 @@ services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicatio
                     .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
             });
     })
-    .AddNuagesFido2<NuagesApplicationUser<string>, string>(options =>
+    .AddNuagesIdentityServices(configuration, _ => { })
+    .AddNuagesFido2(options =>
     {
         options.ServerDomain = configuration["fido2:serverDomain"];
         options.ServerName = configuration["fido2:serverName"];
@@ -140,10 +138,7 @@ services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicatio
         options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
         options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
     })
-    .AddFido2MongoStorage(config =>
-    {
-        config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
-    })
+    .AddFido2MongoStorage(config => { config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"]; })
     //.AddFido2InMemoryStorage("Fido2")
     ;
 
@@ -158,7 +153,10 @@ services.AddNuagesAuthentication()
 
 services
     .AddMvc()
-    .AddJsonOptions(jsonOptions => { jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter()); })
+    .AddJsonOptions(jsonOptions =>
+    {
+        jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter());
+    })
     .AddNuagesLocalization(configuration);
 
 

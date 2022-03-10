@@ -16,22 +16,19 @@ public static class Fido2AspNetIdentityExtension
     //     return builder;
     // }
     
-    public static Fido2Builder AddNuagesFido2<TUser, TKey>(this IdentityBuilder builder,  Action<Fido2Configuration> setupAction)
-        where TKey : IEquatable<TKey> 
-        where TUser : IdentityUser<TKey>
+    public static Fido2Builder AddNuagesFido2(this IdentityBuilder builder,  Action<Fido2Configuration> setupAction)
+      
     {
         var fido2Builder = new Fido2Builder(builder.Services);
         
         var userType = builder.UserType;
         
-        //var userStoreType = typeof(PasswordlessLoginProvider<>).MakeGenericType(userType);
-        
-        fido2Builder.Services.AddScoped<IFido2UserStore, Fido2UserStore<TUser, TKey>>();
-        fido2Builder.Services.AddScoped<IFido2SignInManager, Fido2SignInManager<TUser, TKey>>();
+        fido2Builder.Services.AddScoped(typeof(IFido2UserStore), typeof(Fido2UserStore<>).MakeGenericType(userType));
+        fido2Builder.Services.AddScoped(typeof(IFido2SignInManager), typeof(Fido2SignInManager<>).MakeGenericType(userType));
 
         fido2Builder.Services.AddNuagesFido2(setupAction);
 
-        builder.AddTokenProvider<Fifo2UserTwoFactorTokenProvider<TUser, TKey>>("FIDO2");
+        builder.AddTokenProvider("FIDO2", typeof(Fifo2UserTwoFactorTokenProvider<>).MakeGenericType(userType));
         
         return fido2Builder;
     }
