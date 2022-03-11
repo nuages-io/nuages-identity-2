@@ -195,13 +195,16 @@
 	"loginWithSMS": {
 		"connect": "Connection",
 		"instructions": "A text message will be sent to you containing a verification code. This function is only available if you have a verified phone number configured.",
+		"notAvailable": "Don't have access to your phone?",
 		"seeSMS": "Verify your text message for the code",
 		"send": "Send code",
 		"title": "SMS Log in"
 	},
 	"loginWithSecurityKeys": {
 		"notAvailable": "Don't have access to your security key?",
-		"title": "Login with Security Key"
+		"success": "Security key successfully verified",
+		"title": "Login with Security Key",
+		"waiting": "Waiting for security key"
 	},
 	"logout": {
 		"title": "Log out"
@@ -209,7 +212,7 @@
 	"mfa": {
 		"appNotAvailable": "Don't have access to your authenticator device?",
 		"appNotAvailableRecoveryCodes": "Log in with a recovery code.",
-		"appNotAvailableSMS": "Log in with SMS key",
+		"appNotAvailableSMS": "Log in with SMS code",
 		"instructions": "Your login is protected with an authenticator app. Enter your authenticator code below.",
 		"rememberMachine": "Remember this device",
 		"title": "Two-factor authentication"
@@ -246,6 +249,7 @@
 	},
 	"recoveryCode": {
 		"instructions": "You have requested to log in with a recovery code.",
+		"notAvailable": "Don't have access to your recovery codes?",
 		"title": "Recovery code verification"
 	},
 	"register": {

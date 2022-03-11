@@ -19,6 +19,10 @@
     h2 {
         @apply  dark:text-white
     }
+
+    strong {
+        @apply  dark:text-white
+    }
     
     label {
         @apply  dark:text-white
@@ -41,7 +45,7 @@
     }
 
     button.link {
-        @apply font-medium text-indigo-600 hover:text-indigo-500 outline-none;
+        @apply font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 outline-none;
     }
 
     a {
@@ -70,6 +74,11 @@
 
     .instructions
     {
-        @apply dark:text-gray-500
+        @apply dark:text-gray-400 text-gray-500
+    }
+    
+    .green-success
+    {
+        @apply text-green-700 dark:text-green-500
     }
 }

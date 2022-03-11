@@ -20,7 +20,7 @@ public class Fido2SignInManager<TUser>  : IFido2SignInManager
         {
             throw new InvalidOperationException($"Unable to load two-factor authentication user.");
         }
-
+        
         return await _signInManager.TwoFactorSignInAsync("FIDO2", string.Empty, false, false);
     }
 }

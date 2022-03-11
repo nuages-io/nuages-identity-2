@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
+using Nuages.Identity.Services.Login;
 
 // ReSharper disable ContextualLoggerProblem
 
@@ -239,6 +240,35 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         await Context.SignOutAsync(NuagesIdentityConstants.PasswordExpiredScheme);
 
         await base.SignOutAsync();
+    }
+    
+    public override async Task<SignInResult> TwoFactorSignInAsync(string provider, string code, bool isPersistent, bool rememberClient)
+    {
+        var res = await base.TwoFactorSignInAsync(provider, code, isPersistent, rememberClient);
+        if (res.Succeeded)
+        {
+            switch (provider)
+            {
+                case "FIDO2":
+                {
+                    var result = await Context.AuthenticateAsync(IdentityConstants.TwoFactorUserIdScheme);
+                    if (result?.Principal != null)
+                    {
+                        var id = result.Principal.FindFirstValue(ClaimTypes.Name);
+                        var user = await UserManager.FindByIdAsync(id);
+                        if (user != null)
+                        {
+                            user.PreferredMfaMethod = "SecurityKeys";
+                            await UserManager.UpdateAsync(user);
+                        }
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        return res;
     }
 }
 

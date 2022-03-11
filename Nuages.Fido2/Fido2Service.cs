@@ -142,4 +142,9 @@ public class Fido2Service : IFido2Service
         var user = new Fido2User { Id = userId };
         return await _fido2Storage.GetCredentialsByUserAsync(user);
     }
+
+    public async Task<bool> HasSecurityKeys(byte[] userId)
+    {
+        return (await GetSecurityKeysForUser(userId)).Any();
+    }
 }

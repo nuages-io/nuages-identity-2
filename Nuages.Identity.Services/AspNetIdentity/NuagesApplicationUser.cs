@@ -40,5 +40,5 @@ public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEqua
 
     public bool LockoutMessageSent { get; set; }
 
-    public MfaMethod? PreferredMfaMethod { get; set; }
+    public string? PreferredMfaMethod { get; set; }
 }

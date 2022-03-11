@@ -195,13 +195,16 @@
 	"loginWithSMS": {
 		"connect": "Connection",
 		"instructions": "Un message texte vous sera transmis contenant un code de vérification. Cette fonction est disponible seulement si un no. de téléphone a été vérifié.",
+		"notAvailable": "Vous n'avez pas accès à votre téléphone?",
 		"seeSMS": "Voir vos message textes pour le code",
 		"send": "Envoyer le code",
 		"title": "Connection avec Texto"
 	},
 	"loginWithSecurityKeys": {
 		"notAvailable": "Vous n'avez pas accès à votre clé de sécurité?",
-		"title": "Connexion avec clé de sécurité"
+		"success": "Clé de sécurité vérifiée avec succèss",
+		"title": "Connexion avec clé de sécurité",
+		"waiting": "En attente de la clé de sécurité"
 	},
 	"logout": {
 		"title": "Fermer la session"
@@ -209,7 +212,7 @@
 	"mfa": {
 		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification?",
 		"appNotAvailableRecoveryCodes": "Connection avec une code de récupération.",
-		"appNotAvailableSMS": "Connection avec une clé Texto",
+		"appNotAvailableSMS": "Connection avec un code Texto",
 		"instructions": "Votre compte est protégé par une application d'authentification. Entrée votgre code çi-bas.",
 		"rememberMachine": "Se rappeler de cette appareil",
 		"title": "Authentification à deux facteurs"
@@ -246,6 +249,7 @@
 	},
 	"recoveryCode": {
 		"instructions": "Vous avez demandé à vous connecter avec un code de récupération.",
+		"notAvailable": "Vous n'avez pas accès à vos codes de récupération?",
 		"title": "Vérification du code de récupération"
 	},
 	"register": {

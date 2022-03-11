@@ -2,18 +2,40 @@
 @using Nuages.Web.Recaptcha
 @model Nuages.Identity.UI.Pages.Account.LoginWithSMS
 @inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<UIOptions> UIOptions
 
 @{
     ViewData["Title"] = Localizer["loginWithSMS:title"];
 }
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="loginSMS" id="formLoginSMS">
-    <span class="instructions">@Localizer["loginWithSMS:instructions"]</span>
-    <partial name="Shared/ErrorList"/>
-    <button v-on:click.prevent="loginSMS" class="primary full items-center" :disabled="status == 'sending'">
-        @Localizer["loginWithSMS:send"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-    </button>
-</form>
+<div class="space-y-4">
+    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="loginSMS" id="formLoginSMS">
+        <span class="instructions">@Localizer["loginWithSMS:instructions"]</span>
+        <partial name="Shared/ErrorList"/>
+        <button v-on:click.prevent="loginSMS" class="primary full items-center" :disabled="status == 'sending'">
+            @Localizer["loginWithSMS:send"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+        </button>
+    </form>
+
+    <div class="text-sm mt-4">
+        <span class="instructions">@Localizer["loginWithSMS.notAvailable"]</span>
+        <ul class="list-disc mt-2 ml-4 dark:text-white">
+            <li>
+                <a id="recovery-code-login" asp-page="./LoginWith2fa" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["2fa.loginWithAuthenticator"]</a>
+            </li>
+
+            <li>
+               <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableRecoveryCodes"]</a>
+           </li>
+            @if (UIOptions.Value.EnableFido2)
+            {
+                <li>
+                    <a id="recovery-code-login" asp-page="./LoginWithSecurityKey" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["loginWithSecurityKeys.title"]</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
 
 @section Scripts
 {

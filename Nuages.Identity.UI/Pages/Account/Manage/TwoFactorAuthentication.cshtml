@@ -9,7 +9,7 @@
 
 
 <div class="space-y-6 ">
-<span class="text-gray-500">@Localizer["2fa.instructions"]</span>
+<span class="instructions">@Localizer["2fa.instructions"]</span>
 <partial name="Shared/ErrorList"/>
 
 @if (Model.Is2FaEnabled)
@@ -64,7 +64,7 @@
             <div class=" flex justify-between items-center">
                 <span class="dark:text-white">@Localizer["2fa.revoveryCodes"]</span>
             </div>
-            <span class="text-gray-500">@Localizer["2fa.recoveryCodesInstructions"] </span>
+            <span class="instructions">@Localizer["2fa.recoveryCodesInstructions"] </span>
             <div class="flex justify-end">
                 <button type="button" class="link" v-if="showCodes == false" v-show="showCodes==false" v-on:click="showCodes=true">@Localizer["2fa:showCodes"]</button>
                 <button type="button" class="link" v-if="showCodes == true" v-show="showCodes==true" v-on:click="showCodes=false" style="display: none">@Localizer["2fa:hideCodes"]</button>
@@ -80,7 +80,7 @@
                             <code class="recovery-code">{{code}}</code>
                         </span>
                     </div>
-                    <span class="text-green-700">@Localizer["2fa.recoveryCodesWarning"]</span>
+                    <span class="green-success">@Localizer["2fa.recoveryCodesWarning"]</span>
                     <div class="flex flex-row justify-start space-x-4">
                         <button type="button" class="link" v-on:click="copy">
                             <i class="fas fa-copy mr-2"></i>@Localizer["2fa.copy"]

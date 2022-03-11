@@ -1,21 +1,7 @@
 //document.getElementById('signin').addEventListener('submit', handleSignInSubmit);
 
-async function handleSignInSubmit(data) {
-    // event.preventDefault();
-    //
-    // let username = this.username.value;
-    //
-    // // passwordfield is omitted in demo
-    // // let password = this.password.value;
-    //
-    //
-    // // prepare form post data
-    // var formData = new FormData();
-    // formData.append('username', username);
-    //
-    // // not done in demo
-    // // todo: validate username + password with server (has nothing to do with FIDO2/WebAuthn)
-
+async function handleSignInSubmit(data, callback) {
+   
     // send to server for registering
     let makeAssertionOptions;
     try {
@@ -30,7 +16,7 @@ async function handleSignInSubmit(data) {
 
         makeAssertionOptions = await res.json();
     } catch (e) {
-        //showErrorAlert("Request to server failed", e);
+        callback("error", e.message);
     }
 
     console.log("Assertion Options Object", makeAssertionOptions);
@@ -39,7 +25,7 @@ async function handleSignInSubmit(data) {
     if (makeAssertionOptions.status !== "ok") {
         console.log("Error creating assertion options");
         console.log(makeAssertionOptions.errorMessage);
-       // showErrorAlert(makeAssertionOptions.errorMessage);
+        callback("error", makeAssertionOptions.errorMessage);
         return;
     }
 
@@ -55,15 +41,7 @@ async function handleSignInSubmit(data) {
 
     console.log("Assertion options", makeAssertionOptions);
 
-    // Swal.fire({
-    //     title: 'Logging In...',
-    //     text: 'Tap your security key to login.',
-    //     imageUrl: "/images/securitykey.min.svg",
-    //     showCancelButton: true,
-    //     showConfirmButton: false,
-    //     focusConfirm: false,
-    //     focusCancel: false
-    // });
+    callback("waiting");
 
     // ask browser for credentials (browser will ask connected authenticators)
     let credential;
@@ -71,14 +49,14 @@ async function handleSignInSubmit(data) {
         credential = await navigator.credentials.get({ publicKey: makeAssertionOptions })
     } catch (err) {
         console.log("err", err);
-        //showErrorAlert(err.message ? err.message : err);
+        callback("error", err.message ? err.message : err);
     }
 
     console.log("credential", credential);
     try {
-        await verifyAssertionWithServer(credential);
+        await verifyAssertionWithServer(credential, callback);
     } catch (e) {
-        //showErrorAlert("Could not verify assertion", e);
+        callback("error", e.message);
     }
 }
 
@@ -86,7 +64,7 @@ async function handleSignInSubmit(data) {
  * Sends the credential to the the FIDO2 server for assertion
  * @param {any} assertedCredential
  */
-async function verifyAssertionWithServer(assertedCredential) {
+async function verifyAssertionWithServer(assertedCredential, callback) {
 
     // Move data into Arrays incase it is super long
     let authData = new Uint8Array(assertedCredential.response.authenticatorData);
@@ -118,7 +96,7 @@ async function verifyAssertionWithServer(assertedCredential) {
 
         response = await res.json();
     } catch (e) {
-        //showErrorAlert("Request to server failed", e);
+        callback("error", e.message);
         throw e;
     }
 
@@ -128,23 +106,15 @@ async function verifyAssertionWithServer(assertedCredential) {
     if (response.status !== "ok") {
         console.log("Error doing assertion");
         console.log(response.errorMessage);
-        //showErrorAlert(response.errorMessage);
+        callback("error", response.errorMessage);
         return;
     }
 
-    // show success message
-    // await Swal.fire({
-    //     title: 'Logged In!',
-    //     text: 'You\'re logged in successfully.',
-    //     type: 'success',
-    //     timer: 2000
-    // });
-
-
-    // redirect to dashboard to show keys
-    //window.location.href = "/dashboard/" + value("#login-username");
+    callback("done")
     
-    console.log("ok");
-
-    window.location = returnUrl;
+    setTimeout(function()
+    {
+        window.location = returnUrl;
+    }, 500);
+    
 }

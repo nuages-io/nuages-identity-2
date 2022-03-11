@@ -2,12 +2,13 @@
 @using Nuages.Web.Recaptcha
 @model LoginWithRecoveryCodeModel
 @inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
+@inject IOptions<UIOptions> UIOptions
 
 @{
     ViewData["Title"] = Localizer["recoveryCode.title"];
 }
 
-<div >
+<div class="space-y-4">
     <form class="mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
         <fieldset class="space-y-4 " :disabled="status == 'sending'">
             <span class="instructions">@Localizer["recoveryCode.instructions"]</span>
@@ -22,6 +23,28 @@
     <div class="mt-4">
         <partial name="Shared/_Warning" model='new { Title = Localizer["warning"], Message = Localizer["login.cantRemember"] }'/>
     </div>
+    <div class="text-sm mt-4">
+        <span class="instructions">@Localizer["recoveryCode.notAvailable"]</span>
+        <ul class="list-disc mt-2 ml-4 dark:text-white">
+            <li>
+                <a id="recovery-code-login" asp-page="./LoginWith2fa" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["2fa.loginWithAuthenticator"]</a>
+            </li>
+          
+            @if (UIOptions.Value.EnablePhoneFallback)
+            {
+                <li>
+                    <a id="recovery-code-login" asp-page="./SendSMSCode" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["mfa.appNotAvailableSMS"]</a>
+                </li>
+            }
+            @if (UIOptions.Value.EnableFido2)
+            {
+                <li>
+                    <a id="recovery-code-login" asp-page="./LoginWithSecurityKey" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["loginWithSecurityKeys.title"]</a>
+                </li>
+            }
+        </ul>
+    </div>
+
 </div>
 
 @section MainFooter

@@ -8,19 +8,19 @@
     <h2 class="page-header">@Localizer["enableAuthenticator.title"]</h2>
 
     <div class="space-y-4 flex flex-col">
-        <div class="text-gray-500">@Localizer["enableAuthenticator.instructions"]</div>
+        <div class="instructions">@Localizer["enableAuthenticator.instructions"]</div>
 
         <div class="space-y-2">
-            <STRONG>@Localizer["enableAuthenticator.scanCode"]</STRONG>
+            <strong>@Localizer["enableAuthenticator.scanCode"]</strong>
             <div id="qrCode" class="justify-center"></div>
             <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
         </div>
 
-        <span class="text-gray-500"> @Localizer["enableAuthenticator.enterKey"]</span>
+        <span class="instructions"> @Localizer["enableAuthenticator.enterKey"]</span>
         <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800">
             @Model.SharedKey
         </span>
-        <p class="text-gray-500">
+        <p class="instructions">
             @Localizer["enableAuthenticator.instructions2"]
         </p>
         <div>
@@ -36,9 +36,6 @@
         </div>
     </div>
 
-      <button type="button" class="primary items-center w-36" v-on:click.prevent="addSecurityKey" >
-            makeCredentialOptions<i class="fas fa-spinner fa-spin ml-2"  style="display: none"></i>
-        </button>
 </div>
 
 @section RightNav
@@ -47,7 +44,7 @@
         <strong> @Localizer["enableAuthenticator.downloadApp"]</strong>
 
 
-        <ul class="list-disc ml-4 mt-2">
+        <ul class="list-disc ml-4 mt-2 dark:text-white">
             <li>Microsoft Authenticator</li>
             <li>Google Authenticator</li>
             <li>Authy</li>

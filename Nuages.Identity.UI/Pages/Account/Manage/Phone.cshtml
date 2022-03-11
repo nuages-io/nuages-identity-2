@@ -11,7 +11,7 @@
     <form method="POST" v-on:submit.prevent="addPhone" id="formAddPhone">
         <fieldset :disabled="status == 'sending'" class="space-y-4">
             <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
-                <span class="text-green-700 font-medium">
+                <span class="green-success font-medium">
                     <i class="fas fa-check"></i> @Localizer["addPhone:success"]
                 </span>
             </div>

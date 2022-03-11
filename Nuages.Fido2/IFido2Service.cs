@@ -13,4 +13,6 @@ public interface IFido2Service
     Task<AssertionVerificationResult> MakeAssertionAsync(AuthenticatorAssertionRawResponse clientResponse, CancellationToken cancellationToken);
 
     Task<List<IFido2Credential>> GetSecurityKeysForUser(byte[] userId);
+
+    Task<bool> HasSecurityKeys(byte[] userId);
 }

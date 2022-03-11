@@ -81,18 +81,26 @@ public class LoginService : ILoginService
 
     public async Task<LoginResultModel> Login2FAAsync(Login2FAModel model)
     {
-        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (user == null) throw new NotFoundException("UserNotFound");
+        var authUser = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (authUser == null) 
+            throw new NotFoundException("UserNotFound");
 
         var result =
             await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, model.RememberMachine);
 
+        var user = await _userManager.FindByIdAsync(authUser.Id);
+        
         if (result == SignInResult.Success)
+        {
+            user.PreferredMfaMethod = "Authenticator";
+            await _userManager.UpdateAsync(user);
+            
             return new LoginResultModel
             {
                 Success = true
             };
-
+        }
+          
         user.LastFailedLoginReason = FailedLoginReason.FailedMfa;
         await _userManager.UpdateAsync(user);
 
