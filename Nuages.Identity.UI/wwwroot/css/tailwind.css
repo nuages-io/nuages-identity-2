@@ -16,7 +16,7 @@
       @apply  dark:text-white dark:bg-slate-900
     }
 
-    h2 {
+    h2, h3 {
         @apply  dark:text-white
     }
 
@@ -32,6 +32,10 @@
         @apply w-full flex
     }
 
+    .btn-simple {
+        @apply inline-flex items-center px-2.5 py-1.5 border border-gray-300 dark:bg-slate-900 dark:border-slate-700 dark:text-white shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+    }
+    
     button.primary {
         @apply justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 text-white bg-indigo-600 hover:bg-indigo-700  focus:ring-indigo-500
     }
@@ -60,9 +64,7 @@
         @apply justify-center py-2 px-4 border border-transparent rounded-md shadow-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 text-white bg-green-600 hover:bg-green-700  focus:ring-green-500  hover:text-white
     }
 
-    .btn-simple {
-        @apply inline-flex items-center px-2.5 py-1.5 border border-gray-300 dark:bg-slate-900 dark:border-slate-700 dark:text-white shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-    }
+
 
     .page-header {
         @apply text-3xl font-extrabold text-gray-900 mb-4;
@@ -80,5 +82,10 @@
     .green-success
     {
         @apply text-green-700 dark:text-green-500
+    }
+    
+    .dialog
+    {
+        @apply dark:bg-slate-900;
     }
 }

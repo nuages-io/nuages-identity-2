@@ -24,7 +24,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Macross.Json.Extensions" Version="2.2.0" />
-        <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="1.0.5" />
+        <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="1.0.6" />
         <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.MongoDb" Version="3.1.1" />

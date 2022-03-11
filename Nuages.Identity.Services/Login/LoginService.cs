@@ -81,14 +81,15 @@ public class LoginService : ILoginService
 
     public async Task<LoginResultModel> Login2FAAsync(Login2FAModel model)
     {
-        var authUser = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-        if (authUser == null) 
+        var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+        if (user == null) 
             throw new NotFoundException("UserNotFound");
 
         var result =
             await _signInManager.TwoFactorAuthenticatorSignInAsync(model.Code, model.RememberMe, model.RememberMachine);
 
-        var user = await _userManager.FindByIdAsync(authUser.Id);
+        //Reload to avoind concurrency error
+        user = await _userManager.FindByIdAsync(user.Id);
         
         if (result == SignInResult.Success)
         {
