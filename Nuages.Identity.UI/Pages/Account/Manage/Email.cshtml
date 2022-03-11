@@ -12,8 +12,8 @@
 
     <form method="POST" v-on:submit.prevent="changeEmail" id="formChangeEmail">
         <fieldset :disabled="status == 'sending'" class="space-y-4">
-            <span class="text-gray-500">@Localizer["changeEmail:instructions"]</span>
-            <div>
+            <span class="instructions">@Localizer["changeEmail:instructions"]</span>
+            <div class="dark:text-white">
                 <strong>@Localizer["changeEmail:currentEmail"]</strong>&nbsp;
                 <span>@Model.Email</span>
             </div>

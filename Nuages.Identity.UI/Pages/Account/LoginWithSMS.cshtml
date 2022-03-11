@@ -10,7 +10,7 @@
 <div >
     <form class=" mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
         <fieldset class="space-y-4" :disabled="status == 'sending'">
-            <span>@Localizer["loginWithSMS.instructions"]</span>
+            <span class="instructions">@Localizer["loginWithSMS.instructions"]</span>
             <partial name="Shared/ErrorList"/>
             <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="Code" required class="text-box" autocomplete=“off”>
 

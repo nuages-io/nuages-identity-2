@@ -9,10 +9,21 @@
     }
 
     .text-box {
-        @apply appearance-none block w-full px-3 py-2 border  border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
+        @apply appearance-none block w-full px-3 py-2 border  border-gray-300 dark:border-slate-700 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500;
     }
 
+    input[type=text], input[type=password], input[type=email] {
+      @apply  dark:text-white dark:bg-slate-900
+    }
 
+    h2 {
+        @apply  dark:text-white
+    }
+    
+    label {
+        @apply  dark:text-white
+    }
+    
     button.full {
         @apply w-full flex
     }
@@ -34,7 +45,7 @@
     }
 
     a {
-        @apply font-medium text-indigo-600 hover:text-indigo-500
+        @apply font-medium text-indigo-600 hover:text-indigo-500 dark:text-white
     }
 
     a.primary {
@@ -46,7 +57,7 @@
     }
 
     .btn-simple {
-        @apply inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+        @apply inline-flex items-center px-2.5 py-1.5 border border-gray-300 dark:bg-slate-900 dark:border-slate-700 dark:text-white shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
     }
 
     .page-header {
@@ -57,4 +68,8 @@
         @apply block w-full  mt-1  rounded-md  border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
     }
 
+    .instructions
+    {
+        @apply dark:text-gray-500
+    }
 }

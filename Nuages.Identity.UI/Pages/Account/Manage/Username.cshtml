@@ -10,8 +10,8 @@
 
     <form method="POST" v-on:submit.prevent="changeUsername" id="formChangeUsername">
         <fieldset :disabled="status == 'sending'" class="space-y-4">
-            <span class="text-gray-500">@Localizer["changeUsername:instructions"]</span>
-            <div>
+            <span class="instructions">@Localizer["changeUsername:instructions"]</span>
+            <div class="dark:text-white">
                 <strong>@Localizer["changeUsername:currentUsername"]</strong>&nbsp;
                 <span >{{currentUserName}}</span>
             </div>

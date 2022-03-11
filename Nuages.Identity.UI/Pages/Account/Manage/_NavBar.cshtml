@@ -2,13 +2,13 @@
 @inject IOptions<NuagesIdentityOptions> IdentityOptions
 
 <!-- This example requires Tailwind CSS v2.0+ -->
-<nav class="bg-white shadow">
+<nav class="bg-white shadow dark:bg-slate-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <div class="flex-shrink-0 flex items-center">
 
-                    <h2 class="text-2xl font-extrabold text-gray-700"> @IdentityOptions.Value.Name</h2>
+                    <h2 class="text-2xl font-extrabold text-gray-700 dark:text-white"> @IdentityOptions.Value.Name</h2>
 
                     @* <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow"> *@
                     @* <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-600-mark-gray-800-text.svg" alt="Workflow"> *@
@@ -29,7 +29,7 @@
                 @*   </a> *@
                 @* </div> *@
             </div>
-            <div class="hidden sm:ml-6 sm:flex sm:items-center">
+            <div class="hidden sm:ml-6 sm:flex sm:items-center dark:text-white">
                 @* <button type="button" class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"> *@
                 @*   <span class="sr-only">View notifications</span> *@
                 @*   <!-- Heroicon name: outline/bell --> *@

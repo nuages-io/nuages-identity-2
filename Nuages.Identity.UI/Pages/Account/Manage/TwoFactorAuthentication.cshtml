@@ -16,13 +16,13 @@
 {
     <div class="space-y-6 flex flex-col ">
         <div class="space-x-4 flex justify-between items-center">
-            <span >@Localizer["2fa.active"]</span>&nbsp;<button type="button" class="link" v-on:click="showDeactivate = true">@Localizer["2fa.deactivate"]</button>
+            <span class="dark:text-white" >@Localizer["2fa.active"]</span>&nbsp;<button type="button" class="link" v-on:click="showDeactivate = true">@Localizer["2fa.deactivate"]</button>
         </div>
         <div v-if="isRemembered" class="space-y-4">
             <hr/>
             <div class="space-x-4 flex flex-row justify-between">
 
-                <span >@Localizer["2fa.machineRemembered"]</span>
+                <span class="dark:text-white" >@Localizer["2fa.machineRemembered"]</span>
                 <div>
                     <button type="button" class="link" v-on:click="forgetBrowser">@Localizer["2fa.forgetMachine"]</button>
                 </div>
@@ -35,24 +35,25 @@
         {
             <div class="space-y-4">
                 <div class="space-x-4 flex justify-between items-center">
-                    <span >@Localizer["2fa.securityKeys"]</span>
+                    <span class="dark:text-white">@Localizer["2fa.securityKeys"]</span>
                     @* <button type="button" class="link items-center" v-on:click.prevent="addSecurityKey"> *@
                     @*     @Localizer["2fa.addSecurityKey"] *@
                     @* </button> *@
-                    
+
                     <a href="~/Account/Manage/SecurityKey">
                         @Localizer["2fa.addSecurityKey"]
                     </a>
                 </div>
                 @foreach (var k in Model.SecurityKeys)
                 {
-                    <div class="flex flex-row justify-between text-sm">
-                        <span  ><i class="fa-solid fa-key"></i>
+                    <div class="flex flex-row justify-between text-sm ">
+                        <span class="dark:text-white">
+                            <i class="fa-solid fa-key"></i>
                             @k.DisplayName
                         </span>
                         <button type="button" class="link">
-                          @Localizer["externalLogins.remove"] <i class="fas fa-trash ml-2"></i>
-                      </button>
+                            @Localizer["externalLogins.remove"] <i class="fas fa-trash ml-2"></i>
+                        </button>
                     </div>
                 }
             </div>
@@ -61,7 +62,7 @@
 
         <div class="flex flex-col space-y-4">
             <div class=" flex justify-between items-center">
-                <span>@Localizer["2fa.revoveryCodes"]</span>
+                <span class="dark:text-white">@Localizer["2fa.revoveryCodes"]</span>
             </div>
             <span class="text-gray-500">@Localizer["2fa.recoveryCodesInstructions"] </span>
             <div class="flex justify-end">
@@ -105,7 +106,7 @@
         <hr/>
         @if (!string.IsNullOrEmpty(Model.FallbackNumber))
         {
-            <div class="space-x-4 flex justify-between items-center">
+            <div class="space-x-4 flex justify-between items-center dark:text-white">
                 <span>@Localizer["2fa:fallback"]</span>
                 <span>@Model.FallbackNumber</span>
                 <button v-on:click="showRemovePhone = true" type="button" class="link self-end">
@@ -115,7 +116,7 @@
         }
         else
         {
-            <div class="space-x-4 flex justify-between items-center">
+            <div class="space-x-4 flex justify-between items-center dark:text-white">
                 <span>@Localizer["2fa:fallback"]</span>
                 <a href="~/Account/Manage/Phone">@Localizer["2fa.addPhone"]</a>
             </div>
@@ -259,7 +260,7 @@ else
     var isRemembered = @Model.IsMachineRemembered.ToString().ToLower();
     var userName = "@Model.Username";
     </script>
-    
+
     <script src="/js/pages/fido2/helpers.js"></script>
     <script src="/js/pages/fido2/mfa.register.js"></script>
     <script src="/js/pages/manage/twoFactorAuthentication.js"></script>

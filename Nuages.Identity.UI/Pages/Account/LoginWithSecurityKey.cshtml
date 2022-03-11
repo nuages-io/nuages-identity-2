@@ -40,8 +40,8 @@
     @* *@
     @* </form> *@
     <div class="text-sm mt-4">
-        <span>@Localizer["loginWithSecurityKeys.notAvailable"]</span>
-        <ul class="list-disc mt-2 ml-4">
+        <span class="instructions">@Localizer["loginWithSecurityKeys.notAvailable"]</span>
+        <ul class="list-disc mt-2 ml-4 dark:text-white">
             <li>
                 <a id="recovery-code-login" asp-page="./LoginWith2fa" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["2fa.loginWithAuthenticator"]</a>
             </li>

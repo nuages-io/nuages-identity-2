@@ -4,7 +4,7 @@
 @inject IOptions<NuagesIdentityOptions> IdentityOptions
 
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" >
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -16,11 +16,11 @@
 
     <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 </head>
-<body>
+<body class="dark">
 
-<div class="min-h-screen bg-gray-100 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app">
+<div class=" min-h-screen bg-gray-100 dark:bg-slate-900 flex flex-col justify-start py-12 sm:px-6 lg:px-8 " id="app">
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div class="bg-white dark:bg-slate-900 py-8 px-4 shadow sm:rounded-lg sm:px-10 dark:border dark:border-slate-700">
             <partial name="Shared/LogoHeader"/>
             @RenderSection("Header", false)
             @RenderBody()
