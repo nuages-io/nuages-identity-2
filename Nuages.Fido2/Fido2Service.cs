@@ -147,4 +147,9 @@ public class Fido2Service : IFido2Service
     {
         return (await GetSecurityKeysForUser(userId)).Any();
     }
+
+    public  async Task RemoveKeyAsync(byte[] userId, byte[]  keyId)
+    {
+        await _fido2Storage.RemoveCredentialFromUser(userId, keyId);
+    }
 }

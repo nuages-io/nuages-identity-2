@@ -53,7 +53,7 @@ async function handleAddSecurityKey(data, callback) {
     console.log("PublicKeyCredential Created", newCredential);
 
     try {
-        registerNewCredential(newCredential);
+        registerNewCredential(newCredential, callback);
 
     } catch (e) {
         callback("error", e.message);

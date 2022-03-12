@@ -1,8 +1,10 @@
+using System.Text;
 using System.Text.Json;
 using Fido2NetLib;
 using Fido2NetLib.Objects;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Fido2.Models;
+using Nuages.Web;
 
 namespace Nuages.Fido2;
 
@@ -95,6 +97,22 @@ public class Fido2Controller : Controller
         catch (Exception e)
         {
             return Json(new AssertionVerificationResult { Status = "error", ErrorMessage = e.Message });
+        }
+    }
+
+    [HttpDelete]
+    [Route("removeKey")]
+    public async Task<bool> RemoveKey([FromBody] RemoveCredentialRequest request)
+    {
+        try
+        {
+            await _fido2Service.RemoveKeyAsync(Encoding.UTF8.GetBytes(User.Sub()!), Convert.FromBase64String(request.Id));
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }

@@ -60,6 +60,10 @@ var App =
                         case "success":
                         {
                             this.status = "done";
+                            setTimeout(function()
+                            {
+                                window.location = "/account/manage/TwoFactorAuthentication";
+                            });
                             break;
                         }
                         case "registering":

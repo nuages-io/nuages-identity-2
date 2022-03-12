@@ -36,9 +36,6 @@
             <div class="space-y-4">
                 <div class="space-x-4 flex justify-between items-center">
                     <span class="dark:text-white">@Localizer["2fa.securityKeys"]</span>
-                    @* <button type="button" class="link items-center" v-on:click.prevent="addSecurityKey"> *@
-                    @*     @Localizer["2fa.addSecurityKey"] *@
-                    @* </button> *@
 
                     <a href="~/Account/Manage/SecurityKey">
                         @Localizer["2fa.addSecurityKey"]
@@ -49,10 +46,10 @@
                     <div class="flex flex-row justify-between text-sm ">
                         <span class="dark:text-white">
                             <i class="fa-solid fa-key"></i>
-                            @k.DisplayName
+                            <strong class="ml-2">@k.DisplayName</strong> <span class="text-gray-500">@k.RegDate.ToString()</span>
                         </span>
-                        <button type="button" class="link">
-                            @Localizer["externalLogins.remove"] <i class="fas fa-trash ml-2"></i>
+                        <button type="button" class="link" v-on:click="removeKey('@Convert.ToBase64String(k.Descriptor.Id)')">
+                            @Localizer["2fa.removeKey"] <i class="fas fa-trash ml-2"></i>
                         </button>
                     </div>
                 }
@@ -71,12 +68,12 @@
             </div>
         </div>
 
-        <div class="bg-indigo-50 overflow-hidden shadow rounded-lg" v-if="showCodes" v-show="showCodes" style="display: none">
+        <div class="bg-indigo-50 dark:bg-slate-900 dark:border overflow-hidden shadow rounded-lg" v-if="showCodes" v-show="showCodes" style="display: none">
             <div class="px-4 py-5 sm:p-6">
                 <div class="flex flex-col space-y-4">
                     <div class="grid grid-cols-5 gap-2" id="recoveryCodes">
 
-                        <span v-for="code in recoveryCodes" class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-200 text-indigo-800">
+                        <span v-for="code in recoveryCodes" class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-200 text-indigo-800 dark:bg-slate-700 dark:text-white">
                             <code class="recovery-code">{{code}}</code>
                         </span>
                     </div>
@@ -91,7 +88,7 @@
                     </div>
                     <hr/>
                     <div class="flex flex-col space-y-4 justify-start">
-                        <span class="text-gray-700">@Localizer["2fa.resetCodesWarning"]</span>
+                        <span class="instructions">@Localizer["2fa.resetCodesWarning"]</span>
                         <div>
                             <button type="button" class="link" v-on:click="resetCodes">
                                 <i class="fas fa-sync-alt mr-2"></i>@Localizer["2fa:resetCodes"]
@@ -121,9 +118,6 @@
                 <a href="~/Account/Manage/Phone">@Localizer["2fa.addPhone"]</a>
             </div>
         }
-
-
-
     </div>
 }
 

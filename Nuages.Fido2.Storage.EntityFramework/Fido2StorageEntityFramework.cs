@@ -105,4 +105,22 @@ public class Fido2StorageEntityFramework : IFido2Storage
             await _context.SaveChangesAsync();
         }
     }
+    
+    public async Task RemoveCredentialFromUser(byte[] userId, byte[] keyId)
+    {
+        var userIdBase64 = Convert.ToBase64String(userId);
+        var keyIdBase64 = Convert.ToBase64String(keyId);
+
+        var key = await GetCredentialByIdAsync(keyId);
+
+        if (key != null)
+        {
+            if (key.UserId == userId)
+            {
+                _context.Fido2Credentials.Remove((Fido2Credential) key);
+                _context.SaveChanges();
+            }
+        }
+       
+    }
 }

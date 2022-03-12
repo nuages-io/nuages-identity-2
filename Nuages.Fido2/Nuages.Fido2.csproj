@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Fido2.AspNet" Version="3.0.0-beta2" />
+      <PackageReference Include="Nuages.Web" Version="1.3.14" />
     </ItemGroup>
 
 </Project>

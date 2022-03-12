@@ -20,4 +20,5 @@ public interface IFido2Storage
     
     Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] argsUserHandle, object cancellationToken);
     Task UpdateCounterAsync(byte[] resCredentialId, uint resCounter);
+    Task RemoveCredentialFromUser(byte[] userId, byte[]  keyId);
 }

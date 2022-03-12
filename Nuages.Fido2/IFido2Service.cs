@@ -15,4 +15,6 @@ public interface IFido2Service
     Task<List<IFido2Credential>> GetSecurityKeysForUser(byte[] userId);
 
     Task<bool> HasSecurityKeys(byte[] userId);
+    
+    Task RemoveKeyAsync(byte[] userId, byte[]  keyId);
 }

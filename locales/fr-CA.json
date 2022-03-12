@@ -21,6 +21,7 @@
 		"machineRemembered": "Cet appareil est gardé en rappel. Aucun code 2FA ne vous sera demandé.",
 		"recoveryCodesInstructions": "Les codes de récupération peuvent être utilisés pour accéder à votre compte si vous perdez l'accès à votre appareil et ne pouvez pas recevoir de codes d'authentification à deux facteurs",
 		"recoveryCodesWarning": "Traiter les codes de récupération avec le même niveau de sécurité que pour votre mot de passe!",
+		"removeKey": "Supprimer",
 		"resetCodes": "Réinitialiser les codes",
 		"resetCodesWarning": "Lorsque vous générez de nouveaux codes de récupération, vous devez télécharger ou copier les nouveaux codes. Vos anciens codes ne fonctionneront plus.",
 		"revoveryCodes": "Code de récupération",

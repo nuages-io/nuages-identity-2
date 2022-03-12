@@ -21,6 +21,7 @@
 		"machineRemembered": "This device is remembered. No 2FA code will be asked.",
 		"recoveryCodesInstructions": "Recovery codes can be used to access your account in the event you lose access to your device and cannot receive two-factor authentication codes",
 		"recoveryCodesWarning": "Treat your recovery codes with the same level of attention as you would your password!",
+		"removeKey": "Remove",
 		"resetCodes": "Reset codes",
 		"resetCodesWarning": "When you generate new recovery codes, you must download or copy the new codes. Your old codes won’t work anymore.",
 		"revoveryCodes": "Recovery codes",

@@ -14,10 +14,10 @@
 {
     @if (ViewBag.ShowRegistration)
     {
-        <div class="sm:mx-auto sm:w-full sm:max-w-md">
-            <p class="mt-2 text-center text-sm text-gray-600">
+        <div>
+            <p class="mt-2 text-center text-sm">
                 <label>@Localizer["or"]</label>
-                <a href="@ViewBag.RegistrationUrl" class="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="@ViewBag.RegistrationUrl" class="font-medium ">
                     @Localizer["register.title"]
                 </a>
             </p>

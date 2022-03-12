@@ -110,4 +110,9 @@ public class MongoFido2Storage : IFido2Storage
             await _credentialCollection.ReplaceOneAsync(c => c.Descriptor.Id == credentialId, (Fido2Credential) cred);
         }
     }
+
+    public async Task RemoveCredentialFromUser(byte[] userId, byte[] keyId)
+    {
+        await _credentialCollection.DeleteOneAsync(c => c.UserId == userId && c.Descriptor.Id == keyId);
+    }
 }

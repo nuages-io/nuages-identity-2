@@ -49,6 +49,18 @@ public class MongoSchemaInitializer : IHostedService
                     Unique = true
                 }), cancellationToken: cancellationToken
         );
+        
+        await Fido2CredentialCollection.Indexes.CreateOneAsync(
+            new CreateIndexModel<Fido2Credential>(
+                Builders<Fido2Credential>.IndexKeys
+                    .Ascending(p => p.UserId)
+                    .Ascending(p => p.Descriptor.Id)
+                , new CreateIndexOptions
+                {
+                    Name = "IX_UserIdDescriptionId",
+                    Unique = false
+                }), cancellationToken: cancellationToken
+        );
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

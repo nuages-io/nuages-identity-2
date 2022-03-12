@@ -102,7 +102,24 @@ var App =
                                 self.errors.push({message: element});
                             });
                         });
+                },
+                removeKey(id) {
+                    //Call API
+                    this.status = "sending";
+
+                    fetch("/api/fido2/removeKey", {
+                        method: "DELETE",
+                        body: JSON.stringify({ id: id}),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(res => {
+                            window.location.reload();
+                        });
                 }
+                
             }
     };
 

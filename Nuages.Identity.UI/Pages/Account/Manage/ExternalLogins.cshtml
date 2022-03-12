@@ -14,7 +14,7 @@
         @foreach (var login in Model.CurrentLogins)
         {
             <div class="flex flex-row justify-between">
-                <span id="@($"login-provider-{login.LoginProvider}")">
+                <span id="@($"login-provider-{login.LoginProvider}")" class="dark:text-white">
                     <i class="@("fab fa-" + login.ProviderDisplayName!.ToLower())"></i> @login.ProviderDisplayName
                 </span>
                 <div>
