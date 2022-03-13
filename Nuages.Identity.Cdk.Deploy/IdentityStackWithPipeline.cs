@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Nuages.Identity.Cdk.Deploy;
 
+[ExcludeFromCodeCoverage]
 [SuppressMessage("Performance", "CA1806:Do not ignore method results")]
 public class IdentityStackWithPipeline : Stack
 {
