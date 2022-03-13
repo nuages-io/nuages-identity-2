@@ -55,16 +55,8 @@
 
     @if (Model.ExternalLogins.Count > 0 || UIOptions.Value.EnablePasswordless)
     {
-        <div class="relative mt-6">
-            <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-300 dark:border-white" ></div>
-            </div>
-            <div class="relative flex justify-center text-sm">
-                <span class="px-2 bg-white dark:bg-slate-900 text-gray-500 dark:text-white">
-                    @Localizer["login:continueWith"]
-                </span>
-            </div>
-        </div>
+        <partial name="Shared/SeparatorWithTitle" model="new { Title =  @Localizer["login:continueWith"] }"/>
+        
         <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4 space-x-2">
             @foreach (var provider in Model.ExternalLogins)
             {
