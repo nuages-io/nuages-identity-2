@@ -8,7 +8,6 @@
     <h2 class="page-header">@Localizer["profile:title"]</h2>
 
     <form class="space-y-4" method="POST" v-on:submit.prevent="saveProfile" id="formProfile">
-        @* <span class="text-gray-500">@Localizer["setPassword:instructions"]</span> *@
         <partial name="Shared/ErrorList"/>
         <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
             <span class="green-success font-medium">

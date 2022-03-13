@@ -9,7 +9,7 @@
 @if (Model.CurrentLogins?.Count > 0)
 {
     <div class="space-y-6">
-        <h3 class="text-xl font-extrabold text-gray-900 space-y-4">@Localizer["externalLogins.registeredConnections"]</h3>
+        <h3 class="text-xl font-extrabold space-y-4">@Localizer["externalLogins.registeredConnections"]</h3>
 
         @foreach (var login in Model.CurrentLogins)
         {
@@ -43,7 +43,7 @@
         <div id="socialLoginList" class="grid grid-cols-5 gap-2">
             @foreach (var provider in Model.OtherLogins)
             {
-                <button id="@($"link-login-button-{provider.Name}")" type="submit"class="btn-simple" name="provider" value="@provider.Name">
+                <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn-simple" name="provider" value="@provider.Name">
                     <i class="mr-2 @("fab fa-" + provider.DisplayName!.ToLower())"></i> @provider.DisplayName
                 </button>
             }

@@ -17,7 +17,7 @@
         </div>
 
         <span class="instructions"> @Localizer["enableAuthenticator.enterKey"]</span>
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-lg text-indigo-800 dark:bg-slate-700 dark:text-white">
             @Model.SharedKey
         </span>
         <p class="instructions">
@@ -27,7 +27,7 @@
             <partial name="Shared/ErrorList"/>
             <form class="mt-4" id="formCode" method="post" v-on:submit.prevent="verifyCode">
                 <fieldset :disabled="status == 'sending'" class="flex flex-row space-x-2">
-                    <input id="code" name="code" required class="text-box " v-model="code"/>
+                    <input id="code" name="code" required class="text-box " v-model="code" type="text"/>
                     <button type="button" class="primary items-center w-36" v-on:click.prevent="verifyCode" :disabled="status == 'sending'">
                         @Localizer["enableAuthenticator:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
                     </button>

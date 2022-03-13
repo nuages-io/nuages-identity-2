@@ -4,6 +4,12 @@
 @tailwind utilities;
 
 @layer base {
+    
+  
+    body{
+        @apply text-gray-900 dark:text-white;
+    }
+    
     .was-validated input:invalid {
         @apply mt-1 block w-full border border-dashed rounded-md border-red-600 shadow-sm focus:border-red-600 focus:ring focus:ring-red-200 focus:ring-opacity-50;
     }
@@ -16,17 +22,17 @@
       @apply  dark:text-white dark:bg-slate-900
     }
 
-    h2, h3 {
-        @apply  dark:text-white
-    }
-
-    strong {
-        @apply  dark:text-white
-    }
+    /*h2, h3 {*/
+    /*    @apply  dark:text-white*/
+    /*}*/
     
-    label {
-        @apply  dark:text-white
-    }
+    /*strong {*/
+    /*    @apply  dark:text-white*/
+    /*}*/
+    
+    /*label {*/
+    /*    @apply  dark:text-white*/
+    /*}*/
     
     button.full {
         @apply w-full flex
@@ -67,11 +73,11 @@
 
 
     .page-header {
-        @apply text-3xl font-extrabold text-gray-900 mb-4;
+        @apply text-3xl font-extrabold  mb-4 dark:text-white;
     }
 
     select {
-        @apply block w-full  mt-1  rounded-md  border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
+        @apply block w-full  mt-1  rounded-md  border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-slate-900 dark:border-slate-700
     }
 
     .instructions
@@ -88,4 +94,5 @@
     {
         @apply dark:bg-slate-900;
     }
+
 }

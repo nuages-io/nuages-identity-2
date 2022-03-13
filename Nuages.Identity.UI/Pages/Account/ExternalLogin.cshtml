@@ -23,8 +23,8 @@
 {
     <form id="formExternalLogin" class=" mt-4" method="POST" v-on:submit.prevent="externalLogin" v-if="status != 'done'">
         <fieldset class="space-y-4" :disabled="status == 'sending'">
-            <span> @Localizer["externalLogin:instructions"]</span> <strong>@Model.ProviderDisplayName.</strong>
-            <span class="mt-2"> @Localizer["externalLogin:instructions2"]</span>
+            <span class="instructions"> @Localizer["externalLogin:instructions"]</span> <strong>@Model.ProviderDisplayName.</strong>
+            <span class="mt-2 instructions"> @Localizer["externalLogin:instructions2"]</span>
             <input id="email" name="email" type="hidden" autofocus="" v-model="email" placeholder="@Localizer["email"]" required class="text-box">
             <button v-on:click.prevent="externalLogin" class="primary full items-center" :disabled="status == 'sending'">
                 @Localizer["externalLogin:button"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>

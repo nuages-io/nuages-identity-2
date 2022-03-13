@@ -25,7 +25,7 @@
             <partial name="Shared/ErrorList"/>
 
             <div  class="space-y-4" v-if="status == ''">
-                <span class="text-gray-500 ">@Localizer["addSecurityKey:instructions"]</span>
+                <span class="instructions">@Localizer["addSecurityKey:instructions"]</span>
                 <input id="nickname" name="nickname" type="text" autofocus="" v-model="nickname" placeholder="@Localizer["addSecurityKey:nickName"]" required class="text-box">
                 <button v-on:click.prevent="addSecurityKey" class="primary full" >
                     @Localizer["addSecurityKey:addKey"]

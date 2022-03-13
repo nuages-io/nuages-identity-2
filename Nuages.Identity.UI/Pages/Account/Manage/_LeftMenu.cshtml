@@ -1,20 +1,17 @@
+@{
+    var list = new List<(string, string)>();
+    list.Add( new ("/account/manage/profile", @Localizer["profile:title"]));
+    list.Add( new ("/account/manage/changePassword", @Localizer["password"]));
+    list.Add( new ("/account/manage/email", @Localizer["changeEmail:title"]));
+    list.Add( new ("/account/manage/username", @Localizer["changeUsername:title"]));
+    list.Add( new ("/account/manage/twoFactorAuthentication", @Localizer["mfa:title"]));
+    list.Add( new ("/account/manage/externalLogins", @Localizer["externalLogins:shortTitle"]));
+}
 <ul class=" list-inside space-y-2">
-    <li>
-        <a href="~/account/manage/profile" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/profile" ? "font-extrabold" : "")">@Localizer["profile:title"]</a>
-    </li>
-    <li>
-        <a href="~/account/manage/changePassword" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant().EndsWith("password") ? "font-extrabold" : "")">@Localizer["password"]</a>
-    </li>
-    <li>
-        <a href="~/account/manage/email" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/email" ? "font-extrabold" : "")">@Localizer["changeEmail:title"]</a>
-    </li>
-    <li>
-        <a href="~/account/manage/username" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/username" ? "font-extrabold" : "")">@Localizer["changeUsername:title"]</a>
-    </li>
-    <li>
-        <a href="~/account/manage/twoFactorAuthentication" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/twofactorauthentication" ? "font-extrabold" : "")">@Localizer["mfa:title"]</a>
-    </li>
-    <li>
-        <a href="~/account/manage/externalLogins" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant() == "/account/manage/externallogins" ? "font-extrabold" : "")">@Localizer["externalLogins:shortTitle"]</a>
-    </li>
+    @foreach (var item in list)
+    {
+        <li>
+            <a href="@item.Item1" class="@(Html.ViewContext.HttpContext.Request.Path.Value!.ToLowerInvariant().EndsWith((item.Item1.ToLowerInvariant())) ? "font-extrabold" : "")">@item.Item2</a>
+        </li>
+    }
 </ul>

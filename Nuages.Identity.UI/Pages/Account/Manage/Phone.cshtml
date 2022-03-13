@@ -19,7 +19,7 @@
             <partial name="Shared/ErrorList"/>
 
             <div v-if="status == '' || status == 'sending'" class="space-y-4">
-                <span class="text-gray-500">@Localizer["addPhone:instructions"]</span>
+                <span class="instructions">@Localizer["addPhone:instructions"]</span>
                 <select v-model="dialCode">
                     @foreach (var c in Model.Codes)
                     {
@@ -35,7 +35,7 @@
             </div>
 
             <div v-if="status == 'sent'" v-show="status == 'sent'" class="space-y-4" style="display: none">
-                <span class="text-gray-500 ">@Localizer["addPhone:instructions2"]</span>
+                <span class="instructions">@Localizer["addPhone:instructions2"]</span>
                 <input id="code" name="code" type="text" autofocus="" v-model="code" placeholder="@Localizer["addPhone:code"]" required class="text-box">
                 <button v-on:click.prevent="addPhone" class="primary full" :disabled="status == 'sending'">
                     @Localizer["addPhone:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
