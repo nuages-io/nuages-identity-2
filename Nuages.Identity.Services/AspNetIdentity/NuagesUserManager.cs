@@ -76,15 +76,4 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
         return res;
     }
 
-    public override async  Task<IdentityResult> UpdateAsync(NuagesApplicationUser<string> user)
-    {
-        var res  = await base.UpdateAsync(user);
-
-        if (!res.Succeeded)
-        {
-            throw new Exception(res.Errors.First().Description);
-        }
-        
-        return res;
-    }
 }

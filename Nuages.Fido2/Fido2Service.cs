@@ -94,7 +94,7 @@ public class Fido2Service : IFido2Service
 
         var existingCredentials = (await _fido2Storage.GetCredentialsByUserAsync(user)).ToList().Select(c => c.Descriptor).ToList();
         
-        var exts = new AuthenticationExtensionsClientInputs()
+        var exts = new AuthenticationExtensionsClientInputs
         { 
             UserVerificationMethod = true 
         };
@@ -122,14 +122,14 @@ public class Fido2Service : IFido2Service
         // 3. Get credential counter from database
         var storedCounter = creds.SignatureCounter;
 
-        IsUserHandleOwnerOfCredentialIdAsync callback = async (args) =>
+        async Task<bool> Callback(IsUserHandleOwnerOfCredentialIdParams args)
         {
             var storedCreds = await _fido2Storage.GetCredentialsByUserHandleAsync(args.UserHandle, cancellationToken);
             return storedCreds.Exists(c => c.Descriptor.Id.SequenceEqual(args.CredentialId));
-        };
-        
+        }
+
         // 5. Make the assertion
-        var res = await _fido2.MakeAssertionAsync(clientResponse, options, creds.PublicKey, storedCounter, callback);
+        var res = await _fido2.MakeAssertionAsync(clientResponse, options, creds.PublicKey, storedCounter, Callback);
 
         // 6. Store the updated counter
         await _fido2Storage.UpdateCounterAsync(res.CredentialId, res.Counter);

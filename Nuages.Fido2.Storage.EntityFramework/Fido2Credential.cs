@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using System.Text.Json;
 using Fido2NetLib.Objects;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Nuages.Fido2.Storage.EntityFramework;

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Nuages.Identity.Services.Login;
 
 // ReSharper disable ContextualLoggerProblem
 
@@ -252,7 +251,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                 case "FIDO2":
                 {
                     var result = await Context.AuthenticateAsync(IdentityConstants.TwoFactorUserIdScheme);
-                    if (result?.Principal != null)
+                    if (result.Principal != null)
                     {
                         var id = result.Principal.FindFirstValue(ClaimTypes.Name);
                         var user = await UserManager.FindByIdAsync(id);

@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using Microsoft.AspNetCore.Identity;
-using Nuages.Identity.Services.Login;
 
 // ReSharper disable VirtualMemberCallInConstructor
 

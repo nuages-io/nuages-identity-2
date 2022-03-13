@@ -18,7 +18,7 @@ public class Fido2SignInManager<TUser>  : IFido2SignInManager
         var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
         if (user == null)
         {
-            throw new InvalidOperationException($"Unable to load two-factor authentication user.");
+            throw new InvalidOperationException("Unable to load two-factor authentication user.");
         }
         
         return await _signInManager.TwoFactorSignInAsync("FIDO2", string.Empty, false, false);

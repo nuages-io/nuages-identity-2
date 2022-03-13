@@ -88,8 +88,6 @@ public class MongoFido2Storage : IFido2Storage
     
     public Task<IFido2Credential?> GetCredentialByIdAsync(byte[] id)
     {
-        var base64Id = Convert.ToBase64String(id);
-        
         return Task.FromResult((IFido2Credential?)_credentialCollection.AsQueryable()
                             .FirstOrDefault(c => c.Descriptor.Id == id));
     }

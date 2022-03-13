@@ -7,15 +7,6 @@ namespace Nuages.Fido2.AspNetIdentity;
 
 public static class Fido2AspNetIdentityExtension
 {
-    // ReSharper disable once UnusedMethodReturnValue.Global
-    // public static IFido2Builder AddAspNetIdentity<TUser, TKey>(this IFido2Builder builder) 
-    //     where TKey : IEquatable<TKey> 
-    //     where TUser : IdentityUser<TKey>
-    // {
-    //    
-    //     return builder;
-    // }
-    
     public static Fido2Builder AddNuagesFido2(this IdentityBuilder builder,  Action<Fido2Configuration> setupAction)
       
     {
