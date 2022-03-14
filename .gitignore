@@ -10,6 +10,8 @@ logs/
 appsettings.testdata.json
 appsettings.local.json
 appsettings.prod.json
+appsettings.sqlserver.json
+appsettings.mysql.json
 internal-nlog.txt
 node_modules
 tailwind-output.css

@@ -9,7 +9,7 @@ public static class Fido2InMemoryStorageExtension
     {
         builder.Services.AddScoped<IFido2Storage, Fido2StorageEntityFramework>();
         
-        builder.Services.AddDbContext<InMemoryFido2DbContext>(options =>
+        builder.Services.AddDbContext<IdentityFido2DbContext>(options =>
         {
             options.UseInMemoryDatabase(databaseName);
         });

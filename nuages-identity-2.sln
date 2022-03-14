@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.AspNetIdentity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.Storage.EntityFramework", "Nuages.Fido2.Storage.EntityFramework\Nuages.Fido2.Storage.EntityFramework.csproj", "{7CB77022-2C04-4135-B765-07FBBF970355}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.Storage.EntityFramework.SqlServer", "Nuages.Fido2.Storage.EntityFramework.SqlServer\Nuages.Fido2.Storage.EntityFramework.SqlServer.csproj", "{B990D0A4-854D-40CF-94AF-736E982BC557}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{7CB77022-2C04-4135-B765-07FBBF970355}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CB77022-2C04-4135-B765-07FBBF970355}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CB77022-2C04-4135-B765-07FBBF970355}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B990D0A4-854D-40CF-94AF-736E982BC557}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B990D0A4-854D-40CF-94AF-736E982BC557}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B990D0A4-854D-40CF-94AF-736E982BC557}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B990D0A4-854D-40CF-94AF-736E982BC557}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A64933C4-E4EA-4022-A5D0-4230D08C8E31} = {63171AB3-F1FD-45B7-9C72-DB083963F2C9}

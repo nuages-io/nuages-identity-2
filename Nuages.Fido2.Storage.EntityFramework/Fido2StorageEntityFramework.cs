@@ -6,10 +6,10 @@ namespace Nuages.Fido2.Storage.EntityFramework;
 
 public class Fido2StorageEntityFramework : IFido2Storage
 {
-    private readonly InMemoryFido2DbContext _context;
+    private readonly IdentityFido2DbContext _context;
     private readonly IFido2UserStore _userStore;
 
-    public Fido2StorageEntityFramework(InMemoryFido2DbContext context, IFido2UserStore userStore)
+    public Fido2StorageEntityFramework(IdentityFido2DbContext context, IFido2UserStore userStore)
     {
         _context = context;
         _userStore = userStore;
