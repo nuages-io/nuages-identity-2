@@ -39,7 +39,7 @@
     }
 
     .btn-simple {
-        @apply inline-flex items-center px-2.5 py-1.5 border border-gray-300 dark:bg-slate-900 dark:border-slate-700 dark:text-white shadow-sm  font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+        @apply inline-flex items-center px-2.5 py-1.5 border border-gray-300 dark:bg-slate-900 dark:border-slate-700 dark:text-white shadow-sm  font-medium rounded text-gray-700 bg-white dark:hover:bg-slate-700 hover:bg-gray-50 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
     }
     
     button.primary {
@@ -55,11 +55,11 @@
     }
 
     button.link {
-        @apply font-medium text-indigo-600 hover:text-indigo-500 dark:text-white  outline-none;
+        @apply font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 outline-none;
     }
 
     a {
-        @apply font-medium text-indigo-600 hover:text-indigo-500 dark:text-white
+        @apply font-medium text-indigo-600 hover:text-indigo-500  dark:text-indigo-400 dark:hover:text-indigo-300
     }
 
     a.primary {
@@ -93,6 +93,10 @@
     .dialog
     {
         @apply dark:bg-slate-900;
+    }
+    
+    hr{
+        @apply border-slate-700
     }
 
 }
