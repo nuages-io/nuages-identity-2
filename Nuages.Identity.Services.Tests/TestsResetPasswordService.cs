@@ -1,5 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Nuages.Identity.Services.Password;
 using Xunit;
 
@@ -17,7 +19,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -42,7 +44,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -68,7 +70,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -97,7 +99,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer());
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

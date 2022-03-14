@@ -35,7 +35,12 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
             user.CreatedOn = DateTime.UtcNow;
             user.LastPasswordChangedDate = user.CreatedOn;
 
-            await UpdateAsync(user);
+           var updateRes = await UpdateAsync(user);
+           if (!updateRes.Succeeded)
+           {
+               Logger.LogError(updateRes.Errors.First().Description);
+              return IdentityResult.Failed(updateRes.Errors.ToArray());
+           }
         }
 
         return res;

@@ -11,12 +11,14 @@ namespace Nuages.Identity.Services.Password;
 public class ResetPasswordService : IResetPasswordService
 {
     private readonly IStringLocalizer _localizer;
+    private readonly ILogger<ResetPasswordService> _logger;
     private readonly NuagesUserManager _userManager;
 
-    public ResetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public ResetPasswordService(NuagesUserManager userManager, IStringLocalizer localizer, ILogger<ResetPasswordService> logger)
     {
         _userManager = userManager;
         _localizer = localizer;
+        _logger = logger;
     }
 
     public async Task<ResetPasswordResultModel> Reset(ResetPasswordModel model)
@@ -42,8 +44,12 @@ public class ResetPasswordService : IResetPasswordService
         {
             user.UserMustChangePassword = false;
 
-            await _userManager.UpdateAsync(user);
-
+           var updateRes = await _userManager.UpdateAsync(user);
+            if (!updateRes.Succeeded)
+            {
+                _logger.LogError(updateRes.Errors.First().Description);
+            }
+            
             return new ResetPasswordResultModel
             {
                 Success = true

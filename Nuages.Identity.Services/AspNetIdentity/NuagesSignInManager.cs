@@ -59,7 +59,12 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             if (!res.IsLockedOut && !res.IsNotAllowed && !res.RequiresTwoFactor)
             {
                 user.LastFailedLoginReason = FailedLoginReason.UserNameOrPasswordInvalid;
-                await UserManager.UpdateAsync(user);
+                var updateRes = await UserManager.UpdateAsync(user);
+                if (!updateRes.Succeeded)
+                {
+                    Logger.LogError(updateRes.Errors.First().Description);
+                    return SignInResult.Failed;
+                }
             }
         }
 
@@ -72,8 +77,12 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         {
             user.LastFailedLoginReason = FailedLoginReason.AccountNotConfirmed;
 
-            await UserManager.UpdateAsync(user);
-
+            var updateRes = await UserManager.UpdateAsync(user);
+            if (!updateRes.Succeeded)
+            {
+                Logger.LogError(updateRes.Errors.First().Description);
+                return false;
+            }
 
             return false;
         }
@@ -99,7 +108,12 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         {
             user.LastFailedLoginReason = FailedLoginReason.PhoneNotConfirmed;
 
-            await UserManager.UpdateAsync(user);
+            var updateRes = await UserManager.UpdateAsync(user);
+            if (!updateRes.Succeeded)
+            {
+                Logger.LogError(updateRes.Errors.First().Description);
+            }
+            
             return false;
         }
 
@@ -112,8 +126,12 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         {
             user.LastFailedLoginReason = FailedLoginReason.EmailNotConfirmed;
 
-            await UserManager.UpdateAsync(user);
-
+            var updateRes = await UserManager.UpdateAsync(user);
+            if (!updateRes.Succeeded)
+            {
+                Logger.LogError(updateRes.Errors.First().Description);
+            }
+            
             return false;
         }
 
@@ -127,8 +145,13 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         {
             user.LastFailedLoginReason = FailedLoginReason.PasswordMustBeChanged;
 
-            await UserManager.UpdateAsync(user);
-
+            var updateRes = await UserManager.UpdateAsync(user);
+            if (!updateRes.Succeeded)
+            {
+                Logger.LogError(updateRes.Errors.First().Description);
+                return  false;
+            }
+            
             var newCode = UserManager.GeneratePasswordResetTokenAsync(user).Result;
             newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
 
@@ -148,8 +171,13 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                 {
                     user.LastFailedLoginReason = FailedLoginReason.PasswordExpired;
 
-                    await UserManager.UpdateAsync(user);
-
+                    var updateRes =await UserManager.UpdateAsync(user);
+                    if (!updateRes.Succeeded)
+                    {
+                        Logger.LogError(updateRes.Errors.First().Description);
+                        return false;
+                    }
+                    
                     var newCode = UserManager.GeneratePasswordResetTokenAsync(user).Result;
                     newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
 
@@ -170,8 +198,12 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             {
                 user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
 
-                await UserManager.UpdateAsync(user);
-
+                var updateRes = await UserManager.UpdateAsync(user);
+                if (!updateRes.Succeeded)
+                {
+                    Logger.LogError(updateRes.Errors.First().Description);
+                }
+                
                 return false;
             }
 
@@ -180,8 +212,13 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             {
                 user.LastFailedLoginReason = FailedLoginReason.NotWithinDateRange;
 
-                await UserManager.UpdateAsync(user);
-
+                var updateRes = await UserManager.UpdateAsync(user);
+                if (!updateRes.Succeeded)
+                {
+                    Logger.LogError(updateRes.Errors.First().Description);
+                    return false;
+                }
+                
                 return false;
             }
 
@@ -199,8 +236,13 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         user.LockoutMessageSent = false;
         user.AccessFailedCount = 0;
 
-        await UserManager.UpdateAsync(user);
-
+        var updateRes = await UserManager.UpdateAsync(user);
+        if (!updateRes.Succeeded)
+        {
+            Logger.LogError(updateRes.Errors.First().Description);
+            return;
+        }
+        
         await base.SignInWithClaimsAsync(user, authenticationProperties, additionalClaims);
     }
 
@@ -208,8 +250,13 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
     {
         user.LastFailedLoginReason = FailedLoginReason.LockedOut;
 
-        await UserManager.UpdateAsync(user);
-
+        var updateRes = await UserManager.UpdateAsync(user);
+        if (!updateRes.Succeeded)
+        {
+            Logger.LogError(updateRes.Errors.First().Description);
+            return SignInResult.Failed;
+        }
+        
         return await base.LockedOut(user);
     }
 
@@ -258,7 +305,11 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                         if (user != null)
                         {
                             user.PreferredMfaMethod = "SecurityKeys";
-                            await UserManager.UpdateAsync(user);
+                            var updateRes = await UserManager.UpdateAsync(user);
+                            if (!updateRes.Succeeded)
+                            {
+                                Logger.LogError(updateRes.Errors.First().Description);
+                            }
                         }
                     }
 

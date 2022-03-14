@@ -11,17 +11,19 @@ namespace Nuages.Identity.Services.Login;
 public class LoginService : ILoginService
 {
     private readonly IMessageService _messageService;
+    private readonly ILogger<LoginService> _logger;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _stringLocalizer;
     private readonly NuagesUserManager _userManager;
 
     public LoginService(NuagesUserManager userManager, NuagesSignInManager signInManager,
-        IStringLocalizer stringLocalizer, IMessageService messageService)
+        IStringLocalizer stringLocalizer, IMessageService messageService, ILogger<LoginService> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _stringLocalizer = stringLocalizer;
         _messageService = messageService;
+        _logger = logger;
     }
 
     public async Task<LoginResultModel> LoginAsync(LoginModel model)
@@ -54,7 +56,11 @@ public class LoginService : ILoginService
                     });
 
                     user.LockoutMessageSent = true;
-                    await _userManager.UpdateAsync(user);
+                    var updateRes = await _userManager.UpdateAsync(user);
+                    if (!updateRes.Succeeded)
+                    {
+                        _logger.LogError(updateRes.Errors.First().Description);
+                    }
                 }
             }
             else
@@ -94,7 +100,11 @@ public class LoginService : ILoginService
         if (result == SignInResult.Success)
         {
             user.PreferredMfaMethod = "Authenticator";
-            await _userManager.UpdateAsync(user);
+            var updateRes = await _userManager.UpdateAsync(user);
+            if (!updateRes.Succeeded)
+            {
+                _logger.LogError(updateRes.Errors.First().Description);
+            }
             
             return new LoginResultModel
             {
@@ -103,8 +113,12 @@ public class LoginService : ILoginService
         }
           
         user.LastFailedLoginReason = FailedLoginReason.FailedMfa;
-        await _userManager.UpdateAsync(user);
-
+        var updateRes2 = await _userManager.UpdateAsync(user);
+        if (!updateRes2.Succeeded)
+        {
+            _logger.LogError(updateRes2.Errors.First().Description);
+        }
+        
         return new LoginResultModel
         {
             Result = new SignInResultModel(result),
@@ -130,8 +144,13 @@ public class LoginService : ILoginService
             };
 
         user.LastFailedLoginReason = FailedLoginReason.FailedRecoveryCode;
-        await _userManager.UpdateAsync(user);
-
+        
+        var updateRes = await _userManager.UpdateAsync(user);
+        if (!updateRes.Succeeded)
+        {
+            _logger.LogError(updateRes.Errors.First().Description);
+        }
+        
         return new LoginResultModel
         {
             Result = new SignInResultModel(result),
@@ -157,8 +176,13 @@ public class LoginService : ILoginService
             };
 
         user.LastFailedLoginReason = FailedLoginReason.FailedSms;
-        await _userManager.UpdateAsync(user);
-
+        
+        var updateRes = await _userManager.UpdateAsync(user);
+        if (!updateRes.Succeeded)
+        {
+            _logger.LogError(updateRes.Errors.First().Description);
+        }
+        
         return new LoginResultModel
         {
             Result = new SignInResultModel(result),

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
@@ -32,7 +33,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object);
+            messageService.Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -58,7 +59,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -87,7 +88,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object);
+            messageService.Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -119,7 +120,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object);
+            messageService.Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -150,7 +151,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object);
+            messageService.Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -182,7 +183,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object);
+            messageService.Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -210,7 +211,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginAsync(new LoginModel
         {
@@ -232,7 +233,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.Login2FAAsync(new Login2FAModel
         {
@@ -253,7 +254,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.Login2FAAsync(new Login2FAModel
         {
@@ -276,7 +277,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -302,7 +303,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object);
+            messageService.Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginRecoveryCodeAsync(new LoginRecoveryCodeModel
         {
@@ -321,7 +322,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginRecoveryCodeAsync(new LoginRecoveryCodeModel
         {
@@ -344,7 +345,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -364,7 +365,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginSMSAsync(new LoginSMSModel
         {
@@ -383,7 +384,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         var res = await loginService.LoginSMSAsync(new LoginSMSModel
         {
@@ -404,7 +405,7 @@ public class TestsLoginService
 
         var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            new Mock<IMessageService>().Object);
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
