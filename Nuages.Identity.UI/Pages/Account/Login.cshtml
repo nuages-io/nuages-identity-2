@@ -27,6 +27,8 @@
 
 <div >
     <form class="mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
+        @Html.AntiForgeryToken()
+     
         <fieldset class="space-y-4" :disabled="status == 'sending'">
             <partial name="Shared/ErrorList"/>
 
@@ -82,6 +84,7 @@
         var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 
     <script src="/js/pages/login.js"></script>

@@ -28,7 +28,8 @@ var App =
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-Custom-RecaptchaToken': token
+                            'X-Custom-RecaptchaToken': token,
+                            "X-XSRF-TOKEN": xsrfToken
                         },
                         body: JSON.stringify({
                                 userNameOrEmail: e,

@@ -170,6 +170,8 @@ services.AddHealthChecks();
 
 services.AddNuagesOpenIdDict(configuration, _ => { });
 
+services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+
 var app = builder.Build();
 
 if (builder.Environment.IsDevelopment())

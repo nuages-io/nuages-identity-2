@@ -23,6 +23,7 @@ namespace Nuages.Identity.UI.Controllers;
 // ReSharper disable once UnusedType.Global
 [ApiController]
 [Route("api/[controller]")]
+
 public class AccountController : Controller
 {
     private readonly IHttpContextAccessor _contextAccessor;
@@ -63,6 +64,7 @@ public class AccountController : Controller
 
     [HttpPost("login")]
     [AllowAnonymous]
+    [ValidateAntiForgeryToken]
     public async Task<ActionResult<LoginResultModel>> LoginAsync([FromBody] LoginModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
