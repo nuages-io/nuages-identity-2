@@ -29,7 +29,8 @@ public class Fido2Service : IFido2Service
             var user = await _fido2Storage.GetUserAsync(request.UserName);
             if (user == null)
                 throw new Exception("NotFound");
-            
+
+            user.DisplayName = request.DisplayName;
             // 2. Get user existing keys by username
             var existingKeys = (await _fido2Storage.GetCredentialsByUserAsync(user)).Select(c => c.Descriptor).ToList();
 
