@@ -10,8 +10,6 @@ public static class Fido2SqlServerStorageExtension
     {
         builder.Services.AddScoped<IFido2Storage, Fido2StorageEntityFramework<IdentityFido2SqlServerDbContext>>();
         
-       // builder.Services.AddDbContext<IdentityFido2DbContext>();
-        
         builder.Services.AddDbContext<IdentityFido2SqlServerDbContext>(options =>
         {
             options.UseSqlServer(connectionString);

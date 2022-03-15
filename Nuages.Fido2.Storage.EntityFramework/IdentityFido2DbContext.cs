@@ -20,7 +20,6 @@ public class IdentityFido2DbContext : DbContext
         modelBuilder.Entity<Fido2Credential>()
             .HasIndex(c => new { c.UserIdBase64 });
         
-        
         modelBuilder.Entity<Fido2Credential>()
             .HasIndex(c => new { c.UserHandleBase64 });
         

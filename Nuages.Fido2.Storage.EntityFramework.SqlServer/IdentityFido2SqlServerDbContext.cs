@@ -8,6 +8,3 @@ public class IdentityFido2SqlServerDbContext : IdentityFido2DbContext
     {
     }
 }
-
-
-// ReSharper disable once UnusedType.Global
