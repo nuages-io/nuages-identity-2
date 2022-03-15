@@ -23,7 +23,8 @@ var App =
                     fetch("/api/manage/sendPhoneChangeMessage", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         },
                         body: JSON.stringify({
                                 phoneNumber: p
@@ -81,7 +82,8 @@ var App =
                     fetch("/api/manage/changePhoneNumber", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         },
                         body: JSON.stringify({
                                 phoneNumber: p,

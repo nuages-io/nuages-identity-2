@@ -9,7 +9,7 @@
 }
 
 <div class="space-y-4">
-    <form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="loginSMS" id="formLoginSMS">
+    <form class="space-y-4 mt-4"  v-on:submit.prevent="loginSMS" id="formLoginSMS">
         <span class="instructions">@Localizer["loginWithSMS:instructions"]</span>
         <partial name="Shared/ErrorList"/>
         <button v-on:click.prevent="loginSMS" class="primary full items-center" :disabled="status == 'sending'">
@@ -41,7 +41,8 @@
 {
     <script>
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
-         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
     <script src="/js/pages/sendSMSCode.js"></script>
 }

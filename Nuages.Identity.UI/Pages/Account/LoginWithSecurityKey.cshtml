@@ -55,6 +55,7 @@
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
         var rememberMe = @Model.RememberMe.ToString().ToLower();
         var userName = "@Model.Username";
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 
     <script src="/js/pages/fido2/helpers.js"></script>

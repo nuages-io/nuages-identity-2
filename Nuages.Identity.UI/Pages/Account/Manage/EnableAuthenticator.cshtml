@@ -25,7 +25,7 @@
         </p>
         <div>
             <partial name="Shared/ErrorList"/>
-            <form class="mt-4" id="formCode" method="post" v-on:submit.prevent="verifyCode">
+            <form class="mt-4" id="formCode" v-on:submit.prevent="verifyCode">
                 <fieldset :disabled="status == 'sending'" class="flex flex-row space-x-2">
                     <input id="code" name="code" required class="text-box " v-model="code" type="text"/>
                     <button type="button" class="primary items-center w-36" v-on:click.prevent="verifyCode" :disabled="status == 'sending'">
@@ -59,6 +59,7 @@
     <script>
       var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
       var userName = "@Model.Username";
+      var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 
     <script src="/js/pages/fido2/helpers.js"></script>

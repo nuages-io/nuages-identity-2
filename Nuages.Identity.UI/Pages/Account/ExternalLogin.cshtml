@@ -21,7 +21,7 @@
 
 @if (string.IsNullOrEmpty(Model.ErrorMessage))
 {
-    <form id="formExternalLogin" class=" mt-4" method="POST" v-on:submit.prevent="externalLogin" v-if="status != 'done'">
+    <form id="formExternalLogin" class=" mt-4"  v-on:submit.prevent="externalLogin" v-if="status != 'done'">
         <fieldset class="space-y-4" :disabled="status == 'sending'">
             <span class="instructions"> @Localizer["externalLogin:instructions"]</span> <strong>@Model.ProviderDisplayName.</strong>
             <span class="mt-2 instructions"> @Localizer["externalLogin:instructions2"]</span>

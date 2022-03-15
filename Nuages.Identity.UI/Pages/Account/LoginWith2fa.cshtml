@@ -10,7 +10,7 @@
 
 
 <div >
-    <form class=" mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
+    <form class=" mt-4"  v-on:submit.prevent="login" id="formLogin" autocomplete=“off”>
         <fieldset class="space-y-4">
             <span class="instructions">@Localizer["mfa.instructions"]</span>
             <partial name="Shared/ErrorList"/>
@@ -69,6 +69,7 @@
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
         var rememberMe = @Model.RememberMe.ToString().ToLower();
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 
     <script src="/js/pages/loginWith2fa.js"></script>

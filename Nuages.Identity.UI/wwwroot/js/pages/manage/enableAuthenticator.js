@@ -22,7 +22,8 @@ var App =
                     fetch("/api/manage/enable2FA", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         },
                         body: JSON.stringify({
                                 code: c

@@ -16,7 +16,7 @@
     </span>
 </div>
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formLogin" v-if="status != 'done'">
+<form class="space-y-4 mt-4"  v-on:submit.prevent="login" id="formLogin" v-if="status != 'done'">
     <h4>@Localizer["emailNotConfirmed:message"]</h4>
     <button v-on:click.prevent="send" class="primary full items-center" :disabled="status == 'sending'">
         @Localizer["emailNotConfirmed:sendAgain"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
@@ -28,6 +28,7 @@
 {
     <script>
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
     <script src="/js/pages/emailNotConfirmed.js"></script>
 }

@@ -10,7 +10,8 @@ async function handleSignInSubmit(data, callback) {
             body: JSON.stringify(data), // data can be `string` or {object}!
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "X-XSRF-TOKEN": xsrfToken
             }
         });
 
@@ -90,7 +91,8 @@ async function verifyAssertionWithServer(assertedCredential, callback) {
             body: JSON.stringify(data), // data can be `string` or {object}!
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "X-XSRF-TOKEN": xsrfToken
             }
         });
 

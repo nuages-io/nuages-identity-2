@@ -5,6 +5,7 @@ using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.WebEncoders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -153,6 +154,15 @@ services.AddNuagesAuthentication()
 
 services
     .AddMvc()
+    .AddMvcOptions(options =>
+    {
+        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+    })
+    .AddRazorPagesOptions(options =>
+    {
+        options.Conventions
+            .ConfigureFilter(new AutoValidateAntiforgeryTokenAttribute());
+    })
     .AddJsonOptions(jsonOptions =>
     {
         jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter());

@@ -17,7 +17,7 @@
 </div>
 
 
-<form class="space-y-4 mt-4" method="POST" v-on:submit.prevent="login" id="formRegister" v-if="status != 'done'">
+<form class="space-y-4 mt-4" v-on:submit.prevent="login" id="formRegister" v-if="status != 'done'">
 
     <span class="instructions">@Localizer["register:instructions"]</span>
     <partial name="Shared/ErrorList"/>
@@ -65,6 +65,7 @@
         var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
     <script src="/js/pages/register.js"></script>
 }

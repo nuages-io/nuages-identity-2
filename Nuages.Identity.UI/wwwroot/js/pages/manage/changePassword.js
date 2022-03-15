@@ -25,7 +25,8 @@ var App =
                     fetch("/api/manage/changePassword", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         },
                         body: JSON.stringify({
                                 currentPassword: cp,

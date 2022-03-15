@@ -31,7 +31,8 @@ var App =
                     fetch("/api/manage/resetRecoveryCodes", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         }
                     })
                         .then(response => response.json())
@@ -51,7 +52,8 @@ var App =
                     fetch("/api/manage/forgetBrowser", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         }
                     })
                         .then(response => response.json())
@@ -66,7 +68,8 @@ var App =
                     fetch("/api/manage/disable2FA", {
                         method: "DELETE",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         }
                     })
                         .then(response => response.json())
@@ -111,7 +114,8 @@ var App =
                         method: "DELETE",
                         body: JSON.stringify({ id: id}),
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         }
                     })
                         .then(response => response.json())

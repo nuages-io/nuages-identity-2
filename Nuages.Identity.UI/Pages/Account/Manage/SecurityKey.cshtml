@@ -8,7 +8,7 @@
 <div id="app">
     <h2 class="page-header">@Localizer["addSecurityKey.title"]</h2>
 
-    <form method="POST" v-on:submit.prevent="addSecurityKey" id="formAddSecurityKey">
+    <form  v-on:submit.prevent="addSecurityKey" id="formAddSecurityKey">
         <fieldset  class="space-y-4">
             <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
                 <span class="green-success font-medium">
@@ -41,8 +41,9 @@
 {
     
     <script>
-     var nickNameRequiredMessage = "@string.Format(Localizer["addSecurityKey.nickNameRequiredMessage"])";  
-    var userName = "@Model.Username";
+        var nickNameRequiredMessage = "@string.Format(Localizer["addSecurityKey.nickNameRequiredMessage"])";  
+        var userName = "@Model.Username";
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
     
     <script src="/js/pages/fido2/helpers.js"></script>

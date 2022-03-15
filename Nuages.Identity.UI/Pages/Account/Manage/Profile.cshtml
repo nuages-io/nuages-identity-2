@@ -7,7 +7,7 @@
 <div id="app">
     <h2 class="page-header">@Localizer["profile:title"]</h2>
 
-    <form class="space-y-4" method="POST" v-on:submit.prevent="saveProfile" id="formProfile">
+    <form class="space-y-4"  v-on:submit.prevent="saveProfile" id="formProfile">
         <partial name="Shared/ErrorList"/>
         <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done'" style="display: none">
             <span class="green-success font-medium">
@@ -32,7 +32,7 @@
     <script>
        var lastNameValue = "@Model.CurrentUser!.LastName";
        var firstNameValue = "@Model.CurrentUser!.FirstName";
-        
+       var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 
     <script src="/js/pages/manage/profile.js"></script>

@@ -22,7 +22,8 @@ var App =
                     fetch("/api/manage/saveProfile", {
                         method: "POST",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         },
                         body: JSON.stringify({
                                 lastName: l,
