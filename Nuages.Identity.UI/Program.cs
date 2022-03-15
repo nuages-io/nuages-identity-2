@@ -6,15 +6,20 @@ using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Fido2.AspNetIdentity;
+using Nuages.Fido2.Storage.EntifyFramework.MySql;
+using Nuages.Fido2.Storage.EntityFramework;
+using Nuages.Fido2.Storage.EntityFramework.SqlServer;
 using Nuages.Fido2.Storage.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Storage.SqlServer;
 using Nuages.Identity.UI;
 using Nuages.Identity.UI.OpenIdDict;
 using Nuages.Localization;
@@ -94,7 +99,19 @@ else
     AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
 }
 
-services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(
+builder.Services.AddDbContext<IdentitySqlServerDbContext>(options =>
+{
+    //options.UseSqlServer(configuration["Nuages:SqlServer:ConnectionString"]);
+    
+    var connectionString =  configuration["Nuages:MySql:ConnectionString"];
+        
+    options
+        .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+
+});
+
+
+var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(
         identity =>
         {
             identity.User = new UserOptions
@@ -115,22 +132,23 @@ services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicatio
                 RequireConfirmedPhoneNumber = false, //MUST be false
                 RequireConfirmedAccount = false //MUST be false
             };
-        })
-    .AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
-    {
-        options.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
-        options.Database = configuration["Nuages:Mongo:Database"];
-
-        if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser<string>)))
-            BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
-            {
-                cm.AutoMap();
-                cm.SetIgnoreExtraElements(true);
-                cm.MapMember(c => c.LastFailedLoginReason)
-                    .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
-            });
-    })
-    .AddNuagesIdentityServices(configuration, _ => { })
+        });
+   
+    // .AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
+    // {
+    //     options.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
+    //     options.Database = configuration["Nuages:Mongo:Database"];
+    //
+    //     if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser<string>)))
+    //         BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
+    //         {
+    //             cm.AutoMap();
+    //             cm.SetIgnoreExtraElements(true);
+    //             cm.MapMember(c => c.LastFailedLoginReason)
+    //                 .SetSerializer(new EnumSerializer<FailedLoginReason>(BsonType.String));
+    //         });
+    // })
+identityBuilder.AddNuagesIdentityServices(configuration, _ => { })
     .AddNuagesFido2(options =>
     {
         options.ServerDomain = configuration["fido2:serverDomain"];
@@ -139,9 +157,13 @@ services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicatio
         options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
         options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
     })
-    .AddFido2MongoStorage(config => { config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"]; })
+    .AddFido2MySqlStorage(configuration["Nuages:MySql:ConnectionStringFido2"])
+    //.AddFidoSqlServerStorage(configuration["Nuages:SqlServer:ConnectionStringFido2"])
+    //.AddFido2MongoStorage(config => { config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"]; })
     //.AddFido2InMemoryStorage("Fido2")
     ;
+
+identityBuilder.AddEntityFrameworkStores<IdentitySqlServerDbContext>();
 
 services.AddNuagesAuthentication()
     .AddGoogle(googleOptions =>

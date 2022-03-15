@@ -24,6 +24,7 @@
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Macross.Json.Extensions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
         <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="1.0.6" />
         <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.1.1" />
@@ -50,10 +51,14 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Nuages.Fido2.AspNetIdentity\Nuages.Fido2.AspNetIdentity.csproj" />
+        <ProjectReference Include="..\Nuages.Fido2.Storage.EntifyFramework.MySql\Nuages.Fido2.Storage.EntifyFramework.MySql.csproj" />
+        <ProjectReference Include="..\Nuages.Fido2.Storage.EntityFramework.SqlServer\Nuages.Fido2.Storage.EntityFramework.SqlServer.csproj" />
         <ProjectReference Include="..\Nuages.Fido2.Storage.EntityFramework\Nuages.Fido2.Storage.EntityFramework.csproj" />
         <ProjectReference Include="..\Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj" />
         <ProjectReference Include="..\Nuages.Fido2\Nuages.Fido2.csproj" />
         <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
+        <ProjectReference Include="..\Nuages.Identity.Storage.MySql\Nuages.Identity.Storage.MySql.csproj" />
+        <ProjectReference Include="..\Nuages.Identity.Storage.SqlServer\Nuages.Identity.Storage.SqlServer.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="..\locales\en-CA.json" CopyToOutputDirectory="Always">

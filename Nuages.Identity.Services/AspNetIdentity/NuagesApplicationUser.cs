@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 // ReSharper disable VirtualMemberCallInConstructor
@@ -19,6 +20,7 @@ public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEqua
         return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id)!;
     }
     
+
     public DateTime? ValidFrom { get; set; }
     public DateTime? ValidTo { get; set; }
 
