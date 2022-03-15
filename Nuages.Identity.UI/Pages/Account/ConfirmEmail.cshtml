@@ -5,13 +5,13 @@
 }
 
 
-<div class="mb-4 p-4">
+<div class="mb-4 p-4 space-y-4">
     <span class="green-success font-medium">
         <i class="fas fa-check"></i> @Model.StatusMessage
     </span>
+    <div class="text-center mt-4">
+        <a class="primary"  href="~/">@Localizer["login.back"]</a>
+    </div>
+   
 </div>
 
-@section MainFooter
-{
-    <partial name="Shared/BackToLogin"/>
-}

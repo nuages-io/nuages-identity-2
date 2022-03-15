@@ -68,5 +68,5 @@ public class MongoSchemaInitializer : IHostedService
         return Task.CompletedTask;
     }
 
-    public IMongoCollection<Fido2Credential> Fido2CredentialCollection { get; set; }
+    private IMongoCollection<Fido2Credential> Fido2CredentialCollection { get; }
 }

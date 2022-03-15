@@ -2,9 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Nuages.Fido2.Storage.EntifyFramework.MySql;
 
-namespace Nuages.Identity.Storage.SqlServer;
+namespace Nuages.Fido2.Storage.EntifyFramework.MySql;
 
 
 

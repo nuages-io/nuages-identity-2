@@ -4,6 +4,7 @@ namespace Nuages.Fido2;
 
 public static class Fido2Extension
 {
+    // ReSharper disable once UnusedMethodReturnValue.Global
     public static IFido2Builder AddNuagesFido2(this IServiceCollection services,  Action<Fido2Configuration> setupAction)
     {
         services.AddScoped<IFido2Service, Fido2Service>();

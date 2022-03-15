@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 namespace Nuages.Fido2.Storage.EntityFramework.SqlServer;
 
 [ExcludeFromCodeCoverage]
+// ReSharper disable once UnusedType.Global
 public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<IdentityFido2SqlServerDbContext>
 {
     public IdentityFido2SqlServerDbContext CreateDbContext(string[] args)

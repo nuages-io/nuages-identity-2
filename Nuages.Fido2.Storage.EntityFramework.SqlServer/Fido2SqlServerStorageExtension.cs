@@ -5,6 +5,7 @@ namespace Nuages.Fido2.Storage.EntityFramework.SqlServer;
 
 public static class Fido2SqlServerStorageExtension
 {
+    // ReSharper disable once UnusedMethodReturnValue.Global
     public static IFido2Builder AddFidoSqlServerStorage(this IFido2Builder builder, string connectionString )
     {
         builder.Services.AddScoped<IFido2Storage, Fido2StorageEntityFramework<IdentityFido2SqlServerDbContext>>();

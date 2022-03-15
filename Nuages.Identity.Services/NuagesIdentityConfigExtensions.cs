@@ -14,6 +14,7 @@ namespace Nuages.Identity.Services;
 
 public static class NuagesIdentityConfigExtensions
 {
+    // ReSharper disable once UnusedMethodReturnValue.Global
     public static IdentityBuilder AddNuagesIdentityServices(this IdentityBuilder builder, IConfiguration configuration,
         Action<NuagesIdentityOptions> configure)
     {
