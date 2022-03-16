@@ -19,6 +19,7 @@ public class UIOptions
     public bool EnablePhoneFallback { get; set; } = true;
     public bool Enable2FARememberDevice { get; set; } = true;
     public bool EnableFido2 { get; set; } = true;
+    public string FontAwesomeUrl { get; set; } 
 }
 
 public static class UIConfigExtension

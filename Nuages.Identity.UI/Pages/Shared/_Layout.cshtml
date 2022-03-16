@@ -2,6 +2,7 @@
 @using Nuages.Identity.Services.AspNetIdentity
 @inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 @inject IOptions<NuagesIdentityOptions> IdentityOptions
+@inject IOptions<UIOptions> UIOptions
 
 <!DOCTYPE html>
 <html lang="en"  >
@@ -12,7 +13,7 @@
 
     <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="~/css/tailwind-output.css"/>
-    <script src="https://kit.fontawesome.com/70b74b4315.js" crossorigin="anonymous"></script>
+    <script src="@UIOptions.Value.FontAwesomeUrl" crossorigin="anonymous"></script>
 
     <script src="https://www.google.com/recaptcha/api.js?render=@RecaptchaOptions.Value.SiteKey"></script>
 </head>
