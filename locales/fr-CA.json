@@ -89,6 +89,7 @@
 		"title": "Confirmation de votre courriel"
 	},
 	"device": {
+		"Code": "Code",
 		"confirm": "Voulez-vous donner accès à vos données à {0} (Accès demandés: {1})?",
 		"confirmCode": "Assurez-vous que le code affiché sur votre appareil est ",
 		"error": "L'autorisation de l'appareil à échouée",
@@ -218,6 +219,7 @@
 		"rememberMachine": "Se rappeler de cette appareil",
 		"title": "Authentification à deux facteurs"
 	},
+	"no": "Non",
 	"or": "ou",
 	"password": "Mot de passe",
 	"passwordExpired": {
@@ -283,5 +285,6 @@
 	"submit": "Soumettre",
 	"username": "Nom d'utilisateur",
 	"warning": "Attention!",
+	"yes": "Oui",
 	"yourEmail": "Votre courriel"
 }

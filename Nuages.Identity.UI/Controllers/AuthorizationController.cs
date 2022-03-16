@@ -7,6 +7,7 @@ namespace Nuages.Identity.UI.Controllers;
 
 [ApiController]
 [Route("connect")]
+[IgnoreAntiforgeryToken]
 public class AuthorizationController : Controller
 {
     private readonly IAuthorizeEndpoint _authorizeEndpoint;

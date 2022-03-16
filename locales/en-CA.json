@@ -89,6 +89,7 @@
 		"title": "Confirmation of your email"
 	},
 	"device": {
+		"Code": "Code",
 		"confirm": "Do you want to grant {0} access to your data? (scopes requested: {1})",
 		"confirmCode": "Make sure that the code displayed on the device is",
 		"error": "Device authorization failed",
@@ -218,6 +219,7 @@
 		"rememberMachine": "Remember this device",
 		"title": "Two-factor authentication"
 	},
+	"no": "No",
 	"or": "or",
 	"password": "Password",
 	"passwordExpired": {
@@ -283,5 +285,6 @@
 	"submit": "Submit",
 	"username": "Username",
 	"warning": "Warning!",
+	"yes": "Yes",
 	"yourEmail": "Your email"
 }
