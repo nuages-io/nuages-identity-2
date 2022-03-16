@@ -50,7 +50,8 @@ async function handleSignInSubmit(data, callback) {
         credential = await navigator.credentials.get({ publicKey: makeAssertionOptions })
     } catch (err) {
         console.log("err", err);
-        callback("error", err.message ? err.message : err);
+        callback("error", unableToReadKey);
+        return;
     }
 
     console.log("credential", credential);

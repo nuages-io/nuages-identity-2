@@ -70,7 +70,7 @@
             }
             @if (UIOptions.Value.EnablePasswordless)
             {
-                <a href="~/Account/LoginWithPasswordless" class="btn-simple mt-4"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
+                <a class="btn-simple mt-4"  asp-page="./LoginWithPasswordless" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
             }
 
         </form>
@@ -85,7 +85,7 @@
         var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
-        var returnUrlEncoded = '@WebUtility.UrlEncode(Model.ReturnUrl)';
+        var returnUrlEncoded ='@System.Net.WebUtility.UrlEncode(Model.ReturnUrl)';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 

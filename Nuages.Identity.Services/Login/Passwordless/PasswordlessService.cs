@@ -1,4 +1,6 @@
+using System.Net;
 using System.Text.Json.Serialization;
+using System.Xml;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
@@ -30,13 +32,13 @@ public class PasswordlessService : IPasswordlessService
         _options = options.Value;
     }
 
-    public async Task<string> GetPasswordlessUrl(string userId)
+    public async Task<string> GetPasswordlessUrl(string userId, string? returnUrl = null)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        return await GetPasswordlessUrl(user);
+        return await GetPasswordlessUrl(user, returnUrl);
     }
 
     public async Task<PasswordlessResultModel> LoginPasswordLess(string token, string userId)
@@ -92,7 +94,7 @@ public class PasswordlessService : IPasswordlessService
                 Success = false
             };
 
-        var url = await GetPasswordlessUrl(user);
+        var url = await GetPasswordlessUrl(user, model.ReturnUrl);
 
         _messageService.SendEmailUsingTemplate(user.Email, "Passwordless_Login", new Dictionary<string, string>
         {
@@ -106,14 +108,14 @@ public class PasswordlessService : IPasswordlessService
         };
     }
 
-    private async Task<string> GetPasswordlessUrl(NuagesApplicationUser<string> user)
+    private async Task<string> GetPasswordlessUrl(NuagesApplicationUser<string> user, string? returnUrl)
     {
         var token = await _userManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
             "passwordless-auth");
 
         var baseUrl = _options.Authority;
 
-        return $"{baseUrl}/account/passwordlessLogin?token={token}&userId={user.Id}";
+        return $"{baseUrl}/account/passwordlessLogin?token={token}&userId={user.Id}&returnUrl={WebUtility.UrlEncode(returnUrl)}";
     }
 
 
@@ -142,6 +144,7 @@ public interface IPasswordlessService
 public class StartPasswordlessModel
 {
     public string Email { get; set; } = string.Empty;
+    public string ReturnUrl { get; set; }  = string.Empty;
 }
 
 public class StartPasswordlessResultModel

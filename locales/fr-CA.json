@@ -206,6 +206,7 @@
 		"notAvailable": "Vous n'avez pas accès à votre clé de sécurité?",
 		"success": "Clé de sécurité vérifiée avec succèss",
 		"title": "Connexion avec clé de sécurité",
+		"unableToReadKey": "Impossible de valider la clé de sécurité",
 		"waiting": "En attente de la clé de sécurité"
 	},
 	"logout": {

@@ -42,6 +42,7 @@
     <script>
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var returnUrlEncoded = '@System.Net.WebUtility.UrlEncode(Model.ReturnUrl)';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
     <script src="/js/pages/sendSMSCode.js"></script>

@@ -161,7 +161,7 @@ public class AccountController : Controller
         }
     }
 
-    [HttpPost("loginRecoveryCOde")]
+    [HttpPost("loginRecoveryCode")]
     [AllowAnonymous]
     // ReSharper disable once InconsistentNaming
     public async Task<ActionResult<LoginResultModel>> LoginRecoveryCodeAsync([FromBody] LoginRecoveryCodeModel model,

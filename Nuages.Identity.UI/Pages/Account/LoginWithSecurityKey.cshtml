@@ -57,6 +57,8 @@
         var rememberMe = @Model.RememberMe.ToString().ToLower();
         var userName = "@Model.Username";
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
+        var unableToReadKey = "@Localizer["loginWithSecurityKeys:unableToReadKey"]";
+        
     </script>
 
     <script src="/js/pages/fido2/helpers.js"></script>

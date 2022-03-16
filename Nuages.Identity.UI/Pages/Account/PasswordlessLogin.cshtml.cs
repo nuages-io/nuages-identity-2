@@ -1,3 +1,4 @@
+using System.Net;
 using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,7 +18,7 @@ public class PasswordlessLogin : PageModel
         _passwordlessService = passwordlessService;
     }
 
-    public virtual async Task<IActionResult> OnGet(string token, string userId)
+    public virtual async Task<IActionResult> OnGet(string token, string userId, string returnUrl = null)
     {
         try
         {
@@ -28,7 +29,7 @@ public class PasswordlessLogin : PageModel
             if (res.Success)
                 return Redirect("/");
 
-            if (res.Result.RequiresTwoFactor) return Redirect("/account/loginwith2fa?returnUrl=/");
+            if (res.Result.RequiresTwoFactor) return Redirect($"/account/loginwith2fa?returnUrl={WebUtility.UrlEncode(returnUrl)}");
 
             return Unauthorized();
         }

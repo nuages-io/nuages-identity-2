@@ -16,6 +16,7 @@ var App =
                     var self = this;
                     var e = self.email;
 
+                    alert(returnUrl);
                     this.status = "sending";
 
                     fetch("/api/account/passwordlessLogin", {
@@ -26,21 +27,18 @@ var App =
                             "X-XSRF-TOKEN": xsrfToken
                         },
                         body: JSON.stringify({
-                                email: e
+                                email: e,
+                                returnUrl: returnUrl
                             }
                         )
                     })
                         .then(response => response.json())
                         .then(res => {
-
-
                             self.status = "done";
 
                             if (!res.success) {
                                 self.errors.push({message: res.message});
                             }
-
-
                         });
 
                 },

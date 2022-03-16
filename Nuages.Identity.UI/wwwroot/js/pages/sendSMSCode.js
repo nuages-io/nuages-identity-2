@@ -29,7 +29,7 @@ var App =
                             self.status = "done";
 
                             if (res.success) {
-                                window.location = "/Account/LoginWithSMS?returnUrl=" + returnUrl;
+                                window.location = "/Account/LoginWithSMS?returnUrl=" + returnUrlEncoded;
                             } else
                                 self.errors = res.errors.map(function (m) {
                                     return {message: m}

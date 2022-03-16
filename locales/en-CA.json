@@ -206,6 +206,7 @@
 		"notAvailable": "Don't have access to your security key?",
 		"success": "Security key successfully verified",
 		"title": "Login with Security Key",
+		"unableToReadKey": "Unable to validate security key",
 		"waiting": "Waiting for security key"
 	},
 	"logout": {
