@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -48,7 +49,7 @@ public class LoginWith2faModel : PageModel
                 var canRedirectToKeys = await _fido2Service.HasSecurityKeys(Encoding.UTF8.GetBytes(user.Id));
                 if (canRedirectToKeys)
                 {
-                    Response.Redirect($"/account/loginWithSecurityKey?rememberMe={rememberMe}&returnUrl={returnUrl}");
+                    Response.Redirect($"/account/loginWithSecurityKey?rememberMe={rememberMe}&returnUrl={WebUtility.UrlEncode(returnUrl)}");
                 }
             }
         }

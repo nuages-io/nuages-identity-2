@@ -63,7 +63,11 @@ var App =
                                     default: {
 
                                         if (res.result.requiresTwoFactor === true) {
-                                            window.location = "/account/loginwith2fa?redirectToPreferred=true&returnUrl=" + returnUrl;
+                                            console.log("returnUrl",  encodeURI(returnUrl))
+                                            console.log("returnUrlEncoded", returnUrlEncoded)
+                                            
+                                           // window.location = "/account/loginwith2fa?redirectToPreferred=true&returnUrl=" + returnUrl;
+                                            window.location = "/account/loginwith2fa?redirectToPreferred=true&returnUrl=" + returnUrlEncoded;
                                             break;
                                         }
 

@@ -53,6 +53,7 @@
         var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var returnUrlEncoded = '@System.Net.WebUtility.UrlEncode(Model.ReturnUrl)';
         var rememberMe = @Model.RememberMe.ToString().ToLower();
         var userName = "@Model.Username";
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';

@@ -20,7 +20,7 @@ var App =
 
                     var self = this;
                     var u = self.userName;
-
+                    
                     handleSignInSubmit({
                         UserName: u
                     }, this.callback);                    
@@ -44,6 +44,9 @@ var App =
                         case "done":
                         {
                             this.status = "done";
+                            
+                                                  
+                           
                             break;
                         }
                     }

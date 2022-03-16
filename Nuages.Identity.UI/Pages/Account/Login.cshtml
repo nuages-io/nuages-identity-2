@@ -1,5 +1,6 @@
 @page
 @using Nuages.Web.Recaptcha
+@using System.Net
 @model Nuages.Identity.UI.Pages.Account.Login
 @inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 @inject IOptions<UIOptions> UIOptions
@@ -84,6 +85,7 @@
         var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
+        var returnUrlEncoded = '@WebUtility.UrlEncode(Model.ReturnUrl)';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 
