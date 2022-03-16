@@ -204,6 +204,7 @@
 	},
 	"loginWithSecurityKeys": {
 		"notAvailable": "Don't have access to your security key?",
+		"retry": "Retry",
 		"success": "Security key successfully verified",
 		"title": "Login with Security Key",
 		"unableToReadKey": "Unable to validate security key",

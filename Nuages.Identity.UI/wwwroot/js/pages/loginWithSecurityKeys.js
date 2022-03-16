@@ -25,13 +25,16 @@ var App =
                         UserName: u
                     }, this.callback);                    
                 },
+                retry: function()
+                {
+                  window.location.reload();  
+                },
                 callback: function (state, data)
                 {
                     switch(state)
                     {
                         case "error":
                         {
-
                             this.status = "";
                             this.errors.push({message: data});
                             break;
@@ -44,8 +47,6 @@ var App =
                         case "done":
                         {
                             this.status = "done";
-                            
-                                                  
                            
                             break;
                         }

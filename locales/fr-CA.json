@@ -204,6 +204,7 @@
 	},
 	"loginWithSecurityKeys": {
 		"notAvailable": "Vous n'avez pas accès à votre clé de sécurité?",
+		"retry": "Réeesayer",
 		"success": "Clé de sécurité vérifiée avec succèss",
 		"title": "Connexion avec clé de sécurité",
 		"unableToReadKey": "Impossible de valider la clé de sécurité",
