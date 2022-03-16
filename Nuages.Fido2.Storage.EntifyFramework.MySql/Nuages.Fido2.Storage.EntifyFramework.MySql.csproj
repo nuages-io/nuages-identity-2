@@ -23,7 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Nuages.Fido2.Storage.EntityFramework\Nuages.Fido2.Storage.EntityFramework.csproj" />
-      <ProjectReference Include="..\Nuages.Fido2\Nuages.Fido2.csproj" />
+      <ProjectReference Include="..\Nuages.Identity.Fido2\Nuages.Identity.Fido2.csproj" />
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
     </ItemGroup>
 

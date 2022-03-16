@@ -24,7 +24,7 @@ namespace Nuages.Fido2.Storage.EntityFramework.SqlServer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Nuages.Fido2.Storage.EntityFramework.Fido2Credential", b =>
+            modelBuilder.Entity("Nuages.Identity.Fido2.Storage.EntityFramework.Fido2Credential", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");

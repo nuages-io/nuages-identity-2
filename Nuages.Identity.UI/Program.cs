@@ -31,7 +31,6 @@ using OpenIddict.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 var configBuilder = builder.Configuration
     .AddJsonFile("appsettings.json", false, true);
 
@@ -72,8 +71,6 @@ if (!builder.Environment.IsDevelopment())
 
 var services = builder.Services;
 
-// Add AWS Lambda support. When application is run in Lambda Kestrel is swapped out as the web server with Amazon.Lambda.AspNetCoreServer. This
-// package will act as the webserver translating request and responses between the Lambda event source and ASP.NET Core.
 services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 
 services.Configure<WebEncoderOptions>(options =>
@@ -101,8 +98,6 @@ else
     AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
 }
 
-
-
 var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(
     identity =>
     {
@@ -128,7 +123,6 @@ var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<str
 
 var storage = Enum.Parse<StorageType>(configuration["Nuages:Storage"]);
 
-
 switch (storage)
 {
     case StorageType.SqlServer:
@@ -141,6 +135,7 @@ switch (storage)
                 .UseSqlServer(connectionString);
         });
 
+        identityBuilder.AddEntityFrameworkStores<IdentitySqlServerDbContext>();
         break;
     }
     case StorageType.MySql:
@@ -152,13 +147,14 @@ switch (storage)
             options
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         });
-
+        identityBuilder.AddEntityFrameworkStores<IdentityMySqlDbContext>();
         break;
     }
     case StorageType.InMemory:
     {
         builder.Services
             .AddDbContext<IdentityDbContext<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>>();
+        identityBuilder.AddEntityFrameworkStores<IdentityDbContext<NuagesApplicationUser<string>,NuagesApplicationRole<string>, string>>();
 
         break;
     }
@@ -224,16 +220,12 @@ switch (storage)
         throw new ArgumentOutOfRangeException();
 }
 
-identityBuilder.AddEntityFrameworkStores<IdentitySqlServerDbContext>();
-
 services.AddNuagesAuthentication()
     .AddGoogle(googleOptions =>
     {
         googleOptions.ClientId = configuration["Google:ClientId"];
         googleOptions.ClientSecret = configuration["Google:ClientSecret"];
     });
-
-// ReSharper disable once UnusedParameter.Local
 
 services
     .AddMvc()

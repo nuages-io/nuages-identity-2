@@ -8,7 +8,6 @@ namespace Nuages.Fido2.AspNetIdentity;
 public static class Fido2AspNetIdentityExtension
 {
     public static Fido2Builder AddNuagesFido2(this IdentityBuilder builder,  Action<Fido2Configuration> setupAction)
-      
     {
         var fido2Builder = new Fido2Builder(builder.Services);
         

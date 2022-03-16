@@ -21,7 +21,7 @@ namespace Nuages.Fido2.Storage.EntifyFramework.MySql.Migrations
                 .HasAnnotation("ProductVersion", "6.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Nuages.Fido2.Storage.EntityFramework.Fido2Credential", b =>
+            modelBuilder.Entity("Nuages.Identity.Fido2.Storage.EntityFramework.Fido2Credential", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
