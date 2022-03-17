@@ -15,7 +15,7 @@
     </Target>
     
     <ItemGroup>
-        <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.0.0" />
+        <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.1.0" />
         <PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="2.1.0" />
         <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />
         <PackageReference Include="AWSXRayRecorder.Core" Version="2.10.1" />
