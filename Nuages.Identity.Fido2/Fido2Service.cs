@@ -2,6 +2,8 @@ using Fido2NetLib;
 using Fido2NetLib.Objects;
 using Nuages.Fido2.Models;
 using Nuages.Fido2.Storage;
+using Nuages.Identity.Services.Email;
+using Nuages.Sender.API.Sdk;
 
 namespace Nuages.Fido2;
 
@@ -10,8 +12,9 @@ public class Fido2Service : IFido2Service
     private readonly IFido2 _fido2;
     private readonly IFido2Storage _fido2Storage;
     private readonly IHttpContextAccessor _contextAccessor;
+    private readonly IMessageService _messageService;
 
-    public Fido2Service(IFido2 fido2, IFido2Storage fido2Storage, IHttpContextAccessor contextAccessor)
+    public Fido2Service(IFido2 fido2, IFido2Storage fido2Storage, IHttpContextAccessor contextAccessor, IMessageService messageService)
     {
         _fido2 = fido2;
         
@@ -19,6 +22,7 @@ public class Fido2Service : IFido2Service
         _fido2Storage.Initialize();
         
         _contextAccessor = contextAccessor;
+        _messageService = messageService;
     }
 
     public async Task<CredentialCreateOptions> MakeCredentialOptionsAsync(MakeCredentialOptionsRequest request)
@@ -26,7 +30,7 @@ public class Fido2Service : IFido2Service
         try
         {
             // 1. Get user from DB by username (in our example, auto create missing users)
-            var user = await _fido2Storage.GetUserAsync(request.UserName);
+            var user = await _fido2Storage.GetUserByUsernameAsync(request.UserName);
             if (user == null)
                 throw new Exception("NotFound");
 
@@ -86,12 +90,20 @@ public class Fido2Service : IFido2Service
 
         await _fido2Storage.AddCredentialToUserAsync(options.User, credential);
         
+        var email = await _fido2Storage.GetUserEmailAsync(options.User.Id);
+        if (email != null)
+        {
+            _messageService.SendEmailUsingTemplate(email, "SecurityKey_Added", new Dictionary<string, string>
+            {
+                
+            });
+        }
         return success;
     }
 
     public async Task<AssertionOptions> AssertionOptionAsync(AssertionOptionsRequest request)
     {
-        var user = await _fido2Storage.GetUserAsync(request.UserName) ?? throw new ArgumentException("Username was not registered");
+        var user = await _fido2Storage.GetUserByUsernameAsync(request.UserName) ?? throw new ArgumentException("Username was not registered");
 
         var existingCredentials = (await _fido2Storage.GetCredentialsByUserAsync(user)).ToList().Select(c => c.Descriptor).ToList();
         
@@ -152,5 +164,15 @@ public class Fido2Service : IFido2Service
     public  async Task RemoveKeyAsync(byte[] userId, byte[]  keyId)
     {
         await _fido2Storage.RemoveCredentialFromUser(userId, keyId);
+
+        var email = await _fido2Storage.GetUserEmailAsync(userId);
+        if (email != null)
+        {
+            _messageService.SendEmailUsingTemplate(email, "SecurityKey_Removed", new Dictionary<string, string>
+            {
+                
+            });
+        }
+       
     }
 }

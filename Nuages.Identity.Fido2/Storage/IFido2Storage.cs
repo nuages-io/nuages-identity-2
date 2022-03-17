@@ -5,7 +5,8 @@ namespace Nuages.Fido2.Storage;
 
 public interface IFido2Storage
 {
-    Task<Fido2User?> GetUserAsync(string userName);
+    Task<Fido2User?> GetUserByUsernameAsync(string userName);
+    Task<string?> GetUserEmailAsync(byte[] id);
     Task<List<IFido2Credential>> GetCredentialsByUserAsync(Fido2User user);
     Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] argsCredentialIdn);
     Task AddCredentialToUserAsync(Fido2User user, IFido2Credential credential);

@@ -13,4 +13,8 @@
       <PackageReference Include="Nuages.Web" Version="1.3.14" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
+    </ItemGroup>
+
 </Project>

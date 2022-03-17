@@ -15,7 +15,7 @@ public class Fido2UserStore<TUser> : IFido2UserStore
         _userManager = userManager;
     }
 
-    public async Task<Fido2User?> GetUserAsync(string userName)
+    public async Task<Fido2User?> GetUserByUsernameAsync(string userName)
     {
         var user = await _userManager.FindByNameAsync(userName);
         if (user != null)
@@ -29,5 +29,15 @@ public class Fido2UserStore<TUser> : IFido2UserStore
         }
 
         return null;
+    }
+
+    public async Task<string?> GetUserEmailAsync(byte[] id)
+    {
+        var user = await _userManager.FindByIdAsync(Encoding.UTF8.GetString(id));
+
+        if (user == null)
+            return null;
+
+        return await _userManager.GetEmailAsync(user);
     }
 }

@@ -21,9 +21,14 @@ public class MongoFido2Storage : IFido2Storage
         _options = options.Value;
     }
     
-    public async Task<Fido2User?> GetUserAsync(string userName)
+    public async Task<Fido2User?> GetUserByUsernameAsync(string userName)
     {
-        return await _userStore.GetUserAsync(userName);
+        return await _userStore.GetUserByUsernameAsync(userName);
+    }
+
+    public async  Task<string?> GetUserEmailAsync(byte[] id)
+    {
+        return await _userStore.GetUserEmailAsync(id);
     }
 
     public Task<List<IFido2Credential>> GetCredentialsByUserAsync(Fido2User user)
