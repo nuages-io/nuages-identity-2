@@ -1,6 +1,5 @@
 using Fido2NetLib;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using Nuages.Fido2.Storage;
 
 namespace Nuages.Fido2.AspNetIdentity;

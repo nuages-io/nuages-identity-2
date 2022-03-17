@@ -7,7 +7,7 @@ public interface IFido2Storage
 {
     Task<Fido2User?> GetUserAsync(string userName);
     Task<List<IFido2Credential>> GetCredentialsByUserAsync(Fido2User user);
-    Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] argsCredentialId, object cancellationToken);
+    Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] argsCredentialIdn);
     Task AddCredentialToUserAsync(Fido2User user, IFido2Credential credential);
     
     void Initialize();
@@ -18,7 +18,7 @@ public interface IFido2Storage
 
     Task<IFido2Credential?> GetCredentialByIdAsync(byte[] id);
     
-    Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] argsUserHandle, object cancellationToken);
+    Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] argsUserHandl);
     Task UpdateCounterAsync(byte[] resCredentialId, uint resCounter);
     Task RemoveCredentialFromUser(byte[] userId, byte[]  keyId);
 }

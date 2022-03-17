@@ -63,14 +63,14 @@ public class Fido2Service : IFido2Service
         }
     }
 
-    public async Task<Fido2NetLib.Fido2.CredentialMakeResult> MakeNewCredentialAsync(AuthenticatorAttestationRawResponse attestationResponse, CancellationToken cancellationToken)
+    public async Task<Fido2NetLib.Fido2.CredentialMakeResult> MakeNewCredentialAsync(AuthenticatorAttestationRawResponse attestationResponse)
     {
         var jsonOptions = _contextAccessor.HttpContext!.Session.GetString("fido2.attestationOptions");
         var options = CredentialCreateOptions.FromJson(jsonOptions);
 
         async Task<bool> Callback(IsCredentialIdUniqueToUserParams args)
         {
-            var users = await _fido2Storage.GetUsersByCredentialIdAsync(args.CredentialId, cancellationToken);
+            var users = await _fido2Storage.GetUsersByCredentialIdAsync(args.CredentialId);
             return users.Count <= 0;
         }
 
@@ -111,7 +111,7 @@ public class Fido2Service : IFido2Service
        return options;
     }
 
-    public async Task<AssertionVerificationResult> MakeAssertionAsync(AuthenticatorAssertionRawResponse clientResponse, CancellationToken cancellationToken)
+    public async Task<AssertionVerificationResult> MakeAssertionAsync(AuthenticatorAssertionRawResponse clientResponse)
     {
         // 1. Get the assertion options we sent the client
         var jsonOptions = _contextAccessor.HttpContext!.Session.GetString("fido2.assertionOptions");
@@ -125,7 +125,7 @@ public class Fido2Service : IFido2Service
 
         async Task<bool> Callback(IsUserHandleOwnerOfCredentialIdParams args)
         {
-            var storedCreds = await _fido2Storage.GetCredentialsByUserHandleAsync(args.UserHandle, cancellationToken);
+            var storedCreds = await _fido2Storage.GetCredentialsByUserHandleAsync(args.UserHandle);
             return storedCreds.Exists(c => c.Descriptor.Id.SequenceEqual(args.CredentialId));
         }
 

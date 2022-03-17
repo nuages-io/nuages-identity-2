@@ -39,11 +39,11 @@ public class Fido2Controller : Controller
     }
     
     [HttpPost("makeCredential")]
-    public async Task<Fido2NetLib.Fido2.CredentialMakeResult> MakeCredential([FromBody] AuthenticatorAttestationRawResponse attestationResponse, CancellationToken cancellationToken)
+    public async Task<Fido2NetLib.Fido2.CredentialMakeResult> MakeCredential([FromBody] AuthenticatorAttestationRawResponse attestationResponse)
     {
         try
         {
-            return await _fido2Service.MakeNewCredentialAsync(attestationResponse, cancellationToken);
+            return await _fido2Service.MakeNewCredentialAsync(attestationResponse);
         }
         catch (Exception e)
         {
@@ -81,11 +81,11 @@ public class Fido2Controller : Controller
     
     [HttpPost]
     [Route("makeAssertion")]
-    public async Task<JsonResult> MakeAssertion([FromBody] AuthenticatorAssertionRawResponse clientResponse, CancellationToken cancellationToken)
+    public async Task<JsonResult> MakeAssertion([FromBody] AuthenticatorAssertionRawResponse clientResponse)
     {
         try
         {
-            var res = await _fido2Service.MakeAssertionAsync(clientResponse, cancellationToken);
+            var res = await _fido2Service.MakeAssertionAsync(clientResponse);
 
             if (res.Status == "ok")
             {

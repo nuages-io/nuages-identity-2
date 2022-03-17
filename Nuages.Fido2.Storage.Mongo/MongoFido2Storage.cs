@@ -33,7 +33,7 @@ public class MongoFido2Storage : IFido2Storage
         return Task.FromResult(res.Select(c => (IFido2Credential) c).ToList());
     }
 
-    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId, object cancellationToken)
+    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId)
     {
         var creds = _credentialCollection.AsQueryable()
             .Where(c => c.Descriptor.Id == credentialId);
@@ -92,7 +92,7 @@ public class MongoFido2Storage : IFido2Storage
                             .FirstOrDefault(c => c.Descriptor.Id == id));
     }
 
-    public  Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] userHandle, object cancellationToken)
+    public  Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] userHandle)
     {
         return Task.FromResult(_credentialCollection.AsQueryable().Where(c => c.UserHandle == userHandle).ToList().Select(c => (IFido2Credential) c).ToList());
     }

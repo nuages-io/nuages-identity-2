@@ -177,7 +177,7 @@ switch (storage)
         break;
     }
     default:
-        throw new ArgumentOutOfRangeException();
+        throw new Exception("Invalid storage");
 }
 
 identityBuilder.AddNuagesIdentityServices(configuration, _ => { });
@@ -217,7 +217,7 @@ switch (storage)
         break;
     }
     default:
-        throw new ArgumentOutOfRangeException();
+        throw new Exception("Invalid storage");
 }
 
 services.AddNuagesAuthentication()

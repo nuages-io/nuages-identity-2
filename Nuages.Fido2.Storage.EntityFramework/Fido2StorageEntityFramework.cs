@@ -30,7 +30,7 @@ public class Fido2StorageEntityFramework<T> : IFido2Storage
         return res.Select(c => (IFido2Credential) c).ToList();
     }
 
-    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId, object cancellationToken)
+    public Task<List<Fido2User>> GetUsersByCredentialIdAsync(byte[] credentialId)
     {
         var idBase64 = Convert.ToBase64String(credentialId);
         
@@ -87,7 +87,7 @@ public class Fido2StorageEntityFramework<T> : IFido2Storage
             .FirstOrDefault(c => c.DescriptorIdBase64 == base64Id));
     }
 
-    public Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] userHandle, object cancellationToken)
+    public Task<List<IFido2Credential>> GetCredentialsByUserHandleAsync(byte[] userHandle)
     {
         var base64Handle = Convert.ToBase64String(userHandle);
         

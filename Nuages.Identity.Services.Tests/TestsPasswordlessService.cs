@@ -23,7 +23,7 @@ public class TestsPasswordlessService
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
-        var url = await service.GetPasswordlessUrl(user.Id, null);
+        var url = await service.GetPasswordlessUrl(user.Id);
 
 
         Assert.NotNull(url);

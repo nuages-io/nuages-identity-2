@@ -8,9 +8,9 @@ namespace Nuages.Fido2;
 public interface IFido2Service
 {
     Task<CredentialCreateOptions> MakeCredentialOptionsAsync(MakeCredentialOptionsRequest request);
-    Task<Fido2NetLib.Fido2.CredentialMakeResult> MakeNewCredentialAsync(AuthenticatorAttestationRawResponse attestationResponse, CancellationToken cancellationToken);
+    Task<Fido2NetLib.Fido2.CredentialMakeResult> MakeNewCredentialAsync(AuthenticatorAttestationRawResponse attestationResponse);
     Task<AssertionOptions> AssertionOptionAsync(AssertionOptionsRequest request);
-    Task<AssertionVerificationResult> MakeAssertionAsync(AuthenticatorAssertionRawResponse clientResponse, CancellationToken cancellationToken);
+    Task<AssertionVerificationResult> MakeAssertionAsync(AuthenticatorAssertionRawResponse clientResponse);
 
     Task<List<IFido2Credential>> GetSecurityKeysForUser(byte[] userId);
 

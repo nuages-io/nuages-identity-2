@@ -18,7 +18,7 @@ public class PasswordlessLogin : PageModel
         _passwordlessService = passwordlessService;
     }
 
-    public virtual async Task<IActionResult> OnGet(string token, string userId, string returnUrl = null)
+    public virtual async Task<IActionResult> OnGet(string token, string userId, string? returnUrl = null)
     {
         try
         {
