@@ -169,7 +169,6 @@ switch (storage)
         identityBuilder.AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
         {
             options.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
-            options.Database = configuration["Nuages:Mongo:Database"];
 
             if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser<string>)))
                 BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
