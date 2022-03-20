@@ -40,7 +40,7 @@ public static class OpenIdDictConfigExtensions
                         var url = new MongoUrl(connectionString);
                         
                         options.UseMongoDb()
-                            .UseDatabase(new MongoClient()
+                            .UseDatabase(new MongoClient(connectionString)
                                 .GetDatabase(url.DatabaseName));
 
                         break;

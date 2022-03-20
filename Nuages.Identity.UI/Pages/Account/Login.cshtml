@@ -50,7 +50,7 @@
                 </div>
             </div>
             <button v-on:click.prevent="login" class="primary full items-center" :disabled="status == 'sending'">
-                @Localizer["login:connect"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+                @Localizer["login:connect"]<i class="fas fa-spinner fa-spin ml-2" v-show="status == 'sending'" style="display: none"></i>
             </button>
         </fieldset>
 

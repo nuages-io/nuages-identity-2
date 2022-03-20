@@ -71,7 +71,7 @@ var App =
                                             break;
                                         }
 
-                                        this.status = "";
+                                        self.status = "";
                                         //NotWithinDateRange,
                                         //AccountNotConfirmed,
                                         //PasswordNeverSet,
