@@ -135,6 +135,7 @@ public partial class IdentityCdkStack
         role.AddManagedPolicy(CreateSESRolePolicy("UI"));
         role.AddManagedPolicy(CreateSnsRolePolicy("UI"));
         role.AddManagedPolicy(CreateXrayRolePolicy("UI"));
+        role.AddManagedPolicy(CreateSecretsManagerPolicy("UI"));
         return role;
     }
 }

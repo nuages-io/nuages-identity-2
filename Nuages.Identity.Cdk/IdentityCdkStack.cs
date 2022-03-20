@@ -141,6 +141,25 @@ public partial class IdentityCdkStack : Stack
         });
     }
 
+    protected virtual ManagedPolicy CreateSecretsManagerPolicy(string suffix = "")
+    {
+        return new ManagedPolicy(this, MakeId("SecretsManagerRole" + suffix), new ManagedPolicyProps
+        {
+            Document = new PolicyDocument(new PolicyDocumentProps
+            {
+                Statements = new[]
+                {
+                    new PolicyStatement(new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] {  "secretsmanager:GetSecretValue" },
+                        Resources = new[] { "*" }
+                    })
+                }
+            })
+        });
+    }
+    
     private ManagedPolicy CreateXrayRolePolicy(string suffix)
     {
         return new ManagedPolicy(this, MakeId("Xray" + suffix), new ManagedPolicyProps

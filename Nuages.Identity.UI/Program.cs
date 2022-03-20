@@ -13,6 +13,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
+using Nuages.AWS.Secrets;
 using Nuages.Fido2.AspNetIdentity;
 using Nuages.Fido2.Storage.EntifyFramework.MySql;
 using Nuages.Fido2.Storage.EntityFramework;
@@ -69,6 +70,10 @@ if (!builder.Environment.IsDevelopment())
             config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
     }
 }
+
+var secretProvider = new AWSSecretProvider();
+secretProvider.TransformSecrets(builder.Configuration);
+
 
 var services = builder.Services;
 
