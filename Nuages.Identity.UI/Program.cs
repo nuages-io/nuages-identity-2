@@ -58,6 +58,7 @@ if (!builder.Environment.IsDevelopment())
         {
             configureSource.Path = config.ParameterStore.Path;
             configureSource.Optional = true;
+            configureSource.ReloadAfter = TimeSpan.FromMinutes(15);
         });
     }
 
@@ -65,7 +66,7 @@ if (!builder.Environment.IsDevelopment())
     {
         configBuilder.AddAppConfig(config.AppConfig.ApplicationId,
             config.AppConfig.EnvironmentId,
-            config.AppConfig.ConfigProfileId, true);
+            config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
     }
 }
 
