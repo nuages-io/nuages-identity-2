@@ -36,9 +36,12 @@ public static class OpenIdDictConfigExtensions
                 {
                     case "MongoDb":
                     {
+                        var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
+                        var url = new MongoUrl(connectionString);
+                        
                         options.UseMongoDb()
-                            .UseDatabase(new MongoClient(configuration["Nuages:OpenIdDict:ConnectionString"])
-                                .GetDatabase(configuration["Nuages:OpenIdDict:Database"]));
+                            .UseDatabase(new MongoClient()
+                                .GetDatabase(url.DatabaseName));
 
                         break;
                     }
