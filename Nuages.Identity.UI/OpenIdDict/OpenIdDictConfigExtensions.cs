@@ -79,7 +79,7 @@ public static class OpenIdDictConfigExtensions
 
                 // Mark the "email", "profile" and "roles" scopes as supported scopes.
                 options.RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile,
-                    OpenIddictConstants.Scopes.Roles);
+                    OpenIddictConstants.Scopes.Roles,  OpenIddictConstants.Scopes.OpenId, "IdentityAPI");
 
                 options.AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
@@ -89,10 +89,10 @@ public static class OpenIdDictConfigExtensions
 
                 options.UseAspNetCore()
                     .EnableAuthorizationEndpointPassthrough()
-                    .EnableLogoutEndpointPassthrough()
-                    .EnableUserinfoEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
-                    .EnableVerificationEndpointPassthrough()
+                    .EnableLogoutEndpointPassthrough()
+                    //.EnableUserinfoEndpointPassthrough()
+                    //.EnableVerificationEndpointPassthrough()
 #if DEBUG
                     .DisableTransportSecurityRequirement()
 #endif

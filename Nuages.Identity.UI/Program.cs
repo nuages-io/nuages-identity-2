@@ -259,6 +259,8 @@ services.AddNuagesOpenIdDict(configuration, _ => { });
 
 services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
+services.AddCors( new []{ "http://localhost:8080"} );
+
 var app = builder.Build();
 
 if (builder.Environment.IsDevelopment())
@@ -280,6 +282,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors(CorsConfigExtensions.AllowSpecificOrigins);
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -292,6 +296,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapDefaultControllerRoute();
     endpoints.MapHealthChecks("health");
 });
+
 
 
 app.Run();

@@ -50,6 +50,7 @@ else
         var recaptcha = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
         var emailInitialValue = '@ViewData["email"]'
+        var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
 
     <script src="/js/pages/externalLogin.js"></script>
