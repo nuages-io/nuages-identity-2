@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="appsettings.mysql.json" CopyToOutputDirectory="Always" Condition="Exists('appsettings.mysql.json')" />
+        <Content Include="appsettings.mysql2.json" CopyToOutputDirectory="Always" Condition="Exists('appsettings.mysql.json')" />
     </ItemGroup>
 
     <ItemGroup>

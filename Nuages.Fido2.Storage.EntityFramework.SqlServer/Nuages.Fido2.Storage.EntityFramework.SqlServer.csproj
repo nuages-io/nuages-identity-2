@@ -18,7 +18,6 @@
 
     <ItemGroup>
         <None Remove="appsettings.sqlserver.json" />
-        <Content Include="appsettings.sqlserver.json" CopyToOutputDirectory="Always" Condition="Exists('appsettings.sqlserver.json')" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Nuages.Fido2.Storage.EntityFramework\Nuages.Fido2.Storage.EntityFramework.csproj" />

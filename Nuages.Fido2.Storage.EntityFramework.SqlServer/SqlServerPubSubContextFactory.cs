@@ -13,7 +13,7 @@ public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<Identit
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
-            .AddJsonFile("appsettings.sqlserver.json", false)
+            .AddJsonFile("appsettings.sqlserver2.json", false)
             .Build();
         
         var optionsBuilder = new DbContextOptionsBuilder<IdentityFido2SqlServerDbContext>();

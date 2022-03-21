@@ -15,7 +15,7 @@ public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<Identit
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
-            .AddJsonFile("appsettings.mysql.json", false)
+            .AddJsonFile("appsettings.mysql2.json", false)
             .Build();
         
         var optionsBuilder = new DbContextOptionsBuilder<IdentityFido2MySqlDbContext>();
