@@ -59,17 +59,17 @@ public class AuthorizationCodeFlowHandler : IAuthorizationCodeFlowHandler
                         "The user is no longer allowed to sign in."
                 }));
 
-        // var error = _audienceValidator.CheckAudience(openIdDictRequest, principal);
-        // if (!string.IsNullOrEmpty(error))
-        // {
-        //     var properties = new AuthenticationProperties(new Dictionary<string, string?>
-        //     {
-        //         [OpenIddictServerAspNetCoreConstants.Properties.Error] = "invalid_audience",
-        //         [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = error
-        //     });
-        //
-        //     return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
-        // }
+        var error = _audienceValidator.CheckAudience(openIdDictRequest, principal);
+        if (!string.IsNullOrEmpty(error))
+        {
+            var properties = new AuthenticationProperties(new Dictionary<string, string?>
+            {
+                [OpenIddictServerAspNetCoreConstants.Properties.Error] = "invalid_audience",
+                [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] = error
+            });
+        
+            return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
+        }
 
         foreach (var claim in principal!.Claims)
             claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));

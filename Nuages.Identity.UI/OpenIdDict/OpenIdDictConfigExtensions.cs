@@ -23,6 +23,7 @@ public static class OpenIdDictConfigExtensions
         services.AddScoped<ILogoutEndpoint, LogoutEndpoint>();
         services.AddScoped<IPasswordFlowHandler, PasswordFlowHandler>();
         services.AddScoped<ITokenEndpoint, TokenEndpoint>();
+        services.AddScoped<IUserInfoEndpoint, UserInfoEndpoint>();
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
 
@@ -79,7 +80,7 @@ public static class OpenIdDictConfigExtensions
 
                 // Mark the "email", "profile" and "roles" scopes as supported scopes.
                 options.RegisterScopes(OpenIddictConstants.Scopes.Email, OpenIddictConstants.Scopes.Profile,
-                    OpenIddictConstants.Scopes.Roles,  OpenIddictConstants.Scopes.OpenId, "IdentityAPI");
+                    OpenIddictConstants.Scopes.Roles,  OpenIddictConstants.Scopes.OpenId);
 
                 options.AllowAuthorizationCodeFlow()
                     .AllowRefreshTokenFlow()
@@ -91,7 +92,7 @@ public static class OpenIdDictConfigExtensions
                     .EnableAuthorizationEndpointPassthrough()
                     .EnableTokenEndpointPassthrough()
                     .EnableLogoutEndpointPassthrough()
-                    //.EnableUserinfoEndpointPassthrough()
+                    .EnableUserinfoEndpointPassthrough()
                     //.EnableVerificationEndpointPassthrough()
 #if DEBUG
                     .DisableTransportSecurityRequirement()
