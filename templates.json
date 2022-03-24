@@ -6,7 +6,7 @@
       {
         "Language" : "en",
         "EmailSubject" : "[{{AppName}}] Confirm your email",
-        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        Please confirm your email by <a href='{{Link}}'>clicking here</a>     \n    </p>\n    Thanks\n</div>\n"        
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        Please confirm your email by <a href='{{Link}}'>clicking here</a>     \n    </p>\n    Thanks\n</div>\n"
       },
       {
         "Language" : "fr",
@@ -15,7 +15,7 @@
       }
     ]
   },
-  { 
+  {
     "Key" : "Confirm_Email_Change",
     "Data" : [
       {
@@ -48,7 +48,7 @@
   {
     "Key" : "Password_Change",
     "Data" : [
-    
+
       {
         "Language" : "en",
         "EmailSubject" : "[{{AppName}}] Password change",
@@ -61,17 +61,13 @@
       }
     ]
   },
-  {    
+  {
     "Key" : "Password_Reset",
     "Data" : [
       {
         "Language" : "en",
         "EmailSubject" : "[{{AppName}}] Password reset request",
-        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        A password change request was initiated for your account.\n        <br><br>\n        <a href='{{Link}}'>Please click this link to select a new password</a>\n     \n    </p>\n    Thanks\n</div>\n",
-        "EmailAttachments" : [
-
-        ],
-        "SmsText" : null
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        A password change request was initiated for your account.\n        <br><br>\n        <a href='{{Link}}'>Please click this link to select a new password</a>\n     \n    </p>\n    Thanks\n</div>\n"
       },
       {
         "Language" : "fr",
