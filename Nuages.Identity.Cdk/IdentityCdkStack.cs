@@ -280,7 +280,7 @@ public partial class IdentityCdkStack : Stack
                             Template = new CfnTemplate.TemplateProperty
                             {
                                 TemplateName = key,
-                                HtmlPart =  WebUtility.HtmlEncode(d.EmailHtml),
+                                //HtmlPart =  WebUtility.HtmlEncode(d.EmailHtml),
                                 SubjectPart = d.EmailSubject,
                                 TextPart = htmlDoc.DocumentNode.InnerText
                             }
