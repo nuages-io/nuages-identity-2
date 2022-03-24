@@ -266,7 +266,7 @@ public partial class IdentityCdkStack : Stack
 
             if (data != null)
             {
-                foreach (var t in data)
+                foreach (var t in data.OrderBy(t => t.Key))
                 {
                     foreach (var d in t.Data)
                     {
