@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
 using Nuages.Web.Exceptions;
 

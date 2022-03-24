@@ -3,7 +3,7 @@ using Fido2NetLib.Objects;
 using Nuages.Fido2.Models;
 using Nuages.Fido2.Storage;
 using Nuages.Identity.Services.Email;
-using Nuages.Sender.API.Sdk;
+using Nuages.Identity.Services.Email.Sender;
 
 namespace Nuages.Fido2;
 

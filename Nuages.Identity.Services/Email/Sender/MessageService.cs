@@ -1,9 +1,8 @@
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Localization.CultureProvider;
-using Nuages.Sender.API.Sdk;
 
-namespace Nuages.Identity.Services.Email;
+namespace Nuages.Identity.Services.Email.Sender;
 
 public class MessageService : IMessageService
 {
@@ -65,15 +64,4 @@ public class MessageService : IMessageService
 
         return culture;
     }
-}
-
-public interface IMessageService
-{
-    void SendEmailUsingTemplate(
-        string to,
-        string template,
-        IDictionary<string, string>? fields = null,
-        string? language = null);
-
-    void SendSms(string to, string text);
 }

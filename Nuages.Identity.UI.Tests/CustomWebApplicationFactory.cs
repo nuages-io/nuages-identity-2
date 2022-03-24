@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Sender.API.Sdk;
+using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
 using Nuages.Web.Recaptcha;
 using Xunit;
@@ -61,7 +62,7 @@ public class CustomWebApplicationFactory<TStartup>
 
             services.AddScoped<IRecaptchaValidator, DummyRecaptchaValidator>();
             services.AddScoped<IMessageSender, DummyMessageSender>();
-
+            
             services.AddScoped<IRuntimeConfiguration, RuntimeTestsConfiguration>();
         });
     }

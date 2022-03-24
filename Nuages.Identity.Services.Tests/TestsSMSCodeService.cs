@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Login;
 using Nuages.Web;
 using Nuages.Web.Exceptions;

@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web;
 using Nuages.Web.Exceptions;

@@ -16,7 +16,6 @@ var App =
                     var self = this;
                     var e = self.email;
 
-                    alert(returnUrl);
                     this.status = "sending";
 
                     fetch("/api/account/passwordlessLogin", {

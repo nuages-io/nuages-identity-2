@@ -4,6 +4,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Email.Sender;
 
 namespace Nuages.Identity.Services.Register;
 

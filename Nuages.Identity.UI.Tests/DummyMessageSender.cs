@@ -1,4 +1,7 @@
-using Nuages.Sender.API.Sdk;
+
+
+using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Email.Sender;
 
 namespace Nuages.Identity.UI.Tests;
 

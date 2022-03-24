@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Password;
 using Nuages.Web;
 using Xunit;

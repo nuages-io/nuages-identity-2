@@ -74,7 +74,6 @@ if (!builder.Environment.IsDevelopment())
 var secretProvider = new AWSSecretProvider();
 secretProvider.TransformSecrets(builder.Configuration);
 
-
 var services = builder.Services;
 
 services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
@@ -259,7 +258,7 @@ services.AddNuagesOpenIdDict(configuration, _ => { });
 
 services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-services.AddCors( new []{ "http://localhost:8080"} );
+services.AddCors( configuration["AllowedCorsDomain"].Split(",") );
 
 var app = builder.Build();
 
@@ -296,8 +295,6 @@ app.UseEndpoints(endpoints =>
     endpoints.MapDefaultControllerRoute();
     endpoints.MapHealthChecks("health");
 });
-
-
 
 app.Run();
 

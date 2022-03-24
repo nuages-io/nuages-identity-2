@@ -2,12 +2,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
+using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
-using Nuages.Sender.API.Sdk;
+
 using Nuages.Web.Utilities;
 
 namespace Nuages.Identity.Services;
@@ -22,7 +23,6 @@ public static class NuagesIdentityConfigExtensions
 
         services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
 
-        services.AddSenderClient(configuration);
 
         services.Configure(configure);
 
@@ -55,7 +55,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IProfileService, ProfileService>();
 
         services.AddScoped<IMessageService, MessageService>();
-
+        services.AddScoped<IMessageSender, MessageSenderToConsole>();
 
         return builder;
     }
