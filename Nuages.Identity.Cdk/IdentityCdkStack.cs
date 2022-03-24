@@ -26,7 +26,7 @@ public partial class IdentityCdkStack : Stack
     {
         CreateWebUi();
 
-        CreateEmailTemplates();
+        //CreateEmailTemplates();
     }
     
     private ManagedPolicy CreateLambdaBasicExecutionRolePolicy(string suffix)
