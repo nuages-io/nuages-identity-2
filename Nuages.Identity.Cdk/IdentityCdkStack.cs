@@ -284,7 +284,10 @@ public partial class IdentityCdkStack : Stack
                                 SubjectPart = d.EmailSubject,
                                 TextPart = htmlDoc.DocumentNode.InnerText
                             }
+
                         });
+                        
+                        
                     }
                 }
             }

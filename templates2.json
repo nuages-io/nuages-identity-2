@@ -1,0 +1,18 @@
+[
+
+  {
+    "Key" : "Confirm_Email",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Confirm your email",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        Please confirm your email by <a href='{{Link}}'>clicking here</a>     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Confirmation de votre courriel",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        SVP confirmer votre courriel <a href='{{Link}}'>en cliquant içi</a>   \n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  }
+]
