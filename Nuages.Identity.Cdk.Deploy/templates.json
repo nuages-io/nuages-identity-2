@@ -1,0 +1,233 @@
+[
+
+  {
+    "Key" : "Confirm_Email",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Confirm your email",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        Please confirm your email by <a href='{{Link}}'>clicking here</a>     \n    </p>\n    Thanks\n</div>\n"        
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Confirmation de votre courriel",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        SVP confirmer votre courriel <a href='{{Link}}'>en cliquant içi</a>   \n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  { 
+    "Key" : "Confirm_Email_Change",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Email change request",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        Please confirm your new email by <a href='{{Link}}'>clicking here</a>     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Changement de votre courriel",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        SVP confirmer votre nouveau courriel <a href='{{Link}}'>en cliquant içi</a>   \n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Login_LockedOut",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Account locked out",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        You account has been locked out due to too many failed login attempt. Please try again in {{Minutes}} minutes\n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Compte vérouillé",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Votre compte a été verrouillé en raison d'un trop grand nombre de tentatives de connexion échouées. SVP essayer à nouveau dans {{Minutes}} minutes\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Password_Change",
+    "Data" : [
+    
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Password change",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        A password change request was sent to you.\n        <br><br>\n        <a href='{{Link}}'>Please follow this link to change you password</a>\n     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Changement de mot de passe",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Une demande de modification de mot de passe vous a été tranmis.\n        <br><br>\n        <a href='{{Link}}'>Cliquez ce lien pour modifier votre mot de passe</a>\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {    
+    "Key" : "Password_Reset",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Password reset request",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        A password change request was initiated for your account.\n        <br><br>\n        <a href='{{Link}}'>Please click this link to select a new password</a>\n     \n    </p>\n    Thanks\n</div>\n",
+        "EmailAttachments" : [
+
+        ],
+        "SmsText" : null
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Récupération de mot de passe",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Une demande de récupération de mot de passe a été initiée pour votre compte.\n        <br><br>\n        <a href='{{Link}}'>Cliquez ce lien afin de choisir un nouveau mot de passe</a>\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Passwordless_Login",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Passwordless Login Request",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        You have request a passwordless login link.\n        <br><br>\n        <a href='{{Link}}'>Please follow this link to log in</a>\n     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Connection sans mot de passe",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Vous avez effectué une demande de connection sans mot de passe.\n        <br><br>\n        <a href='{{Link}}'>Cliquez ce lien pour vous connecter.</a>\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Fallback_Phone_Added",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Fallback phone number has been added to your account",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        A fallback phone number {{PhoneNumber}} was added to your account. <br/>\n        Providing a fallback SMS number will allow {{AppName}} to send your two-factor authentication codes to an alternate device if you lose your primary device.     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Un no. de téléphone de secours a été ajouté à votre compte",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        Un no. de téléphone de secours {{PhoneNumber}} a été ajouté à votre compte. <br/>\n        Fournir un no. de téléphone de secours permet à {{AppName}} de vous envoyer un code d'authentificsation à un autre appareil si vous perdez votre appareil principal.   \n    </p>\n    Thanks\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Fallback_Phone_Removed",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Fallback phone number has been removed from your account",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        A fallback phone number {{PhoneNumber}} was removed from your account. <br/>\n        Providing a fallback SMS number will allow {{AppName}} to send your two-factor authentication codes to an alternate device if you lose your primary device.     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Un no. de téléphone de secours a été supprimé de votre compte",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        Un no. de téléphone de secours {{PhoneNumber}} a été supprimé de votre compte. <br/>\n        Fournir un no. de téléphone de secours permet à {{AppName}} de vous envoyer un code d'authentificsation à un autre appareil si vous perdez votre appareil principal.   \n    </p>\n    Thanks\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Password_Was_Changed",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Password changed",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n       Your password was changed.\n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Mot de passe modifié",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Votre mot de passe a été modifié.\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Password_Was_Added",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Password added",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n       Your password was added.\n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Mot de passe ajouté",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Votre mot de passe a été ajouté.\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "2FA_Enabled",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Two-factor authentication enabled",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        You’ve just enabled two-factor authentication.\n        <br><br>\n        Please take a moment to download your recovery codes and set a fallback SMS phone number at:\n        <br><br>\n        {{Link}}\n        <br><br>\n        Recovery codes are the only way to access your account again. By saving your\n        recovery codes, you’ll be able to regain access if you:\n        <br><br>\n        <ul>\n            <li>\n                Lose your phone\n            </li>\n            <li>\n                Delete your authenticator application\n            </li>\n            <li>\n                Change your phone number\n            </li>\n        </ul>\n        <br><br>\n\n        To disable two-factor authentication, visit<br>\n        {{Link}}\n     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Authentification multi-facteurs activée",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Vous venez d'activer l'authentification à deux facteurs.\n        <br><br>\n        Veuillez prendre un moment pour télécharger vos codes de récupération et définir un numéro de téléphone SMS de secours à l'adresse suivante :\n        <br><br>\n        {{Link}}\n        <br><br>\n        Les codes de récupération sont le seul moyen d'accéder à nouveau à votre compte. En enregistrant votre\n        codes de récupération, vous serez en mesure de rétablir l'accès si vous :\n        <br><br>\n        <ul>\n            <li>\n                Perdez votre téléphone\n            </li>\n            <li>\n                Supprimer votre application d'authentification\n            </li>\n            <li>\n                Changez votre numéro de téléphone\n            </li>\n        </ul>\n        <br><br>\n\n        Pour désactiver l'authentification à deux facteurs, visitez <br>\n        {{Link}}\n     \n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "2FA_Disabled",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Two-factor authentication disabled",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        It looks like you disabled two-factor authentication on your {{AppName}} account.\n        <br><br>\n        If you want to re-enable two-factor authentication, head on over to: {{Link}}     \n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Authentification multi-facteurs désactivée",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Il semblerait que vous ayez désactivé l'authentification à deux facteurs sur votre compte {{AppName}}.\n        <br><br>\n        Si vous souhaitez réactiver l'authentification à deux facteurs, rendez-vous sur : {{Link}}     \n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "Password_Was_Changed_ByAdmin",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Password change",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        The pasword was changed for your account.\n        <br><br>\n        User name : {{UserName}}\n        <br>\n        Password : {{Password}}     \n    </p>\n    {% if MustCHangePassword == \"True\" %}\n    You will have to change you password when you log in.\n    {% endif %}\n    <br><br>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Changement de mot de passe",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Votre mot de pass a été changé.\n        <br><br>\n        Nom d'utilisateur : {{UserName}}\n        <br>\n        Mot de passe : {{Password}}     \n    </p>\n    {% if MustCHangePassword == \"True\"  %}\n    Vous devrez modifier votre mot de passe lors de la prochaine ouverture de session.\n    {% endif %}\n    <br><br>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "SecurityKey_Added",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Security key added",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n      A security key was added to your account.\n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Clé de sécurité ajoutée",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Une clé de sécurité a été ajoutée à votre compte.\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  },
+  {
+    "Key" : "SecurityKey_Removed",
+    "Data" : [
+      {
+        "Language" : "en",
+        "EmailSubject" : "[{{AppName}}] Security key removed",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n      A security key was removed from your account.\n    </p>\n    Thanks\n</div>\n"
+      },
+      {
+        "Language" : "fr",
+        "EmailSubject" : "[{{AppName}}] Clé de sécurité supprimée",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Une clé de sécurité a été supprimée de votre compte.\n    </p>\n    Merci\n</div>\n"
+      }
+    ]
+  }
+]

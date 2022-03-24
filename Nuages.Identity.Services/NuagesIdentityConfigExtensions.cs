@@ -54,8 +54,6 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IMFAService, MFAService>();
         services.AddScoped<IProfileService, ProfileService>();
 
-        services.AddScoped<IMessageService, MessageService>();
-        services.AddScoped<IMessageSender, MessageSenderToConsole>();
 
         return builder;
     }

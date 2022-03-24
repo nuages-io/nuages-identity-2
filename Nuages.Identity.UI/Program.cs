@@ -21,9 +21,11 @@ using Nuages.Fido2.Storage.EntityFramework.SqlServer;
 using Nuages.Fido2.Storage.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Storage.MySql;
 using Nuages.Identity.Storage.SqlServer;
 using Nuages.Identity.UI;
+using Nuages.Identity.UI.AWS;
 using Nuages.Identity.UI.OpenIdDict;
 using Nuages.Localization;
 using Nuages.Localization.Storage.Config.Sources;
@@ -194,6 +196,14 @@ var fidoBuilder2 = identityBuilder.AddNuagesFido2(options =>
     options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
     options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
 });
+
+identityBuilder.AddMessageService(configure =>
+{
+    configure.SendFromEmail = configuration["Nuages:MessageService:SendFromEmail"];
+    configure.DefaultCulture = configuration["Nuages:MessageService:DefaultCulture"];
+});
+
+services.AddAWSSender();
 
 switch (storage)
 {

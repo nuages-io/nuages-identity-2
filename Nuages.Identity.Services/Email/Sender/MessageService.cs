@@ -9,12 +9,14 @@ public class MessageService : IMessageService
     private readonly NuagesIdentityOptions _options;
     private readonly IServiceProvider _provider;
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly MessageServiceOptions _serviceOptions;
 
     public MessageService(IOptions<NuagesIdentityOptions> options, IServiceProvider provider,
-        IServiceScopeFactory serviceScopeFactory)
+        IServiceScopeFactory serviceScopeFactory, IOptions<MessageServiceOptions> senderOptions)
     {
         _provider = provider;
         _serviceScopeFactory = serviceScopeFactory;
+        _serviceOptions = senderOptions.Value;
         _options = options.Value;
     }
 
@@ -33,8 +35,8 @@ public class MessageService : IMessageService
         Task.Run(async () =>
         {
             using var scope = _serviceScopeFactory.CreateScope();
-            var messageSender = scope.ServiceProvider.GetRequiredService<IMessageSender>();
-            await messageSender.SendEmailUsingTemplateAsync(to, template, fields, language);
+            var messageSender = scope.ServiceProvider.GetRequiredService<IEmailMessageSender>();
+            await messageSender.SendEmailUsingTemplateAsync(_serviceOptions.SendFromEmail, to, template, language, fields);
         });
     }
 
@@ -43,7 +45,7 @@ public class MessageService : IMessageService
         Task.Run(async () =>
         {
             using var scope = _serviceScopeFactory.CreateScope();
-            var messageSender = scope.ServiceProvider.GetRequiredService<IMessageSender>();
+            var messageSender = scope.ServiceProvider.GetRequiredService<ISmsMessageSender>();
             await messageSender.SendSmsAsync(to, text);
         });
     }
@@ -62,6 +64,9 @@ public class MessageService : IMessageService
                 break;
         }
 
-        return culture;
+        if (string.IsNullOrEmpty(culture))
+            culture = _serviceOptions.DefaultCulture;
+        
+        return culture!.Split("-").First();
     }
 }

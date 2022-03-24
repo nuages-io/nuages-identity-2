@@ -1,7 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using Amazon.CDK;
 using Amazon.CDK.AWS.IAM;
+using Amazon.CDK.AWS.SES;
 using Constructs;
+using HtmlAgilityPack;
+// ReSharper disable ObjectCreationAsStatement
 
 namespace Nuages.Identity.CDK;
 
@@ -16,9 +20,13 @@ public partial class IdentityCdkStack : Stack
     protected string AssetUi { get; set; } = "";
     protected string AssetApi { get; set; } = "";
 
+    public string? TemplateFileName { get; set; }
+    
     protected void CreateTemplate()
     {
         CreateWebUi();
+
+        CreateEmailTemplates();
     }
     
     private ManagedPolicy CreateLambdaBasicExecutionRolePolicy(string suffix)
@@ -248,6 +256,41 @@ public partial class IdentityCdkStack : Stack
         });
     }
 
+    protected virtual void CreateEmailTemplates()
+    {
+        if (!string.IsNullOrEmpty(TemplateFileName))
+        {
+            var json = File.ReadAllText(TemplateFileName);
+            var data = JsonSerializer.Deserialize<List<EmailTemplate>>(json);
+
+            if (data != null)
+            {
+                foreach (var t in data)
+                {
+                    foreach (var d in t.Data)
+                    {
+                        var key = t.Key + "_" + d.Language;
+                
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(d.EmailHtml);
+                
+                        new CfnTemplate(this, MakeId(key), new CfnTemplateProps
+                        {
+                            Template = new CfnTemplate.TemplateProperty
+                            {
+                                TemplateName = key,
+                                HtmlPart = d.EmailHtml,
+                                SubjectPart = d.EmailSubject,
+                                TextPart = htmlDoc.DocumentNode.InnerText
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        
+    }
+    
     private string MakeId(string id)
     {
         return $"{StackName}-{id}";

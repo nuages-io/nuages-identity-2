@@ -5,9 +5,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
-        <Title>Nuages.Sender.Cdk</Title>
+        <Title>Nuages.Identity.Cdk</Title>
         <Authors>Nuages.io</Authors>
-        <Description>Nuages.Sender.Cdk</Description>
+        <Description>Nuages.Identity.Cdk</Description>
         <PackageLicenseFile>LICENSE</PackageLicenseFile>
         <PackageIcon>nuages.png</PackageIcon>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,7 +19,7 @@
         <!-- CDK Construct Library dependencies -->
         <PackageReference Include="Amazon.CDK.Lib" Version="2.17.0" />
         <PackageReference Include="Constructs" Version="10.0.91" />
-
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
         <!-- jsii Roslyn analyzers (un-comment to obtain compile-time checks for missing required props
         <PackageReference Include="Amazon.Jsii.Analyzers" Version="*" PrivateAssets="all" />
         -->

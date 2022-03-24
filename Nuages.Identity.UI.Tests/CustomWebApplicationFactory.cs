@@ -61,7 +61,7 @@ public class CustomWebApplicationFactory<TStartup>
             services.AddHostedService<IdentityDataSeeder>();
 
             services.AddScoped<IRecaptchaValidator, DummyRecaptchaValidator>();
-            services.AddScoped<IMessageSender, DummyMessageSender>();
+            services.AddScoped<IEmailMessageSender, DummyEmailMessageSender>();
             
             services.AddScoped<IRuntimeConfiguration, RuntimeTestsConfiguration>();
         });
