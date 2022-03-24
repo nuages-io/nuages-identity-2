@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using System.Text.Json;
 using Amazon.CDK;
 using Amazon.CDK.AWS.IAM;
@@ -279,9 +280,9 @@ public partial class IdentityCdkStack : Stack
                             Template = new CfnTemplate.TemplateProperty
                             {
                                 TemplateName = key,
-                             //  HtmlPart =  d.EmailHtml,
+                                HtmlPart =  WebUtility.HtmlEncode(d.EmailHtml),
                                 SubjectPart = d.EmailSubject,
-                            //    TextPart = htmlDoc.DocumentNode.InnerText
+                                TextPart = htmlDoc.DocumentNode.InnerText
                             }
                         });
                     }
