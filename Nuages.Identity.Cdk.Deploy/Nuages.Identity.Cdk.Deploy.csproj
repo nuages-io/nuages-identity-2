@@ -29,8 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="templates.json" CopyToOutputDirectory="Always" >
-        </Content>
+       
         <None Remove="appsettings.json" />
         <Content Include="appsettings.json" CopyToOutputDirectory="Always" />
     </ItemGroup>

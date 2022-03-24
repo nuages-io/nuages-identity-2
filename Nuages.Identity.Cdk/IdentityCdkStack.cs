@@ -26,7 +26,7 @@ public partial class IdentityCdkStack : Stack
     {
         CreateWebUi();
 
-        //CreateEmailTemplates();
+        CreateEmailTemplates();
     }
     
     private ManagedPolicy CreateLambdaBasicExecutionRolePolicy(string suffix)
@@ -279,7 +279,7 @@ public partial class IdentityCdkStack : Stack
                             Template = new CfnTemplate.TemplateProperty
                             {
                                 TemplateName = key,
-                                HtmlPart = d.EmailHtml,
+                                HtmlPart =  d.EmailHtml,
                                 SubjectPart = d.EmailSubject,
                                 TextPart = htmlDoc.DocumentNode.InnerText
                             }
