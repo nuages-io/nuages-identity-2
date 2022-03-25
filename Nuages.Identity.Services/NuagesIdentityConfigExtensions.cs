@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
-using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Manage;

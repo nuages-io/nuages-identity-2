@@ -50,7 +50,7 @@ public class MessageService : IMessageService
         });
     }
 
-    private string? GetLanguage()
+    private string GetLanguage()
     {
         var cultureProviders = _provider.GetServices<ICultureProvider>();
 

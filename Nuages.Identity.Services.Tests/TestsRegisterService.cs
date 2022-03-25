@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Register;
 using Xunit;

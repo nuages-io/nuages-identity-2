@@ -41,7 +41,7 @@ public class AWSSender : MessageSender
             {
                 ToAddresses = new List<string> { to }
             },
-            FromEmailAddress = from,
+            FromEmailAddress = from
         };
 
         try

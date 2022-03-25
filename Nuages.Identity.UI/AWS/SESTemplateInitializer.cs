@@ -21,38 +21,42 @@ public class SesTemplateInitializer : BackgroundService
         var json = await File.ReadAllTextAsync("templates.json", stoppingToken);
         var data = JsonSerializer.Deserialize<List<EmailTemplate>>(json);
 
-        foreach (var t in data)
+        if (data != null)
         {
-            foreach (var d in t.Data)
+            foreach (var t in data)
             {
-                var key = t.Key + "_" + d.Language;
+                foreach (var d in t.Data)
+                {
+                    var key = t.Key + "_" + d.Language;
                 
-                var request = new GetEmailTemplateRequest
-                {
-                    TemplateName = key
-                };
-
-                try
-                {
-                    await _simpleEmailServiceV2.GetEmailTemplateAsync(request, stoppingToken);
-                }
-                catch (NotFoundException e)
-                {
-                    var htmlDoc = new HtmlDocument();
-                    htmlDoc.LoadHtml(d.EmailHtml);
-                    
-                    await _simpleEmailServiceV2.CreateEmailTemplateAsync(new CreateEmailTemplateRequest
+                    var request = new GetEmailTemplateRequest
                     {
-                        TemplateName = key,
-                        TemplateContent = new EmailTemplateContent
+                        TemplateName = key
+                    };
+
+                    try
+                    {
+                        await _simpleEmailServiceV2.GetEmailTemplateAsync(request, stoppingToken);
+                    }
+                    catch (NotFoundException e)
+                    {
+                        var htmlDoc = new HtmlDocument();
+                        htmlDoc.LoadHtml(d.EmailHtml);
+                    
+                        await _simpleEmailServiceV2.CreateEmailTemplateAsync(new CreateEmailTemplateRequest
                         {
-                            Html = d.EmailHtml,
-                            Subject = d.EmailSubject,
-                            Text = htmlDoc.DocumentNode.InnerHtml
-                        }
-                    }, stoppingToken);
+                            TemplateName = key,
+                            TemplateContent = new EmailTemplateContent
+                            {
+                                Html = d.EmailHtml,
+                                Subject = d.EmailSubject,
+                                Text = htmlDoc.DocumentNode.InnerHtml
+                            }
+                        }, stoppingToken);
+                    }
                 }
             }
         }
+        
     }
 }

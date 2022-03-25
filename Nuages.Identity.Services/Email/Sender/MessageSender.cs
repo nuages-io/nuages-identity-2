@@ -15,9 +15,9 @@ public class MessageSender : IEmailMessageSender, ISmsMessageSender
         Console.WriteLine($"Template = {template}");
         Console.WriteLine($"Language = {language}");
 
-        foreach (var f in fields)
+        foreach (var (key, value) in fields)
         {
-            Console.WriteLine($"{f.Key} = {f.Value}");
+            Console.WriteLine($"{key} = {value}");
         }
         
         Console.WriteLine(Seprator);

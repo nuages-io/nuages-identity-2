@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
 

@@ -1,7 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
 using Nuages.Web.Exceptions;

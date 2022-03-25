@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
 using Nuages.Web.Recaptcha;
