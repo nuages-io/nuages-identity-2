@@ -1,11 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using System.Text.Json;
 using Amazon.CDK;
 using Amazon.CDK.AWS.IAM;
-using Amazon.CDK.AWS.SES;
 using Constructs;
-using HtmlAgilityPack;
+
 // ReSharper disable ObjectCreationAsStatement
 
 namespace Nuages.Identity.CDK;

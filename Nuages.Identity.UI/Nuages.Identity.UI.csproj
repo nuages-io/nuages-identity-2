@@ -39,6 +39,8 @@
         <PackageReference Include="AWSXRayRecorder.Core" Version="2.10.1" />
         <PackageReference Include="AWSXRayRecorder.Handlers.AwsSdk" Version="2.8.3" />
         <PackageReference Include="AWS.Logger.NLog" Version="3.0.0" />
+
+        <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
     </ItemGroup>
 
     <ItemGroup>
@@ -68,5 +70,6 @@
         <Content Include="..\locales\fr-CA.json" CopyToOutputDirectory="Always">
             <Link>locales\fr-CA.json</Link>
         </Content>
+       
     </ItemGroup>
 </Project>

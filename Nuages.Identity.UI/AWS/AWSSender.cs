@@ -73,12 +73,18 @@ public class AWSSender : MessageSender
 
 public static class AWSSenderExtension
 {
-    public static void AddAWSSender(this IServiceCollection services)
+    public static void AddAWSSender(this IServiceCollection services, bool initializeTemplate = false)
     {
         services.AddAWSService<IAmazonSimpleEmailServiceV2>();
         services.AddAWSService<IAmazonSimpleNotificationService>();
         
         services.AddScoped<IEmailMessageSender, AWSSender>();
         services.AddScoped<ISmsMessageSender, AWSSender>();
+
+        if (initializeTemplate)
+        {
+            services.AddHostedService<SesTemplateInitializer>();
+        }
+        
     }
 }

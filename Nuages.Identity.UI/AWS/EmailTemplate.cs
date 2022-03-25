@@ -1,4 +1,4 @@
-namespace Nuages.Identity.CDK;
+namespace Nuages.Identity.UI.AWS;
 
 #nullable disable
 
