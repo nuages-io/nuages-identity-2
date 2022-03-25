@@ -51,9 +51,6 @@
     </ItemGroup>
    
     <ItemGroup>
-        <ProjectReference Include="..\Nuages.Fido2.Storage.EntifyFramework.MySql\Nuages.Fido2.Storage.EntifyFramework.MySql.csproj" />
-        <ProjectReference Include="..\Nuages.Fido2.Storage.EntityFramework.SqlServer\Nuages.Fido2.Storage.EntityFramework.SqlServer.csproj" />
-        <ProjectReference Include="..\Nuages.Fido2.Storage.EntityFramework\Nuages.Fido2.Storage.EntityFramework.csproj" />
         <ProjectReference Include="..\Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj" />
         <ProjectReference Include="..\Nuages.Identity.Fido2\Nuages.Identity.Fido2.csproj" />
         <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />

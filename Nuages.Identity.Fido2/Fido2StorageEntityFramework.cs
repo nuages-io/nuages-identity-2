@@ -1,11 +1,13 @@
 using Fido2NetLib;
 using Fido2NetLib.Objects;
 using Microsoft.EntityFrameworkCore;
+using Nuages.Identity.Fido2.Storage;
+using Nuages.Identity.Services.AspNetIdentity;
 
-namespace Nuages.Fido2.Storage.EntityFramework;
+namespace Nuages.Fido2;
 
 public class Fido2StorageEntityFramework<T> : IFido2Storage
-    where T : IdentityFido2DbContext
+    where T : NuagesIdentityDbContext
 {
     private readonly T _context;
     private readonly IFido2UserStore _userStore;

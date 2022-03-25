@@ -24,7 +24,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
-      <ProjectReference Include="..\Nuages.Identity.Storage.EntityFramework\Nuages.Identity.Storage.EntityFramework.csproj" />
     </ItemGroup>
 
 </Project>

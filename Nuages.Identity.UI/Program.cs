@@ -5,7 +5,6 @@ using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders;
@@ -14,17 +13,13 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.AWS.Secrets;
+using Nuages.Fido2;
 using Nuages.Fido2.AspNetIdentity;
-using Nuages.Fido2.Storage.EntifyFramework.MySql;
-using Nuages.Fido2.Storage.EntityFramework;
-using Nuages.Fido2.Storage.EntityFramework.SqlServer;
 using Nuages.Fido2.Storage.Mongo;
+using Nuages.Identity.Fido2.Storage;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
-using Nuages.Identity.Storage.EntityFramework;
-using Nuages.Identity.Storage.MySql;
-using Nuages.Identity.Storage.SqlServer;
 using Nuages.Identity.UI;
 using Nuages.Identity.UI.AWS;
 using Nuages.Identity.UI.OpenIdDict;
@@ -144,6 +139,7 @@ switch (storage)
         });
 
         identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
+        
         break;
     }
     case StorageType.MySql:
@@ -156,6 +152,7 @@ switch (storage)
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         });
         identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
+        
         break;
     }
     case StorageType.InMemory:
@@ -214,7 +211,7 @@ switch (storage)
 {
     case StorageType.InMemory:
     {
-        fidoBuilder2.AddFido2InMemoryStorage("Fido2");
+        builder.Services.AddScoped<IFido2Storage, Fido2StorageEntityFramework<NuagesIdentityDbContext>>();
         break;
     }
     case StorageType.MongoDb:
@@ -227,12 +224,12 @@ switch (storage)
     }
     case StorageType.MySql:
     {
-        fidoBuilder2.AddFido2MySqlStorage(configuration["Nuages:MySql:ConnectionStringFido2"]);
+        builder.Services.AddScoped<IFido2Storage, Fido2StorageEntityFramework<NuagesIdentityDbContext>>();
         break;
     }
     case StorageType.SqlServer:
     {
-        fidoBuilder2.AddFidoSqlServerStorage(configuration["Nuages:SqlServer:ConnectionStringFido2"]);
+        builder.Services.AddScoped<IFido2Storage, Fido2StorageEntityFramework<NuagesIdentityDbContext>>();
         break;
     }
     default:

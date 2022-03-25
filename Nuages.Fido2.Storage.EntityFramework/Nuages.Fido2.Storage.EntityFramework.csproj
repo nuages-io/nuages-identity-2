@@ -7,7 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Nuages.Identity.Fido2.Storage\Nuages.Identity.Fido2.Storage.csproj" />
       <ProjectReference Include="..\Nuages.Identity.Fido2\Nuages.Identity.Fido2.csproj" />
+      <ProjectReference Include="..\Nuages.Identity.Storage.EntityFramework\Nuages.Identity.Storage.EntityFramework.csproj" />
     </ItemGroup>
 
     <ItemGroup>

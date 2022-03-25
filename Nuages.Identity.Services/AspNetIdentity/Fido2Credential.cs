@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using Fido2NetLib.Objects;
+using Nuages.Identity.Fido2.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Nuages.Fido2.Storage.EntityFramework;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 #nullable disable
 

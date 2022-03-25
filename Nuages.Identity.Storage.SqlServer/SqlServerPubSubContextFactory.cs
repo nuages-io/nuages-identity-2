@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Nuages.Identity.Storage.EntityFramework;
+using Nuages.Identity.Services.AspNetIdentity;
 
 namespace Nuages.Identity.Storage.SqlServer;
 

@@ -1,5 +1,6 @@
 using Fido2NetLib.Objects;
 using MongoDB.Bson.Serialization.Attributes;
+using Nuages.Identity.Fido2.Storage;
 
 namespace Nuages.Fido2.Storage.Mongo;
 

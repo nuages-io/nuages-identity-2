@@ -38,7 +38,7 @@ public class SesTemplateInitializer : BackgroundService
                     {
                         await _simpleEmailServiceV2.GetEmailTemplateAsync(request, stoppingToken);
                     }
-                    catch (NotFoundException e)
+                    catch (NotFoundException)
                     {
                         var htmlDoc = new HtmlDocument();
                         htmlDoc.LoadHtml(d.EmailHtml);

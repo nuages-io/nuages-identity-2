@@ -62,6 +62,31 @@ namespace Nuages.Identity.Storage.SqlServer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Fido2Credentials",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UserIdBase64 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PublicKey = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    UserHandle = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    SignatureCounter = table.Column<long>(type: "bigint", nullable: false),
+                    CredType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RegDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AaGuid = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DescriptorIdBase64 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DescriptorType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DescriptorTransports = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserHandleBase64 = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DescriptorJson = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fido2Credentials", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -205,6 +230,28 @@ namespace Nuages.Identity.Storage.SqlServer.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fido2Credentials_DescriptorIdBase64",
+                table: "Fido2Credentials",
+                column: "DescriptorIdBase64",
+                unique: true,
+                filter: "[DescriptorIdBase64] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fido2Credentials_UserHandleBase64",
+                table: "Fido2Credentials",
+                column: "UserHandleBase64");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fido2Credentials_UserIdBase64",
+                table: "Fido2Credentials",
+                column: "UserIdBase64");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fido2Credentials_UserIdBase64_DescriptorIdBase64",
+                table: "Fido2Credentials",
+                columns: new[] { "UserIdBase64", "DescriptorIdBase64" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -223,6 +270,9 @@ namespace Nuages.Identity.Storage.SqlServer.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Fido2Credentials");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

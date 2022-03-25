@@ -4,6 +4,7 @@ using Fido2NetLib.Objects;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Nuages.Identity.Fido2.Storage;
 
 namespace Nuages.Fido2.Storage.Mongo;
 

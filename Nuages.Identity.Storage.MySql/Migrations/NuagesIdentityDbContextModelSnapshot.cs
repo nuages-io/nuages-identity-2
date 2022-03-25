@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nuages.Identity.Storage.EntityFramework;
+using Nuages.Identity.Services.AspNetIdentity;
 
 #nullable disable
 
@@ -119,6 +119,67 @@ namespace Nuages.Identity.Storage.MySql.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Nuages.Fido2.Storage.EntityFramework.Fido2Credential", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("AaGuid")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CredType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescriptorIdBase64")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("DescriptorJson")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescriptorTransports")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescriptorType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<byte[]>("PublicKey")
+                        .HasColumnType("longblob");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<uint>("SignatureCounter")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<byte[]>("UserHandle")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("UserHandleBase64")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<byte[]>("UserId")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("UserIdBase64")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DescriptorIdBase64")
+                        .IsUnique();
+
+                    b.HasIndex("UserHandleBase64");
+
+                    b.HasIndex("UserIdBase64");
+
+                    b.HasIndex("UserIdBase64", "DescriptorIdBase64");
+
+                    b.ToTable("Fido2Credentials");
                 });
 
             modelBuilder.Entity("Nuages.Identity.Services.AspNetIdentity.NuagesApplicationRole<string>", b =>

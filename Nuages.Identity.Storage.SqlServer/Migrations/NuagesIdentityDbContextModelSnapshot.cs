@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nuages.Identity.Storage.EntityFramework;
+using Nuages.Identity.Services.AspNetIdentity;
 
 #nullable disable
 
@@ -126,6 +126,68 @@ namespace Nuages.Identity.Storage.SqlServer.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Nuages.Fido2.Storage.EntityFramework.Fido2Credential", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("AaGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CredType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptorIdBase64")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DescriptorJson")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptorTransports")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptorType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PublicKey")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("SignatureCounter")
+                        .HasColumnType("bigint");
+
+                    b.Property<byte[]>("UserHandle")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("UserHandleBase64")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("UserId")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("UserIdBase64")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DescriptorIdBase64")
+                        .IsUnique()
+                        .HasFilter("[DescriptorIdBase64] IS NOT NULL");
+
+                    b.HasIndex("UserHandleBase64");
+
+                    b.HasIndex("UserIdBase64");
+
+                    b.HasIndex("UserIdBase64", "DescriptorIdBase64");
+
+                    b.ToTable("Fido2Credentials");
                 });
 
             modelBuilder.Entity("Nuages.Identity.Services.AspNetIdentity.NuagesApplicationRole<string>", b =>

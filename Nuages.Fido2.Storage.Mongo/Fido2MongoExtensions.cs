@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Nuages.Identity.Fido2.Storage;
 
 namespace Nuages.Fido2.Storage.Mongo;
 

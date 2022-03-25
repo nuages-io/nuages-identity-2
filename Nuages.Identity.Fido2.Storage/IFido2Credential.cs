@@ -1,6 +1,6 @@
 using Fido2NetLib.Objects;
 
-namespace Nuages.Fido2.Storage;
+namespace Nuages.Identity.Fido2.Storage;
 
 #nullable disable
 

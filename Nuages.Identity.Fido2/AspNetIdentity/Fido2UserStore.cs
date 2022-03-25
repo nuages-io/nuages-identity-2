@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Fido2NetLib;
 using Microsoft.AspNetCore.Identity;
-using Nuages.Fido2.Storage;
+using Nuages.Identity.Fido2.Storage;
 
 namespace Nuages.Fido2.AspNetIdentity;
 
