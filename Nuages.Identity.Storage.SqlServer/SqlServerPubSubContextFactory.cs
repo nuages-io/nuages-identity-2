@@ -2,28 +2,30 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Nuages.Identity.Storage.EntityFramework;
+
 namespace Nuages.Identity.Storage.SqlServer;
 
 
 
 // ReSharper disable once UnusedType.Global
 [ExcludeFromCodeCoverage]
-public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<IdentitySqlServerDbContext>
+public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<NuagesIdentityDbContext>
 {
-    public IdentitySqlServerDbContext CreateDbContext(string[] args)
+    public NuagesIdentityDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
             .AddJsonFile("appsettings.sqlserver.json", false)
             .Build();
         
-        var optionsBuilder = new DbContextOptionsBuilder<IdentitySqlServerDbContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<NuagesIdentityDbContext>();
 
         var connectionString =  configuration["ConnectionString"];
         
         optionsBuilder
-            .UseSqlServer(connectionString);
+            .UseSqlServer(connectionString, b => b.MigrationsAssembly("Nuages.Identity.Storage.SqlServer"));
 
-        return new IdentitySqlServerDbContext(optionsBuilder.Options);
+        return new NuagesIdentityDbContext(optionsBuilder.Options);
     }
 }

@@ -3,19 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nuages.Identity.Storage.SqlServer;
+using Nuages.Identity.Storage.EntityFramework;
 
 #nullable disable
 
 namespace Nuages.Identity.Storage.SqlServer.Migrations
 {
-    [DbContext(typeof(IdentitySqlServerDbContext))]
-    [Migration("20220315123817_initialCreate")]
-    partial class initialCreate
+    [DbContext(typeof(NuagesIdentityDbContext))]
+    partial class NuagesIdentityDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

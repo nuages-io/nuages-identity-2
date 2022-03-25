@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nuages.Identity.Storage.MySql;
+using Nuages.Identity.Storage.EntityFramework;
 
 #nullable disable
 
 namespace Nuages.Identity.Storage.MySql.Migrations
 {
-    [DbContext(typeof(IdentityMySqlDbContext))]
-    [Migration("20220315125151_initialCreate")]
-    partial class initialCreate
+    [DbContext(typeof(NuagesIdentityDbContext))]
+    [Migration("20220325110213_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

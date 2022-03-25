@@ -22,6 +22,7 @@ using Nuages.Fido2.Storage.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
+using Nuages.Identity.Storage.EntityFramework;
 using Nuages.Identity.Storage.MySql;
 using Nuages.Identity.Storage.SqlServer;
 using Nuages.Identity.UI;
@@ -134,7 +135,7 @@ switch (storage)
 {
     case StorageType.SqlServer:
     {
-        builder.Services.AddDbContext<IdentitySqlServerDbContext>(options =>
+        builder.Services.AddDbContext<NuagesIdentityDbContext>(options =>
         {
             var connectionString = configuration["Nuages:SqlServer:ConnectionString"];
 
@@ -142,26 +143,30 @@ switch (storage)
                 .UseSqlServer(connectionString);
         });
 
-        identityBuilder.AddEntityFrameworkStores<IdentitySqlServerDbContext>();
+        identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
         break;
     }
     case StorageType.MySql:
     {
-        builder.Services.AddDbContext<IdentityMySqlDbContext>(options =>
+        builder.Services.AddDbContext<NuagesIdentityDbContext>(options =>
         {
             var connectionString = configuration["Nuages:MySql:ConnectionString"];
 
             options
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         });
-        identityBuilder.AddEntityFrameworkStores<IdentityMySqlDbContext>();
+        identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
         break;
     }
     case StorageType.InMemory:
     {
         builder.Services
-            .AddDbContext<IdentityDbContext<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>>();
-        identityBuilder.AddEntityFrameworkStores<IdentityDbContext<NuagesApplicationUser<string>,NuagesApplicationRole<string>, string>>();
+            .AddDbContext<NuagesIdentityDbContext>(options =>
+            {
+                options.UseInMemoryDatabase("Identity");
+            });
+        
+        identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
 
         break;
     }

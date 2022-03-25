@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Nuages.Identity.Storage.SqlServer.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,6 +28,19 @@ namespace Nuages.Identity.Storage.SqlServer.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ValidFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ValidTo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LoginCount = table.Column<int>(type: "int", nullable: false),
+                    UserMustChangePassword = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastPasswordChangedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EnableAutoExpirePassword = table.Column<bool>(type: "bit", nullable: false),
+                    LastFailedLoginReason = table.Column<int>(type: "int", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LockoutMessageSent = table.Column<bool>(type: "bit", nullable: false),
+                    PreferredMfaMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -41,20 +54,7 @@ namespace Nuages.Identity.Storage.SqlServer.Migrations
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false),
-                    ValidFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ValidTo = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LoginCount = table.Column<int>(type: "int", nullable: false),
-                    UserMustChangePassword = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastPasswordChangedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EnableAutoExpirePassword = table.Column<bool>(type: "bit", nullable: false),
-                    LastFailedLoginReason = table.Column<int>(type: "int", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LockoutMessageSent = table.Column<bool>(type: "bit", nullable: false),
-                    PreferredMfaMethod = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

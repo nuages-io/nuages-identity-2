@@ -3,14 +3,14 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Nuages.Identity.Storage.MySql;
+using Nuages.Identity.Storage.EntityFramework;
 
 #nullable disable
 
 namespace Nuages.Identity.Storage.MySql.Migrations
 {
-    [DbContext(typeof(IdentityMySqlDbContext))]
-    partial class IdentityMySqlDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(NuagesIdentityDbContext))]
+    partial class NuagesIdentityDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
