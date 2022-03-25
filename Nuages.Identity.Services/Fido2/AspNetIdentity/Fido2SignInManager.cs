@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.Fido2.AspNetIdentity;
+namespace Nuages.Identity.Services.Fido2.AspNetIdentity;
 
 public class Fido2SignInManager<TUser>  : IFido2SignInManager 
     where TUser : class

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using Fido2NetLib.Objects;
-using Nuages.Identity.Fido2.Storage;
+using Nuages.Identity.Services.Fido2.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
 

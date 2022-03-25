@@ -1,6 +1,6 @@
 using Fido2NetLib;
 
-namespace Nuages.Fido2;
+namespace Nuages.Identity.Services.Fido2;
 
 public static class Fido2Extension
 {

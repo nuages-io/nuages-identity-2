@@ -16,8 +16,5 @@
     <ItemGroup>
       <ProjectReference Include="..\Nuages.Identity.Fido2.Storage\Nuages.Identity.Fido2.Storage.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Fido2" />
-    </ItemGroup>
  
 </Project>

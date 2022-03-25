@@ -18,8 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI.Tests", "Nuages.Identity.UI.Tests\Nuages.Identity.UI.Tests.csproj", "{6E90CCF4-9D64-4686-B409-C43CFBBDD715}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Fido2", "Nuages.Identity.Fido2\Nuages.Identity.Fido2.csproj", "{331B91BD-4920-4631-B137-83E54216C8FB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.Storage.Mongo", "Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj", "{7B2B11B9-0621-49AB-96BB-009408E9B4F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Storage.SqlServer", "Nuages.Identity.Storage.SqlServer\Nuages.Identity.Storage.SqlServer.csproj", "{1CC3C5A4-2750-4D36-AD7F-014D0C6EA6FF}"
@@ -29,8 +27,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{762005AF-B6D0-4906-8E7B-C995C63FA9E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{94E372E6-436C-4108-BADF-FA9533E7D422}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Fido2.Storage", "Nuages.Identity.Fido2.Storage\Nuages.Identity.Fido2.Storage.csproj", "{7A2DADAF-E1F0-432A-83AE-8597CB20BD50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,10 +58,6 @@ Global
 		{6E90CCF4-9D64-4686-B409-C43CFBBDD715}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E90CCF4-9D64-4686-B409-C43CFBBDD715}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E90CCF4-9D64-4686-B409-C43CFBBDD715}.Release|Any CPU.Build.0 = Release|Any CPU
-		{331B91BD-4920-4631-B137-83E54216C8FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{331B91BD-4920-4631-B137-83E54216C8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{331B91BD-4920-4631-B137-83E54216C8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{331B91BD-4920-4631-B137-83E54216C8FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7B2B11B9-0621-49AB-96BB-009408E9B4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B2B11B9-0621-49AB-96BB-009408E9B4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B2B11B9-0621-49AB-96BB-009408E9B4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,10 +70,6 @@ Global
 		{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A2DADAF-E1F0-432A-83AE-8597CB20BD50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A2DADAF-E1F0-432A-83AE-8597CB20BD50}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A2DADAF-E1F0-432A-83AE-8597CB20BD50}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A2DADAF-E1F0-432A-83AE-8597CB20BD50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A64933C4-E4EA-4022-A5D0-4230D08C8E31} = {63171AB3-F1FD-45B7-9C72-DB083963F2C9}
@@ -91,6 +79,5 @@ Global
 		{1CC3C5A4-2750-4D36-AD7F-014D0C6EA6FF} = {762005AF-B6D0-4906-8E7B-C995C63FA9E1}
 		{7B8C6341-4F4F-4762-88EB-2209F4E3EBF0} = {94E372E6-436C-4108-BADF-FA9533E7D422}
 		{6E90CCF4-9D64-4686-B409-C43CFBBDD715} = {94E372E6-436C-4108-BADF-FA9533E7D422}
-		{7A2DADAF-E1F0-432A-83AE-8597CB20BD50} = {762005AF-B6D0-4906-8E7B-C995C63FA9E1}
 	EndGlobalSection
 EndGlobal

@@ -1,8 +1,8 @@
 using Fido2NetLib;
 using Microsoft.AspNetCore.Identity;
-using Nuages.Identity.Fido2.Storage;
+using Nuages.Identity.Services.Fido2.Storage;
 
-namespace Nuages.Fido2.AspNetIdentity;
+namespace Nuages.Identity.Services.Fido2.AspNetIdentity;
 
 public static class Fido2AspNetIdentityExtension
 {

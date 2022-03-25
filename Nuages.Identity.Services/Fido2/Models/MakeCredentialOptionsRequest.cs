@@ -1,6 +1,6 @@
 using Fido2NetLib.Objects;
 
-namespace Nuages.Fido2.Models;
+namespace Nuages.Identity.Services.Fido2.Models;
 
 public class MakeCredentialOptionsRequest
 {

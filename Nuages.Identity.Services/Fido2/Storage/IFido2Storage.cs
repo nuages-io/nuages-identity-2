@@ -1,7 +1,7 @@
 ﻿using Fido2NetLib;
 using Fido2NetLib.Objects;
 
-namespace Nuages.Identity.Fido2.Storage;
+namespace Nuages.Identity.Services.Fido2.Storage;
 
 public interface IFido2Storage
 {

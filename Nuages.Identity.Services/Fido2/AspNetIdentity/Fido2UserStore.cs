@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using Fido2NetLib;
 using Microsoft.AspNetCore.Identity;
-using Nuages.Identity.Fido2.Storage;
+using Nuages.Identity.Services.Fido2.Storage;
 
-namespace Nuages.Fido2.AspNetIdentity;
+namespace Nuages.Identity.Services.Fido2.AspNetIdentity;
 
 public class Fido2UserStore<TUser> : IFido2UserStore 
                 where TUser : class

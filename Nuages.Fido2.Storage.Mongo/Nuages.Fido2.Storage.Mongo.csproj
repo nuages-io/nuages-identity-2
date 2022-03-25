@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Nuages.Identity.Fido2\Nuages.Identity.Fido2.csproj" />
+      <ProjectReference Include="..\Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>

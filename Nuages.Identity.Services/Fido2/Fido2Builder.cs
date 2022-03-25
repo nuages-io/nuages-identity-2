@@ -1,4 +1,4 @@
-namespace Nuages.Fido2;
+namespace Nuages.Identity.Services.Fido2;
 
 public class Fido2Builder : IFido2Builder
 {

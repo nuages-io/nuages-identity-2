@@ -1,4 +1,4 @@
-namespace Nuages.Fido2.Models;
+namespace Nuages.Identity.Services.Fido2.Models;
 
 #nullable disable
 

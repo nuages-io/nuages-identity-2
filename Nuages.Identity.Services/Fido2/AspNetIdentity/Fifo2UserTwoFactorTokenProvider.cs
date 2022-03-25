@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.Fido2.AspNetIdentity;
+namespace Nuages.Identity.Services.Fido2.AspNetIdentity;
 
 
 public class Fifo2UserTwoFactorTokenProvider<TUser> : IUserTwoFactorTokenProvider<TUser>  

@@ -1,10 +1,10 @@
 using Fido2NetLib;
 using Fido2NetLib.Objects;
-using Nuages.Fido2.Models;
-using Nuages.Identity.Fido2.Storage;
 using Nuages.Identity.Services.Email.Sender;
+using Nuages.Identity.Services.Fido2.Models;
+using Nuages.Identity.Services.Fido2.Storage;
 
-namespace Nuages.Fido2;
+namespace Nuages.Identity.Services.Fido2;
 
 public class Fido2Service : IFido2Service
 {

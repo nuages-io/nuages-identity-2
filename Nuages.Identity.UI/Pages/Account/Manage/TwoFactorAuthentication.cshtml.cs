@@ -8,8 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Fido2;
 using Nuages.Fido2.Storage;
-using Nuages.Identity.Fido2.Storage;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Fido2;
+using Nuages.Identity.Services.Fido2.Storage;
 using Nuages.Identity.Services.Manage;
 using Nuages.Identity.UI.AWS;
 

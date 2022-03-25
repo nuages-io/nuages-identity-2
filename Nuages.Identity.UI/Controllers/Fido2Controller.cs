@@ -3,10 +3,11 @@ using System.Text.Json;
 using Fido2NetLib;
 using Fido2NetLib.Objects;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Fido2.Models;
+using Nuages.Identity.Services.Fido2;
+using Nuages.Identity.Services.Fido2.Models;
 using Nuages.Web;
 
-namespace Nuages.Fido2;
+namespace Nuages.Identity.UI.Controllers;
 
 [ApiController]
 [Route("api/fido2")]
