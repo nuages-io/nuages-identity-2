@@ -1,5 +1,3 @@
-
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.AspNetIdentity;
 // ReSharper disable UnusedMember.Global

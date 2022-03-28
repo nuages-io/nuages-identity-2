@@ -35,6 +35,8 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
             user.CreatedOn = DateTime.UtcNow;
             user.LastPasswordChangedDate = user.CreatedOn;
 
+            user.AddPassword(user.PasswordHash, _nuagesIdentityOptions.PasswordHistoryCount);
+            
            var updateRes = await UpdateAsync(user);
            if (!updateRes.Succeeded)
            {
@@ -63,6 +65,9 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
         if (res.Succeeded)
         {
             user.LastPasswordChangedDate = DateTime.UtcNow;
+            
+            user.AddPassword(user.PasswordHash, _nuagesIdentityOptions.PasswordHistoryCount);
+            
             return await UpdateAsync(user);
         }
 
@@ -75,6 +80,9 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
         if (res.Succeeded)
         {
             user.LastPasswordChangedDate = DateTime.UtcNow;
+            
+            user.AddPassword(user.PasswordHash, _nuagesIdentityOptions.PasswordHistoryCount);
+            
             return await UpdateAsync(user);
         }
 

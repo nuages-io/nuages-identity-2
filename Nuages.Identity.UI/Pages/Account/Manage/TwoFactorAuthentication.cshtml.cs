@@ -6,8 +6,6 @@ using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.Fido2;
-using Nuages.Fido2.Storage;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Fido2;
 using Nuages.Identity.Services.Fido2.Storage;

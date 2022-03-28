@@ -4,8 +4,8 @@ namespace Nuages.Identity.Services.AspNetIdentity;
 
 public static class NuagesAspNetIdentityExtensions
 {
-    public static IdentityBuilder AddNuagesAspNetIdentity<TUser, TRole>(this IServiceCollection services,
-        Action<IdentityOptions> identityOptions) where TUser : class
+    public static IdentityBuilder AddNuagesAspNetIdentity<TUser, TRole, TKey>(this IServiceCollection services,
+        Action<IdentityOptions> identityOptions) where TKey : IEquatable<TKey> where  TUser :  NuagesApplicationUser<TKey>
         where TRole : class
     {
         var identityBuilder =
@@ -17,6 +17,8 @@ public static class NuagesAspNetIdentityExtensions
             .AddRoleManager<NuagesRoleManager>()
             .AddDefaultTokenProviders();
 
+        services.AddScoped<IPasswordValidator<TUser>, PasswordReuseValidator<TUser, TKey>>();
+        
         return identityBuilder;
     }
 }

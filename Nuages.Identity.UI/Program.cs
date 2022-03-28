@@ -13,12 +13,10 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.AWS.Secrets;
-using Nuages.Fido2;
 using Nuages.Fido2.Storage.Mongo;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
-using Nuages.Identity.Services.Fido2;
 using Nuages.Identity.Services.Fido2.AspNetIdentity;
 using Nuages.Identity.Services.Fido2.Storage;
 using Nuages.Identity.UI;
@@ -102,7 +100,7 @@ else
     AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
 }
 
-var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>>(
+var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(
     identity =>
     {
         identity.User = new UserOptions

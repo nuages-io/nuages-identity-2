@@ -51,8 +51,9 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
         if (res.Succeeded)
         {
-            if (!await CheckPasswordAsync(user))
+            if (!await CheckPasswordStatusAsync(user))
                 return SignInResult.NotAllowed;
+            
         }
         else
         {
@@ -139,7 +140,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
     }
 
 
-    private async Task<bool> CheckPasswordAsync(NuagesApplicationUser<string> user)
+    private async Task<bool> CheckPasswordStatusAsync(NuagesApplicationUser<string> user)
     {
         if (user.UserMustChangePassword)
         {
@@ -188,6 +189,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                 }
         }
 
+        
         return true;
     }
 

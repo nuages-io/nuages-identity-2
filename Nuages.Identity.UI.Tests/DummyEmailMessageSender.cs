@@ -6,6 +6,8 @@ public class DummyEmailMessageSender : IEmailMessageSender
 {
     public Task SendSmsAsync(string to, string text)
     {
+        var t = to;
+        var tt = text;
         return Task.CompletedTask;
     }
 

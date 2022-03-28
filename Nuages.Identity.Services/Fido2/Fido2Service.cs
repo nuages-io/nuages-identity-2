@@ -92,10 +92,7 @@ public class Fido2Service : IFido2Service
         var email = await _fido2Storage.GetUserEmailAsync(options.User.Id);
         if (email != null)
         {
-            _messageService.SendEmailUsingTemplate(email, "SecurityKey_Added", new Dictionary<string, string>
-            {
-                
-            });
+            _messageService.SendEmailUsingTemplate(email, "SecurityKey_Added", new Dictionary<string, string>());
         }
         return success;
     }
@@ -167,10 +164,7 @@ public class Fido2Service : IFido2Service
         var email = await _fido2Storage.GetUserEmailAsync(userId);
         if (email != null)
         {
-            _messageService.SendEmailUsingTemplate(email, "SecurityKey_Removed", new Dictionary<string, string>
-            {
-                
-            });
+            _messageService.SendEmailUsingTemplate(email, "SecurityKey_Removed", new Dictionary<string, string>());
         }
        
     }

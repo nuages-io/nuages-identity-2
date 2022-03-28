@@ -21,7 +21,7 @@ public class LoginWithSecurityKeyModel : PageModel
 
     public LoginWithSecurityKeyModel(
         NuagesSignInManager signInManager,
-        ILogger<LoginWith2faModel> logger)
+        ILogger<LoginWithSecurityKeyModel> logger)
     {
         _signInManager = signInManager;
     }

@@ -1,4 +1,6 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 
 // ReSharper disable VirtualMemberCallInConstructor
@@ -41,4 +43,30 @@ public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEqua
     public bool LockoutMessageSent { get; set; }
 
     public string? PreferredMfaMethod { get; set; }
+
+    [NotMapped]
+    public PasswordHistory? PasswordHistory
+    {
+        get => string.IsNullOrWhiteSpace(PasswordHistoryJson) ? null : JsonSerializer.Deserialize<PasswordHistory>(PasswordHistoryJson);
+        set => PasswordHistoryJson = value != null ? JsonSerializer.Serialize(value) : null;
+    }
+
+    public string? PasswordHistoryJson { get; set; }
+
+    public void AddPassword(string hash, int keepPasspordCount)
+    {
+        if (keepPasspordCount > 0)
+        {
+            var history = PasswordHistory ??= new PasswordHistory();
+
+            history.AddPassword(hash, keepPasspordCount);
+
+            PasswordHistory = history;
+        }
+        else
+        {
+            PasswordHistory = null;
+        }
+       
+    }
 }

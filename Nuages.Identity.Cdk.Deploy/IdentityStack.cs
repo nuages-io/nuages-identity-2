@@ -13,7 +13,7 @@ public class IdentityStack : IdentityCdkStack
     {
         AssetUi = "./Nuages.Identity.UI/bin/Release/net6.0/linux-x64/publish";
         AssetApi = "./Nuages.Identity.API/bin/Release/net6.0/linux-x64/publish";
-        TemplateFileName = "./templates2.json";
+       // TemplateFileName = "./templates2.json";
     }
     
     public static void CreateStack(Construct scope, IConfiguration configuration)

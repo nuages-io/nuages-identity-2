@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Amazon.CDK;
 using Amazon.CDK.AWS.IAM;
 using Constructs;
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 // ReSharper disable ObjectCreationAsStatement
 
@@ -18,7 +19,7 @@ public partial class IdentityCdkStack : Stack
     protected string AssetUi { get; set; } = "";
     protected string AssetApi { get; set; } = "";
 
-    public string? TemplateFileName { get; set; }
+    //public string? TemplateFileName { get; set; }
     
     protected void CreateTemplate()
     {

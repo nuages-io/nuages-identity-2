@@ -18,5 +18,6 @@ public class NuagesIdentityOptions
 
     public bool AutoConfirmExternalLogin { get; set; }
     
-
+    public bool EnablePasswordHistory { get; set; }
+    public int PasswordHistoryCount { get; set; } = 5;
 }
