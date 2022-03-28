@@ -5,7 +5,7 @@ using Nuages.Identity.Services.Fido2.Storage;
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Nuages.Identity.Services.AspNetIdentity;
+namespace Nuages.Identity.Services.Fido2.AspNetIdentity;
 
 #nullable disable
 

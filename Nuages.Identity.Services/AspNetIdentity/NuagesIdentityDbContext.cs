@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Nuages.Identity.Services.Fido2.AspNetIdentity;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 

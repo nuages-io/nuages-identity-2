@@ -2,6 +2,7 @@ using Fido2NetLib;
 using Fido2NetLib.Objects;
 using Microsoft.EntityFrameworkCore;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.Services.Fido2.AspNetIdentity;
 
 namespace Nuages.Identity.Services.Fido2.Storage;
 
