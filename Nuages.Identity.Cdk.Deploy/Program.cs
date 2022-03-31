@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Amazon.CDK;
 using Microsoft.Extensions.Configuration;
+using Nuages.AWS.Secrets;
 using Nuages.Web;
 
 // ReSharper disable ArrangeTypeModifiers
@@ -40,6 +41,9 @@ sealed class Program
                 config.AppConfig.EnvironmentId, 
                 config.AppConfig.ConfigProfileId,true);
         }
+        
+        var secretProvider = new AWSSecretProvider();
+        secretProvider.TransformSecrets(configManager);
         
         var app = new App();
 

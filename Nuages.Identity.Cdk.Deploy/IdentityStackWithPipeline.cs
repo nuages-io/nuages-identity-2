@@ -56,6 +56,12 @@ public class IdentityStackWithPipeline : Stack
                         Effect = Effect.ALLOW,
                         Actions = new[] { "ssm:GetParametersByPath", "appconfig:GetConfiguration" },
                         Resources = new[] { "*" }
+                    }),
+                    new (new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] {  "secretsmanager:GetSecretValue" },
+                        Resources = new[] { "*" }
                     })
                 }
             },
@@ -113,6 +119,12 @@ public class IdentityStackWithPipeline : Stack
                         Effect = Effect.ALLOW,
                         Actions = new[] { "ssm:GetParametersByPath", "appconfig:GetConfiguration" },
                         Resources = new[] { "*" }
+                    }),
+                    new (new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] {  "secretsmanager:GetSecretValue" },
+                        Resources = new[] { "*" }
                     })
                 }
             },
@@ -133,6 +145,12 @@ public class IdentityStackWithPipeline : Stack
                     {
                         Effect = Effect.ALLOW,
                         Actions = new[] { "ssm:GetParametersByPath", "appconfig:GetConfiguration" },
+                        Resources = new[] { "*" }
+                    }),
+                    new (new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] {  "secretsmanager:GetSecretValue" },
                         Resources = new[] { "*" }
                     })
                 }
