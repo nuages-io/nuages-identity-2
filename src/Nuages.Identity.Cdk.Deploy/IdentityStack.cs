@@ -11,8 +11,8 @@ public class IdentityStack : IdentityCdkStack
 {
     private IdentityStack(Construct scope, string id, IStackProps props) : base(scope, id, props)
     {
-        AssetUi = "./Nuages.Identity.UI/bin/Release/net6.0/linux-x64/publish";
-        AssetApi = "./Nuages.Identity.API/bin/Release/net6.0/linux-x64/publish";
+        AssetUi = "./src/Nuages.Identity.UI/bin/Release/net6.0/linux-x64/publish";
+        AssetApi = "./src/Nuages.Identity.API/bin/Release/net6.0/linux-x64/publish";
        // TemplateFileName = "./templates2.json";
     }
     
