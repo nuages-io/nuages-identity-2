@@ -31,12 +31,12 @@ public class IdentityStack : IdentityCdkStack
             }
         })
         {
-            // VpcId = options.VpcId,
-            // SecurityGroupId = options.SecurityGroupId,
-            // DatabaseProxyArn = options.DatabaseDbProxy.Arn,
-            // DatabaseProxyEndpoint = options.DatabaseDbProxy.Endpoint,
-            // DatabaseProxyName = options.DatabaseDbProxy.Name,
-            // DatabaseProxyUser = options.DatabaseDbProxy.UserName,
+            VpcId = options.VpcId,
+            SecurityGroupId = options.SecurityGroupId,
+            DatabaseProxyArn = options.DatabaseDbProxy.Arn,
+            DatabaseProxyEndpoint = options.DatabaseDbProxy.Endpoint,
+            DatabaseProxyName = options.DatabaseDbProxy.Name,
+            DatabaseProxyUser = options.DatabaseDbProxy.UserName,
             DomainName = options.DomainName,
             CertificateArn = options.CertificateArn
         };

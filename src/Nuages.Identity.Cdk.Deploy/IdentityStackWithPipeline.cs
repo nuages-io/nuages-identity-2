@@ -62,7 +62,15 @@ public class IdentityStackWithPipeline : Stack
                         Effect = Effect.ALLOW,
                         Actions = new[] {  "secretsmanager:GetSecretValue" },
                         Resources = new[] { "*" }
+                    }),
+                    new (new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] {  "ec2:DescribeSecurityGroups" },
+                        Resources = new[] { "*" }
                     })
+                    
+                    
                 }
             },
             Synth = new ShellStep("Synth",
