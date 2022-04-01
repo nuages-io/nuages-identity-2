@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI", "Nuages.Identity.UI\Nuages.Identity.UI.csproj", "{60D3AE30-4F18-495F-B0DB-220D7AA7A588}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI", "src\Nuages.Identity.UI\Nuages.Identity.UI.csproj", "{60D3AE30-4F18-495F-B0DB-220D7AA7A588}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services", "Nuages.Identity.Services\Nuages.Identity.Services.csproj", "{4C823879-4801-4558-95DE-755A98E34667}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services", "src\Nuages.Identity.Services\Nuages.Identity.Services.csproj", "{4C823879-4801-4558-95DE-755A98E34667}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Cdk.Deploy", "Nuages.Identity.Cdk.Deploy\Nuages.Identity.Cdk.Deploy.csproj", "{2EF13705-D8E2-4004-B746-9119D7C819B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Cdk.Deploy", "src\Nuages.Identity.Cdk.Deploy\Nuages.Identity.Cdk.Deploy.csproj", "{2EF13705-D8E2-4004-B746-9119D7C819B9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".CDK", ".CDK", "{63171AB3-F1FD-45B7-9C72-DB083963F2C9}"
 	ProjectSection(SolutionItems) = preProject
@@ -12,17 +12,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".CDK", ".CDK", "{63171AB3-F
 		build.sh = build.sh
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Cdk", "Nuages.Identity.Cdk\Nuages.Identity.Cdk.csproj", "{A64933C4-E4EA-4022-A5D0-4230D08C8E31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Cdk", "src\Nuages.Identity.Cdk\Nuages.Identity.Cdk.csproj", "{A64933C4-E4EA-4022-A5D0-4230D08C8E31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services.Tests", "Nuages.Identity.Services.Tests\Nuages.Identity.Services.Tests.csproj", "{7B8C6341-4F4F-4762-88EB-2209F4E3EBF0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services.Tests", "src\Nuages.Identity.Services.Tests\Nuages.Identity.Services.Tests.csproj", "{7B8C6341-4F4F-4762-88EB-2209F4E3EBF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI.Tests", "Nuages.Identity.UI.Tests\Nuages.Identity.UI.Tests.csproj", "{6E90CCF4-9D64-4686-B409-C43CFBBDD715}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.UI.Tests", "src\Nuages.Identity.UI.Tests\Nuages.Identity.UI.Tests.csproj", "{6E90CCF4-9D64-4686-B409-C43CFBBDD715}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.Storage.Mongo", "Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj", "{7B2B11B9-0621-49AB-96BB-009408E9B4F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Fido2.Storage.Mongo", "src\Nuages.Fido2.Storage.Mongo\Nuages.Fido2.Storage.Mongo.csproj", "{7B2B11B9-0621-49AB-96BB-009408E9B4F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Storage.SqlServer", "Nuages.Identity.Storage.SqlServer\Nuages.Identity.Storage.SqlServer.csproj", "{1CC3C5A4-2750-4D36-AD7F-014D0C6EA6FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Storage.SqlServer", "src\Nuages.Identity.Storage.SqlServer\Nuages.Identity.Storage.SqlServer.csproj", "{1CC3C5A4-2750-4D36-AD7F-014D0C6EA6FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Storage.MySql", "Nuages.Identity.Storage.MySql\Nuages.Identity.Storage.MySql.csproj", "{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Storage.MySql", "src\Nuages.Identity.Storage.MySql\Nuages.Identity.Storage.MySql.csproj", "{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{762005AF-B6D0-4906-8E7B-C995C63FA9E1}"
 EndProject

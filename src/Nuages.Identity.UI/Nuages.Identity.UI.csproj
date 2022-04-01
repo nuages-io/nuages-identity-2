@@ -60,10 +60,10 @@
         <InternalsVisibleTo Include="Nuages.Identity.UI.Tests" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="..\locales\en-CA.json" CopyToOutputDirectory="Always">
+        <Content Include="..\..\locales\en-CA.json" CopyToOutputDirectory="Always">
             <Link>locales\en-CA.json</Link>
         </Content>
-        <Content Include="..\locales\fr-CA.json" CopyToOutputDirectory="Always">
+        <Content Include="..\..\locales\fr-CA.json" CopyToOutputDirectory="Always">
             <Link>locales\fr-CA.json</Link>
         </Content>
        
