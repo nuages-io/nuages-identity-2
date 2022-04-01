@@ -18,26 +18,11 @@ public partial class IdentityCdkStack : Stack
     {
     }
 
-    public string? SecurityGroupId { get; set; }
-    public string? VpcId { get; set; }
-    
-    public string? DatabaseProxyArn { get; set; }
-    public string? DatabaseProxyName { get; set; }
-    public string? DatabaseProxyEndpoint { get; set; }
-    public string? DatabaseProxyUser { get; set; }
-    
     public string? CertificateArn { get; set; }
 
     public string? DomainName { get; set; }
     
     protected string AssetUi { get; set; } = "";
-    
-    protected IVpc? Vpc;
-   
-    private IDatabaseProxy? _proxy;
-    
-    private ISecurityGroup? _securityGroup;
-    private ISecurityGroup? _vpcSecurityGroup;
     
     protected void CreateTemplate()
     {
