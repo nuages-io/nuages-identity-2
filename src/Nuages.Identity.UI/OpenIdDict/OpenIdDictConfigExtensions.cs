@@ -33,11 +33,17 @@ public static class OpenIdDictConfigExtensions
             .AddCore(options =>
             {
                 var storage = configuration.GetValue<string>("Nuages:OpenIdDict:Storage");
+                if (string.IsNullOrEmpty(storage))
+                    storage = configuration.GetValue<string>("Nuages:Storage");
+                
                 switch (storage)
                 {
                     case "MongoDb":
                     {
                         var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
+                        if (string.IsNullOrEmpty(connectionString))
+                            connectionString = configuration["Nuages:Mongo:ConnectionString"];
+                        
                         var url = new MongoUrl(connectionString);
                         
                         options.UseMongoDb()

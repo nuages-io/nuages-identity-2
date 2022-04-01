@@ -193,13 +193,14 @@ switch (storage)
 
 identityBuilder.AddNuagesIdentityServices(configuration, _ => { });
 
+var uri = new Uri(configuration["Nuages:Identity:Authority"]);
+
 var fidoBuilder2 = identityBuilder.AddNuagesFido2(options =>
 {
-    options.ServerDomain = configuration["fido2:serverDomain"];
-    options.ServerName = configuration["fido2:serverName"];
-    options.Origins = new HashSet<string> { configuration["fido2:origin"] };
-    options.TimestampDriftTolerance = configuration.GetValue<int>("fido2:timestampDriftTolerance");
-    options.MDSCacheDirPath = configuration["fido2:MDSCacheDirPath"];
+    options.ServerDomain = uri.Host;
+    options.ServerName = configuration["Nuages:Identity:Name"];
+    options.Origins = new HashSet<string> { configuration["Nuages:Identity:Authority"] };
+    options.TimestampDriftTolerance = 300000;
 });
 
 identityBuilder.AddMessageService(configure =>
