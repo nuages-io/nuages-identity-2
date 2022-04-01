@@ -6,5 +6,36 @@
   "security-group:account=817771063649:region=ca-central-1:securityGroupId=sg-0a0f5e706b2779a3e": {
     "securityGroupId": "sg-0a0f5e706b2779a3e",
     "allowAllOutbound": false
+  },
+  "vpc-provider:account=817771063649:filter.vpc-id=vpc-12ef027b:region=ca-central-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-12ef027b",
+    "vpcCidrBlock": "172.31.0.0/16",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Public",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-611ffd08",
+            "cidr": "172.31.16.0/20",
+            "availabilityZone": "ca-central-1a",
+            "routeTableId": "rtb-fbcc2192"
+          },
+          {
+            "subnetId": "subnet-e6171a9e",
+            "cidr": "172.31.0.0/20",
+            "availabilityZone": "ca-central-1b",
+            "routeTableId": "rtb-fbcc2192"
+          },
+          {
+            "subnetId": "subnet-bcfacae0",
+            "cidr": "172.31.32.0/20",
+            "availabilityZone": "ca-central-1d",
+            "routeTableId": "rtb-fbcc2192"
+          }
+        ]
+      }
+    ]
   }
 }

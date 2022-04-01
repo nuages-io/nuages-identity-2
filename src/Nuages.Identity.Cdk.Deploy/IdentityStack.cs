@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using Amazon.CDK;
 using Constructs;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,8 @@ public class IdentityStack : IdentityCdkStack
     public static void CreateStack(Construct scope, IConfiguration configuration)
     {
         var options = configuration.Get<ConfigOptions>();
+
+        Console.WriteLine(JsonSerializer.Serialize(options));
         
         var stack = new IdentityStack(scope, "Stack", new StackProps
         {
@@ -28,12 +31,12 @@ public class IdentityStack : IdentityCdkStack
             }
         })
         {
-            VpcId = options.VpcId,
-            SecurityGroupId = options.SecurityGroupId,
-            DatabaseProxyArn = options.DatabaseDbProxy.Arn,
-            DatabaseProxyEndpoint = options.DatabaseDbProxy.Endpoint,
-            DatabaseProxyName = options.DatabaseDbProxy.Name,
-            DatabaseProxyUser = options.DatabaseDbProxy.UserName,
+            // VpcId = options.VpcId,
+            // SecurityGroupId = options.SecurityGroupId,
+            // DatabaseProxyArn = options.DatabaseDbProxy.Arn,
+            // DatabaseProxyEndpoint = options.DatabaseDbProxy.Endpoint,
+            // DatabaseProxyName = options.DatabaseDbProxy.Name,
+            // DatabaseProxyUser = options.DatabaseDbProxy.UserName,
             DomainName = options.DomainName,
             CertificateArn = options.CertificateArn
         };
