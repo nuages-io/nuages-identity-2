@@ -48,7 +48,7 @@ var configuration = configBuilder.Build();
 
 if (!builder.Environment.IsDevelopment())
 {
-    var config = configuration.GetSection("ApplicationConfig").Get<ApplicationConfig>();
+    var config = configuration.GetSection("Nuages:ApplicationConfig").Get<ApplicationConfig>();
 
     if (config.ParameterStore.Enabled)
     {
