@@ -50,11 +50,16 @@ var App =
 
                     var res = formExternalLogin.checkValidity();
                     if (res) {
-                        grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doExternalLogin(token);
+                        if (recaptcha !== "") {
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                    self.doExternalLogin(token);
+                                });
                             });
-                        });
+                        }
+                        else {
+                            self.doExternalLogin("");
+                        }
                     } else {
 
                         self.status = "";

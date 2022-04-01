@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nuages.Identity.Services.Fido2.AspNetIdentity;
+using OpenIddict.EntityFrameworkCore.Models;
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
@@ -12,6 +13,11 @@ public class NuagesIdentityDbContext : IdentityDbContext<NuagesApplicationUser<s
     }
     
     public DbSet<Fido2Credential> Fido2Credentials { get; set; } = null!;
+
+    public DbSet<OpenIddictEntityFrameworkCoreApplication> OpenIddictApplications { get; set; }
+    public DbSet<OpenIddictEntityFrameworkCoreScope> OpenIddictScopes { get; set; }
+    public DbSet<OpenIddictEntityFrameworkCoreAuthorization> OpenIddictAuthorizations { get; set; }
+    public DbSet<OpenIddictEntityFrameworkCoreToken> OpenIddictTokens { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

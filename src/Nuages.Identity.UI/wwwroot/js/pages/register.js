@@ -75,12 +75,17 @@ var App =
                     var res = formRegister.checkValidity();
                     if (res) {
 
-
-                        grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doRegister(token);
+                        if (recaptcha !== "") {
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                    self.doRegister(token);
+                                });
                             });
-                        });
+                        }
+                        else
+                        {
+                            self.doRegister("");
+                        }
                     } else {
 
                         self.status = "";

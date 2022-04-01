@@ -16,6 +16,10 @@
         <PackageReference Include="AWSSDK.SimpleEmailV2" Version="3.7.1.67" />
         <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.3.40" />
         <PackageReference Include="Macross.Json.Extensions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="System.Linq.Async" Version="6.0.1" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />

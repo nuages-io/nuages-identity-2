@@ -121,67 +121,6 @@ namespace Nuages.Identity.Storage.MySql.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Nuages.Fido2.Storage.EntityFramework.Fido2Credential", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<Guid>("AaGuid")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("CredType")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DescriptorIdBase64")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("DescriptorJson")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DescriptorTransports")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DescriptorType")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("DisplayName")
-                        .HasColumnType("longtext");
-
-                    b.Property<byte[]>("PublicKey")
-                        .HasColumnType("longblob");
-
-                    b.Property<DateTime>("RegDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<uint>("SignatureCounter")
-                        .HasColumnType("int unsigned");
-
-                    b.Property<byte[]>("UserHandle")
-                        .HasColumnType("longblob");
-
-                    b.Property<string>("UserHandleBase64")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<byte[]>("UserId")
-                        .HasColumnType("longblob");
-
-                    b.Property<string>("UserIdBase64")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DescriptorIdBase64")
-                        .IsUnique();
-
-                    b.HasIndex("UserHandleBase64");
-
-                    b.HasIndex("UserIdBase64");
-
-                    b.HasIndex("UserIdBase64", "DescriptorIdBase64");
-
-                    b.ToTable("Fido2Credentials");
-                });
-
             modelBuilder.Entity("Nuages.Identity.Services.AspNetIdentity.NuagesApplicationRole<string>", b =>
                 {
                     b.Property<string>("Id")
@@ -271,6 +210,9 @@ namespace Nuages.Identity.Storage.MySql.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("PasswordHistoryJson")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
@@ -309,6 +251,233 @@ namespace Nuages.Identity.Storage.MySql.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Nuages.Identity.Services.Fido2.AspNetIdentity.Fido2Credential", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("AaGuid")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("CredType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescriptorIdBase64")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("DescriptorJson")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescriptorTransports")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DescriptorType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<byte[]>("PublicKey")
+                        .HasColumnType("longblob");
+
+                    b.Property<DateTime>("RegDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<uint>("SignatureCounter")
+                        .HasColumnType("int unsigned");
+
+                    b.Property<byte[]>("UserHandle")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("UserHandleBase64")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<byte[]>("UserId")
+                        .HasColumnType("longblob");
+
+                    b.Property<string>("UserIdBase64")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DescriptorIdBase64")
+                        .IsUnique();
+
+                    b.HasIndex("UserHandleBase64");
+
+                    b.HasIndex("UserIdBase64");
+
+                    b.HasIndex("UserIdBase64", "DescriptorIdBase64");
+
+                    b.ToTable("Fido2Credentials");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ClientId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClientSecret")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ConsentType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DisplayNames")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Permissions")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostLogoutRedirectUris")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("RedirectUris")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Requirements")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OpenIddictApplications");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ApplicationId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Scopes")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("OpenIddictAuthorizations");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreScope", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Descriptions")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DisplayNames")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Resources")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OpenIddictScopes");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ApplicationId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("AuthorizationId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ConcurrencyToken")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("ExpirationDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Payload")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Properties")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("RedemptionDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("ReferenceId")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("AuthorizationId");
+
+                    b.ToTable("OpenIddictTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -360,6 +529,42 @@ namespace Nuages.Identity.Storage.MySql.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", b =>
+                {
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", "Application")
+                        .WithMany("Authorizations")
+                        .HasForeignKey("ApplicationId");
+
+                    b.Navigation("Application");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreToken", b =>
+                {
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", "Application")
+                        .WithMany("Tokens")
+                        .HasForeignKey("ApplicationId");
+
+                    b.HasOne("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", "Authorization")
+                        .WithMany("Tokens")
+                        .HasForeignKey("AuthorizationId");
+
+                    b.Navigation("Application");
+
+                    b.Navigation("Authorization");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", b =>
+                {
+                    b.Navigation("Authorizations");
+
+                    b.Navigation("Tokens");
+                });
+
+            modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreAuthorization", b =>
+                {
+                    b.Navigation("Tokens");
                 });
 #pragma warning restore 612, 618
         }

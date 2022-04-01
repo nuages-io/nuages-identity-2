@@ -98,11 +98,17 @@ var App =
                         this.status = "sending";
                         var self = this;
 
-                        grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doLogin(token);
+                        if (recaptcha !== "") {
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                    self.doLogin(token);
+                                });
                             });
-                        });
+                        }
+                        else
+                        {
+                            self.doLogin("");
+                        }
                     } else {
 
 

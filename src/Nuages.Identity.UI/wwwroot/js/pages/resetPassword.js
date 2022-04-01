@@ -77,11 +77,16 @@ var App =
 
                         this.status = "sending";
 
-                        grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doResetPassword(token);
+                        if (recaptcha !== "") {
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                    self.doResetPassword(token);
+                                });
                             });
-                        });
+                        }
+                        else {
+                            self.doResetPassword("");
+                        }
                     } else {
 
                         formResetPassword.classList.add("was-validated");

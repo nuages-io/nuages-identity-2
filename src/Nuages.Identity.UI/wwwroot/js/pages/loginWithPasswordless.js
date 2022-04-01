@@ -52,11 +52,18 @@ var App =
 
                     var res = formPasswordless.checkValidity();
                     if (res) {
-                        grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doSendPasswordlessInfo(token);
+
+                        if (recaptcha !== "") {
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                    self.doSendPasswordlessInfo(token);
+                                });
                             });
-                        });
+                        }
+                        else
+                        {
+                            self.doSendPasswordlessInfo("");
+                        }
                     } else {
                         formPasswordless.classList.add("was-validated");
 

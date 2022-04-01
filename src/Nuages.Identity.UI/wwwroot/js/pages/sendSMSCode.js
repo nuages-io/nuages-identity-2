@@ -47,11 +47,18 @@ var App =
 
                     var res = formLoginSMS.checkValidity();
                     if (res) {
-                        grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doLoginSMS(token);
+
+                        if (recaptcha !== "") {
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                    self.doLoginSMS(token);
+                                });
                             });
-                        });
+                        }
+                        else
+                        {
+                            self.doLoginSMS("");
+                        }
                     } else {
                         formLoginSMS.classList.add("was-validated");
 

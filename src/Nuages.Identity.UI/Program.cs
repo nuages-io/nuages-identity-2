@@ -7,7 +7,6 @@ using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.WebEncoders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -139,6 +138,8 @@ switch (storage)
 
             options
                 .UseSqlServer(connectionString);
+
+            options.UseOpenIddict();
         });
 
         identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
@@ -153,8 +154,11 @@ switch (storage)
 
             options
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            
+            options.UseOpenIddict();
         });
         identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
+        
         
         break;
     }
@@ -164,6 +168,8 @@ switch (storage)
             .AddDbContext<NuagesIdentityDbContext>(options =>
             {
                 options.UseInMemoryDatabase("Identity");
+                
+                options.UseOpenIddict();
             });
         
         identityBuilder.AddEntityFrameworkStores<NuagesIdentityDbContext>();
@@ -243,8 +249,8 @@ switch (storage)
 services.AddNuagesAuthentication()
     .AddGoogle(googleOptions =>
     {
-        googleOptions.ClientId = configuration["Google:ClientId"];
-        googleOptions.ClientSecret = configuration["Google:ClientSecret"];
+        googleOptions.ClientId = configuration["OpenIdProviders:Google:ClientId"];
+        googleOptions.ClientSecret = configuration["OpenIdProviders:Google:ClientSecret"];
     });
 
 services

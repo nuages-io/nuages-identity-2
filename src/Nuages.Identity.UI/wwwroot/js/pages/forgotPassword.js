@@ -52,11 +52,17 @@ var App =
 
                     var res = formforgotPassword.checkValidity();
                     if (res) {
-                        grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
-                                self.doforgotPassword(token);
+                        if (recaptcha !== "") {
+                            grecaptcha.ready(function () {
+                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                    self.doforgotPassword(token);
+                                });
                             });
-                        });
+                        }
+                        else
+                        {
+                            self.doforgotPassword("");
+                        }
                     } else {
                         formforgotPassword.classList.add("was-validated");
 

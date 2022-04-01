@@ -1,9 +1,11 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.APIGateway;
 using Amazon.CDK.AWS.Apigatewayv2;
+using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.IAM;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.Lambda.EventSources;
+using Amazon.CDK.AWS.RDS;
 using Amazon.CDK.AWS.Route53;
 using CfnDomainName = Amazon.CDK.AWS.Apigatewayv2.CfnDomainName;
 using CfnDomainNameProps = Amazon.CDK.AWS.Apigatewayv2.CfnDomainNameProps;
@@ -34,13 +36,17 @@ public partial class IdentityCdkStack
                 { "Nuages__Identity__StackName", StackName }
             },
             Tracing = Tracing.ACTIVE,
-            MemorySize = 2048
+            MemorySize = 2048,
+            Vpc = CurrentVpc,
+            AllowPublicSubnet = true,
+            SecurityGroups = SecurityGroups
         });
 
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));
 
         func.AddEventSource(new ApiEventSource("ANY", "/"));
 
+        Proxy?.GrantConnect(func, DatabaseProxyUser);
 
         var webApi = (RestApi)Node.Children.Single(c =>
             c.GetType() == typeof(RestApi) && ((RestApi)c).RestApiName.Contains("WebUI"));
@@ -63,28 +69,24 @@ public partial class IdentityCdkStack
         //      //©©HealthCheckTags = null
         //  });
 
-        var domainName = (string)Node.TryGetContext("DomainName");
-
-        if (!string.IsNullOrEmpty(domainName))
+        if (!string.IsNullOrEmpty(DomainName))
         {
-            var certficateArn = (string)Node.TryGetContext("CertificateArn");
-
             var apiGatewayDomainName = new CfnDomainName(this, "NuagesUIDomainName", new CfnDomainNameProps
             {
-                DomainName = domainName,
+                DomainName = DomainName,
                 DomainNameConfigurations = new[]
                 {
                     new CfnDomainName.DomainNameConfigurationProperty
                     {
                         EndpointType = "REGIONAL",
-                        CertificateArn = certficateArn
+                        CertificateArn = CertificateArn
                     }
                 }
             });
 
             var hostedZone = HostedZone.FromLookup(this, "LookupUI", new HostedZoneProviderProps
             {
-                DomainName = GetBaseDomain(domainName)
+                DomainName = GetBaseDomain(DomainName)
             });
 
             // ReSharper disable once UnusedVariable
@@ -96,7 +98,7 @@ public partial class IdentityCdkStack
                     HostedZoneId = apiGatewayDomainName.AttrRegionalHostedZoneId
                 },
                 HostedZoneId = hostedZone.HostedZoneId,
-                Name = domainName,
+                Name = DomainName,
                 Type = "A"
             });
 
@@ -136,6 +138,95 @@ public partial class IdentityCdkStack
         role.AddManagedPolicy(CreateSnsRolePolicy("UI"));
         role.AddManagedPolicy(CreateXrayRolePolicy("UI"));
         role.AddManagedPolicy(CreateSecretsManagerPolicy("UI"));
+        
         return role;
     }
+    
+    private IDatabaseProxy? Proxy
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(DatabaseProxyArn))
+            {
+                if (string.IsNullOrEmpty(DatabaseProxyName))
+                    throw new Exception("ProxyName is required");
+
+                if (string.IsNullOrEmpty(DatabaseProxyEndpoint))
+                    throw new Exception("ProxyEndpoint is required");
+                
+                if (string.IsNullOrEmpty(SecurityGroupId))
+                    throw new Exception("SecurityGroup is required");
+
+                _proxy ??= DatabaseProxy.FromDatabaseProxyAttributes(this, MakeId("Proxy"), new DatabaseProxyAttributes
+                {
+                    DbProxyArn = DatabaseProxyArn,
+                    DbProxyName = DatabaseProxyName,
+                    Endpoint = DatabaseProxyEndpoint,
+                    SecurityGroups = new[] { SecurityGroup! }
+                });
+
+            }
+           
+            return _proxy;
+        }
+    }
+    
+    private IVpc? CurrentVpc
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(VpcId))
+            {
+                Vpc ??= Amazon.CDK.AWS.EC2.Vpc.FromLookup(this, "Vpc", new VpcLookupOptions
+                {
+                    VpcId = VpcId
+                });
+            }
+
+            return Vpc;
+        }
+    }
+    
+    private ISecurityGroup? SecurityGroup
+    {
+        get
+        {
+            if (_securityGroup == null && !string.IsNullOrEmpty(SecurityGroupId))
+                _securityGroup = Amazon.CDK.AWS.EC2.SecurityGroup.FromLookupById(this, "IdneitySGDefault", SecurityGroupId!);
+
+            return _securityGroup;
+        }
+    }
+    
+    private ISecurityGroup[] SecurityGroups
+    {
+        get
+        {
+            if (_vpcSecurityGroup == null && !string.IsNullOrEmpty(VpcId))
+            {
+                _vpcSecurityGroup ??= CreateVpcSecurityGroup();
+            }
+
+            var list = new List<ISecurityGroup>();
+            
+            if (_vpcSecurityGroup != null)
+                list.Add(_vpcSecurityGroup);
+
+            if (SecurityGroup != null)
+                list.Add(SecurityGroup);
+
+            return list.ToArray();
+        }
+    }
+
+    protected virtual SecurityGroup CreateVpcSecurityGroup()
+    {
+        return new SecurityGroup(this, MakeId("IdentitySecurityGroup"), new SecurityGroupProps
+        {
+            Vpc = CurrentVpc!,
+            AllowAllOutbound = true,
+            Description = "Identity Security Group"
+        });
+    }
+
 }

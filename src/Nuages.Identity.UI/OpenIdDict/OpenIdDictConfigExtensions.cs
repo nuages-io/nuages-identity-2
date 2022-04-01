@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
 
@@ -54,14 +55,48 @@ public static class OpenIdDictConfigExtensions
                     }
                     case "InMemory":
                     {
-                        services.AddDbContext<OpenIdDictContext>(contextOptions =>
-                        {
-                            contextOptions.UseInMemoryDatabase("IdentityContext");
-                            contextOptions.UseOpenIddict();
-                        });
+                        // services.AddDbContext<OpenIdDictContext>(contextOptions =>
+                        // {
+                        //     contextOptions.UseInMemoryDatabase("IdentityContext");
+                        //     contextOptions.UseOpenIddict();
+                        // });
 
                         options.UseEntityFrameworkCore()
-                            .UseDbContext<OpenIdDictContext>();
+                            .UseDbContext<NuagesIdentityDbContext>();
+
+                        break;
+                    }
+                    case "SqlServer":
+                    {
+                        // services.AddDbContext<OpenIdDictContext>(contextOptions =>
+                        // {
+                        //     var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
+                        //     if (string.IsNullOrEmpty(connectionString))
+                        //         connectionString = configuration["Nuages:SqlServer:ConnectionString"];
+                        //     
+                        //     contextOptions
+                        //         .UseSqlServer(connectionString);
+                        // });
+
+                        options.UseEntityFrameworkCore()
+                            .UseDbContext<NuagesIdentityDbContext>();
+
+                        break;
+                    }
+                    case "MySql":
+                    {
+                        // services.AddDbContext<OpenIdDictContext>(contextOptions =>
+                        // {
+                        //     var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
+                        //     if (string.IsNullOrEmpty(connectionString))
+                        //         connectionString = configuration["Nuages:MySql:ConnectionString"];
+                        //     
+                        //     contextOptions
+                        //         .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                        // });
+
+                        options.UseEntityFrameworkCore()
+                            .UseDbContext<NuagesIdentityDbContext>();
 
                         break;
                     }

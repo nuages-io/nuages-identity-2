@@ -13,7 +13,6 @@ public class IdentityStack : IdentityCdkStack
     {
         AssetUi = "./src/Nuages.Identity.UI/bin/Release/net6.0/linux-x64/publish";
         AssetApi = "./src/Nuages.Identity.API/bin/Release/net6.0/linux-x64/publish";
-       // TemplateFileName = "./templates2.json";
     }
     
     public static void CreateStack(Construct scope, IConfiguration configuration)
@@ -28,12 +27,20 @@ public class IdentityStack : IdentityCdkStack
                 Account = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
                 Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
             }
-        });
+        })
+        {
+            VpcId = options.VpcId,
+            SecurityGroupId = options.SecurityGroupId,
+            DatabaseProxyArn = options.DatabaseDbProxy.Arn,
+            DatabaseProxyEndpoint = options.DatabaseDbProxy.Endpoint,
+            DatabaseProxyName = options.DatabaseDbProxy.Name,
+            DatabaseProxyUser = options.DatabaseDbProxy.UserName,
+            DomainName = options.DomainName,
+            CertificateArn = options.CertificateArn
+        };
 
-        stack.Node.SetContext("DomainName", options.DomainName);
-        stack.Node.SetContext("DomainNameApi", options.DomainNameApi);
-        stack.Node.SetContext("CertificateArn", options.CertificateArn);
 
         stack.CreateTemplate();
     }
+
 }
