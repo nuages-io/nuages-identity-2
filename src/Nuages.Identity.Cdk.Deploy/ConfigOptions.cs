@@ -14,8 +14,8 @@ public class ConfigOptions
     public string CertificateArn { get; set; } = string.Empty;
     
     public DbProxy DatabaseDbProxy { get; set; } = new();
-    
     public string? VpcId { get; set; }
+    
     public string? SecurityGroupId { get; set; }
 }
 

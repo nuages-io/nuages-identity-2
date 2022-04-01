@@ -201,17 +201,6 @@ public class IdentityStackWithPipeline : Stack
                 NotificationRuleName = pipeline.Pipeline.PipelineName
             });
         }
-
-      
-
-        // pipeline.AddStage(new PipelineWebhookStage(this, "CreateWebHook", configuration, new Amazon.CDK.StageProps
-        // {
-        //     Env = new Amazon.CDK.Environment
-        //     {
-        //         Account = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_ACCOUNT"),
-        //         Region = System.Environment.GetEnvironmentVariable("CDK_DEFAULT_REGION")
-        //     }
-        // }));
     }
 
     private class PipelineAppStage : Stage
@@ -222,33 +211,4 @@ public class IdentityStackWithPipeline : Stack
             IdentityStack.CreateStack(this, configuration);
         }
     }
-
-    // private class PipelineWebhookStage : Stage
-    // {
-    //     public PipelineWebhookStage(Construct scope, string id, IConfiguration configuration, Amazon.CDK.IStageProps props) : base(scope, id, props)
-    //     {
-    //         new CfnWebhook(this, "gitHubWebHook", new CfnWebhookProps
-    //         {
-    //             Authentication = "GITHUB_HMAC",
-    //             AuthenticationConfiguration = new CfnWebhook.WebhookAuthConfigurationProperty
-    //             {
-    //                 SecretToken = configuration["GithubToken"]
-    //             },
-    //             Filters = new[]
-    //             {
-    //                 new CfnWebhook.WebhookFilterRuleProperty
-    //                 {
-    //                     JsonPath = "$.action",
-    //
-    //                     // the properties below are optional
-    //                     MatchEquals = "published"
-    //                 }
-    //             },
-    //             TargetAction = configuration["GithubRepository"].Replace("/", "_"),
-    //             TargetPipeline = $"{configuration["StackName"]}-Pipeline",
-    //             TargetPipelineVersion = 1,
-    //             RegisterWithThirdParty = true
-    //         });
-    //     }
-    // }
 }

@@ -31,7 +31,6 @@ public partial class IdentityCdkStack : Stack
     public string? DomainName { get; set; }
     
     protected string AssetUi { get; set; } = "";
-    protected string AssetApi { get; set; } = "";
     
     protected IVpc? Vpc;
    
