@@ -2,5 +2,9 @@
   "hosted-zone:account=817771063649:domainName=nuages.org:region=ca-central-1": {
     "Id": "/hostedzone/Z1RBRZAY41KIO0",
     "Name": "nuages.org."
+  },
+  "security-group:account=817771063649:region=ca-central-1:securityGroupId=sg-0a0f5e706b2779a3e": {
+    "securityGroupId": "sg-0a0f5e706b2779a3e",
+    "allowAllOutbound": false
   }
 }
