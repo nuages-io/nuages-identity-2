@@ -230,7 +230,7 @@
 		"title": "Password expired"
 	},
 	"passwordRequirement": {
-		"RequireDigit": "Requires at least 1anumber [0-9]",
+		"RequireDigit": "Requires at least one number [0-9]",
 		"RequireLowercase": "Requires a lowercase letter [a-z]",
 		"RequireNonAlphanumeric": "Requires a special character that is not a letter or a number (Ex. $% * # Etc.)",
 		"RequireUppercase": "Requires an uppercase letter [A-Z]",

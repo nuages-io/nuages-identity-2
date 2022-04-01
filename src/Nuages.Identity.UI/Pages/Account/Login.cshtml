@@ -8,7 +8,6 @@
 @{
     ViewData["Title"] = Localizer["login:title"];
     ViewBag.ShowRegistration = UIOptions.Value.ShowRegistration;
-    ViewBag.RegistrationUrl = UIOptions.Value.RegistrationUrl;
 }
 
 @section Header
@@ -18,7 +17,7 @@
         <div>
             <p class="mt-2 text-center text-sm">
                 <label>@Localizer["or"]</label>
-                <a href="@ViewBag.RegistrationUrl" class="font-medium ">
+                <a href="/Account/Register" class="font-medium ">
                     @Localizer["register.title"]
                 </a>
             </p>

@@ -7,6 +7,7 @@ using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.WebEncoders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -121,6 +122,9 @@ var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<str
             RequireConfirmedPhoneNumber = false, //MUST be false
             RequireConfirmedAccount = false //MUST be false
         };
+
+        configuration.GetSection("Nuages:Identity:Password").Bind(identity.Password);
+        
     });
 
 var storage = Enum.Parse<StorageType>(configuration["Nuages:Storage"]);
@@ -269,7 +273,9 @@ services.AddNuagesOpenIdDict(configuration, _ => { });
 
 services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-services.AddCors( configuration["AllowedCorsDomain"].Split(",") );
+var corsDomains = configuration["AllowedCorsDomain"];
+if (!string.IsNullOrEmpty(corsDomains))
+    services.AddCors( corsDomains.Split(",") );
 
 var app = builder.Build();
 
