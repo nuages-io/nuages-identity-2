@@ -16,7 +16,7 @@ namespace Nuages.Identity.Cdk.Deploy;
 
 [ExcludeFromCodeCoverage]
 [SuppressMessage("Performance", "CA1806:Do not ignore method results")]
-public class IdentityStackWithPipeline : Stack
+public sealed class IdentityStackWithPipeline : Stack
 {
     public static void Create(Construct scope, IConfiguration configuration)
     {
@@ -62,7 +62,14 @@ public class IdentityStackWithPipeline : Stack
                         Effect = Effect.ALLOW,
                         Actions = new[] {  "secretsmanager:GetSecretValue" },
                         Resources = new[] { "*" }
+                    }),
+                    new (new PolicyStatementProps
+                    {
+                        Effect = Effect.ALLOW,
+                        Actions = new[] {  "sts:AssumerRole" },
+                        Principals = new IPrincipal[] { new AccountPrincipal(Account) }
                     })
+                    
                 }
             },
             Synth = new ShellStep("Synth",
