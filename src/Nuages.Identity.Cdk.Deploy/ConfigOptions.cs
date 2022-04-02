@@ -12,4 +12,7 @@ public class ConfigOptions
     public string DomainName { get; set; } = string.Empty;
 
     public string CertificateArn { get; set; } = string.Empty;
+    
+    public string? SecurityGroupId { get; set; }
+    public string? VpcId { get; set; }
 }

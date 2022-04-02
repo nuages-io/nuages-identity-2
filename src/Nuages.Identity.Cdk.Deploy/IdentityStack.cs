@@ -32,7 +32,9 @@ public class IdentityStack : IdentityCdkStack
         })
         {
             DomainName = options.DomainName,
-            CertificateArn = options.CertificateArn
+            CertificateArn = options.CertificateArn,
+            VpcId = options.VpcId,
+            SecurityGroupId = options.SecurityGroupId
         };
         
         stack.CreateTemplate();

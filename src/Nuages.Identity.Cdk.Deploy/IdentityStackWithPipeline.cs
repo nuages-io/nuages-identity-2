@@ -63,12 +63,12 @@ public sealed class IdentityStackWithPipeline : Stack
                         Actions = new[] {  "secretsmanager:GetSecretValue" },
                         Resources = new[] { "*" }
                     }),
-                    new (new PolicyStatementProps
-                    {
-                        Effect = Effect.ALLOW,
-                        Actions = new[] {  "ec2:*", "sts:*" },
-                        Resources = new[] { "*" }
-                    })
+                      new (new PolicyStatementProps
+                      {
+                          Effect = Effect.ALLOW,
+                          Actions = new[] {  "ec2:Describe*" },
+                          Resources = new[] { "*" }
+                      })
                 }
             },
             Synth = new ShellStep("Synth",
@@ -108,7 +108,7 @@ public sealed class IdentityStackWithPipeline : Stack
                             }
                         }
                     }
-                }),
+                })/*,
                 RolePolicy = new PolicyStatement[]
                 {
                     new(new PolicyStatementProps
@@ -132,7 +132,7 @@ public sealed class IdentityStackWithPipeline : Stack
                         Actions = new[] {  "secretsmanager:GetSecretValue" },
                         Resources = new[] { "*" }
                     })
-                }
+                }*/
             },
             SelfMutationCodeBuildDefaults = new CodeBuildOptions
             {

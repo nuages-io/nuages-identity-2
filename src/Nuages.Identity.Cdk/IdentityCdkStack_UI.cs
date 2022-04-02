@@ -37,7 +37,9 @@ public partial class IdentityCdkStack
             },
             Tracing = Tracing.ACTIVE,
             MemorySize = 2048,
-            AllowPublicSubnet = true
+            AllowPublicSubnet = true,
+            Vpc = CurrentVpc,
+            SecurityGroups = VpcApiSecurityGroups
         });
 
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));
