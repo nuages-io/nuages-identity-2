@@ -66,10 +66,9 @@ public sealed class IdentityStackWithPipeline : Stack
                     new (new PolicyStatementProps
                     {
                         Effect = Effect.ALLOW,
-                        Actions = new[] {  "sts:AssumerRole" },
-                        Principals = new IPrincipal[] { new AccountPrincipal(Account) }
+                        Actions = new[] {  "ec2:*", "sts:*" },
+                        Resources = new[] { "*" }
                     })
-                    
                 }
             },
             Synth = new ShellStep("Synth",
