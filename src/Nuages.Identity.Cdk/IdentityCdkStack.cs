@@ -39,8 +39,28 @@ public partial class IdentityCdkStack : Stack
     
     private ManagedPolicy CreateLambdaBasicExecutionRolePolicy(string suffix)
     {
+        var permissions = new List<string>
+        {
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+        };
+
+        if (!string.IsNullOrEmpty(VpcId))
+        {
+            permissions.AddRange(new List<string>
+            {
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:CreateNetworkInterface",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DescribeInstances",
+                "ec2:AttachNetworkInterface"
+            });
+        }
+        
         return new ManagedPolicy(this, MakeId("LambdaBasicExecutionRole" + suffix), new ManagedPolicyProps
         {
+        
             Document = new PolicyDocument(new PolicyDocumentProps
             {
                 Statements = new[]
@@ -48,12 +68,7 @@ public partial class IdentityCdkStack : Stack
                     new PolicyStatement(new PolicyStatementProps
                     {
                         Effect = Effect.ALLOW,
-                        Actions = new[]
-                        {
-                            "logs:CreateLogGroup",
-                            "logs:CreateLogStream",
-                            "logs:PutLogEvents"
-                        },
+                        Actions = permissions.ToArray(),
                         Resources = new[] { "*" }
                     })
                 }
