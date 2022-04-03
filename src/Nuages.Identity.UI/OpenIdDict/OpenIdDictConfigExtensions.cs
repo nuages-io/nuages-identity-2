@@ -14,7 +14,6 @@ public static class OpenIdDictConfigExtensions
     {
         services.Configure<OpenIdDictOptions>(configuration.GetSection("Nuages:OpenIdDict"));
         services.Configure(configure);
-
         
         services.AddScoped<IAudienceValidator, AudienceValidator>();
         services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
@@ -27,7 +26,6 @@ public static class OpenIdDictConfigExtensions
         services.AddScoped<IUserInfoEndpoint, UserInfoEndpoint>();
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
-
         
         services.AddOpenIddict()
             // Register the OpenIddict core components.
@@ -54,47 +52,9 @@ public static class OpenIdDictConfigExtensions
                         break;
                     }
                     case "InMemory":
-                    {
-                        // services.AddDbContext<OpenIdDictContext>(contextOptions =>
-                        // {
-                        //     contextOptions.UseInMemoryDatabase("IdentityContext");
-                        //     contextOptions.UseOpenIddict();
-                        // });
-
-                        options.UseEntityFrameworkCore()
-                            .UseDbContext<NuagesIdentityDbContext>();
-
-                        break;
-                    }
                     case "SqlServer":
-                    {
-                        // services.AddDbContext<OpenIdDictContext>(contextOptions =>
-                        // {
-                        //     var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
-                        //     if (string.IsNullOrEmpty(connectionString))
-                        //         connectionString = configuration["Nuages:SqlServer:ConnectionString"];
-                        //     
-                        //     contextOptions
-                        //         .UseSqlServer(connectionString);
-                        // });
-
-                        options.UseEntityFrameworkCore()
-                            .UseDbContext<NuagesIdentityDbContext>();
-
-                        break;
-                    }
                     case "MySql":
                     {
-                        // services.AddDbContext<OpenIdDictContext>(contextOptions =>
-                        // {
-                        //     var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
-                        //     if (string.IsNullOrEmpty(connectionString))
-                        //         connectionString = configuration["Nuages:MySql:ConnectionString"];
-                        //     
-                        //     contextOptions
-                        //         .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-                        // });
-
                         options.UseEntityFrameworkCore()
                             .UseDbContext<NuagesIdentityDbContext>();
 
@@ -109,9 +69,11 @@ public static class OpenIdDictConfigExtensions
             // Register the OpenIddict server components.
             .AddServer(options =>
             {
-//#if DEBUG
                 options.DisableAccessTokenEncryption();
-//#endif
+
+                options.SetAccessTokenLifetime(TimeSpan.FromDays(1));
+                options.SetRefreshTokenLifetime(TimeSpan.FromDays(1));
+                
                 options.SetDeviceEndpointUris("/connect/device")
                     .SetVerificationEndpointUris("/connect/verify")
                     .SetTokenEndpointUris("/connect/token")
@@ -134,12 +96,11 @@ public static class OpenIdDictConfigExtensions
                     .EnableTokenEndpointPassthrough()
                     .EnableLogoutEndpointPassthrough()
                     .EnableUserinfoEndpointPassthrough()
-                    //.EnableVerificationEndpointPassthrough()
+                    //.EnableVerificationEndpointPassthrough() NO PASSTROUGHR
 #if DEBUG
                     .DisableTransportSecurityRequirement()
 #endif
-                    .EnableStatusCodePagesIntegration()
-                    ;
+                    .EnableStatusCodePagesIntegration();
             })
             .AddValidation(options =>
             {
