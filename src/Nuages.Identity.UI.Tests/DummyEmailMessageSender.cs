@@ -1,4 +1,5 @@
 using Nuages.Identity.Services.Email.Sender;
+// ReSharper disable UnusedVariable
 
 namespace Nuages.Identity.UI.Tests;
 

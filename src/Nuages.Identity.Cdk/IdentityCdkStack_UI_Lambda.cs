@@ -1,14 +1,13 @@
 using Amazon.CDK;
 using Amazon.CDK.AWS.APIGateway;
 using Amazon.CDK.AWS.Apigatewayv2;
-using Amazon.CDK.AWS.EC2;
 using Amazon.CDK.AWS.IAM;
 using Amazon.CDK.AWS.Lambda;
 using Amazon.CDK.AWS.Lambda.EventSources;
-using Amazon.CDK.AWS.RDS;
 using Amazon.CDK.AWS.Route53;
 using CfnDomainName = Amazon.CDK.AWS.Apigatewayv2.CfnDomainName;
 using CfnDomainNameProps = Amazon.CDK.AWS.Apigatewayv2.CfnDomainNameProps;
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable VirtualMemberNeverOverridden.Global
 
@@ -39,7 +38,7 @@ public partial class IdentityCdkStack
             MemorySize = 2048,
             AllowPublicSubnet = true,
             Vpc = CurrentVpc,
-            SecurityGroups = VpcApiSecurityGroups
+            SecurityGroups = SecurityGroups
         });
 
         func.AddEventSource(new ApiEventSource("ANY", "/{proxy+}"));

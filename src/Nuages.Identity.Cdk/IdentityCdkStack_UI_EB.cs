@@ -33,16 +33,19 @@ public partial class IdentityCdkStack
         
         version.AddDependsOn(application);
         
-        var myRole = new Role(this, MakeId("-aws-elasticbeanstalk-ec2-role"),new RoleProps() {
-            AssumedBy = new ServicePrincipal("ec2.amazonaws.com"),
+        var myRole = new Role(this, MakeId("-aws-elasticbeanstalk-ec2-role"),new RoleProps {
+            AssumedBy = new ServicePrincipal("ec2.amazonaws.com")
         });
 
-        var managedPolicy = ManagedPolicy.FromAwsManagedPolicyName("AWSElasticBeanstalkWebTier");
-        myRole.AddManagedPolicy(managedPolicy);
+        myRole.AddManagedPolicy(ManagedPolicy.FromAwsManagedPolicyName("AWSElasticBeanstalkWebTier"));
+        myRole.AddManagedPolicy(ManagedPolicy.FromAwsManagedPolicyName("AWSElasticBeanstalkMulticontainerDocker"));
+        myRole.AddManagedPolicy(ManagedPolicy.FromAwsManagedPolicyName("AWSElasticBeanstalkMulticontainerDocker"));
 
+        
+            
         var myProfileName = $"{StackName}-InstanceProfile";
 
-        var instanceProfile = new CfnInstanceProfile(this, myProfileName, new CfnInstanceProfileProps {
+        new CfnInstanceProfile(this, myProfileName, new CfnInstanceProfileProps {
             InstanceProfileName =  myProfileName,
             Roles = new  []
             {
@@ -56,29 +59,29 @@ public partial class IdentityCdkStack
            {
            Namespace = "aws:autoscaling:launchconfiguration",
            OptionName = "IamInstanceProfile",
-           Value = myProfileName,
+           Value = myProfileName
            },
            new()
            {
                Namespace = "aws:autoscaling:asg",
                OptionName = "MinSize",
-               Value = "1",
+               Value = "1"
            },
            new()
            {
                Namespace = "aws:autoscaling:asg",
                OptionName= "MaxSize",
-               Value = "1",
+               Value = "1"
            },
            new()
            {
                Namespace = "aws:ec2:instances",
                OptionName =  "InstanceTypes",
-               Value = "t2.micro",
+               Value = "t2.micro"
            }
         };
 
-        var elbEnv = new CfnEnvironment(this, MakeId("Environment"), new CfnEnvironmentProps {
+        new CfnEnvironment(this, MakeId("Environment"), new CfnEnvironmentProps {
             EnvironmentName =  $"{StackName}-Env",
             ApplicationName =  StackName,
             SolutionStackName = "64bit Amazon Linux 2 v2.3.0 running .NET Core",

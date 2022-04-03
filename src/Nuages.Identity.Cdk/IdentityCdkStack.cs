@@ -1,8 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using Amazon.CDK;
-using Amazon.CDK.AWS.EC2;
-using Amazon.CDK.AWS.IAM;
-using Amazon.CDK.AWS.RDS;
 using Constructs;
 // ReSharper disable VirtualMemberNeverOverridden.Global
 
@@ -20,8 +17,8 @@ public partial class IdentityCdkStack : Stack
 
     protected string AssetUi { get; set; } = "";
     
-    public string? CertificateArn { get; set; }
-    public string? DomainName { get; set; }
+    protected string? CertificateArn { get; set; }
+    protected string? DomainName { get; set; }
    
     protected void CreateTemplate()
     {

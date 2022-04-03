@@ -48,9 +48,10 @@ public class NuagesApplicationUser<TKey> : IdentityUser<TKey> where TKey : IEqua
     public PasswordHistory? PasswordHistory
     {
         get => string.IsNullOrWhiteSpace(PasswordHistoryJson) ? null : JsonSerializer.Deserialize<PasswordHistory>(PasswordHistoryJson);
-        set => PasswordHistoryJson = value != null ? JsonSerializer.Serialize(value) : null;
+        private set => PasswordHistoryJson = value != null ? JsonSerializer.Serialize(value) : null;
     }
 
+    // ReSharper disable once MemberCanBePrivate.Global
     public string? PasswordHistoryJson { get; set; }
 
     public void AddPassword(string hash, int keepPasspordCount)

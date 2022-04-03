@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nuages.Identity.Services.Fido2.AspNetIdentity;
 using OpenIddict.EntityFrameworkCore.Models;
+// ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.Services.AspNetIdentity;
 
@@ -14,10 +15,11 @@ public class NuagesIdentityDbContext : IdentityDbContext<NuagesApplicationUser<s
     
     public DbSet<Fido2Credential> Fido2Credentials { get; set; } = null!;
 
-    public DbSet<OpenIddictEntityFrameworkCoreApplication> OpenIddictApplications { get; set; }
-    public DbSet<OpenIddictEntityFrameworkCoreScope> OpenIddictScopes { get; set; }
-    public DbSet<OpenIddictEntityFrameworkCoreAuthorization> OpenIddictAuthorizations { get; set; }
-    public DbSet<OpenIddictEntityFrameworkCoreToken> OpenIddictTokens { get; set; }
+    // ReSharper disable once UnusedMember.Global
+    public DbSet<OpenIddictEntityFrameworkCoreApplication> OpenIddictApplications { get; set; } = null!;
+    public DbSet<OpenIddictEntityFrameworkCoreScope> OpenIddictScopes { get; set; } = null!;
+    public DbSet<OpenIddictEntityFrameworkCoreAuthorization> OpenIddictAuthorizations { get; set; } = null!;
+    public DbSet<OpenIddictEntityFrameworkCoreToken> OpenIddictTokens { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

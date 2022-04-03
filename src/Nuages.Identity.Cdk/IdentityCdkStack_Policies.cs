@@ -1,4 +1,6 @@
 using Amazon.CDK.AWS.IAM;
+// ReSharper disable InconsistentNaming
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace Nuages.Identity.CDK;
 

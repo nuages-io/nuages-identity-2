@@ -1,11 +1,12 @@
 using Amazon.CDK.AWS.EC2;
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace Nuages.Identity.CDK;
 
 public partial class IdentityCdkStack
 {
-    public string? VpcId { get; set; }
-    public string? SecurityGroupId { get; set; }
+    protected string? VpcId { get; set; }
+    protected string? SecurityGroupId { get; set; }
     
     private IVpc? _vpc;
 
@@ -72,38 +73,38 @@ public partial class IdentityCdkStack
         });
     }
 
-    private ISecurityGroup? _vpcApiSecurityGroup;
-
-    private ISecurityGroup[] VpcApiSecurityGroups
-    {
-        get
-        {
-            if (_vpcApiSecurityGroup == null && !string.IsNullOrEmpty(VpcId))
-            {
-                _vpcApiSecurityGroup ??= CreateVpcApiSecurityGroup();
-            }
-
-            var list = new List<ISecurityGroup>();
-
-            if (_vpcApiSecurityGroup != null)
-                list.Add(_vpcApiSecurityGroup);
-
-            if (SecurityGroup != null)
-                list.Add(SecurityGroup);
-
-            return list.ToArray();
-        }
-    }
-
-    protected virtual SecurityGroup CreateVpcApiSecurityGroup()
-    {
-        Console.WriteLine($"CreateVpcApiSecurityGroup");
-
-        return new SecurityGroup(this, MakeId("ApiSecurityGroup"), new SecurityGroupProps
-        {
-            Vpc = CurrentVpc!,
-            AllowAllOutbound = true,
-            Description = "PubSub API Security Group"
-        });
-    }
+    // private ISecurityGroup? _vpcApiSecurityGroup;
+    //
+    // private ISecurityGroup[] VpcApiSecurityGroups
+    // {
+    //     get
+    //     {
+    //         if (_vpcApiSecurityGroup == null && !string.IsNullOrEmpty(VpcId))
+    //         {
+    //             _vpcApiSecurityGroup ??= CreateVpcApiSecurityGroup();
+    //         }
+    //
+    //         var list = new List<ISecurityGroup>();
+    //
+    //         if (_vpcApiSecurityGroup != null)
+    //             list.Add(_vpcApiSecurityGroup);
+    //
+    //         if (SecurityGroup != null)
+    //             list.Add(SecurityGroup);
+    //
+    //         return list.ToArray();
+    //     }
+    // }
+    //
+    // protected virtual SecurityGroup CreateVpcApiSecurityGroup()
+    // {
+    //     Console.WriteLine("CreateVpcApiSecurityGroup");
+    //
+    //     return new SecurityGroup(this, MakeId("ApiSecurityGroup"), new SecurityGroupProps
+    //     {
+    //         Vpc = CurrentVpc!,
+    //         AllowAllOutbound = true,
+    //         Description = "PubSub API Security Group"
+    //     });
+    // }
 }
