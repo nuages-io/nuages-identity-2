@@ -2,6 +2,7 @@ namespace Nuages.Identity.UI.AWS;
 
 #nullable disable
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class Data
 {
     public string Language { get; set; }
@@ -9,8 +10,10 @@ public class Data
     public string EmailHtml { get; set; }
 }
 
+// ReSharper disable once ClassNeverInstantiated.Global
 public class EmailTemplate
 {
     public string Key { get; set; }
+    // ReSharper disable once CollectionNeverUpdated.Global
     public List<Data> Data { get; set; }
 }
