@@ -303,6 +303,8 @@ app.UseWebOptimizer();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCookiePolicy();
+    
 app.UseRouting();
 
 app.UseCors(CorsConfigExtensions.AllowSpecificOrigins);

@@ -59,6 +59,11 @@ public static class NuagesIdentityConfigExtensions
 
     public static AuthenticationBuilder AddNuagesAuthentication(this IServiceCollection services)
     {
+        services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.Secure = CookieSecurePolicy.Always;
+        });
+        
         var builder = services.AddAuthentication()
             .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
             .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
