@@ -16,9 +16,9 @@ namespace Nuages.Identity.CDK;
 
 public partial class IdentityCdkStack
 {
-    private void CreateWebUi()
+    private void CreateUILambda()
     {
-        var role = CreateWebUiRole();
+        var role = CreateUILambdaRole();
 
         if (string.IsNullOrEmpty(AssetUi)) throw new Exception("AssetUi must be assigned");
 
@@ -48,24 +48,6 @@ public partial class IdentityCdkStack
 
         var webApi = (RestApi)Node.Children.Single(c =>
             c.GetType() == typeof(RestApi) && ((RestApi)c).RestApiName.Contains("WebUI"));
-
-        // var apiDomain = $"{webApi.RestApiId}.execute-api.{Aws.REGION}.amazonaws.com";
-        // var apiCheckPath = $"{webApi.DeploymentStage.StageName}/health";
-        //
-        //  var hc = new CfnHealthCheck(this, MakeId("HealthCheckUI"), new CfnHealthCheckProps
-        //  {
-        //      HealthCheckConfig = new CfnHealthCheck.HealthCheckConfigProperty
-        //      {
-        //          EnableSni = true,
-        //          FailureThreshold = 3,
-        //          FullyQualifiedDomainName = apiDomain,
-        //          Port = 443,
-        //          RequestInterval = 30,
-        //          ResourcePath = apiCheckPath,
-        //          Type = "HTTPS"
-        //      },
-        //      //©©HealthCheckTags = null
-        //  });
 
         if (!string.IsNullOrEmpty(DomainName))
         {
@@ -121,14 +103,14 @@ public partial class IdentityCdkStack
         }
     }
 
-    private Role CreateWebUiRole()
+    private Role CreateUILambdaRole()
     {
         var role = new Role(this, "RoleWebUI", new RoleProps
         {
             AssumedBy = new ServicePrincipal("lambda.amazonaws.com")
         });
 
-        role.AddManagedPolicy(CreateLambdaBasicExecutionRolePolicy("UI"));
+        role.AddManagedPolicy(CreateLambdaExecutionRolePolicy("UI"));
         role.AddManagedPolicy(CreateLambdaFullAccessRolePolicy("UI"));
         role.AddManagedPolicy(CreateSystemsManagerParametersRolePolicy("UI"));
         role.AddManagedPolicy(CreateS3RolePolicy("UI"));
