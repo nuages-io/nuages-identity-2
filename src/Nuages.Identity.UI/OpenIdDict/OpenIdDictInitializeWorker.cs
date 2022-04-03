@@ -23,7 +23,7 @@ public class OpenIdDictInitializeWorker : IHostedService
             {
                 ClientId = "postman-ui",
                 ConsentType = ConsentTypes.Implicit,
-                DisplayName = "Blazor client application",
+                DisplayName = "Postman client application",
                 Type = ClientTypes.Confidential,
                 ClientSecret = "511536EF-F270-4058-80CA-1C89C192F69A",
                 PostLogoutRedirectUris =

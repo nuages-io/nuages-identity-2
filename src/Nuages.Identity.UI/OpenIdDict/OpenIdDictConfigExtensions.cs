@@ -111,9 +111,7 @@ public static class OpenIdDictConfigExtensions
                 options.UseAspNetCore();
             });
 
-#if DEBUG
         services.AddHostedService<OpenIdDictInitializeWorker>();
-#endif
 
         services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, OpenIddictServerOptionsInitializer>();
     }
