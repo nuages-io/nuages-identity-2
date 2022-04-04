@@ -1,3 +1,0 @@
-{
-  "app": "sh build.sh;dotnet run --project src/Nuages.Identity.Cdk.Deploy/Nuages.Identity.Cdk.Deploy.csproj --pipeline"
-}
