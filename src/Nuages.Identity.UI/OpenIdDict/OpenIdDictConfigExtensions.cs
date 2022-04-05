@@ -32,7 +32,7 @@ public static class OpenIdDictConfigExtensions
             {
                 var storage = configuration.GetValue<string>("Nuages:OpenIdDict:Storage");
                 if (string.IsNullOrEmpty(storage))
-                    storage = configuration.GetValue<string>("Nuages:Storage");
+                    storage = configuration.GetValue<string>("Nuages:Data:Storage");
                 
                 switch (storage)
                 {
@@ -40,7 +40,7 @@ public static class OpenIdDictConfigExtensions
                     {
                         var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
                         if (string.IsNullOrEmpty(connectionString))
-                            connectionString = configuration["Nuages:Mongo:ConnectionString"];
+                            connectionString = configuration["Nuages:Data:ConnectionString"];
                         
                         var url = new MongoUrl(connectionString);
                         

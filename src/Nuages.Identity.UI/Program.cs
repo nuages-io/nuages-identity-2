@@ -126,7 +126,8 @@ var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<str
         
     });
 
-var storage = Enum.Parse<StorageType>(configuration["Nuages:Storage"]);
+var storage = Enum.Parse<StorageType>(configuration["Nuages:Data:Storage"]);
+var connectionString = configuration["Nuages:Data:ConnectionString"];
 
 switch (storage)
 {
@@ -134,8 +135,6 @@ switch (storage)
     {
         builder.Services.AddDbContext<NuagesIdentityDbContext>(options =>
         {
-            var connectionString = configuration["Nuages:SqlServer:ConnectionString"];
-
             options
                 .UseSqlServer(connectionString);
 
@@ -150,8 +149,6 @@ switch (storage)
     {
         builder.Services.AddDbContext<NuagesIdentityDbContext>(options =>
         {
-            var connectionString = configuration["Nuages:MySql:ConnectionString"];
-
             options
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
             
@@ -180,7 +177,7 @@ switch (storage)
     {
         identityBuilder.AddMongoStores<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(options =>
         {
-            options.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
+            options.ConnectionString = connectionString;
 
             if (!BsonClassMap.IsClassMapRegistered(typeof(NuagesApplicationUser<string>)))
                 BsonClassMap.RegisterClassMap<NuagesApplicationUser<string>>(cm =>
@@ -228,7 +225,7 @@ switch (storage)
     {
         fidoBuilder2.AddFido2MongoStorage(config =>
         {
-            config.ConnectionString = configuration["Nuages:Mongo:ConnectionString"];
+            config.ConnectionString = configuration["Nuages:Data:ConnectionString"];
         });
         break;
     }
