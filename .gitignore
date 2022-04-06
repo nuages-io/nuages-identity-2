@@ -21,3 +21,4 @@ cdk.out
 cdk.context.json
 internal-nlog-AspNetCore.txt
 nlog.config
+env.list
