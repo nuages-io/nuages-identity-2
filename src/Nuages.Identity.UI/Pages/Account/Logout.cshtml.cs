@@ -34,7 +34,7 @@ public class LogoutModel : PageModel
             _logger.LogInformation("User logged out.");
             _logger.LogInformation($"LocalRedirect returnUrl = {returnUrl}");
             if (returnUrl != null) return LocalRedirect(returnUrl);
-
+            _logger.LogInformation($"Redirect to root");
             return Redirect("~/");
         }
         catch (Exception e)
