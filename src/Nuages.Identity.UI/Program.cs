@@ -4,6 +4,7 @@ using System.Text.Unicode;
 using Amazon;
 using Amazon.XRay.Recorder.Core;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -264,6 +265,11 @@ services
     })
     .AddNuagesLocalization(configuration);
 
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 
 services.AddHttpContextAccessor();
 
@@ -290,6 +296,7 @@ if (builder.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error");
+    app.UseForwardedHeaders();
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -297,7 +304,7 @@ else
 app.UseSession();
 
 app.UseWebOptimizer();
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCookiePolicy();
