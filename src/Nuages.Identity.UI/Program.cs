@@ -309,10 +309,10 @@ else
 app.UseSession();
 
 app.UseWebOptimizer();
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-//app.UseCookiePolicy();
+app.UseCookiePolicy();
     
 app.UseRouting();
 
