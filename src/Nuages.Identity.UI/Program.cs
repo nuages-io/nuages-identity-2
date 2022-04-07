@@ -308,7 +308,7 @@ else
 
 //app.UseSession();
 
-//app.UseWebOptimizer();
+app.UseWebOptimizer();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
