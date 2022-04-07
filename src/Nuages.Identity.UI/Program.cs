@@ -306,9 +306,9 @@ else
     app.UseHsts();
 }
 
-app.UseSession();
+//app.UseSession();
 
-app.UseWebOptimizer();
+//app.UseWebOptimizer();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
