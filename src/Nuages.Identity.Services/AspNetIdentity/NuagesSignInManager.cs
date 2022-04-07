@@ -281,14 +281,14 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         return res;
     }
 
-    // public override async Task SignOutAsync()
-    // {
-    //     await Context.SignOutAsync(NuagesIdentityConstants.EmailNotVerifiedScheme);
-    //     await Context.SignOutAsync(NuagesIdentityConstants.ResetPasswordScheme);
-    //     await Context.SignOutAsync(NuagesIdentityConstants.PasswordExpiredScheme);
-    //
-    //     await base.SignOutAsync();
-    // }
+    public override async Task SignOutAsync()
+    {
+        await Context.SignOutAsync(NuagesIdentityConstants.EmailNotVerifiedScheme);
+        await Context.SignOutAsync(NuagesIdentityConstants.ResetPasswordScheme);
+        await Context.SignOutAsync(NuagesIdentityConstants.PasswordExpiredScheme);
+    
+        await base.SignOutAsync();
+    }
     
     public override async Task<SignInResult> TwoFactorSignInAsync(string provider, string code, bool isPersistent, bool rememberClient)
     {
