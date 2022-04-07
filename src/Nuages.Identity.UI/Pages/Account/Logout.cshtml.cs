@@ -31,7 +31,8 @@ public class LogoutModel : PageModel
             AWSXRayRecorder.Instance.BeginSubsegment();
             
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            
+            _logger.LogInformation("YO! User logged out.");
             _logger.LogInformation($"LocalRedirect returnUrl = {returnUrl}");
             if (returnUrl != null) return LocalRedirect(returnUrl);
             _logger.LogInformation($"Redirect to root");
