@@ -102,6 +102,7 @@ public class ExternalLoginModel : PageModel
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity!.Name,
                     info.LoginProvider);
+                _logger.LogInformation($"returnUrl = {returnUrl}");
                 return Redirect(returnUrl);
             }
 
