@@ -10,6 +10,8 @@ using Microsoft.Extensions.WebEncoders;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using NLog;
+using NLog.Web;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.AWS.Secrets;
 using Nuages.Fido2.Storage.Mongo;
@@ -26,7 +28,16 @@ using Nuages.Localization.Storage.Config.Sources;
 using Nuages.Web;
 using OpenIddict.Abstractions;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+if (!builder.Environment.IsDevelopment())
+{
+    var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+    logger.Debug("init main");
+}
+
 
 var configBuilder = builder.Configuration
     .AddJsonFile("appsettings.json", false, true);
@@ -42,6 +53,14 @@ configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullNam
 
 configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
 configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
+
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Logging.ClearProviders();
+    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    builder.Host.UseNLog();
+}
+
 
 var configuration = configBuilder.Build();
 
