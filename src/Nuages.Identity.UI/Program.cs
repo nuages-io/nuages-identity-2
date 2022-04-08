@@ -94,6 +94,8 @@ if (!builder.Environment.IsDevelopment())
 {
     AWSSDKHandler.RegisterXRayForAllServices();
     AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
+    
+    //Activate this line and Target bgroup Health for ECS stop working
     //services.AddHttpsRedirection(opt => opt.HttpsPort = 443);
 }
 else
