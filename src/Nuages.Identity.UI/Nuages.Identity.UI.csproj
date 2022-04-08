@@ -65,6 +65,9 @@
         <Content Include="..\..\locales\fr-CA.json" CopyToOutputDirectory="Always">
             <Link>locales\fr-CA.json</Link>
         </Content>
+        <Content Update="nlog.config">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
 <!--        <Content Include=".platform\nginx\conf.d\config.conf">-->
 <!--          <CopyToOutputDirectory>Always</CopyToOutputDirectory>-->
 <!--        </Content>-->
