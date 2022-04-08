@@ -283,10 +283,14 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
     public override async Task SignOutAsync()
     {
+        Logger.LogInformation("Signout NuagesIdentityConstants.EmailNotVerifiedScheme");
         await Context.SignOutAsync(NuagesIdentityConstants.EmailNotVerifiedScheme);
+        Logger.LogInformation("Signout NuagesIdentityConstants.ResetPasswordScheme");
         await Context.SignOutAsync(NuagesIdentityConstants.ResetPasswordScheme);
+        Logger.LogInformation("Signout NuagesIdentityConstants.PasswordExpiredScheme");
         await Context.SignOutAsync(NuagesIdentityConstants.PasswordExpiredScheme);
     
+        Logger.LogInformation("Signout call base");
         await base.SignOutAsync();
     }
     
