@@ -102,7 +102,7 @@ public class ExternalLoginModel : PageModel
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity!.Name,
                     info.LoginProvider);
-                return LocalRedirect(returnUrl);
+                return Redirect(returnUrl);
             }
 
             if (result.IsLockedOut)
@@ -152,7 +152,7 @@ public class ExternalLoginModel : PageModel
                         _logger.LogInformation("{Name} auto enrolled and logged in with {LoginProvider} provider.",
                             info.Principal.Identity!.Name, info.LoginProvider);
                         await _signInManager.SignInAsync(user, _options.ExternalLoginPersistent, info.LoginProvider);
-                        return LocalRedirect(returnUrl);
+                        return Redirect(returnUrl);
                     }
                 }
             }
