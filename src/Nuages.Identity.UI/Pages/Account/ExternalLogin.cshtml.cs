@@ -100,10 +100,12 @@ public class ExternalLoginModel : PageModel
                 _options.ExternalLoginPersistent, _options.Bypass2FAWithExternalLogin);
             if (result.Succeeded)
             {
-                _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity!.Name,
-                    info.LoginProvider);
                 Console.WriteLine($"returnUrl = {returnUrl}");
                 _logger.LogInformation($"returnUrl = {returnUrl}");
+                
+                _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity!.Name,
+                    info.LoginProvider);
+                
                 return Redirect(returnUrl);
             }
 
