@@ -3,7 +3,6 @@
 
 #nullable disable
 
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,15 +22,17 @@ public class ExternalLoginsModel : PageModel
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
     private readonly IUserStore<NuagesApplicationUser<string>> _userStore;
+    private readonly ILogger<ExternalLoginsModel> _logger;
 
     public ExternalLoginsModel(
         NuagesUserManager userManager,
         NuagesSignInManager signInManager,
-        IUserStore<NuagesApplicationUser<string>> userStore)
+        IUserStore<NuagesApplicationUser<string>> userStore, ILogger<ExternalLoginsModel> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userStore = userStore;
+        _logger = logger;
     }
 
     public IList<UserLoginInfo> CurrentLogins { get; set; }
@@ -46,8 +47,6 @@ public class ExternalLoginsModel : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -65,24 +64,16 @@ public class ExternalLoginsModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-        
-       
     }
 
     public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -99,23 +90,16 @@ public class ExternalLoginsModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-        
     }
 
     public async Task<IActionResult> OnPostLinkLoginAsync(string provider)
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
@@ -128,23 +112,16 @@ public class ExternalLoginsModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-        
     }
 
     public async Task<IActionResult> OnGetLinkLoginCallbackAsync()
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -168,14 +145,9 @@ public class ExternalLoginsModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-        
     }
 }

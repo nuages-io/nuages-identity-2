@@ -2,8 +2,6 @@ using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 using Amazon;
-using Amazon.XRay.Recorder.Core;
-using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -87,22 +85,6 @@ services.AddDataProtection()
     .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
 
 services.AddHttpClient();
-
-AWSXRayRecorder.InitializeInstance(configuration);
-
-if (!builder.Environment.IsDevelopment())
-{
-    AWSSDKHandler.RegisterXRayForAllServices();
-    AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
-    
-    //Activate this line and Target bgroup Health for ECS stop working
-    //services.AddHttpsRedirection(opt => opt.HttpsPort = 443);
-}
-else
-{
-    AWSSDKHandler.RegisterXRayForAllServices();
-    AWSXRayRecorder.RegisterLogger(LoggingOptions.None);
-}
 
 var identityBuilder = services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(
     identity =>

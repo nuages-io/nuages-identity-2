@@ -3,11 +3,9 @@
 
 #nullable disable
 
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -17,10 +15,12 @@ namespace Nuages.Identity.UI.Pages.Account;
 public class RegisterModel : PageModel
 {
     private readonly NuagesSignInManager _signInManager;
+    private readonly ILogger<RegisterModel> _logger;
 
-    public RegisterModel(NuagesSignInManager signInManager)
+    public RegisterModel(NuagesSignInManager signInManager, ILogger<RegisterModel> logger)
     {
         _signInManager = signInManager;
+        _logger = logger;
     }
 
     public string ReturnUrl { get; set; }
@@ -31,20 +31,14 @@ public class RegisterModel : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

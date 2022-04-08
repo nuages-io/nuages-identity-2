@@ -1,4 +1,4 @@
-using Amazon.XRay.Recorder.Core;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
-
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -20,13 +18,15 @@ public class Login : PageModel
 {
     private readonly NuagesIdentityOptions _nuagesIdentityOptions;
     private readonly NuagesSignInManager _signInManager;
+    private readonly ILogger<Login> _logger;
     private readonly IStringLocalizer _stringLocalizer;
 
     public Login(IStringLocalizer stringLocalizer, IOptions<NuagesIdentityOptions> nuagesIdentityOptions,
-        NuagesSignInManager signInManager)
+        NuagesSignInManager signInManager, ILogger<Login> logger)
     {
         _stringLocalizer = stringLocalizer;
         _signInManager = signInManager;
+        _logger = logger;
         _nuagesIdentityOptions = nuagesIdentityOptions.Value;
     }
 
@@ -39,8 +39,6 @@ public class Login : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             if (User.Identity is { IsAuthenticated: true })
             {
                 if (string.IsNullOrEmpty(returnUrl))
@@ -61,14 +59,9 @@ public class Login : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-
     }
 }

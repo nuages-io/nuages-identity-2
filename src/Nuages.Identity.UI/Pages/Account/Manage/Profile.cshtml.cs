@@ -1,9 +1,8 @@
-using Amazon.XRay.Recorder.Core;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
 using Nuages.Web;
 using Nuages.Web.Exceptions;
 
@@ -15,10 +14,12 @@ namespace Nuages.Identity.UI.Pages.Account.Manage;
 public class Profile : PageModel
 {
     private readonly NuagesUserManager _userManager;
+    private readonly ILogger<Profile> _logger;
 
-    public Profile(NuagesUserManager userManager)
+    public Profile(NuagesUserManager userManager, ILogger<Profile> logger)
     {
         _userManager = userManager;
+        _logger = logger;
     }
 
     // ReSharper disable once MemberCanBePrivate.Global
@@ -28,8 +29,6 @@ public class Profile : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             var user = await _userManager.FindByIdAsync(User.Sub()!);
 
             CurrentUser = user ?? throw new NotFoundException("UserNotFound");
@@ -38,14 +37,9 @@ public class Profile : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e,e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-       
     }
 }

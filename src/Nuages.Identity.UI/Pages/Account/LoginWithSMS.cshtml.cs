@@ -3,11 +3,9 @@
 
 #nullable disable
 
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedMember.Global
@@ -18,11 +16,13 @@ namespace Nuages.Identity.UI.Pages.Account;
 public class SMSLoginModel : PageModel
 {
     private readonly NuagesSignInManager _signInManager;
+    private readonly ILogger<SMSLoginModel> _logger;
 
     public SMSLoginModel(
-        NuagesSignInManager signInManager)
+        NuagesSignInManager signInManager, ILogger<SMSLoginModel> logger)
     {
         _signInManager = signInManager;
+        _logger = logger;
     }
 
     public string ReturnUrl { get; set; }
@@ -31,8 +31,6 @@ public class SMSLoginModel : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             // Ensure the user has gone through the username & password screen first
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null) throw new InvalidOperationException("Unable to load two-factor authentication user.");
@@ -43,13 +41,9 @@ public class SMSLoginModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

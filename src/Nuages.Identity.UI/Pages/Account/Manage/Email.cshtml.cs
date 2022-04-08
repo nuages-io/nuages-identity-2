@@ -3,12 +3,10 @@
 
 #nullable disable
 
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
 using Nuages.Web;
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -20,10 +18,12 @@ namespace Nuages.Identity.UI.Pages.Account.Manage;
 public class EmailModel : PageModel
 {
     private readonly NuagesUserManager _userManager;
+    private readonly ILogger<EmailModel> _logger;
 
-    public EmailModel(NuagesUserManager userManager)
+    public EmailModel(NuagesUserManager userManager, ILogger<EmailModel> logger)
     {
         _userManager = userManager;
+        _logger = logger;
     }
 
     [TempData] public string Email { get; set; } = string.Empty;
@@ -34,8 +34,6 @@ public class EmailModel : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             var user = await _userManager.FindByIdAsync(User.Sub()!);
             Email = user.Email;
             EmailVerified = user.EmailConfirmed;
@@ -44,13 +42,8 @@ public class EmailModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
-
+            _logger.LogError(e, e.Message);
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

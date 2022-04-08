@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
@@ -70,10 +69,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
@@ -97,7 +92,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new LoginResultModel
@@ -105,10 +99,6 @@ public class AccountController : Controller
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -120,9 +110,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
@@ -146,7 +133,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new LoginResultModel
@@ -154,10 +140,6 @@ public class AccountController : Controller
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -169,9 +151,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
@@ -195,7 +174,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new LoginResultModel
@@ -203,12 +181,7 @@ public class AccountController : Controller
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-    }
+        } }
 
 
     [HttpPost("register")]
@@ -218,8 +191,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
             
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterResultModel
@@ -231,7 +202,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new RegisterResultModel
@@ -239,10 +209,6 @@ public class AccountController : Controller
                 Success = false,
                 Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -254,8 +220,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterExternalLoginResultModel
                 {
@@ -266,7 +230,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new RegisterExternalLoginResultModel
@@ -274,10 +237,6 @@ public class AccountController : Controller
                 Success = false,
                 Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -288,9 +247,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ForgotPasswordResultModel
                 {
@@ -301,7 +257,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new ForgotPasswordResultModel
@@ -309,10 +264,6 @@ public class AccountController : Controller
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -324,9 +275,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new SendEmailConfirmationResultModel
                 {
@@ -339,7 +287,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new SendEmailConfirmationResultModel
@@ -347,10 +294,6 @@ public class AccountController : Controller
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -361,9 +304,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new ResetPasswordResultModel
                 {
@@ -374,7 +314,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new ResetPasswordResultModel
@@ -382,10 +321,6 @@ public class AccountController : Controller
                 Success = false,
                 Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -396,9 +331,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new StartPasswordlessResultModel
                 {
@@ -409,7 +341,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new StartPasswordlessResultModel
@@ -417,10 +348,6 @@ public class AccountController : Controller
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -431,8 +358,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new SendSMSCodeResultModel
                 {
@@ -443,7 +368,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new SendSMSCodeResultModel
@@ -451,10 +375,6 @@ public class AccountController : Controller
                 Success = false,
                 Errors = new List<string> { _stringLocalizer["errorMessage:exception"] }
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -467,9 +387,6 @@ public class AccountController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            AWSXRayRecorder.Instance.AddMetadata("model", model);
-            
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation($"Initiate login SMS : ID = {id} {model.Code} RecaptchaToken = {recaptchaToken}");
@@ -492,7 +409,6 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             return new LoginResultModel
@@ -500,10 +416,6 @@ public class AccountController : Controller
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]
             };
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 

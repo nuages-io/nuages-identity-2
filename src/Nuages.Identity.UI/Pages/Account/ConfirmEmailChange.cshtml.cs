@@ -4,13 +4,11 @@
 #nullable disable
 
 using System.Text;
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Manage;
-using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -20,15 +18,17 @@ namespace Nuages.Identity.UI.Pages.Account;
 public class ConfirmEmailChangeModel : PageModel
 {
     private readonly IChangeEmailService _changeEmailService;
+    private readonly ILogger<ConfirmEmailChangeModel> _logger;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
 
     public ConfirmEmailChangeModel(NuagesUserManager userManager, NuagesSignInManager signInManager,
-        IChangeEmailService changeEmailService)
+        IChangeEmailService changeEmailService, ILogger<ConfirmEmailChangeModel> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _changeEmailService = changeEmailService;
+        _logger = logger;
     }
 
 
@@ -36,11 +36,8 @@ public class ConfirmEmailChangeModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(string userId, string email, string code)
     {
-        
-        
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
             
             if (userId == null || email == null || code == null) return RedirectToPage("/Index");
 
@@ -66,13 +63,9 @@ public class ConfirmEmailChangeModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

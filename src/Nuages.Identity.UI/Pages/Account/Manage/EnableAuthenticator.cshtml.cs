@@ -4,7 +4,6 @@
 #nullable disable
 
 using System.Text;
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,14 +20,16 @@ namespace Nuages.Identity.UI.Pages.Account.Manage;
 public class EnableAuthenticatorModel : PageModel
 {
     private readonly IMFAService _mfaService;
+    private readonly ILogger<EnableAuthenticatorModel> _logger;
     private readonly NuagesUserManager _userManager;
 
     public EnableAuthenticatorModel(
         NuagesUserManager userManager,
-        IMFAService mfaService)
+        IMFAService mfaService, ILogger<EnableAuthenticatorModel> logger)
     {
         _userManager = userManager;
         _mfaService = mfaService;
+        _logger = logger;
     }
 
     public string SharedKey { get; set; }
@@ -39,8 +40,6 @@ public class EnableAuthenticatorModel : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             var user = await _userManager.GetUserAsync(User);
             if (user == null) NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -55,17 +54,11 @@ public class EnableAuthenticatorModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
     }
-
-    
 
     private static string FormatKey(string unformattedKey)
     {

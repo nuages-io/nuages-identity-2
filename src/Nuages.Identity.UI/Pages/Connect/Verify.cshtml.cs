@@ -1,10 +1,9 @@
-using Amazon.XRay.Recorder.Core;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
 using Nuages.Identity.UI.OpenIdDict;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -18,17 +17,19 @@ public class Verify : PageModel
 {
     private readonly IOpenIddictApplicationManager _applicationManager;
     private readonly IOpenIddictScopeManager _scopeManager;
+    private readonly ILogger<Verify> _logger;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
 
     public Verify(NuagesUserManager userManager, NuagesSignInManager signInManager,
         IOpenIddictApplicationManager applicationManager,
-        IOpenIddictScopeManager scopeManager)
+        IOpenIddictScopeManager scopeManager, ILogger<Verify> logger)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _applicationManager = applicationManager;
         _scopeManager = scopeManager;
+        _logger = logger;
     }
 
     public string UserCode { get; set; } = string.Empty;
@@ -40,12 +41,8 @@ public class Verify : PageModel
 
     public async Task<IActionResult> OnGet()
     {
- 
-        
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             var request = HttpContext.GetOpenIddictServerRequest() ??
                           throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
@@ -79,13 +76,9 @@ public class Verify : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 

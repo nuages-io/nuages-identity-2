@@ -1,9 +1,7 @@
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -15,10 +13,12 @@ public class LoginWithSMS : PageModel
 {
     private readonly UIOptions _options;
     private readonly NuagesSignInManager _signInManager;
+    private readonly ILogger<LoginWithSMS> _logger;
 
-    public LoginWithSMS(NuagesSignInManager signInManager, IOptions<UIOptions> options)
+    public LoginWithSMS(NuagesSignInManager signInManager, IOptions<UIOptions> options, ILogger<LoginWithSMS> logger)
     {
         _signInManager = signInManager;
+        _logger = logger;
         _options = options.Value;
     }
 
@@ -28,8 +28,6 @@ public class LoginWithSMS : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             if (!_options.EnablePhoneFallback) return Forbid();
 
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
@@ -42,13 +40,9 @@ public class LoginWithSMS : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

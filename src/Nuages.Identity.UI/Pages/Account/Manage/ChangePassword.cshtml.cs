@@ -3,13 +3,10 @@
 
 #nullable disable
 
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
-
 
 // ReSharper disable UnusedMember.Global
 
@@ -19,18 +16,18 @@ namespace Nuages.Identity.UI.Pages.Account.Manage;
 public class ChangePasswordModel : PageModel
 {
     private readonly NuagesUserManager _userManager;
+    private readonly ILogger<ChangePasswordModel> _logger;
 
-    public ChangePasswordModel(NuagesUserManager userManager)
+    public ChangePasswordModel(NuagesUserManager userManager, ILogger<ChangePasswordModel> logger)
     {
         _userManager = userManager;
+        _logger = logger;
     }
 
     public async Task<IActionResult> OnGet()
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
 
@@ -41,13 +38,9 @@ public class ChangePasswordModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }

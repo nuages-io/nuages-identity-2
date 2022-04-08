@@ -3,7 +3,6 @@
 
 #nullable disable
 
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
@@ -19,13 +18,15 @@ namespace Nuages.Identity.UI.Pages.Account;
 public class ConfirmEmailModel : PageModel
 {
     private readonly IConfirmEmailService _confirmEmailService;
+    private readonly ILogger<ConfirmEmailModel> _logger;
 
     private readonly IStringLocalizer _localizer;
 
-    public ConfirmEmailModel(IStringLocalizer localizer, IConfirmEmailService confirmEmailService)
+    public ConfirmEmailModel(IStringLocalizer localizer, IConfirmEmailService confirmEmailService, ILogger<ConfirmEmailModel> logger)
     {
         _localizer = localizer;
         _confirmEmailService = confirmEmailService;
+        _logger = logger;
     }
 
     [TempData] public string StatusMessage { get; set; }
@@ -34,8 +35,6 @@ public class ConfirmEmailModel : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             if (userId == null || code == null) return RedirectToPage("/Index");
 
             var res = await _confirmEmailService.Confirm(userId, code);
@@ -46,15 +45,9 @@ public class ConfirmEmailModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-        
-       
     }
 }

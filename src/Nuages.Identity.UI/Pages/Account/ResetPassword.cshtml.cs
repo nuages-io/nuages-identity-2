@@ -4,13 +4,11 @@
 #nullable disable
 
 using System.Security.Claims;
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
-using Nuages.Identity.UI.AWS;
 
 // ReSharper disable UnusedMember.Global
 
@@ -20,19 +18,19 @@ public class ResetPasswordModel : PageModel
 {
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IStringLocalizer _localizer;
+    private readonly ILogger<ResetPasswordModel> _logger;
 
-    public ResetPasswordModel(IHttpContextAccessor contextAccessor, IStringLocalizer localizer)
+    public ResetPasswordModel(IHttpContextAccessor contextAccessor, IStringLocalizer localizer, ILogger<ResetPasswordModel> logger)
     {
         _contextAccessor = contextAccessor;
         _localizer = localizer;
+        _logger = logger;
     }
 
     public async Task<ActionResult> OnGet(string code = null, bool expired = false)
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-            
             ViewData["expired"] = expired;
             ViewData["email"] = "";
 
@@ -79,15 +77,9 @@ public class ResetPasswordModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            _logger.LogError(e, e.Message);
 
             throw;
         }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
-        }
-        
-        
     }
 }

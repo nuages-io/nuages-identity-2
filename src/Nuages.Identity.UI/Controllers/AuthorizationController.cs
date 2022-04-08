@@ -1,4 +1,3 @@
-using Amazon.XRay.Recorder.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.UI.AWS;
@@ -38,20 +37,13 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             return await _tokenEndpoint.Exchange();
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -62,20 +54,13 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             return await _authorizeEndpoint.Authorize();
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 
@@ -84,20 +69,13 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             return await _logoutEndpoint.Logout();
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
     
@@ -108,20 +86,13 @@ public class AuthorizationController : Controller
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
-
             return await _userInfoEndpoint.GetUserinfo();
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
             _logger.LogError(e, e.Message);
 
             throw;
-        }
-        finally
-        {
-            AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }
