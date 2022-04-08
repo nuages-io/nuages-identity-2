@@ -11,6 +11,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using NLog;
+using NLog.Extensions.Logging;
 using NLog.Web;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.AWS.Secrets;
@@ -32,15 +33,10 @@ using OpenIddict.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-if (!builder.Environment.IsDevelopment())
-{
-    var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
-    logger.Debug("init main");
-}
-
-
 var configBuilder = builder.Configuration
     .AddJsonFile("appsettings.json", false, true);
+
+
 
 if (builder.Environment.IsDevelopment())
 {
@@ -54,15 +50,17 @@ configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullNam
 configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
 configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
 
-if (!builder.Environment.IsDevelopment())
-{
-    builder.Logging.ClearProviders();
-    builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-    builder.Host.UseNLog();
-}
-
-
 var configuration = configBuilder.Build();
+
+var nlogBuilder = LogManager.Setup();
+var logger = nlogBuilder.SetupExtensions(e => e.RegisterNLogWeb())
+    .LoadConfigurationFromSection(builder.Configuration, "NLog").GetCurrentClassLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
+
+logger.Debug("init main");
 
 if (!builder.Environment.IsDevelopment())
 {
