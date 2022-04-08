@@ -28,8 +28,9 @@ public class LogoutModel : PageModel
     {
         try
         {
-            AWSXRayRecorder.Instance.BeginSubsegment();
+            //AWSXRayRecorder.Instance.BeginSubsegment();
             
+            _logger.LogInformation("SignOutAsync");
             await _signInManager.SignOutAsync();
             
             _logger.LogInformation("YO! User logged out.");
@@ -45,13 +46,13 @@ public class LogoutModel : PageModel
         }
         catch (Exception e)
         {
-            AWSXRayRecorder.Instance.AddException(e);
+            //AWSXRayRecorder.Instance.AddException(e);
 
             throw;
         }
         finally
         {
-            AWSXRayRecorder.Instance.EndSubsegment();
+            //AWSXRayRecorder.Instance.EndSubsegment();
         }
     }
 }
