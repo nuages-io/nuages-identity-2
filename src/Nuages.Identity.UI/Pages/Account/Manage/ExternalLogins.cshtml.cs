@@ -120,7 +120,7 @@ public class ExternalLoginsModel : PageModel
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             // Request a redirect to the external login provider to link a login for the current user
-            var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
+            var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback")!.Replace("http:", "https");
             var properties =
                 _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl,
                     _userManager.GetUserId(User));

@@ -58,7 +58,7 @@ public class ExternalLoginModel : PageModel
         {
             AWSXRayRecorder.Instance.BeginSubsegment();
             
-            var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl });
+            var redirectUrl = Url.Page("./ExternalLogin", "Callback", new { returnUrl })!.Replace("http:", "https:");
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }
