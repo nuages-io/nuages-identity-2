@@ -94,7 +94,7 @@ if (!builder.Environment.IsDevelopment())
 {
     AWSSDKHandler.RegisterXRayForAllServices();
     AWSXRayRecorder.RegisterLogger(LoggingOptions.Console);
-    services.AddHttpsRedirection(opt => opt.HttpsPort = 443);
+    //services.AddHttpsRedirection(opt => opt.HttpsPort = 443);
 }
 else
 {
