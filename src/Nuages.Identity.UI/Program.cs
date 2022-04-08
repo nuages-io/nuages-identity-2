@@ -52,16 +52,6 @@ configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
 
 var configuration = configBuilder.Build();
 
-var nlogBuilder = LogManager.Setup();
-var logger = nlogBuilder.SetupExtensions(e => e.RegisterNLogWeb())
-    .LoadConfigurationFromSection(builder.Configuration, "NLog").GetCurrentClassLogger();
-
-builder.Logging.ClearProviders();
-builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-builder.Host.UseNLog();
-
-logger.Debug("init main");
-
 if (!builder.Environment.IsDevelopment())
 {
     var config = configuration.GetSection("Nuages:ApplicationConfig").Get<ApplicationConfig>();
@@ -83,6 +73,16 @@ if (!builder.Environment.IsDevelopment())
             config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
     }
 }
+
+var nlogBuilder = LogManager.Setup();
+var logger = nlogBuilder.SetupExtensions(e => e.RegisterNLogWeb())
+    .LoadConfigurationFromSection(builder.Configuration, "NLog").GetCurrentClassLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
+
+logger.Debug("init main");
 
 var secretProvider = new AWSSecretProvider();
 secretProvider.TransformSecrets(builder.Configuration);
