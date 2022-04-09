@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Identity.UI.AWS;
 using Nuages.Identity.UI.OpenIdDict;
 using OpenIddict.Server.AspNetCore;
 

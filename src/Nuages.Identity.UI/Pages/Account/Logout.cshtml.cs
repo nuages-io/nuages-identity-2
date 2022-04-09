@@ -30,14 +30,14 @@ public class LogoutModel : PageModel
             await _signInManager.SignOutAsync();
             
             _logger.LogInformation("YO! User logged out.");
-            _logger.LogInformation($"LocalRedirect returnUrl = {(returnUrl == null)}");
+            _logger.LogInformation($"LocalRedirect returnUrl = {returnUrl == null}");
             if (returnUrl != null)
             {
                 _logger.LogInformation($"Redirect to {returnUrl}");
                 return Redirect(returnUrl);
             }
                 
-            _logger.LogInformation($"Redirect to root");
+            _logger.LogInformation("Redirect to root");
             return Redirect("/");
         }
         catch (Exception e)

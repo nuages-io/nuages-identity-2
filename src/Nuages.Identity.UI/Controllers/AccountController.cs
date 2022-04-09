@@ -9,7 +9,6 @@ using Nuages.Identity.Services.Login;
 using Nuages.Identity.Services.Login.Passwordless;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
-using Nuages.Identity.UI.AWS;
 using Nuages.Web.Recaptcha;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 

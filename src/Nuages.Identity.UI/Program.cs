@@ -1,7 +1,6 @@
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using Amazon;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +75,7 @@ if (!builder.Environment.IsDevelopment())
 
 var nlogBuilder = LogManager.Setup();
 var logger = nlogBuilder.SetupExtensions(e => e.RegisterNLogWeb())
-    .LoadConfigurationFromSection(builder.Configuration, "NLog").GetCurrentClassLogger();
+    .LoadConfigurationFromSection(builder.Configuration).GetCurrentClassLogger();
 
 builder.Logging.ClearProviders();
 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
