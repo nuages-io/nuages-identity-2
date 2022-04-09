@@ -71,7 +71,6 @@
             {
                 <a class="btn-simple mt-4"  asp-page="./LoginWithPasswordless" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
             }
-
         </form>
     }
 </div>
@@ -87,6 +86,5 @@
         var returnUrlEncoded ='@System.Net.WebUtility.UrlEncode(Model.ReturnUrl)';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
-
     <script src="/js/pages/login.js"></script>
 }
