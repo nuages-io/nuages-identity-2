@@ -74,17 +74,11 @@ if (!builder.Environment.IsDevelopment())
 }
 
 var nlogBuilder = LogManager.Setup();
-var logger = nlogBuilder.SetupExtensions(e => e.RegisterNLogWeb())
-    .LoadConfigurationFromSection(builder.Configuration).GetCurrentClassLogger();
-
-builder.Logging.ClearProviders();
-builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+nlogBuilder.SetupExtensions(e => e.RegisterNLogWeb())
+    .LoadConfigurationFromSection(builder.Configuration);
 builder.Host.UseNLog();
 
-logger.Debug("init main");
-
-var secretProvider = new AWSSecretProvider();
-secretProvider.TransformSecrets(builder.Configuration);
+builder.Configuration.TransformSecrets();
 
 var services = builder.Services;
 
@@ -248,8 +242,8 @@ switch (storage)
 services.AddNuagesAuthentication()
     .AddGoogle(googleOptions =>
     {
-        googleOptions.ClientId = configuration["OpenIdProviders:Google:ClientId"];
-        googleOptions.ClientSecret = configuration["OpenIdProviders:Google:ClientSecret"];
+        googleOptions.ClientId = configuration["Nuaes:OpenIdProviders:Google:ClientId"];
+        googleOptions.ClientSecret = configuration["NUages:OpenIdProviders:Google:ClientSecret"];
     });
 
 services
