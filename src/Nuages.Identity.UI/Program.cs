@@ -42,12 +42,12 @@ else
     configBuilder.AddJsonFile("appsettings.prod.json", true, true);
 }
 
-configBuilder.AddEnvironmentVariables();
-
 configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
 
 configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
 configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
+
+configBuilder.AddEnvironmentVariables();
 
 var configuration = configBuilder.Build();
 
