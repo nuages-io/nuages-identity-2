@@ -37,10 +37,10 @@ if (builder.Environment.IsDevelopment())
 {
     configBuilder.AddJsonFile("appsettings.local.json", false, true);
 }
-// else
-// {
-//     configBuilder.AddJsonFile("appsettings.prod.json", true, true);
-// }
+else
+{
+    configBuilder.AddJsonFile("appsettings.prod.json", true, true);
+}
 
 configBuilder.AddEnvironmentVariables();
 
