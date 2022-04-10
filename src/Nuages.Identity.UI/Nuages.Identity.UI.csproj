@@ -70,8 +70,5 @@
         </Content>
        
     </ItemGroup>
-    <ItemGroup>
-        <None Remove="appsettings.prod.json" />
-        <Content Include="appsettings.prod.json" CopyToOutputDirectory="Always" Condition="Exists('appsettings.prod.json')" />
-    </ItemGroup>
+   
 </Project>
