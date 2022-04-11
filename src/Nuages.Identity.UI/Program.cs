@@ -208,7 +208,7 @@ identityBuilder.AddMessageService(configure =>
     configure.DefaultCulture = configuration["Nuages:MessageService:DefaultCulture"];
 });
 
-services.AddAWSSender();
+services.AddAWSSender("templates.json");
 
 switch (storage)
 {

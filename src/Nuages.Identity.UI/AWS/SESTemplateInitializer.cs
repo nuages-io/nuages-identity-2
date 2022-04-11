@@ -10,15 +10,17 @@ namespace Nuages.Identity.UI.AWS;
 public class SesTemplateInitializer : BackgroundService
 {
     private readonly IAmazonSimpleEmailServiceV2 _simpleEmailServiceV2;
+    private readonly string _fileName;
 
-    public SesTemplateInitializer(IAmazonSimpleEmailServiceV2 simpleEmailServiceV2)
+    public SesTemplateInitializer(IAmazonSimpleEmailServiceV2 simpleEmailServiceV2, string fileName)
     {
         _simpleEmailServiceV2 = simpleEmailServiceV2;
+        _fileName = fileName;
     }
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var json = await File.ReadAllTextAsync("templates.json", stoppingToken);
+        var json = await File.ReadAllTextAsync(_fileName, stoppingToken);
         var data = JsonSerializer.Deserialize<List<EmailTemplate>>(json);
 
         if (data != null)

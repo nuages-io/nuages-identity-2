@@ -73,7 +73,7 @@ public class AWSSender : MessageSender
 
 public static class AWSSenderExtension
 {
-    public static void AddAWSSender(this IServiceCollection services, bool initializeTemplate = false)
+    public static void AddAWSSender(this IServiceCollection services, string templateFileName, bool initializeTemplate = false)
     {
         services.AddAWSService<IAmazonSimpleEmailServiceV2>();
         services.AddAWSService<IAmazonSimpleNotificationService>();
@@ -83,7 +83,9 @@ public static class AWSSenderExtension
 
         if (initializeTemplate)
         {
-            services.AddHostedService<SesTemplateInitializer>();
+            services.AddHostedService(serviceProvider =>
+                new SesTemplateInitializer(serviceProvider.GetRequiredService<IAmazonSimpleEmailServiceV2>(), templateFileName)
+            );
         }
         
     }
