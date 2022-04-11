@@ -1,4 +1,4 @@
-namespace Nuages.Identity.UI.AWS;
+namespace Nuages.Identity.Services.Email.Sender.AWS;
 
 #nullable disable
 

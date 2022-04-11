@@ -1,11 +1,9 @@
-
-
 using System.Text.Json;
 using Amazon.SimpleEmailV2;
 using Amazon.SimpleEmailV2.Model;
 using HtmlAgilityPack;
 
-namespace Nuages.Identity.UI.AWS;
+namespace Nuages.Identity.Services.Email.Sender.AWS;
 
 public class SesTemplateInitializer : BackgroundService
 {

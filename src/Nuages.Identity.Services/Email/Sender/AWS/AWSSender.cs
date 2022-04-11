@@ -3,11 +3,10 @@ using Amazon.SimpleEmailV2;
 using Amazon.SimpleEmailV2.Model;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
-using Nuages.Identity.Services.Email.Sender;
 
 // ReSharper disable InconsistentNaming
 
-namespace Nuages.Identity.UI.AWS;
+namespace Nuages.Identity.Services.Email.Sender.AWS;
 
 // ReSharper disable once InconsistentNaming
 public class AWSSender : MessageSender
