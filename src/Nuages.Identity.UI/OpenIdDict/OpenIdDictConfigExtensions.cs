@@ -30,17 +30,13 @@ public static class OpenIdDictConfigExtensions
             // Register the OpenIddict core components.
             .AddCore(options =>
             {
-                var storage = configuration.GetValue<string>("Nuages:OpenIdDict:Storage");
-                if (string.IsNullOrEmpty(storage))
-                    storage = configuration.GetValue<string>("Nuages:Data:Storage");
+                var storage = configuration.GetValue<string>("Nuages:Data:Storage");
                 
                 switch (storage)
                 {
                     case "MongoDb":
                     {
-                        var connectionString = configuration["Nuages:OpenIdDict:ConnectionString"];
-                        if (string.IsNullOrEmpty(connectionString))
-                            connectionString = configuration["Nuages:Data:ConnectionString"];
+                        var connectionString = configuration["Nuages:Data:ConnectionString"];
                         
                         var url = new MongoUrl(connectionString);
                         

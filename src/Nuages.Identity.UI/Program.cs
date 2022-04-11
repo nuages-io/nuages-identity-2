@@ -29,9 +29,9 @@ builder.Host.UseNLog();
 
 var services = builder.Services;
 
-var onAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
+var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
 
-if (onAws)
+if (useAws)
 {
     //Will Enable Lambda hosting if running in a lambda function, otherwise do nothing.
     services.AddAWSLambdaHosting(LambdaEventSource.RestApi); 

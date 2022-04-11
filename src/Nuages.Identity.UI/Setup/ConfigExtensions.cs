@@ -23,7 +23,9 @@ public static class ConfigExtensions
 
         var configuration = configBuilder.Build();
 
-        if (!builder.Environment.IsDevelopment())
+        var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
+        
+        if (!builder.Environment.IsDevelopment() && useAws)
         {
             var config = new ApplicationConfig();
             
