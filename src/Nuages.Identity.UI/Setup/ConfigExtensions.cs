@@ -1,5 +1,4 @@
 using Nuages.AWS.Secrets;
-using Nuages.Localization.Storage.Config.Sources;
 using Nuages.Web;
 
 namespace Nuages.Identity.UI.Setup;
@@ -19,8 +18,6 @@ public static class ConfigExtensions
         {
             configBuilder.AddJsonFile("appsettings.prod.json", true, true);
         }
-
-       
 
         configBuilder.AddEnvironmentVariables();
 

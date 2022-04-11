@@ -27,12 +27,7 @@ public class LogoutModel : PageModel
         try
         {            
             await _signInManager.SignOutAsync();
-            if (returnUrl != null)
-            {
-                return Redirect(returnUrl);
-            }
-                
-            return Redirect("/");
+            return Redirect(returnUrl ?? "/");
         }
         catch (Exception e)
         {
