@@ -2,15 +2,15 @@
 
 ### What is Nuages Identity
 
-Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity in a dirrent way than the samples templates provided by Microsoft.
+Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity in a different way.
 
 Try it now!  https://identity.nuages.org
 
 ### What is different?
 
 - Multi Language support (English and french included) https://github.com/nuages-io/nuages-localization
-- UI build with Tailwind CSS https://tailwindcss.com/ and VueJs (Dark and light theme)
-- Implement OpenIddict OAuth (client credential, device, authorization code, password) https://github.com/openiddict/openiddict-core
+- UI build with Vue 3 and Tailwind CSS https://tailwindcss.com/  (Dark and light theme)
+- Implement OpenIddict (client credential, device, authorization code, password flows) https://github.com/openiddict/openiddict-core
 - Implement Fido2 as 2FA method https://github.com/passwordless-lib/fido2-net-lib
 - Add SMS 2FA fallback
 - Passwordless login using Magic Link
@@ -24,9 +24,10 @@ Try it now!  https://identity.nuages.org
 
 ### Database storage
 
-Support is provided for the following Database engine. More can be added.
+Support is provided for the following Database engine. 
 
-- MongoDD
+- InMemory (default)
+- MongoDB
 - SqlServer
 - MySql
 
@@ -41,10 +42,14 @@ Support is provided for the following Database engine. More can be added.
   - Secret Manager
 - LigerShark.WebOptimizer.Code https://github.com/ligershark/WebOptimizer
 - Font Awesome 6 https://fontawesome.com/
-- VueJs
-- NLog
-- Macross.Json.Extensions
-- HtmlAgilityPack
+- Vue 3 https://vuejs.org/
+- NLog https://nlog-project.org/
+- Macross.Json.Extensions https://github.com/Macross-Software/core/tree/develop/ClassLibraries/Macross.Json.Extensions
+- HtmlAgilityPack https://html-agility-pack.net/
+
+### Gettings Started
+
+
 
 ### Run with Docker
 

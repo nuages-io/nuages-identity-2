@@ -29,8 +29,21 @@ builder.Host.UseNLog();
 
 var services = builder.Services;
 
-//Enable if you run in lambda, you will have to add a reference to Amazon.Lambda.AspNetCoreServer.Hosting nuget package
-//services.AddAWSLambdaHosting(LambdaEventSource.RestApi); 
+var onAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
+
+if (onAws)
+{
+    //Will Enable Lambda hosting if running in a lambda function, otherwise do nothing.
+    services.AddAWSLambdaHosting(LambdaEventSource.RestApi); 
+    
+    //Save Data Protection key to AWS SM Paramtere Store
+    services.AddDataProtection()
+        .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection"); 
+}
+else
+{
+    services.AddDataProtection();
+}
 
 services.AddNuagesIdentity(builder.Configuration); 
 
@@ -41,11 +54,7 @@ services.Configure<WebEncoderOptions>(options =>
 });
 
 //Helper for Tests
-services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>(); 
-
-//Save Data Protection key to AWS SM Paramtere Store
-services.AddDataProtection()
-    .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
+services.AddScoped<IRuntimeConfiguration, RuntimeConfiguration>();
 
 services.AddHttpClient();
 

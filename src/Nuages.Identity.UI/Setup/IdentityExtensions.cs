@@ -133,7 +133,16 @@ public static class IdentityExtensions
             configure.DefaultCulture = configuration["Nuages:MessageService:DefaultCulture"];
         });
 
-        services.AddAWSSender("templates.json");
+        if (configuration.GetValue<bool>("Nuages:UseAWS") )
+        {
+            services.AddAWSSender("templates.json");
+        }
+        else
+        {
+            services.AddScoped<IEmailMessageSender, MessageSender>();
+            services.AddScoped<ISmsMessageSender, MessageSender>();
+        }
+        
 
         switch (storage)
         {
