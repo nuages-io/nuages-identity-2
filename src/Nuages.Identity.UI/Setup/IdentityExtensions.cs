@@ -173,12 +173,18 @@ public static class IdentityExtensions
                 throw new Exception("Invalid storage");
         }
 
-        services.AddNuagesAuthentication()
-            .AddGoogle(googleOptions =>
-            {
-                googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"];
-                googleOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Google:ClientSecret"];
-            });
+       var auth = services.AddNuagesAuthentication();
+
+       Console.WriteLine($"Client id = {configuration["Nuages:OpenIdProviders:Google:ClientId"]}");
+       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Google:ClientId"]))
+       {
+           auth.AddGoogle(googleOptions =>
+           {
+               googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"];
+               googleOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Google:ClientSecret"];
+           });
+       }
+            
         
         services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });

@@ -25,6 +25,7 @@ public static class ConfigExtensions
 
         var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
         
+        Console.WriteLine($"Use AWS = {useAws}");
         if (!builder.Environment.IsDevelopment() && useAws)
         {
             var config = new ApplicationConfig();
@@ -41,6 +42,8 @@ public static class ConfigExtensions
                 });
             }
 
+            Console.WriteLine($"config.AppConfig.Enabled = {config.AppConfig.Enabled}");
+            
             if (config.AppConfig.Enabled)
             {
                 configBuilder.AddAppConfig(config.AppConfig.ApplicationId,
