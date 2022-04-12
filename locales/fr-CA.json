@@ -179,18 +179,19 @@
 		"UserNotInRole": "L'utilisateur n'est pas dans le rôle."
 	},
 	"login": {
+		"MagicLink": "Lien Magique",
 		"back": "Aller à la page de connexion",
 		"cantRemember": "Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
 		"connect": "Connection",
 		"continueWith": "Ou conitnuer avec",
 		"forgotPassword": "Mot de passe oublié?",
+		"magicLink": "",
 		"mode": {
 			"email": "Votre courriel",
 			"userNameEmail": "Nom d'utilisateur ou courriel",
 			"userNameEmailPhone": "Nom d'utilisateur, courriel ou no. de téléphone"
 		},
 		"password": "Mot de passe",
-		"MagicLink": "Lien Magique",
 		"rememberMe": "Se souvenir de moi",
 		"title": "Connection à votre compte"
 	},
@@ -212,6 +213,13 @@
 	},
 	"logout": {
 		"title": "Fermer la session"
+	},
+	"magicLink": {
+		"instructions": "Vous avez demandé de vous connecter avec Lien Magique. Un lien de connection vous sera transmis par courriel.",
+		"message": "[{1}] Le code de vérification est {0}",
+		"seeEmail": "Vérifier vos courriels afin de retrouver le Lien Magique",
+		"send": "Envoyer le lien",
+		"title": "Connection avec Lien Magique"
 	},
 	"mfa": {
 		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification?",
@@ -237,13 +245,6 @@
 		"RequiredLength": "Requiert au moins {0} caractères",
 		"RequiredUniqueChars": "Requiert au moins {0} caractères différents",
 		"title": "Exigences du mot de passe"
-	},
-	"magicLink": {
-		"instructions": "Vous avez demandé de vous connecter sans mot de passe. Un lien de connection vous sera transmis par courriel.",
-		"message": "[{1}] Le code de vérification est {0}",
-		"seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",
-		"send": "Envoyer le lien",
-		"title": "Connection sans mot de passe"
 	},
 	"profile": {
 		"firstName": "Prénom",

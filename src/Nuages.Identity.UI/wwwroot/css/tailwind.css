@@ -22,6 +22,11 @@
       @apply  dark:text-white dark:bg-slate-900
     }
 
+    input[type=checkbox]
+    {
+        @apply  dark:text-white dark:bg-slate-900 dark:checked:text-indigo-500
+    }
+
     /*h2, h3 {*/
     /*    @apply  dark:text-white*/
     /*}*/

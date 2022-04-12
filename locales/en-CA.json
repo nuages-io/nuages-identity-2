@@ -179,18 +179,19 @@
 		"UserNotInRole": "User is not in role."
 	},
 	"login": {
+		"MagicLink": "",
 		"back": "Go to login page",
 		"cantRemember": "This login will not be remembered until you provide an authenticator app code at log in or disable 2FA and log in again.",
 		"connect": "Connection",
 		"continueWith": "Or continue with",
 		"forgotPassword": "Forgot Your Password?",
+		"magicLink": "MagicLink",
 		"mode": {
 			"email": "Your email",
 			"userNameEmail": "Username or email",
 			"userNameEmailPhone": "Username, email or phone #"
 		},
 		"password": "Password",
-		"magicLink": "MagicLink",
 		"rememberMe": "Remember me",
 		"title": "Log in to your account"
 	},
@@ -212,6 +213,13 @@
 	},
 	"logout": {
 		"title": "Log out"
+	},
+	"magicLink": {
+		"instructions": "You have requested to log in using a Magic Link. A log in link will be sent to you by email.",
+		"message": "[{1}] Verification code is {0}",
+		"seeEmail": "Check your emails to find the Magic Link",
+		"send": "Send Link",
+		"title": "MagicLink login"
 	},
 	"mfa": {
 		"appNotAvailable": "Don't have access to your authenticator device?",
@@ -237,13 +245,6 @@
 		"RequiredLength": "Requires at least {0} characters",
 		"RequiredUniqueChars": "Requires at least {0} different characters",
 		"title": "Password requirements"
-	},
-	"magicLink": {
-		"instructions": "You have requested to log in without a password. A log in link will be sent to you by email.",
-		"message": "[{1}] Verification code is {0}",
-		"seeEmail": "Check your emails to find the magic connection link",
-		"send": "Send Link",
-		"title": "MagicLink login"
 	},
 	"profile": {
 		"firstName": "First Name",
