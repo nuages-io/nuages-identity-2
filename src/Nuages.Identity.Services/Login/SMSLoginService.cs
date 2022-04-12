@@ -56,7 +56,7 @@ public class SMSSendCodeService : ISMSSendCodeService
 
         var code = await _userManager.GenerateTwoFactorTokenAsync(user, "Phone");
 
-        var message = _localizer["passwordless:message", code, _options.Name];
+        var message = _localizer["magicLink:message", code, _options.Name];
 
         _logger.LogInformation($"Message : {message} No: {user.PhoneNumber}");
 

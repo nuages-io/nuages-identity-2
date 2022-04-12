@@ -190,7 +190,7 @@
 			"userNameEmailPhone": "Nom d'utilisateur, courriel ou no. de téléphone"
 		},
 		"password": "Mot de passe",
-		"passwordless": "Sans mot de passe",
+		"MagicLink": "Lien Magique",
 		"rememberMe": "Se souvenir de moi",
 		"title": "Connection à votre compte"
 	},
@@ -238,7 +238,7 @@
 		"RequiredUniqueChars": "Requiert au moins {0} caractères différents",
 		"title": "Exigences du mot de passe"
 	},
-	"passwordless": {
+	"magicLink": {
 		"instructions": "Vous avez demandé de vous connecter sans mot de passe. Un lien de connection vous sera transmis par courriel.",
 		"message": "[{1}] Le code de vérification est {0}",
 		"seeEmail": "Vérifier vos courriels afin de retrouver le lien de connection sans mot de passe",

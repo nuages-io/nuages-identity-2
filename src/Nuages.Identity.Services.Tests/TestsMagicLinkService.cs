@@ -3,51 +3,51 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
-using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.Login.MagicLink;
 using Nuages.Web;
 using Nuages.Web.Exceptions;
 using Xunit;
 
 namespace Nuages.Identity.Services.Tests;
 
-public class TestsPasswordlessService
+public class TestsMagicLinkService
 {
     [Fact]
-    public async Task ShoudGetPasswordLessUrlWithSuccess()
+    public async Task ShoudGetMagicLinkUrlWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
-        var url = await service.GetPasswordlessUrl(user.Id);
+        var url = await service.GetMagicLinkUrl(user.Id);
 
 
         Assert.NotNull(url);
     }
 
     [Fact]
-    public async Task ShoudGetPasswordLessUrlWithExceptionNotFound()
+    public async Task ShoudGetMagicLinkUrlWithExceptionNotFound()
     {
         var user = MockHelpers.CreateDefaultUser();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
-            await service.GetPasswordlessUrl(MockHelpers.BadId);
+            await service.GetMagicLinkUrl(MockHelpers.BadId);
         });
     }
 
     [Fact]
-    public async Task ShoudStartPasswordlessWithSuccess()
+    public async Task ShoudStartMagicLinkWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
 
@@ -60,11 +60,11 @@ public class TestsPasswordlessService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
-        var res = await service.StartPasswordless(new StartPasswordlessModel
+        var res = await service.StartMagicLink(new StartMagicLinkModel
         {
             Email = user.Email
         });
@@ -74,7 +74,7 @@ public class TestsPasswordlessService
     }
 
     [Fact]
-    public async Task ShoudStartPasswordlessWithSuccessEmailNotFOund()
+    public async Task ShoudStartMagicLinkWithSuccessEmailNotFOund()
     {
         var user = MockHelpers.CreateDefaultUser();
 
@@ -87,11 +87,11 @@ public class TestsPasswordlessService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
-        var res = await service.StartPasswordless(new StartPasswordlessModel
+        var res = await service.StartMagicLink(new StartMagicLinkModel
         {
             Email = "invalid@nuages.org"
         });
@@ -101,7 +101,7 @@ public class TestsPasswordlessService
     }
 
     [Fact]
-    public async Task ShoudStartPasswordlessWithErrorCantLogin()
+    public async Task ShoudStartMagicLinkWithErrorCantLogin()
     {
         var user = MockHelpers.CreateDefaultUser();
 
@@ -117,11 +117,11 @@ public class TestsPasswordlessService
                 It.IsAny<IDictionary<string, string>?>(), It.IsAny<string?>()))
             .Callback(() => sendCalled = true);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
-        var res = await service.StartPasswordless(new StartPasswordlessModel
+        var res = await service.StartMagicLink(new StartMagicLinkModel
         {
             Email = user.Email
         });
@@ -135,43 +135,43 @@ public class TestsPasswordlessService
     }
 
     [Fact]
-    public async Task ShoudLoginPasswordlessWithSuccess()
+    public async Task ShoudLoginMagicLinkWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
-        var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
-            "passwordless-auth");
+        var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "MagicLinkLoginProvider",
+            "magiclink-auth");
 
-        var url = await service.LoginPasswordLess(token, user.Id);
+        var url = await service.LoginMagicLink(token, user.Id);
 
         Assert.True(url.Success);
     }
 
     [Fact]
-    public async Task ShoudLoginPasswordlessWithErrorBadToken()
+    public async Task ShoudLoginMagicLinkWithErrorBadToken()
     {
         var user = MockHelpers.CreateDefaultUser();
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
 
-        var url = await service.LoginPasswordLess("bad_token", user.Id);
+        var url = await service.LoginMagicLink("bad_token", user.Id);
 
         Assert.False(url.Success);
     }
 
     [Fact]
-    public async Task ShoudLoginPasswordlessWithErrorCantLogin()
+    public async Task ShoudLoginMagicLinkWithErrorCantLogin()
     {
         var user = MockHelpers.CreateDefaultUser();
         user.LockoutEnabled = true;
@@ -179,14 +179,14 @@ public class TestsPasswordlessService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var service = new PasswordlessService(identityStuff.UserManager, identityStuff.SignInManager,
+        var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object);
 
-        var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
-            "passwordless-auth");
+        var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "MagicLinkLoginProvider",
+            "magiclink-auth");
 
-        var res = await service.LoginPasswordLess(token, user.Id);
+        var res = await service.LoginMagicLink(token, user.Id);
 
         Assert.False(res.Success);
         Assert.Equal("errorMessage:no_access:LockedOut", res.Message);

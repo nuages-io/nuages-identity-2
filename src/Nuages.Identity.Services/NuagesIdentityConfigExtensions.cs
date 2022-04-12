@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
-using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.Login.MagicLink;
 using Nuages.Identity.Services.Manage;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
@@ -27,8 +27,8 @@ public static class NuagesIdentityConfigExtensions
 
 
         var userType = builder.UserType;
-        var totpProvider = typeof(PasswordlessLoginProvider<>).MakeGenericType(userType);
-        builder.AddTokenProvider("PasswordlessLoginProvider", totpProvider);
+        var totpProvider = typeof(MagicLinkLoginProvider<>).MakeGenericType(userType);
+        builder.AddTokenProvider("MagicLinkLoginProvider", totpProvider);
 
         services.AddScoped<IEmailValidator, EmailValidator>();
 
@@ -40,7 +40,7 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
         services.AddScoped<IRegisterService, RegisterService>();
         services.AddScoped<IRegisterExternalLoginService, RegisterExternalLoginService>();
-        services.AddScoped<IPasswordlessService, PasswordlessService>();
+        services.AddScoped<IMagicLinkService, MagicLinkService>();
         services.AddScoped<ISMSSendCodeService, SMSSendCodeService>();
 
         //Manage

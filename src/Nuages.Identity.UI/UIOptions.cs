@@ -13,7 +13,7 @@ public class UIOptions
     public bool ExternalLoginPersistent { get; set; }
     public bool Bypass2FAWithExternalLogin { get; set; } = true;
 
-    public bool EnablePasswordless { get; set; } = true;
+    public bool EnableMagicLink { get; set; } = true;
     public bool EnablePhoneFallback { get; set; } = true;
     public bool Enable2FARememberDevice { get; set; } = true;
     public bool EnableFido2 { get; set; } = true;

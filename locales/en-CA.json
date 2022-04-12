@@ -190,7 +190,7 @@
 			"userNameEmailPhone": "Username, email or phone #"
 		},
 		"password": "Password",
-		"passwordless": "Passwordless",
+		"magicLink": "MagicLink",
 		"rememberMe": "Remember me",
 		"title": "Log in to your account"
 	},
@@ -238,12 +238,12 @@
 		"RequiredUniqueChars": "Requires at least {0} different characters",
 		"title": "Password requirements"
 	},
-	"passwordless": {
+	"magicLink": {
 		"instructions": "You have requested to log in without a password. A log in link will be sent to you by email.",
 		"message": "[{1}] Verification code is {0}",
-		"seeEmail": "Check your emails to find the passwordless connection link",
+		"seeEmail": "Check your emails to find the magic connection link",
 		"send": "Send Link",
-		"title": "Passwordless login"
+		"title": "MagicLink login"
 	},
 	"profile": {
 		"firstName": "First Name",

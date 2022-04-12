@@ -18,7 +18,7 @@ public class TestsBasicPageUserAnonymous
     [InlineData("/account/login")]
     [InlineData("/account/forgotpassword")]
     [InlineData("/account/register")]
-    [InlineData("/account/loginWithPasswordless")]
+    [InlineData("/account/loginWithMagicLink")]
     [InlineData("/account/emailNotConfirmed")]
     [InlineData("/account/logout")]
     [InlineData("/error")]

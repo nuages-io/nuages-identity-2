@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
-using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.Login.MagicLink;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
 using OtpNet;
@@ -108,23 +108,23 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
     }
 
     [Fact]
-    public async Task ShouldStartPasswordlessWithSuccess()
+    public async Task ShouldStartMagicLinkWithSuccess()
     {
         var client = _factory.CreateClient();
 
-        var body = new StartPasswordlessModel
+        var body = new StartMagicLinkModel
         {
             Email = IdentityDataSeeder.UserEmail
         };
 
-        var res = await client.PostAsync("api/account/passwordlessLogin",
+        var res = await client.PostAsync("api/account/magicLinkLogin",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
         var content = await res.Content.ReadAsStringAsync();
 
-        var result = JsonSerializer.Deserialize<StartPasswordlessResultModel>(content, _options);
+        var result = JsonSerializer.Deserialize<StartMagicLinkResultModel>(content, _options);
 
         Assert.True(result!.Success);
         Assert.NotNull(result.Url);

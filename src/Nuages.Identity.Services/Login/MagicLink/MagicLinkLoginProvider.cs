@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Nuages.Identity.Services.Login.Passwordless;
+namespace Nuages.Identity.Services.Login.MagicLink;
 
-public class PasswordlessLoginProvider<TUser> : TotpSecurityStampBasedTokenProvider<TUser>
+public class MagicLinkLoginProvider<TUser> : TotpSecurityStampBasedTokenProvider<TUser>
     where TUser : class
 {
     public override Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
@@ -15,6 +15,6 @@ public class PasswordlessLoginProvider<TUser> : TotpSecurityStampBasedTokenProvi
     {
         var userId = await manager.GetUserIdAsync(user);
 
-        return "PasswordlessLogin:" + purpose + ":" + userId;
+        return "MagicLinkLogin:" + purpose + ":" + userId;
     }
 }

@@ -1,20 +1,20 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.Login.MagicLink;
 
 // ReSharper disable UnusedMember.Global
 
 namespace Nuages.Identity.UI.Pages.Account;
 
-public class PasswordlessLogin : PageModel
+public class MagicLinkLogin : PageModel
 {
-    private readonly IPasswordlessService _passwordlessService;
-    private readonly ILogger<PasswordlessLogin> _logger;
+    private readonly IMagicLinkService _magicLinkService;
+    private readonly ILogger<MagicLinkLogin> _logger;
 
-    public PasswordlessLogin(IPasswordlessService passwordlessService, ILogger<PasswordlessLogin> logger)
+    public MagicLinkLogin(IMagicLinkService magicLinkService, ILogger<MagicLinkLogin> logger)
     {
-        _passwordlessService = passwordlessService;
+        _magicLinkService = magicLinkService;
         _logger = logger;
     }
 
@@ -22,7 +22,7 @@ public class PasswordlessLogin : PageModel
     {
         try
         {
-            var res = await _passwordlessService.LoginPasswordLess(token, userId);
+            var res = await _magicLinkService.LoginMagicLink(token, userId);
 
             if (res.Success)
                 return Redirect("/");

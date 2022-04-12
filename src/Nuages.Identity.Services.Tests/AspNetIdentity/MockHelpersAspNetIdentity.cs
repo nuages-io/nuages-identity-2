@@ -103,7 +103,7 @@ public static class MockHelpersAspNetIdentity
 
         mockIdentity.UserManager.RegisterTokenProvider("Default", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("Phone", twoFactorTokenProvider.Object);
-        mockIdentity.UserManager.RegisterTokenProvider("PasswordlessLoginProvider", twoFactorTokenProvider.Object);
+        mockIdentity.UserManager.RegisterTokenProvider("MagicLinkLoginProvider", twoFactorTokenProvider.Object);
         mockIdentity.UserManager.RegisterTokenProvider("Authenticator", twoFactorTokenProvider.Object);
 
         validator.Setup(v => v.ValidateAsync(mockIdentity.UserManager, It.IsAny<NuagesApplicationUser<string>>()))

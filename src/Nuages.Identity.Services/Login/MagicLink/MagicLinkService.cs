@@ -8,9 +8,9 @@ using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
 using Nuages.Web.Exceptions;
 
-namespace Nuages.Identity.Services.Login.Passwordless;
+namespace Nuages.Identity.Services.Login.MagicLink;
 
-public class PasswordlessService : IPasswordlessService
+public class MagicLinkService : IMagicLinkService
 {
     private readonly IStringLocalizer _localizer;
     private readonly IMessageService _messageService;
@@ -19,7 +19,7 @@ public class PasswordlessService : IPasswordlessService
     private readonly NuagesSignInManager _signinManager;
     private readonly NuagesUserManager _userManager;
 
-    public PasswordlessService(NuagesUserManager userManager, NuagesSignInManager signinManager,
+    public MagicLinkService(NuagesUserManager userManager, NuagesSignInManager signinManager,
         IMessageService messageService, IStringLocalizer localizer,
         IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration)
     {
@@ -31,30 +31,30 @@ public class PasswordlessService : IPasswordlessService
         _options = options.Value;
     }
 
-    public async Task<string> GetPasswordlessUrl(string userId, string? returnUrl = null)
+    public async Task<string> GetMagicLinkUrl(string userId, string? returnUrl = null)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        return await GetPasswordlessUrl(user, returnUrl);
+        return await GetMagicLinkUrl(user, returnUrl);
     }
 
-    public async Task<PasswordlessResultModel> LoginPasswordLess(string token, string userId)
+    public async Task<MagicLinkResultModel> LoginMagicLink(string token, string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
 
         var isValid =
-            await _userManager.VerifyUserTokenAsync(user, "PasswordlessLoginProvider", "passwordless-auth", token);
+            await _userManager.VerifyUserTokenAsync(user, "MagicLinkLoginProvider", "magiclink-auth", token);
         if (!isValid)
-            return new PasswordlessResultModel
+            return new MagicLinkResultModel
             {
                 Success = false
             };
 
         var result = await _signinManager.CustomPreSignInCheck(user);
         if (result is { Succeeded: false })
-            return new PasswordlessResultModel
+            return new MagicLinkResultModel
             {
                 Result = result,
                 Reason = user.LastFailedLoginReason,
@@ -66,18 +66,18 @@ public class PasswordlessService : IPasswordlessService
 
         result = await _signinManager.CustomSignInOrTwoFactorAsync(user, false);
 
-        return new PasswordlessResultModel
+        return new MagicLinkResultModel
         {
             Success = result.Succeeded,
             Result = result
         };
     }
 
-    public async Task<StartPasswordlessResultModel> StartPasswordless(StartPasswordlessModel model)
+    public async Task<StartMagicLinkResultModel> StartMagicLink(StartMagicLinkModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
-            return new StartPasswordlessResultModel
+            return new StartMagicLinkResultModel
             {
                 Success = true //Fake success
             };
@@ -85,7 +85,7 @@ public class PasswordlessService : IPasswordlessService
         var result = await _signinManager.CustomPreSignInCheck(user);
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         if (result is { Succeeded: false })
-            return new StartPasswordlessResultModel
+            return new StartMagicLinkResultModel
             {
                 Result = result,
                 Reason = user.LastFailedLoginReason,
@@ -93,28 +93,28 @@ public class PasswordlessService : IPasswordlessService
                 Success = false
             };
 
-        var url = await GetPasswordlessUrl(user, model.ReturnUrl);
+        var url = await GetMagicLinkUrl(user, model.ReturnUrl);
 
-        _messageService.SendEmailUsingTemplate(user.Email, "Passwordless_Login", new Dictionary<string, string>
+        _messageService.SendEmailUsingTemplate(user.Email, "MagicLink_Login", new Dictionary<string, string>
         {
             { "Link", url }
         });
 
-        return new StartPasswordlessResultModel
+        return new StartMagicLinkResultModel
         {
             Url = _runtimeConfiguration.IsTest ? url : null,
             Success = true
         };
     }
 
-    private async Task<string> GetPasswordlessUrl(NuagesApplicationUser<string> user, string? returnUrl)
+    private async Task<string> GetMagicLinkUrl(NuagesApplicationUser<string> user, string? returnUrl)
     {
-        var token = await _userManager.GenerateUserTokenAsync(user, "PasswordlessLoginProvider",
-            "passwordless-auth");
+        var token = await _userManager.GenerateUserTokenAsync(user, "MagicLinkLoginProvider",
+            "magiclink-auth");
 
         var baseUrl = _options.Authority;
 
-        return $"{baseUrl}/account/passwordlessLogin?token={token}&userId={user.Id}&returnUrl={WebUtility.UrlEncode(returnUrl)}";
+        return $"{baseUrl}/account/magicLinkLogin?token={token}&userId={user.Id}&returnUrl={WebUtility.UrlEncode(returnUrl)}";
     }
 
 
@@ -125,7 +125,7 @@ public class PasswordlessService : IPasswordlessService
     }
 }
 
-public class PasswordlessResultModel
+public class MagicLinkResultModel
 {
     public bool Success { get; set; }
     public SignInResult Result { get; set; } = null!;
@@ -133,20 +133,20 @@ public class PasswordlessResultModel
     public string? Message { get; set; }
 }
 
-public interface IPasswordlessService
+public interface IMagicLinkService
 {
     //Task<string> GetPasswordlessUrl(string userId);
-    Task<PasswordlessResultModel> LoginPasswordLess(string token, string userId);
-    Task<StartPasswordlessResultModel> StartPasswordless(StartPasswordlessModel model);
+    Task<MagicLinkResultModel> LoginMagicLink(string token, string userId);
+    Task<StartMagicLinkResultModel> StartMagicLink(StartMagicLinkModel model);
 }
 
-public class StartPasswordlessModel
+public class StartMagicLinkModel
 {
     public string Email { get; set; } = string.Empty;
     public string ReturnUrl { get; set; }  = string.Empty;
 }
 
-public class StartPasswordlessResultModel
+public class StartMagicLinkResultModel
 {
     public bool Success { get; set; }
     public string? Message { get; set; }

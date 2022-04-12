@@ -77,17 +77,17 @@
     ]
   },
   {
-    "Key" : "Passwordless_Login",
+    "Key" : "MagicLink_Login",
     "Data" : [
       {
         "Language" : "en",
-        "EmailSubject" : "[{{AppName}}] Passwordless Login Request",
-        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        You have request a passwordless login link.\n        <br><br>\n        <a href='{{Link}}'>Please follow this link to log in</a>\n     \n    </p>\n    Thanks\n</div>\n"
+        "EmailSubject" : "[{{AppName}}] MagicLink Login Request",
+        "EmailHtml" : "<div>\n    Hi,\n    <p>\n        You have request a MagicLink login link.\n        <br><br>\n        <a href='{{Link}}'>Please follow this link to log in</a>\n     \n    </p>\n    Thanks\n</div>\n"
       },
       {
         "Language" : "fr",
-        "EmailSubject" : "[{{AppName}}] Connection sans mot de passe",
-        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Vous avez effectué une demande de connection sans mot de passe.\n        <br><br>\n        <a href='{{Link}}'>Cliquez ce lien pour vous connecter.</a>\n    </p>\n    Merci\n</div>\n"
+        "EmailSubject" : "[{{AppName}}] Connection Lien Magique",
+        "EmailHtml" : "<div>\n    Bonjour,\n    <p>\n        Vous avez effectué une demande de connection avec Lien Magique.\n        <br><br>\n        <a href='{{Link}}'>Cliquez ce lien pour vous connecter.</a>\n    </p>\n    Merci\n</div>\n"
       }
     ]
   },

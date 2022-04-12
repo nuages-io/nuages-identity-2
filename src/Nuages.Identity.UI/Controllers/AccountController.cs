@@ -6,7 +6,7 @@ using Microsoft.Extensions.Localization;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
-using Nuages.Identity.Services.Login.Passwordless;
+using Nuages.Identity.Services.Login.MagicLink;
 using Nuages.Identity.Services.Password;
 using Nuages.Identity.Services.Register;
 using Nuages.Web.Recaptcha;
@@ -28,7 +28,7 @@ public class AccountController : Controller
     private readonly IForgotPasswordService _forgotPasswordService;
     private readonly ILogger<AccountController> _logger;
     private readonly ILoginService _loginService;
-    private readonly IPasswordlessService _passwordlessService;
+    private readonly IMagicLinkService _magicLinkService;
     private readonly IRecaptchaValidator _recaptchaValidator;
     private readonly IRegisterExternalLoginService _registerExternalLoginService;
     private readonly IRegisterService _registerService;
@@ -43,7 +43,7 @@ public class AccountController : Controller
         IResetPasswordService resetPasswordService,
         ISendEmailConfirmationService sendEmailConfirmationService, IRegisterService registerService,
         IRegisterExternalLoginService registerExternalLoginService,
-        IPasswordlessService passwordlessService, ISMSSendCodeService smsLoginService,
+        IMagicLinkService magicLinkService, ISMSSendCodeService smsLoginService,
         ILogger<AccountController> logger, IHttpContextAccessor contextAccessor)
     {
         _recaptchaValidator = recaptchaValidator;
@@ -54,7 +54,7 @@ public class AccountController : Controller
         _sendEmailConfirmationService = sendEmailConfirmationService;
         _registerService = registerService;
         _registerExternalLoginService = registerExternalLoginService;
-        _passwordlessService = passwordlessService;
+        _magicLinkService = magicLinkService;
         _smsLoginService = smsLoginService;
         _logger = logger;
         _contextAccessor = contextAccessor;
@@ -323,26 +323,26 @@ public class AccountController : Controller
         }
     }
 
-    [HttpPost("passwordlessLogin")]
+    [HttpPost("magicLinkLogin")]
     [AllowAnonymous]
-    public async Task<StartPasswordlessResultModel> PasswordlessLoginAsync([FromBody] StartPasswordlessModel model,
+    public async Task<StartMagicLinkResultModel> MagicLinkLoginAsync([FromBody] StartMagicLinkModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
         try
         {
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
-                return new StartPasswordlessResultModel
+                return new StartMagicLinkResultModel
                 {
                     Success = false
                 };
 
-            return await _passwordlessService.StartPasswordless(model);
+            return await _magicLinkService.StartMagicLink(model);
         }
         catch (Exception e)
         {
             _logger.LogError(e, e.Message);
 
-            return new StartPasswordlessResultModel
+            return new StartMagicLinkResultModel
             {
                 Success = false,
                 Message = _stringLocalizer["errorMessage:exception"]

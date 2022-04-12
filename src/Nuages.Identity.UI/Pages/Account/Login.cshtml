@@ -55,7 +55,7 @@
 
     </form>
 
-    @if (Model.ExternalLogins.Count > 0 || UIOptions.Value.EnablePasswordless)
+    @if (Model.ExternalLogins.Count > 0 || UIOptions.Value.EnableMagicLink)
     {
         <partial name="Shared/SeparatorWithTitle" model="new { Title =  @Localizer["login:continueWith"] }"/>
         
@@ -67,9 +67,9 @@
                     @provider.DisplayName
                 </button>
             }
-            @if (UIOptions.Value.EnablePasswordless)
+            @if (UIOptions.Value.EnableMagicLink)
             {
-                <a class="btn-simple mt-4"  asp-page="./LoginWithPasswordless" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:passwordless"]</a>
+                <a class="btn-simple mt-4"  asp-page="./LoginWithMagicLink" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:magicLink"]</a>
             }
         </form>
     }

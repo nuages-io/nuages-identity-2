@@ -7,13 +7,13 @@ using Microsoft.Extensions.Options;
 
 namespace Nuages.Identity.UI.Pages.Account;
 
-public class LoginWithPasswordless : PageModel
+public class LoginWithMagicLink : PageModel
 {
     private readonly UIOptions _options;
     
     public string? ReturnUrl { get; set; }
     
-    public LoginWithPasswordless(IOptions<UIOptions> options)
+    public LoginWithMagicLink(IOptions<UIOptions> options)
     {
         _options = options.Value;
 
@@ -23,7 +23,7 @@ public class LoginWithPasswordless : PageModel
 
     public ActionResult OnGet(string? returnUrl = null)
     {
-        if (!_options.EnablePasswordless)
+        if (!_options.EnableMagicLink)
             return Forbid();
         
         ReturnUrl = returnUrl;

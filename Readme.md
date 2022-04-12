@@ -13,7 +13,7 @@ Try it now!  https://identity.nuages.org
 - Implement OpenIddict (client credential, device, authorization code, password flows) https://github.com/openiddict/openiddict-core
 - Implement Fido2 as 2FA method https://github.com/passwordless-lib/fido2-net-lib
 - Add SMS 2FA fallback
-- Passwordless login using Magic Link
+- Login using Magic Link
 - Message service for sending Email ans SMS (using AWS SES). Basic email templates provided in English and French.
 - Support Google ReCaptcha
 - Support password reuse restriction

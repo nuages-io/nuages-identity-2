@@ -12,13 +12,13 @@ var App =
         },
         methods:
             {
-                doSendPasswordlessInfo: function (token) {
+                doSendMagicLinkInfo: function (token) {
                     var self = this;
                     var e = self.email;
 
                     this.status = "sending";
 
-                    fetch("/api/account/passwordlessLogin", {
+                    fetch("/api/account/magicLinkLogin", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -41,31 +41,31 @@ var App =
                         });
 
                 },
-                sendPasswordlessInfo: function () {
+                sendMagicLinkInfo: function () {
 
                     var self = this;
 
                     this.errors = [];
-                    formPasswordless.classList.remove("was-validated");
+                    formMagicLink.classList.remove("was-validated");
 
                     email.setCustomValidity("");
 
-                    var res = formPasswordless.checkValidity();
+                    var res = formMagicLink.checkValidity();
                     if (res) {
 
                         if (recaptchaToken !== "") {
                             grecaptcha.ready(function () {
                                 grecaptcha.execute(recaptchaToken, {action: 'submit'}).then(function (token) {
-                                    self.doSendPasswordlessInfo(token);
+                                    self.doSendMagicLinkInfo(token);
                                 });
                             });
                         }
                         else
                         {
-                            self.doSendPasswordlessInfo("");
+                            self.doSendMagicLinkInfo("");
                         }
                     } else {
-                        formPasswordless.classList.add("was-validated");
+                        formMagicLink.classList.add("was-validated");
 
                         if (!email.validity.valid) {
                             if (email.validity.valueMissing) {
@@ -75,7 +75,7 @@ var App =
                             }
                         }
 
-                        var list = formPasswordless.querySelectorAll("input:invalid");
+                        var list = formMagicLink.querySelectorAll("input:invalid");
 
                         list.forEach((element) => {
                             this.errors.push({message: element.validationMessage, id: element.id});

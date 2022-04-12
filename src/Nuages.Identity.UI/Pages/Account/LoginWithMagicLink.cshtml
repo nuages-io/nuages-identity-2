@@ -1,27 +1,27 @@
 @page
 @using Nuages.Web.Recaptcha
-@model Nuages.Identity.UI.Pages.Account.LoginWithPasswordless
+@model Nuages.Identity.UI.Pages.Account.LoginWithMagicLink
 @inject IOptions<GoogleRecaptchaOptions> RecaptchaOptions
 
 @{
-    ViewData["Title"] = Localizer["passwordLess:title"];
+    ViewData["Title"] = Localizer["magicLink:title"];
 }
 
-<form class="mt-4 space-y-4" v-on:submit.prevent="sendPasswordlessInfo" id="formPasswordless">
+<form class="mt-4 space-y-4" v-on:submit.prevent="sendMagicLinkInfo" id="formMagicLink">
 
-    <span class="instructions">@Localizer["passwordLess:instructions"]</span>
+    <span class="instructions">@Localizer["magicLink:instructions"]</span>
     <partial name="Shared/ErrorList"/>
     <div class="mb-4 p-4" v-if="status == 'done'" v-show="status == 'done' && errors.length == 0" style="display: none">
         <span class="green-success font-medium">
-            <i class="fas fa-check"></i> @Localizer["passwordLess:seeEmail"]
+            <i class="fas fa-check"></i> @Localizer["magicLink:seeEmail"]
         </span>
     </div>
 
     <fieldset class="space-y-4 " :disabled="status == 'sending'" v-if="status != 'done'">
 
         <input id="email" name="email" type="email" autofocus="" v-model="email" placeholder="@Localizer["yourEmail"]" required class="text-box">
-        <button v-on:click.prevent="sendPasswordlessInfo" class="primary full items-center" :disabled="status == 'sending'">
-            @Localizer["passwordLess:send"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+        <button v-on:click.prevent="sendMagicLinkInfo" class="primary full items-center" :disabled="status == 'sending'">
+            @Localizer["magicLink:send"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
         </button>
     </fieldset>
 
@@ -37,7 +37,7 @@
         
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
-    <script src="/js/pages/loginWithPasswordless.js"></script>
+    <script src="/js/pages/loginWithMagicLink.js"></script>
 }
 
 @section MainFooter
