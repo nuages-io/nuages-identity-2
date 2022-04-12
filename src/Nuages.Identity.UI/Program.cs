@@ -22,9 +22,10 @@ configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
 configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
 
 //Setup NLog, load configuration from IConfiguration
-var nlogBuilder = LogManager.Setup();
-nlogBuilder.SetupExtensions(e => e.RegisterNLogWeb())
+
+LogManager.Setup().SetupExtensions(e => e.RegisterNLogWeb())
     .LoadConfigurationFromSection(builder.Configuration);
+
 builder.Host.UseNLog();
 
 var services = builder.Services;

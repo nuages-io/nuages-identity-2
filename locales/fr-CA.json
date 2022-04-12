@@ -179,13 +179,12 @@
 		"UserNotInRole": "L'utilisateur n'est pas dans le rôle."
 	},
 	"login": {
-		"MagicLink": "Lien Magique",
 		"back": "Aller à la page de connexion",
 		"cantRemember": "Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
 		"connect": "Connection",
 		"continueWith": "Ou conitnuer avec",
 		"forgotPassword": "Mot de passe oublié?",
-		"magicLink": "",
+		"magicLink": "Lien Magique",
 		"mode": {
 			"email": "Votre courriel",
 			"userNameEmail": "Nom d'utilisateur ou courriel",

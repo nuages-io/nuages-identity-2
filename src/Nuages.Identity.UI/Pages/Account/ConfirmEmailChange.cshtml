@@ -7,13 +7,16 @@
 
 @if (Model.Success)
 {
-    <div class="flex justify-center mt-6">
-
-        <div class="flex flex-col">
-            <i class="fa fa-check-circle green-success fa-3x text-center"></i>
-            <span class="mt-4">@Localizer["changeEmail:success"]</span>
+        <div class="flex justify-center mt-6">
+            <div class="flex flex-col">
+                <i class="fa fa-check-circle green-success fa-3x text-center"></i>
+                <span class="mt-4">@Localizer["changeEmail:success"]</span>
+            </div>
         </div>
-    </div>
+        <div class="text-red-600 text-center mt-6">
+            <a class="primary "  href="~/">@Localizer["login.back"]</a>
+        </div>
+   
 }
 else
 {
@@ -23,5 +26,8 @@ else
             <i class="fa fa-circle-xmark text-red-700 dark:text-red-500 fa-3x text-center"></i>
             <span class="mt-4">@Localizer["changeEmail:error"]</span>
         </div>
+    </div>
+    <div class="text-red-600 text-center mt-6">
+        <a class="primary "  href="~/">@Localizer["login.back"]</a>
     </div>
 }

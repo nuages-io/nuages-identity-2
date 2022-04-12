@@ -1,4 +1,3 @@
-using Amazon.Auth.AccessControlPolicy;
 using Fido2NetLib;
 
 namespace Nuages.Identity.Services.Fido2;

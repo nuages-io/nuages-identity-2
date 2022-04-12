@@ -10,13 +10,11 @@ public class TestController
 {
     private readonly NuagesUserManager _userManager;
     private readonly NuagesRoleManager _roleManager;
-    private readonly IConfiguration _configuration;
 
-    public TestController(NuagesUserManager userManager, NuagesRoleManager roleManager, IConfiguration configuration)
+    public TestController(NuagesUserManager userManager, NuagesRoleManager roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
-        _configuration = configuration;
     }
     
 #if DEBUG

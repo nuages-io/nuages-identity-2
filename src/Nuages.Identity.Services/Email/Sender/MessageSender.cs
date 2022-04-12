@@ -2,7 +2,7 @@ namespace Nuages.Identity.Services.Email.Sender;
 
 public class MessageSender : IEmailMessageSender, ISmsMessageSender
 {
-    private readonly string _seprator = new string('-', 100);
+    private readonly string _seprator = new ('-', 150);
 
     public virtual Task<string> SendEmailUsingTemplateAsync(string from, string to, string template, string? language,
         IDictionary<string, string> fields)

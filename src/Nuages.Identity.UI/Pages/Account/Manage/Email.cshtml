@@ -26,10 +26,13 @@
 
             <partial name="Shared/ErrorList"/>
 
-            <input id="email" name="email" type="email" autofocus="" v-model="email" placeholder="@Localizer["changeEmail:newEmail"]" required class="text-box">
-            <button v-on:click.prevent="changeEmail" class="primary full items-center" :disabled="status == 'sending'">
-                @Localizer["changeEmail:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
-            </button>
+            <div v-if="status != 'done'" class="space-y-4">
+                  <input id="email" name="email" type="email" autofocus="" v-model="email" placeholder="@Localizer["changeEmail:newEmail"]" required class="text-box">
+                    <button v-on:click.prevent="changeEmail" class="primary full items-center" :disabled="status == 'sending'">
+                        @Localizer["changeEmail:submit"]<i class="fas fa-spinner fa-spin ml-2" v-if="status == 'sending'" v-show="status == 'sending'" style="display: none"></i>
+                    </button>
+            </div>
+          
         </fieldset>
 
     </form>
