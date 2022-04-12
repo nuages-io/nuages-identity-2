@@ -52,9 +52,9 @@ var App =
 
                     var res = formforgotPassword.checkValidity();
                     if (res) {
-                        if (recaptcha !== "") {
+                        if (recaptchaToken !== "") {
                             grecaptcha.ready(function () {
-                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                grecaptcha.execute(recaptchaToken, {action: 'submit'}).then(function (token) {
                                     self.doforgotPassword(token);
                                 });
                             });

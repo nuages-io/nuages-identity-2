@@ -1,11 +1,17 @@
+@inject Nuages.Identity.Services.AspNetIdentity.NuagesSignInManager SignInManager;
+
 @{
+    var logins = SignInManager.GetExternalAuthenticationSchemesAsync().Result;
+    
     var list = new List<(string, string)>();
     list.Add( new ("/account/manage/profile", @Localizer["profile:title"]));
     list.Add( new ("/account/manage/changePassword", @Localizer["password"]));
     list.Add( new ("/account/manage/email", @Localizer["changeEmail:title"]));
     list.Add( new ("/account/manage/username", @Localizer["changeUsername:title"]));
     list.Add( new ("/account/manage/twoFactorAuthentication", @Localizer["mfa:title"]));
-    list.Add( new ("/account/manage/externalLogins", @Localizer["externalLogins:shortTitle"]));
+    
+    if (logins.Any())
+        list.Add( new ("/account/manage/externalLogins", @Localizer["externalLogins:shortTitle"]));
 }
 <ul class=" list-inside space-y-2">
     @foreach (var item in list)

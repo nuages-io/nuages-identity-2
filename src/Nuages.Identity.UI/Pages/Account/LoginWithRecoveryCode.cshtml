@@ -59,7 +59,7 @@
     <script>
        
         var codeRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, "Code")";
-        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var recaptchaToken = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>

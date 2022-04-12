@@ -135,7 +135,7 @@ public static class IdentityExtensions
 
         if (configuration.GetValue<bool>("Nuages:UseAWS") )
         {
-            services.AddAWSSender("templates.json");
+            services.AddAWSSender("templates.json", true);
         }
         else
         {

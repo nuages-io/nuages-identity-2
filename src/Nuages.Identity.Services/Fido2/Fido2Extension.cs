@@ -1,3 +1,4 @@
+using Amazon.Auth.AccessControlPolicy;
 using Fido2NetLib;
 
 namespace Nuages.Identity.Services.Fido2;
@@ -21,11 +22,11 @@ public static class Fido2Extension
             options.Cookie.SameSite = SameSiteMode.Unspecified;
         });
 
-        services.AddFido2(setupAction )
-        .AddCachedMetadataService(config =>
-        {
-            config.AddFidoMetadataRepository();
-        });
+        services.AddFido2(setupAction);
+        // .AddCachedMetadataService(config =>
+        // {
+        //     config.AddFidoMetadataRepository();
+        // });
 
         return new Fido2Builder(services);
     }

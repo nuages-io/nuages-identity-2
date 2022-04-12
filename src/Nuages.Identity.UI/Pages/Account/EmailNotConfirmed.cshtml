@@ -23,11 +23,10 @@
     </button>
 </form>
 
-
 @section Scripts
 {
     <script>
-        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var recaptchaToken = '@RecaptchaOptions.Value.SiteKey';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
     <script src="/js/pages/emailNotConfirmed.js"></script>

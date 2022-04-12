@@ -81,7 +81,7 @@
         var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Model.UserNamePlaceHolder)";
         var passwordRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["login:password"])";
         var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
-        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var recaptchaToken = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
         var returnUrlEncoded ='@System.Net.WebUtility.UrlEncode(Model.ReturnUrl)';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';

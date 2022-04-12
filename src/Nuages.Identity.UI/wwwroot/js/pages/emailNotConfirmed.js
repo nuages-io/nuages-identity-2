@@ -10,6 +10,8 @@ var App =
             {
                 doSend: function(token)
                 {
+                    var self = this;
+                    
                     fetch("/api/account/sendEmailConfirmation",
                         {
                             method: "POST",
@@ -20,7 +22,8 @@ var App =
                             },
                             body: JSON.stringify({}
                             )
-                        }).then(response => response.json())
+                        })
+                        .then(response => response.json())
                         .then(res => {
                             self.status = "done";
                         });
@@ -31,16 +34,16 @@ var App =
 
                     this.status = "sending";
 
-                    if (recaptcha !== "")
+                    if (recaptchaToken !== "")
                     {
                         grecaptcha.ready(function () {
-                            grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                            grecaptcha.execute(recaptchaToken, {action: 'submit'}).then(function (token) {
                                 doSend(token);
                             });
                         });
                     }
                     else {
-                        doSend("");
+                        this.doSend("");
                     }
                    
 

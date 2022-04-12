@@ -98,9 +98,9 @@ var App =
                         this.status = "sending";
                         var self = this;
 
-                        if (recaptcha !== "") {
+                        if (recaptchaToken !== "") {
                             grecaptcha.ready(function () {
-                                grecaptcha.execute(recaptcha, {action: 'submit'}).then(function (token) {
+                                grecaptcha.execute(recaptchaToken, {action: 'submit'}).then(function (token) {
                                     self.doLogin(token);
                                 });
                             });

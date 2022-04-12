@@ -42,7 +42,7 @@
     <script>
         var emailRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["email"])";
         var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
-        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var recaptchaToken = '@RecaptchaOptions.Value.SiteKey';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>
     <script src="/js/pages/manage/email.js"></script>

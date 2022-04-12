@@ -66,7 +66,7 @@
         var passwordConfirmationRequiredMessage = "@string.Format(Localizer["errorMessage:required"]!, Localizer["register:passwordConfirmation"])";
         var passwordMustMatch = "@Localizer["register:passwordMustMatch"]";
         var emailInvalidMessage = "@Localizer["errorMessage:invalidEmail"]";
-        var recaptcha = '@RecaptchaOptions.Value.SiteKey';
+        var recaptchaToken = '@RecaptchaOptions.Value.SiteKey';
         var returnUrl = '@Html.Raw(Model.ReturnUrl)';
         var xsrfToken = '@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken';
     </script>

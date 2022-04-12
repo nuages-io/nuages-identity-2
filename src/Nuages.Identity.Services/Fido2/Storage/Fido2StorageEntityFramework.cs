@@ -119,7 +119,7 @@ public class Fido2StorageEntityFramework<T> : IFido2Storage
 
         if (key != null)
         {
-            if (key.UserId == userId)
+            if (key.UserId.SequenceEqual(userId))
             {
                 _context.Fido2Credentials.Remove((Fido2Credential) key);
                 await _context.SaveChangesAsync();
