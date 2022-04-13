@@ -18,7 +18,7 @@ public class SesTemplateInitializer : BackgroundService
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var json = await File.ReadAllTextAsync(_fileName, stoppingToken);
+        var json = await File.ReadAllTextAsync(Path.Combine(AppContext.BaseDirectory, _fileName), stoppingToken);
         var data = JsonSerializer.Deserialize<List<EmailTemplate>>(json);
 
         if (data != null)

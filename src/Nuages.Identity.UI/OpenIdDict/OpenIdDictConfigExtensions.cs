@@ -106,7 +106,11 @@ public static class OpenIdDictConfigExtensions
                 options.UseAspNetCore();
             });
 
-        services.AddHostedService<OpenIdDictInitializeWorker>();
+        if (configuration.GetValue<bool>("Nuages:OpenIdDict:CreateDemoClients"))
+        {
+            services.AddHostedService<OpenIdDictInitializeWorker>();
+        }
+        
 
         services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, OpenIddictServerOptionsInitializer>();
     }

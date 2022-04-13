@@ -25,7 +25,7 @@ public class OpenIdDictInitializeWorker : IHostedService
                 ConsentType = ConsentTypes.Implicit,
                 DisplayName = "Postman client application",
                 Type = ClientTypes.Confidential,
-                ClientSecret = "511536EF-F270-4058-80CA-1C89C192F69A",
+                ClientSecret = "00000000-0000-0000-0000-000000000000",
                 PostLogoutRedirectUris =
                 {
                     new Uri("https://oauth.pstmn.io")

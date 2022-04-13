@@ -4,7 +4,7 @@
 
 Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity in a different way.
 
-Try it now!  https://identity.nuages.org
+Try it now!  https://identity.nuages.org (hosted on AWS using ECS .25 vCPU | 2 GB)
 
 ### What is different?
 
@@ -49,9 +49,30 @@ Support is provided for the following Database engine.
 
 ### Gettings Started
 
+By default, the application will run with the following settings
 
+- InMemory data storage
+- Email are sent to the console output 
+- No Google Recaptcha
+- No Google OpenIdProvider
+- Two (2) demo clients created for OpenIdDict
+
+Those settings can be changed using standard configuration mechanism.
+
+### Run locally
+
+``` cd src/Nuages.Identity.UI
+cd src/Nuages.Identity.UI
+dotnet run
+```
+
+Application will be available at https://localhost:8002
 
 ### Run with Docker
 
-- docker build -t nuages.identity.ui .
-- docker run -it --rm -p 8002:80 --env-file ./env.list --name nuage-identity nuages.identity.ui
+```
+docker build -t nuages.identity.ui .
+docker run -it --rm -p 8002:80 --env-file ./env.list --name nuage-identity nuages.identity.ui
+```
+
+Application will be available at https://localhost:8002
