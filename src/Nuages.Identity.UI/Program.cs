@@ -46,6 +46,10 @@ else
     services.AddDataProtection();
 }
 
+//Default distributed memory cache, you might want to use something else when running in a web farm
+//https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-6.0
+services.AddDistributedMemoryCache();
+
 services.AddNuagesIdentity(builder.Configuration); 
 
 //Do not remove if you use accentuated language

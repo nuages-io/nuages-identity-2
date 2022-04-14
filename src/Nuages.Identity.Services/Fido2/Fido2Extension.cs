@@ -9,7 +9,6 @@ public static class Fido2Extension
     {
         services.AddScoped<IFido2Service, Fido2Service>();
         
-        services.AddDistributedMemoryCache();
         services.AddSession(options =>
         {
             // Set a short timeout for easy testing.
@@ -21,11 +20,18 @@ public static class Fido2Extension
             options.Cookie.SameSite = SameSiteMode.Unspecified;
         });
 
-        services.AddFido2(setupAction);
-        // .AddCachedMetadataService(config =>
-        // {
-        //     config.AddFidoMetadataRepository();
-        // });
+        var fido2 = services.AddFido2(setupAction);
+
+        var options = new Fido2Configuration();
+        setupAction.Invoke(options);
+
+        if (!string.IsNullOrEmpty(options.MDSCacheDirPath))
+        {
+            fido2.AddCachedMetadataService(config =>
+            {
+                config.AddFidoMetadataRepository();
+            });
+        }
 
         return new Fido2Builder(services);
     }
