@@ -2570,23 +2570,6 @@
                 <name>login</name>
                 <children>
                     <concept_node>
-                        <name>MagicLink</name>
-                        <definition_loaded>false</definition_loaded>
-                        <description/>
-                        <comment/>
-                        <default_text/>
-                        <translations>
-                            <translation>
-                                <language>en-CA</language>
-                                <approved>false</approved>
-                            </translation>
-                            <translation>
-                                <language>fr-CA</language>
-                                <approved>false</approved>
-                            </translation>
-                        </translations>
-                    </concept_node>
-                    <concept_node>
                         <name>back</name>
                         <definition_loaded>false</definition_loaded>
                         <description/>

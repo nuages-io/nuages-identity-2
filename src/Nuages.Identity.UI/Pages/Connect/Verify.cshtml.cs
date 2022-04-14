@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -13,6 +14,7 @@ using OpenIddict.Server.AspNetCore;
 
 namespace Nuages.Identity.UI.Pages.Connect;
 
+[Authorize]
 public class Verify : PageModel
 {
     private readonly IOpenIddictApplicationManager _applicationManager;

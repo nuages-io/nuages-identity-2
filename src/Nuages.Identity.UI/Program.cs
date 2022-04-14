@@ -36,6 +36,10 @@ var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
 
 if (useAws)
 {
+    //Add options from Configuration if available
+    //https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
+    services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+    
     //Will Enable Lambda hosting if running in a lambda function, otherwise do nothing.
     services.AddAWSLambdaHosting(LambdaEventSource.RestApi); 
     

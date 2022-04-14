@@ -91,7 +91,7 @@ public static class OpenIdDictConfigExtensions
                     .EnableTokenEndpointPassthrough()
                     .EnableLogoutEndpointPassthrough()
                     .EnableUserinfoEndpointPassthrough()
-                    //.EnableVerificationEndpointPassthrough() NO PASSTROUGHR
+                    .EnableVerificationEndpointPassthrough() 
 #if DEBUG
                     .DisableTransportSecurityRequirement()
 #endif
