@@ -30,6 +30,8 @@ builder.Host.UseNLog();
 
 var services = builder.Services;
 
+var cacheAdded = false;
+
 var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
 
 if (useAws)
@@ -39,16 +41,31 @@ if (useAws)
     
     //Save Data Protection key to AWS SM Paramtere Store
     services.AddDataProtection()
-        .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection"); 
+        .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
+
+    var redis = builder.Configuration["Nuages:Data:Redi"];
+    if (!string.IsNullOrEmpty(redis))
+    {
+        cacheAdded = true;
+        
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = builder.Configuration.GetConnectionString(redis);
+            options.InstanceName = "Nuages";
+        });
+    }
 }
 else
 {
     services.AddDataProtection();
 }
 
-//Default distributed memory cache, you might want to use something else when running in a web farm
-//https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-6.0
-services.AddDistributedMemoryCache();
+if (!cacheAdded)
+{
+    //Default distributed memory cache, you might want to use something else when running in a web farm
+    //https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-6.0
+    services.AddDistributedMemoryCache();
+}
 
 services.AddNuagesIdentity(builder.Configuration); 
 
