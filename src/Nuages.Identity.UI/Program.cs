@@ -43,11 +43,12 @@ if (useAws)
     services.AddDataProtection()
         .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
 
-    var redis = builder.Configuration["Nuages:Data:Redi"];
+    var redis = builder.Configuration["Nuages:Data:Redis"];
     if (!string.IsNullOrEmpty(redis))
     {
         cacheAdded = true;
         
+        Console.WriteLine("REDIS cache added");
         builder.Services.AddStackExchangeRedisCache(options =>
         {
             options.Configuration = builder.Configuration.GetConnectionString(redis);
