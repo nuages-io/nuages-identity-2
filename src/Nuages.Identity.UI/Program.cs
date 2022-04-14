@@ -51,7 +51,7 @@ if (useAws)
         Console.WriteLine("REDIS cache added");
         builder.Services.AddStackExchangeRedisCache(options =>
         {
-            options.Configuration = builder.Configuration.GetConnectionString(redis);
+            options.Configuration = redis;
             options.InstanceName = "Nuages";
         });
     }
