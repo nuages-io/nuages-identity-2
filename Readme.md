@@ -48,7 +48,7 @@ Support is provided for the following Database engine.
 - System Manager
   - AppConfig
   - Parameter Store
-- Siple Email Service (SES)
+- Simple Email Service (SES)
 - Simple Notification Service (SNS)
 - Secret Manager
 - ElastiCache REDIS
@@ -225,27 +225,57 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 
 
 
+
+
+##### Using SecretManager
+
+You can use a secret instead of a string value for any configuration value.
+
+Ex. Let's says you want to hide the database connection string
+
+So instead of
+
+``` json
+"Data" :
+    {
+      "Storage": "MongoDb",
+      "ConnectionString" : "my connection string value"
+    }
+```
+
+You can swap the value for a secret ARN (the ARN can be found in your AWS account)
+
+```json
+"Data" :
+{
+  "Storage": "MongoDb",
+  "ConnectionString" : " arn:aws:secretsmanager:{region}:{accounbt_id}:secret:identity/mongo-ABC123"
+}
+```
+
+Only string values are supported.
+
+
+
 ### Running the application
 
 ### Run locally
 
-``` cd src/Nuages.Identity.UI
+``` sh
 cd src/Nuages.Identity.UI
 dotnet run
 ```
 
 Application will be available at https://localhost:8002
 
-### Run with Docker
+### Run locally with Docker
 
-```
+```shell
 docker build -t nuages.identity.ui .
-docker run -it --rm -p 8002:80 --env-file ./env.list --name nuage-identity nuages.identity.ui
+docker run -it --rm -p 8003:80 -e Nuages__Identity__Authority=http://localhost:8003 --name nuage-identity nuages.identity.ui
 ```
 
-Application will be available at https://localhost:8002
-
-
+Application will be available at http://localhost:8003 (no HTTPS)
 
 ### Coming next !
 

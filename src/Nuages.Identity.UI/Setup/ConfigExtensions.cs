@@ -50,9 +50,11 @@ public static class ConfigExtensions
                     config.AppConfig.EnvironmentId,
                     config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
             }
+            
+            builder.Configuration.TransformSecrets();
         }
         
-        builder.Configuration.TransformSecrets();
+        
 
         return configBuilder;
 
