@@ -45,7 +45,11 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
             key = CreateRsaSecurityKey(2048);
             var newKeyXml = key.Rsa.ToXmlString(true);
 
+            Console.WriteLine(new string('-', 150));
+            Console.WriteLine("The following EncryptionKey has been created and should be saved and provided by the configuration system (Nuages:OpenIdDict:EncryptionKey)");
+            Console.WriteLine(new string('-', 150));
             Console.WriteLine(newKeyXml);
+            Console.WriteLine(new string('-', 150));
         }
 
         var encryptionCredential = new EncryptingCredentials(key,
@@ -69,7 +73,11 @@ public class OpenIddictServerOptionsInitializer : IConfigureNamedOptions<OpenIdd
             key = CreateRsaSecurityKey(2048);
             var xmlNewKey = key.Rsa.ToXmlString(true);
 
+            Console.WriteLine(new string('-', 150));
+            Console.WriteLine("The following SigningKey has been created and should be saved and provided by the configuration system (Nuages:OpenIdDict:SigningKey)");
+            Console.WriteLine(new string('-', 150));
             Console.WriteLine(xmlNewKey);
+            Console.WriteLine(new string('-', 150));
         }
 
         var signingCredential = new SigningCredentials(key,

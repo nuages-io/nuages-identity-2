@@ -65,11 +65,167 @@ By default, the application will run with the following settings
 
 Those settings can be changed using standard configuration mechanism.
 
-
-
 ### Configuration
 
+Configuration is done using the standard ICOnfiguration system. You may want to use one of the following ways to customize the application.
 
+- Change appsettings.json
+- Add a appsettings.local.json and/or appesttings.prod.json (those file are not added to git)
+- Use environment variables
+- If using AWS
+  - Use AppConfig
+  - Use ParameterStore
+
+##### Data storage options
+
+```json
+"Data" :
+    {
+      "Storage": "InMemory",
+      "ConnectionString" : "",
+      "Redis" : ""
+    }
+```
+
+
+
+##### Identity options
+
+``` json
+"Nuages":
+{
+  "Identity": {
+      "Name": "Nuages",
+      "Authority": "https://localhost:8001",
+      "SupportsAutoPasswordExpiration": true,
+      "AutoExpirePasswordDelayInDays": 60,
+      "SupportsLoginWithEmail": true,
+      "AutoConfirmExternalLogin": true,
+      "EnablePasswordHistory" : "true",
+      "PasswordHistoryCount": 5,
+      "Audiences": [
+        "IdentityAPI"
+      ],
+      "Password": {
+        "RequiredLength": 6,
+        "RequireNonAlphanumeric": true,
+        "RequireLowercase": true,
+        "RequireUppercase": true,
+        "RequireDigit": true,
+        "RequiredUniqueChars": 1
+      }
+    }
+}
+```
+
+##### UI options
+
+```json
+"Nuages":
+{
+   "UI": {
+      "ShowRegistration": true,
+      "ExternalLoginAutoEnrollIfEmailExists": true,
+      "ExternalLoginPersistent": true,
+      "EnableMagicLink": true,
+      "EnablePhoneFallback": true,
+      "Enable2FARememberDevice": true,
+      "EnableFido2": true,
+      "FontAwesomeUrl": "https://kit.fontawesome.com/70b74b4315.js"
+    }
+}
+```
+
+##### Localization options
+
+```json
+"Nuages":
+{
+  "Localization": {
+      "DefaultCulture": "fr-CA",
+      "LangClaim": "lang",
+      "Cultures": [
+        "fr-CA",
+        "en-CA"
+      ]
+  }
+}
+```
+
+See https://github.com/nuages-io/nuages-localization for more localization information
+
+
+
+##### OpenIdDict options
+
+```json
+"Nuages": 
+{
+	"OpenIdDict": {
+      "EncryptionKey": "",
+      "SigningKey": "",
+      "CreateDemoClients" : true
+  }
+}
+```
+
+
+
+##### Google Racaptcha
+
+```json
+"Nuages" : 
+{
+	"Web": {
+      "GoogleRecaptcha": {
+        "SiteKey": "",
+        "SecretKey": ""
+      }
+    }
+}
+```
+
+##### OAuth provider
+
+```json
+"Nuages" : 
+{
+	"OpenIdProviders": {
+      "Google": {
+        "ClientId": "",
+        "ClientSecret": ""
+      }
+    }
+}
+```
+
+
+
+### Configuration with AWS
+
+##### System Manager options
+
+```json
+"Nuages" : 
+{
+ 	"ApplicationConfig": {
+      "ParameterStore": {
+        "Enabled": false,
+        "Path": "/NuagesIdentity"
+      },
+      "AppConfig": {
+        "Enabled": false,
+        "ApplicationId": "NuagesIdentity",
+        "EnvironmentId": "Prod",
+        "ConfigProfileId": "WebUI"
+      }
+  }
+}
+```
+
+
+
+### Running the application
 
 ### Run locally
 

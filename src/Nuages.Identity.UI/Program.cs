@@ -30,7 +30,6 @@ builder.Host.UseNLog();
 
 var services = builder.Services;
 
-var cacheAdded = false;
 
 var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
 
@@ -46,26 +45,22 @@ if (useAws)
     //Save Data Protection key to AWS SM Paramtere Store
     services.AddDataProtection()
         .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
-
-    var redis = builder.Configuration["Nuages:Data:Redis"];
-    if (!string.IsNullOrEmpty(redis))
-    {
-        cacheAdded = true;
-        
-        Console.WriteLine("REDIS cache added");
-        builder.Services.AddStackExchangeRedisCache(options =>
-        {
-            options.Configuration = redis;
-            options.InstanceName = "Nuages";
-        });
-    }
 }
 else
 {
     services.AddDataProtection();
 }
 
-if (!cacheAdded)
+var redis = builder.Configuration["Nuages:Data:Redis"];
+if (!string.IsNullOrEmpty(redis))
+{
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = redis;
+        options.InstanceName = "Nuages";
+    });
+}
+else
 {
     //Default distributed memory cache, you might want to use something else when running in a web farm
     //https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed?view=aspnetcore-6.0
@@ -116,7 +111,7 @@ services.AddHealthChecks();
 
 services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-var corsDomains = builder.Configuration["AllowedCorsDomain"];
+var corsDomains = builder.Configuration["NUages:AllowedCorsDomain"];
 if (!string.IsNullOrEmpty(corsDomains))
     services.AddCors( corsDomains.Split(",") );
 

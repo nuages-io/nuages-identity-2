@@ -142,7 +142,6 @@ public static class IdentityExtensions
             services.AddScoped<IEmailMessageSender, MessageSender>();
             services.AddScoped<ISmsMessageSender, MessageSender>();
         }
-        
 
         switch (storage)
         {
