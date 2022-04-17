@@ -176,7 +176,8 @@
 		"UserAlreadyInRole": "User already in role.",
 		"UserIdNotFound": "UserId not found.",
 		"UserNameNotFound": "User {0} does not exist.",
-		"UserNotInRole": "User is not in role."
+		"UserNotInRole": "User is not in role.",
+		"cantReusePassword": "This password has already been used. Choose another password."
 	},
 	"login": {
 		"back": "Go to login page",

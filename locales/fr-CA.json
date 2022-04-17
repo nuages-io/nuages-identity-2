@@ -176,7 +176,8 @@
 		"UserAlreadyInRole": "Utilisateur déjà dans le rôle.",
 		"UserIdNotFound": "ID de l'utilisateur non trouvé.",
 		"UserNameNotFound": "L'utilisateur {0} n'existe pas.",
-		"UserNotInRole": "L'utilisateur n'est pas dans le rôle."
+		"UserNotInRole": "L'utilisateur n'est pas dans le rôle.",
+		"cantReusePassword": "Ce mot de passe a déjà été utilisé. Choisissez une autre mote de passe."
 	},
 	"login": {
 		"back": "Aller à la page de connexion",

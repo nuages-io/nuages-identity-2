@@ -4,7 +4,7 @@
 
 Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity in a different way.
 
-Try it now!  https://identity.nuages.org (hosted on AWS using ECS .25 vCPU | 2 GB)
+Try it now!  https://identity.nuages.org (hosted on AWS using ECS .25 vCPU | 1 GB)
 
 ### What is different?
 
@@ -33,19 +33,25 @@ Support is provided for the following Database engine.
 
 ### Dependencies
 
-- Introduce dependies on AWS. 
-  - System Manager
-    - AppConfig
-    - Parameter Store
-  - SES
-  - SNS
-  - Secret Manager
+- AWS decencies ar disabled by default. See next section for additional information.
 - LigerShark.WebOptimizer.Code https://github.com/ligershark/WebOptimizer
 - Font Awesome 6 https://fontawesome.com/
 - Vue 3 https://vuejs.org/
 - NLog https://nlog-project.org/
 - Macross.Json.Extensions https://github.com/Macross-Software/core/tree/develop/ClassLibraries/Macross.Json.Extensions
 - HtmlAgilityPack https://html-agility-pack.net/
+
+
+
+### Dependencies when UseAWS flag is true
+
+- System Manager
+  - AppConfig
+  - Parameter Store
+- Siple Email Service (SES)
+- Simple Notification Service (SNS)
+- Secret Manager
+- ElastiCache REDIS
 
 ### Gettings Started
 
@@ -58,6 +64,12 @@ By default, the application will run with the following settings
 - Two (2) demo clients created for OpenIdDict
 
 Those settings can be changed using standard configuration mechanism.
+
+
+
+### Configuration
+
+
 
 ### Run locally
 
@@ -76,3 +88,10 @@ docker run -it --rm -p 8002:80 --env-file ./env.list --name nuage-identity nuage
 ```
 
 Application will be available at https://localhost:8002
+
+
+
+### Coming next !
+
+- Management API
+- Management UI
