@@ -27,7 +27,7 @@
 		"revoveryCodes": "Code de récupération",
 		"securityKeys": "Clés de sécurité",
 		"showCodes": "Afficher les codes",
-		"title": "Authentication à deux facteurs"
+		"title": "Authentification à deux facteurs"
 	},
 	"addPhone": {
 		"code": "Code de vérification",
@@ -95,7 +95,7 @@
 		"error": "L'autorisation de l'appareil à échouée",
 		"instructions": "Entrez le code fourni par l'application",
 		"rejectIfDifferentMessage": "Appuyez sur Non si le code ne correspond pas à celui affiché sur votre appareil.",
-		"success": "L'autorization de l'appareil à réussi. ",
+		"success": "L'authorisation de l'appareil à réussi. ",
 		"title": "Authorization d'un appareil"
 	},
 	"email": "Courriel",
@@ -116,26 +116,26 @@
 	},
 	"error": "Erreur",
 	"errorMessage": {
-		"exception": "Une erreur innatendue est survenue",
+		"exception": "Une erreur inattendue est survenue",
 		"invalidEmail": "Le courriel est invalide",
 		"no_access": {
 			"AccountNotConfirmed": "Votre compte n'est pas confirmé",
 			"emailNotConfirmed": "Votre courriel n'a pas été confirmé.",
 			"error": "Accès refusé",
-			"lockedOut": "Votre compte est vérouillé",
+			"lockedOut": "Votre compte est verrouillé",
 			"notWithinDateRange": "Votre compte utilisateur est inactif en ce moment"
 		},
-		"recaptchaError": "Erreur de Recptcha",
+		"recaptchaError": "Erreur de Recaptcha",
 		"required": "Le champ [{0}] est requis.",
 		"userNameOrPasswordInvalid": "Nom d'utilisateur/courriel ou mot de pass invalide"
 	},
 	"externalLogin": {
 		"accountCreated": "Votre compte a été créé. SVP vérifier vos courriels afin de retrouver le message de confirmation de votre adresse courriel.",
 		"button": "Créer le compte",
-		"emailNotAvailable": "Aucun courriel disponible avec ces information de connexion. IMpossible de continuer.",
+		"emailNotAvailable": "Aucun courriel disponible avec ces information de connexion. Impossible de continuer.",
 		"instructions": "Vous êtes authentifié avec",
 		"instructions2": "Cliquez le bouton \"Créer le compte\" afin de créer votre compte et continuer avec la connexion.",
-		"lockout": "Le compte est vérouillé",
+		"lockout": "Le compte est verrouillé",
 		"title": "Enregistrement avec un compte externe"
 	},
 	"externalLogins": {
@@ -177,13 +177,13 @@
 		"UserIdNotFound": "ID de l'utilisateur non trouvé.",
 		"UserNameNotFound": "L'utilisateur {0} n'existe pas.",
 		"UserNotInRole": "L'utilisateur n'est pas dans le rôle.",
-		"cantReusePassword": "Ce mot de passe a déjà été utilisé. Choisissez une autre mote de passe."
+		"cantReusePassword": "Ce mot de passe a déjà été utilisé. Choisissez une autre mot de passe."
 	},
 	"login": {
 		"back": "Aller à la page de connexion",
 		"cantRemember": "Impossible de se rappeler de la connexion jusqu'à ce qu'une nouvelle connexion à deux facteurs soit effectuée avec succès.",
 		"connect": "Connection",
-		"continueWith": "Ou conitnuer avec",
+		"continueWith": "Ou continuer avec",
 		"forgotPassword": "Mot de passe oublié?",
 		"magicLink": "Lien Magique",
 		"mode": {
@@ -193,20 +193,20 @@
 		},
 		"password": "Mot de passe",
 		"rememberMe": "Se souvenir de moi",
-		"title": "Connection à votre compte"
+		"title": "Connexion à votre compte"
 	},
 	"loginWithSMS": {
-		"connect": "Connection",
+		"connect": "Connexion",
 		"instructions": "Un message texte vous sera transmis contenant un code de vérification. Cette fonction est disponible seulement si un no. de téléphone a été vérifié.",
 		"notAvailable": "Vous n'avez pas accès à votre téléphone?",
 		"seeSMS": "Voir vos message textes pour le code",
 		"send": "Envoyer le code",
-		"title": "Connection avec Texto"
+		"title": "Connexion avec Texto"
 	},
 	"loginWithSecurityKeys": {
 		"notAvailable": "Vous n'avez pas accès à votre clé de sécurité?",
-		"retry": "Réeesayer",
-		"success": "Clé de sécurité vérifiée avec succèss",
+		"retry": "Réessayer",
+		"success": "Clé de sécurité vérifiée avec succès",
 		"title": "Connexion avec clé de sécurité",
 		"unableToReadKey": "Impossible de valider la clé de sécurité",
 		"waiting": "En attente de la clé de sécurité"
@@ -219,12 +219,12 @@
 		"message": "[{1}] Le code de vérification est {0}",
 		"seeEmail": "Vérifier vos courriels afin de retrouver le Lien Magique",
 		"send": "Envoyer le lien",
-		"title": "Connection avec Lien Magique"
+		"title": "Connexion avec Lien Magique"
 	},
 	"mfa": {
-		"appNotAvailable": "Vous n'avez pas accès \na votre application d'authentification?",
-		"appNotAvailableRecoveryCodes": "Connection avec une code de récupération.",
-		"appNotAvailableSMS": "Connection avec un code Texto",
+		"appNotAvailable": "Vous n'avez pas accès a votre application d'authentification?",
+		"appNotAvailableRecoveryCodes": "Connexion avec une code de récupération.",
+		"appNotAvailableSMS": "Connexion avec un code Texto",
 		"instructions": "Votre compte est protégé par une application d'authentification. Entrée votgre code çi-bas.",
 		"rememberMachine": "Se rappeler de cette appareil",
 		"title": "Authentification à deux facteurs"
@@ -233,7 +233,7 @@
 	"or": "ou",
 	"password": "Mot de passe",
 	"passwordExpired": {
-		"instructions": "Votre mnot de passe est expiré ou doit être modifié. Choisissez un nouveau mot de passe.",
+		"instructions": "Votre mot de passe est expiré ou doit être modifié. Choisissez un nouveau mot de passe.",
 		"submit": "Changer mon mot de passe",
 		"title": "Mot de passe expiré"
 	},

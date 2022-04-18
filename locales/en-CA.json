@@ -2,7 +2,7 @@
 	"2fa": {
 		"activate": "Activate",
 		"active": "Two-factor authentication is enabled.",
-		"addPhone": "Add falback phone number",
+		"addPhone": "Add fallback phone number",
 		"addSecurityKey": "Add a new security key",
 		"clearPhoneConfirm": "Are you sure you want to clear the phone number?",
 		"clearPhoneTitle": "Clear phone number",
@@ -37,7 +37,7 @@
 		"sendMessage": "Add fallback #",
 		"submit": "Verify code",
 		"success": "Fallback SMS number added with success.",
-		"title": "Add a falback SMS number"
+		"title": "Add a fallback SMS number"
 	},
 	"addSecurityKey": {
 		"addKey": "Add",
@@ -153,7 +153,7 @@
 	},
 	"go_home": "Back to the home page",
 	"identity": {
-		"DefaultError": "An unknown failure has occured.",
+		"DefaultError": "An unknown failure has occurred.",
 		"DuplicateEmail": "Email '{0}' is already taken.",
 		"DuplicateName": "Name {0} is already taken.",
 		"ExternalLoginExists": "A user with that external login already exists.",
