@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Nuages.Identity.UI.OpenIdDict;
+using Nuages.Identity.UI.OpenIdDict.Endpoints;
 using OpenIddict.Server.AspNetCore;
 
 namespace Nuages.Identity.UI.Controllers;

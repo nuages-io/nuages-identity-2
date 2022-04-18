@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using Nuages.Identity.Services.AspNetIdentity;
+using Nuages.Identity.UI.OpenIdDict.Endpoints;
+using Nuages.Identity.UI.OpenIdDict.Endpoints.Handlers;
 using OpenIddict.Abstractions;
 using OpenIddict.Server;
 

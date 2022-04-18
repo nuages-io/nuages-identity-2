@@ -5,7 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
-namespace Nuages.Identity.UI.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict.Endpoints.Handlers;
 
 public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
 {

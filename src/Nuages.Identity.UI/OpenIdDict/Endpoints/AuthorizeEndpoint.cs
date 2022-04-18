@@ -7,7 +7,7 @@ using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 using SignInResult = Microsoft.AspNetCore.Mvc.SignInResult;
 
-namespace Nuages.Identity.UI.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict.Endpoints;
 
 public class AuthorizeEndpoint : IAuthorizeEndpoint
 {

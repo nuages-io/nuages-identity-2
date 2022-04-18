@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Nuages.Identity.UI.OpenIdDict.Endpoints.Handlers;
 using OpenIddict.Abstractions;
 
-namespace Nuages.Identity.UI.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict.Endpoints;
 
 public class TokenEndpoint : ITokenEndpoint
 {

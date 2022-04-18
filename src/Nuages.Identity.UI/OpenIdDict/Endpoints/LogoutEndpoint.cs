@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Server.AspNetCore;
 
-namespace Nuages.Identity.UI.OpenIdDict;
+namespace Nuages.Identity.UI.OpenIdDict.Endpoints;
 
 public class LogoutEndpoint : ILogoutEndpoint
 {
