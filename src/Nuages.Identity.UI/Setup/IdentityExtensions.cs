@@ -218,9 +218,20 @@ public static class IdentityExtensions
                };
            });
        }
-     
-        
-        services.AddUI(configuration);
+
+       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Twitter:ClientId"]))
+       {
+           auth.AddTwitter(twitterOptions =>
+           {
+               twitterOptions.ConsumerKey = configuration["Nuages:OpenIdProviders:Twitter:ClientId"];
+               twitterOptions.ConsumerSecret = configuration["Nuages:OpenIdProviders:Twitter:ClientSecret"];
+
+               twitterOptions.RetrieveUserDetails = true;
+           });
+       }
+
+
+       services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });
     }
 }

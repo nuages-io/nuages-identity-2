@@ -41,7 +41,10 @@ Support is provided for the following Database engine.
 - Macross.Json.Extensions https://github.com/Macross-Software/core/tree/develop/ClassLibraries/Macross.Json.Extensions
 - HtmlAgilityPack https://html-agility-pack.net/
 - OctoKit (to get GitHub user email) (https://github.com/octokit/octokit.net)
-
+- Microsoft.Extensions.Caching.StackExchangeRedis
+- Pre-configured OAuth providers
+  - AspNet.Security.OAuth.GitHub
+  - Microsoft.AspNetCore.Authentication.Google
 
 
 ### Dependencies when UseAWS flag is true
