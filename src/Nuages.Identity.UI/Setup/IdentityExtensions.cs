@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
@@ -176,73 +177,85 @@ public static class IdentityExtensions
 
        var auth = services.AddNuagesAuthentication();
 
-      
-       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Google:ClientId"]))
-       {
-           auth.AddGoogle(googleOptions =>
-           {
-               googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"];
-               googleOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Google:ClientSecret"];
-           });
-       }
-
-       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:GitHub:ClientId"]))
-       {
-           auth.AddGitHub(o =>
-           {
-               o.ClientId = configuration["Nuages:OpenIdProviders:GitHub:ClientId"];
-               o.ClientSecret = configuration["Nuages:OpenIdProviders:GitHub:ClientSecret"];
-               o.CallbackPath = "/signin-github";
-            
-               // Grants access to read a user's profile data.
-               // https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
-               o.Scope.Add("user:email"); //read:user 
-               
-               // Optional
-               // if you need an access token to call GitHub Apis
-               o.Events.OnCreatingTicket += async context =>
-               {
-                   if (context.AccessToken is { })
-                   {
-                       var github = new GitHubClient(new ProductHeaderValue("NuagesIdentity"))
-                       {
-                           Credentials = new Credentials(context.AccessToken)
-                       };
-                       
-                       var emails = await github.User.Email.GetAll();
-                       
-                       
-                       context.Identity?.AddClaim(new Claim("email", emails.Single(e => e.Primary == true).Email));
-                   }
-                
-               };
-           });
-       }
-
-       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Twitter:ClientId"]))
-       {
-           auth.AddTwitter(twitterOptions =>
-           {
-               twitterOptions.ConsumerKey = configuration["Nuages:OpenIdProviders:Twitter:ClientId"];
-               twitterOptions.ConsumerSecret = configuration["Nuages:OpenIdProviders:Twitter:ClientSecret"];
-
-               twitterOptions.RetrieveUserDetails = true;
-           });
-       }
-       
-       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Facebook:ClientId"]))
-       {
-           auth.AddFacebook(facebookOptions =>
-           {
-               facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:ClientId"];
-               facebookOptions.AppSecret = configuration["Nuages:OpenIdProviders:Facebook:ClientSecret"];
-           });
-       }
-       
-     
-
+       AddGoogle(configuration, auth);
+       AddGitHub(configuration, auth);
+       AddTwitter(configuration, auth);
+       AddFacebook(configuration, auth);
 
        services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });
+    }
+
+    private static void AddGoogle(IConfiguration configuration, AuthenticationBuilder auth)
+    {
+        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Google:ClientId"]))
+        {
+            auth.AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"];
+                googleOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Google:ClientSecret"];
+            });
+        }
+    }
+
+    private static void AddGitHub(IConfiguration configuration, AuthenticationBuilder auth)
+    {
+        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:GitHub:ClientId"]))
+        {
+            auth.AddGitHub(o =>
+            {
+                o.ClientId = configuration["Nuages:OpenIdProviders:GitHub:ClientId"];
+                o.ClientSecret = configuration["Nuages:OpenIdProviders:GitHub:ClientSecret"];
+                o.CallbackPath = "/signin-github";
+
+                // Grants access to read a user's profile data.
+                // https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
+                o.Scope.Add("user:email"); //read:user 
+
+                // Optional
+                // if you need an access token to call GitHub Apis
+                o.Events.OnCreatingTicket += async context =>
+                {
+                    if (context.AccessToken is { })
+                    {
+                        var github = new GitHubClient(new ProductHeaderValue("NuagesIdentity"))
+                        {
+                            Credentials = new Credentials(context.AccessToken)
+                        };
+
+                        var emails = await github.User.Email.GetAll();
+
+
+                        context.Identity?.AddClaim(new Claim("email", emails.Single(e => e.Primary == true).Email));
+                    }
+                };
+            });
+        }
+    }
+
+    private static void AddTwitter(IConfiguration configuration, AuthenticationBuilder auth)
+    {
+        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Twitter:ClientId"]))
+        {
+            auth.AddTwitter(twitterOptions =>
+            {
+                twitterOptions.ConsumerKey = configuration["Nuages:OpenIdProviders:Twitter:ClientId"];
+                twitterOptions.ConsumerSecret = configuration["Nuages:OpenIdProviders:Twitter:ClientSecret"];
+
+                twitterOptions.RetrieveUserDetails = true;
+            });
+        }
+    }
+
+    private static void AddFacebook(IConfiguration configuration, AuthenticationBuilder auth)
+    {
+        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Facebook:ClientId"]))
+        {
+            auth.AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:ClientId"];
+                facebookOptions.AppSecret = configuration["Nuages:OpenIdProviders:Facebook:ClientSecret"];
+            });
+        }
     }
 }
