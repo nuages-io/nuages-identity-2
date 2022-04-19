@@ -188,8 +188,12 @@ public static class IdentityExtensions
 
     private static void AddGoogle(IConfiguration configuration, AuthenticationBuilder auth)
     {
+        
+        
         if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Google:ClientId"]))
         {
+            Console.WriteLine("Adding Google Auth Provider");
+            
             auth.AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"];
@@ -202,6 +206,8 @@ public static class IdentityExtensions
     {
         if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:GitHub:ClientId"]))
         {
+            Console.WriteLine("Adding GitHub Auth Provider");
+            
             auth.AddGitHub(o =>
             {
                 o.ClientId = configuration["Nuages:OpenIdProviders:GitHub:ClientId"];
@@ -237,6 +243,8 @@ public static class IdentityExtensions
     {
         if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Twitter:ClientId"]))
         {
+            Console.WriteLine("Adding Twitter Auth Provider");
+            
             auth.AddTwitter(twitterOptions =>
             {
                 twitterOptions.ConsumerKey = configuration["Nuages:OpenIdProviders:Twitter:ClientId"];
@@ -251,6 +259,8 @@ public static class IdentityExtensions
     {
         if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Facebook:ClientId"]))
         {
+            Console.WriteLine("Adding Facebook Auth Provider");
+            
             auth.AddFacebook(facebookOptions =>
             {
                 facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:ClientId"];
