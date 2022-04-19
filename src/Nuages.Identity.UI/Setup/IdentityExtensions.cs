@@ -229,6 +229,17 @@ public static class IdentityExtensions
                twitterOptions.RetrieveUserDetails = true;
            });
        }
+       
+       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Facebook:ClientId"]))
+       {
+           auth.AddFacebook(facebookOptions =>
+           {
+               facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:ClientId"];
+               facebookOptions.AppSecret = configuration["Nuages:OpenIdProviders:Facebook:ClientSecret"];
+           });
+       }
+       
+     
 
 
        services.AddUI(configuration);
