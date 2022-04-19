@@ -14,23 +14,26 @@
     </Target>
     <ItemGroup>
         <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.1.0" />
-        <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.5" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.4" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="6.0.4" />
-        <PackageReference Include="Octokit" Version="0.50.0" />
         <PackageReference Include="System.Linq.Async" Version="6.0.1" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.3" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.3" />  
+        
     </ItemGroup>    
-    
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.4" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.3" />
+        <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="6.0.5" />
+        <PackageReference Include="Octokit" Version="0.50.0" />
+    </ItemGroup>
     <ItemGroup>
         <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
         <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.1.1" />

@@ -59,17 +59,17 @@
     {
         <partial name="Shared/SeparatorWithTitle" model="new { Title =  @Localizer["login:continueWith"] }"/>
         
-        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4 space-x-2">
+        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4  grid grid-flow-row grid-cols-2">
             @foreach (var provider in Model.ExternalLogins)
             {
-                <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple">
+                <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" class="btn-simple m-1 ">
                     <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
                     @provider.DisplayName
                 </button>
             }
             @if (UIOptions.Value.EnableMagicLink)
             {
-                <a class="btn-simple mt-4"  asp-page="./LoginWithMagicLink" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:magicLink"]</a>
+                <a class="btn-simple m-1 "  asp-page="./LoginWithMagicLink" asp-route-returnUrl="@Model.ReturnUrl"><i class="fas fa-rocket"></i>&nbsp;@Localizer["login:magicLink"]</a>
             }
         </form>
     }

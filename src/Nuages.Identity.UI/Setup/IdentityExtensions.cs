@@ -21,7 +21,7 @@ namespace Nuages.Identity.UI.Setup;
 
 public static class IdentityExtensions
 {
-    public static void AddNuagesIdentity(this  IServiceCollection services, IConfiguration configuration)
+    public static void AddNuagesIdentity(this IServiceCollection services, IConfiguration configuration)
     {
         var identityBuilder =
             services.AddNuagesAspNetIdentity<NuagesApplicationUser<string>, NuagesApplicationRole<string>, string>(
@@ -136,7 +136,7 @@ public static class IdentityExtensions
             configure.DefaultCulture = configuration["Nuages:MessageService:DefaultCulture"];
         });
 
-        if (configuration.GetValue<bool>("Nuages:UseAWS") )
+        if (configuration.GetValue<bool>("Nuages:UseAWS"))
         {
             services.AddAWSSender("templates.json", true);
         }
@@ -175,25 +175,24 @@ public static class IdentityExtensions
                 throw new Exception("Invalid storage");
         }
 
-       var auth = services.AddNuagesAuthentication();
+        var auth = services.AddNuagesAuthentication();
 
-       AddGoogle(configuration, auth);
-       AddGitHub(configuration, auth);
-       AddTwitter(configuration, auth);
-       AddFacebook(configuration, auth);
+        AddGoogle(configuration, auth);
+        AddGitHub(configuration, auth);
+        AddTwitter(configuration, auth);
+        AddFacebook(configuration, auth);
+        AddMicrosoft(configuration, auth);
 
-       services.AddUI(configuration);
+        services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });
     }
 
     private static void AddGoogle(IConfiguration configuration, AuthenticationBuilder auth)
     {
-        
-        
         if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Google:ClientId"]))
         {
             Console.WriteLine("Adding Google Auth Provider");
-            
+
             auth.AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"];
@@ -207,7 +206,7 @@ public static class IdentityExtensions
         if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:GitHub:ClientId"]))
         {
             Console.WriteLine("Adding GitHub Auth Provider");
-            
+
             auth.AddGitHub(o =>
             {
                 o.ClientId = configuration["Nuages:OpenIdProviders:GitHub:ClientId"];
@@ -232,7 +231,7 @@ public static class IdentityExtensions
                         var emails = await github.User.Email.GetAll();
 
 
-                        context.Identity?.AddClaim(new Claim("email", emails.Single(e => e.Primary == true).Email));
+                        context.Identity?.AddClaim(new Claim("email", emails.Single(e => e.Primary).Email));
                     }
                 };
             });
@@ -241,14 +240,14 @@ public static class IdentityExtensions
 
     private static void AddTwitter(IConfiguration configuration, AuthenticationBuilder auth)
     {
-        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Twitter:ClientId"]))
+        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Twitter:ConsumerKey"]))
         {
             Console.WriteLine("Adding Twitter Auth Provider");
-            
+
             auth.AddTwitter(twitterOptions =>
             {
-                twitterOptions.ConsumerKey = configuration["Nuages:OpenIdProviders:Twitter:ClientId"];
-                twitterOptions.ConsumerSecret = configuration["Nuages:OpenIdProviders:Twitter:ClientSecret"];
+                twitterOptions.ConsumerKey = configuration["Nuages:OpenIdProviders:Twitter:ConsumerKey"];
+                twitterOptions.ConsumerSecret = configuration["Nuages:OpenIdProviders:Twitter:ConsumerSecret"];
 
                 twitterOptions.RetrieveUserDetails = true;
             });
@@ -257,14 +256,28 @@ public static class IdentityExtensions
 
     private static void AddFacebook(IConfiguration configuration, AuthenticationBuilder auth)
     {
-        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Facebook:ClientId"]))
+        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Facebook:AppId"]))
         {
             Console.WriteLine("Adding Facebook Auth Provider");
-            
+
             auth.AddFacebook(facebookOptions =>
             {
-                facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:ClientId"];
-                facebookOptions.AppSecret = configuration["Nuages:OpenIdProviders:Facebook:ClientSecret"];
+                facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:AppId"];
+                facebookOptions.AppSecret = configuration["Nuages:OpenIdProviders:Facebook:AppSecret"];
+            });
+        }
+    }
+
+    private static void AddMicrosoft(IConfiguration configuration, AuthenticationBuilder auth)
+    {
+        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Microsoft:ClientId"]))
+        {
+            Console.WriteLine("Adding Microsoft Auth Provider");
+
+            auth.AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = configuration["Nuages:OpenIdProviders:Microsoft:ClientId"];
+                microsoftOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Microsoft:ClientSecret"];
             });
         }
     }
