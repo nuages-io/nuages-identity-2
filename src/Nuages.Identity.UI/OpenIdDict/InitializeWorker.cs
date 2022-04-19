@@ -3,11 +3,11 @@ using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Nuages.Identity.UI.OpenIdDict;
 
-public class OpenIdDictInitializeWorker : IHostedService
+public class InitializeWorker : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public OpenIdDictInitializeWorker(IServiceProvider serviceProvider)
+    public InitializeWorker(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }

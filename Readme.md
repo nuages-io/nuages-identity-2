@@ -40,6 +40,7 @@ Support is provided for the following Database engine.
 - NLog https://nlog-project.org/
 - Macross.Json.Extensions https://github.com/Macross-Software/core/tree/develop/ClassLibraries/Macross.Json.Extensions
 - HtmlAgilityPack https://html-agility-pack.net/
+- OctoKit (to get GitHub user email) (https://github.com/octokit/octokit.net)
 
 
 
@@ -60,7 +61,7 @@ By default, the application will run with the following settings
 - InMemory data storage
 - Email are sent to the console output 
 - No Google Recaptcha
-- No Google OpenIdProvider
+- No OAuth providers
 - Two (2) demo clients created for OpenIdDict
 
 Those settings can be changed using standard configuration mechanism.
@@ -266,7 +267,7 @@ cd src/Nuages.Identity.UI
 dotnet run
 ```
 
-Application will be available at https://localhost:8002
+Application will be available at https://localhost:8001
 
 ### Run locally with Docker
 

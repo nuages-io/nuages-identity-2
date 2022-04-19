@@ -26,7 +26,9 @@ public static class OpenIdDictConfigExtensions
         services.AddScoped<ITokenEndpoint, TokenEndpoint>();
         services.AddScoped<IUserInfoEndpoint, UserInfoEndpoint>();
 
-        services.AddScoped<IOpenIddictServerRequestProvider, OpenIddictServerRequestProvider>();
+        services.AddScoped<IOpenIddictServerRequestProvider, OpenIdDictRequestProvider>();
+        
+        services.AddSingleton<IKeyStore, KeyStoreFromConfiguration>();
         
         services.AddOpenIddict()
             // Register the OpenIddict core components.
@@ -110,10 +112,9 @@ public static class OpenIdDictConfigExtensions
 
         if (configuration.GetValue<bool>("Nuages:OpenIdDict:CreateDemoClients"))
         {
-            services.AddHostedService<OpenIdDictInitializeWorker>();
+            services.AddHostedService<InitializeWorker>();
         }
         
-
-        services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, OpenIddictServerOptionsInitializer>();
+        services.AddSingleton<IConfigureOptions<OpenIddictServerOptions>, ServerOptionsInitializer>();
     }
 }

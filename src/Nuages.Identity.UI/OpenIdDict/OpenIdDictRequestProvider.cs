@@ -3,11 +3,11 @@ using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI.OpenIdDict;
 
-public class OpenIddictServerRequestProvider : IOpenIddictServerRequestProvider
+public class OpenIdDictRequestProvider : IOpenIddictServerRequestProvider
 {
     private readonly IHttpContextAccessor _contextAccessor;
 
-    public OpenIddictServerRequestProvider(IHttpContextAccessor contextAccessor)
+    public OpenIdDictRequestProvider(IHttpContextAccessor contextAccessor)
     {
         _contextAccessor = contextAccessor;
     }

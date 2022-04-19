@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
@@ -12,6 +13,7 @@ using Nuages.Identity.Services.Email.Sender.AWS;
 using Nuages.Identity.Services.Fido2.AspNetIdentity;
 using Nuages.Identity.Services.Fido2.Storage;
 using Nuages.Identity.UI.OpenIdDict;
+using Octokit;
 using OpenIddict.Abstractions;
 
 namespace Nuages.Identity.UI.Setup;
@@ -174,7 +176,7 @@ public static class IdentityExtensions
 
        var auth = services.AddNuagesAuthentication();
 
-       Console.WriteLine($"Client id = {configuration["Nuages:OpenIdProviders:Google:ClientId"]}");
+      
        if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:Google:ClientId"]))
        {
            auth.AddGoogle(googleOptions =>
@@ -183,7 +185,40 @@ public static class IdentityExtensions
                googleOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Google:ClientSecret"];
            });
        }
+
+       if (!string.IsNullOrEmpty(configuration["Nuages:OpenIdProviders:GitHub:ClientId"]))
+       {
+           auth.AddGitHub(o =>
+           {
+               o.ClientId = configuration["Nuages:OpenIdProviders:GitHub:ClientId"];
+               o.ClientSecret = configuration["Nuages:OpenIdProviders:GitHub:ClientSecret"];
+               o.CallbackPath = "/signin-github";
             
+               // Grants access to read a user's profile data.
+               // https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps
+               o.Scope.Add("user:email"); //read:user 
+               
+               // Optional
+               // if you need an access token to call GitHub Apis
+               o.Events.OnCreatingTicket += async context =>
+               {
+                   if (context.AccessToken is { })
+                   {
+                       var github = new GitHubClient(new ProductHeaderValue("NuagesIdentity"))
+                       {
+                           Credentials = new Credentials(context.AccessToken)
+                       };
+                       
+                       var emails = await github.User.Email.GetAll();
+                       
+                       
+                       context.Identity?.AddClaim(new Claim("email", emails.Single(e => e.Primary == true).Email));
+                   }
+                
+               };
+           });
+       }
+     
         
         services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });

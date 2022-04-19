@@ -4,5 +4,6 @@ public class OpenIdDictOptions
 {
     public string? SigningKey { get; set; }
     public string? EncryptionKey { get; set; }
-    public bool CreateDemoClients { get; set; } 
+    public bool CreateDemoClients { get; set; }
+    public int KeySize { get; set; } = 2048;
 }
