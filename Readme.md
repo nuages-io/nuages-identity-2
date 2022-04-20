@@ -80,16 +80,15 @@ Configuration is done using the standard Configuration system. You may want to u
 ##### Data storage options
 
 ```json
-"Nuages":
 {
-  "Data" :
-    {
+  "Nuages": {
+    "Data": {
       "Storage": "InMemory",
-      "ConnectionString" : "",
-      "Redis" : ""
+      "ConnectionString": "",
+      "Redis": ""
     }
+  }
 }
-
 ```
 
 - **Nuages\__Data__Storage** : InMemory, MongoDb, SqlServer or MySql.
@@ -99,16 +98,16 @@ Configuration is done using the standard Configuration system. You may want to u
 ##### Identity options
 
 ``` json
-"Nuages":
 {
-  "Identity": {
+  "Nuages": {
+    "Identity": {
       "Name": "Nuages",
       "Authority": "https://localhost:8001",
       "SupportsAutoPasswordExpiration": true,
       "AutoExpirePasswordDelayInDays": 60,
       "SupportsLoginWithEmail": true,
       "AutoConfirmExternalLogin": true,
-      "EnablePasswordHistory" : "true",
+      "EnablePasswordHistory": "true",
       "PasswordHistoryCount": 5,
       "Audiences": [
         "IdentityAPI"
@@ -122,15 +121,16 @@ Configuration is done using the standard Configuration system. You may want to u
         "RequiredUniqueChars": 1
       }
     }
+  }
 }
 ```
 
 ##### UI Options
 
 ```json
-"Nuages":
 {
-   "UI": {
+  "Nuages": {
+    "UI": {
       "ShowRegistration": true,
       "ExternalLoginAutoEnrollIfEmailExists": true,
       "ExternalLoginPersistent": true,
@@ -140,21 +140,23 @@ Configuration is done using the standard Configuration system. You may want to u
       "EnableFido2": true,
       "FontAwesomeUrl": "https://kit.fontawesome.com/70b74b4315.js"
     }
+  }
 }
 ```
 
 ##### Localization options
 
 ```json
-"Nuages":
 {
-  "Localization": {
+  "Nuages": {
+    "Localization": {
       "DefaultCulture": "fr-CA",
       "LangClaim": "lang",
       "Cultures": [
         "fr-CA",
         "en-CA"
       ]
+    }
   }
 }
 ```
@@ -164,12 +166,13 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 ##### OpenIdDict options
 
 ```json
-"Nuages": 
 {
-	"OpenIdDict": {
+  "Nuages": {
+    "OpenIdDict": {
       "EncryptionKey": "",
       "SigningKey": "",
-      "CreateDemoClients" : true
+      "CreateDemoClients": true
+    }
   }
 }
 ```
@@ -177,23 +180,24 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 ##### Google Racaptcha
 
 ```json
-"Nuages" : 
 {
-	"Web": {
+  "Nuages": {
+    "Web": {
       "GoogleRecaptcha": {
         "SiteKey": "",
         "SecretKey": ""
       }
     }
+  }
 }
 ```
 
 ##### OAuth Provider
 
 ```json
-"Nuages" : 
 {
-	"OpenIdProviders": {
+  "Nuages": {
+    "OpenIdProviders": {
       "Google": {
         "ClientId": "",
         "ClientSecret": ""
@@ -211,6 +215,7 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
         "ClientSecret": ""
       }
     }
+  }
 }
 ```
 
@@ -223,9 +228,9 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 ##### System Manager options
 
 ```json
-"Nuages" : 
 {
- 	"ApplicationConfig": {
+  "Nuages": {
+    "ApplicationConfig": {
       "ParameterStore": {
         "Enabled": false,
         "Path": "/NuagesIdentity"
@@ -236,6 +241,7 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
         "EnvironmentId": "Prod",
         "ConfigProfileId": "WebUI"
       }
+    }
   }
 }
 ```
@@ -251,29 +257,27 @@ Ex. Let's says you want to hide the database connection string
 So instead of
 
 ``` json
-"Nuages":
 {
-  "Data" :
-    {
+  "Nuages": {
+    "Data": {
       "Storage": "MongoDb",
-      "ConnectionString" : "my connection string value"
+      "ConnectionString": "my connection string value"
     }
+  }
 }
-
 ```
 
 You can swap the value for a secret ARN (the ARN can be found in your AWS account)
 
 ```json
-"Nuages"
 {
-  "Data" :
-  {
-    "Storage": "MongoDb",
-    "ConnectionString" : " arn:aws:secretsmanager:{region}:{account_id}:secret:identity/mongo-ABC123"
+  "Nuages": {
+    "Data": {
+      "Storage": "MongoDb",
+      "ConnectionString": " arn:aws:secretsmanager:{region}:{account_id}:secret:identity/mongo-ABC123"
+    }
   }
 }
-
 ```
 
 Only string values are supported.
