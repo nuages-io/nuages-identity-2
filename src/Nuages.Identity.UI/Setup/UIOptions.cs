@@ -3,7 +3,7 @@
 
 using Nuages.Web.Recaptcha;
 
-namespace Nuages.Identity.UI;
+namespace Nuages.Identity.UI.Setup;
 
 public class UIOptions
 {

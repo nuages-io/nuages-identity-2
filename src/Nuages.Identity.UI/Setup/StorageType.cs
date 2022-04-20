@@ -1,4 +1,4 @@
-namespace Nuages.Identity.UI;
+namespace Nuages.Identity.UI.Setup;
 
 public enum StorageType
 {
