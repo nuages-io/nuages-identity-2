@@ -13,14 +13,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.1" />
-        <PackageReference Include="AWSSDK.SimpleEmailV2" Version="3.7.1.72" />
-        <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.3.45" />
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
+        <PackageReference Include="AWSSDK.SimpleEmailV2" Version="3.7.1.76" />
+        <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.3.49" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="2.1.0" />
         <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />
         <PackageReference Include="AWS.Logger.NLog" Version="3.1.0" />
-        <PackageReference Include="Nuages.AWS" Version="1.0.12" />
+        <PackageReference Include="Nuages.AWS" Version="1.0.14" />
     </ItemGroup>
 </Project>
