@@ -3,7 +3,7 @@ using Amazon.SimpleEmailV2;
 using Amazon.SimpleEmailV2.Model;
 using HtmlAgilityPack;
 
-namespace Nuages.Identity.Services.Email.Sender.AWS;
+namespace Nuages.Identity.AWS.Sender;
 
 public class SesTemplateInitializer : BackgroundService
 {

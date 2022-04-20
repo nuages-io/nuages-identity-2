@@ -7,10 +7,10 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using Nuages.AspNetIdentity.Stores.Mongo;
 using Nuages.Fido2.Storage.Mongo;
+using Nuages.Identity.AWS;
 using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
-using Nuages.Identity.Services.Email.Sender.AWS;
 using Nuages.Identity.Services.Fido2.AspNetIdentity;
 using Nuages.Identity.Services.Fido2.Storage;
 using Nuages.Identity.UI.OpenIdDict;
@@ -136,15 +136,9 @@ public static class IdentityExtensions
             configure.DefaultCulture = configuration["Nuages:MessageService:DefaultCulture"];
         });
 
-        if (configuration.GetValue<bool>("Nuages:UseAWS"))
-        {
-            services.AddAWSSender("templates.json", true);
-        }
-        else
-        {
-            services.AddScoped<IEmailMessageSender, MessageSender>();
-            services.AddScoped<ISmsMessageSender, MessageSender>();
-        }
+        
+        services.AddScoped<IEmailMessageSender, MessageSender>();
+        services.AddScoped<ISmsMessageSender, MessageSender>();
 
         switch (storage)
         {
@@ -185,6 +179,10 @@ public static class IdentityExtensions
 
         services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });
+        
+        
+        //Add at the end sot it overrides dependencies
+        services.AddAWS(configuration, "templates.json", true);
     }
 
     private static void AddGoogle(IConfiguration configuration, AuthenticationBuilder auth)

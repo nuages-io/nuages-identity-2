@@ -30,26 +30,7 @@ builder.Host.UseNLog();
 
 var services = builder.Services;
 
-
-var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
-
-if (useAws)
-{
-    //Add options from Configuration if available
-    //https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
-    services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-    
-    //Will Enable Lambda hosting if running in a lambda function, otherwise do nothing.
-    services.AddAWSLambdaHosting(LambdaEventSource.RestApi); 
-    
-    //Save Data Protection key to AWS SM Paramtere Store
-    services.AddDataProtection()
-        .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
-}
-else
-{
-    services.AddDataProtection();
-}
+services.AddDataProtection();
 
 var redis = builder.Configuration["Nuages:Data:Redis"];
 if (!string.IsNullOrEmpty(redis))

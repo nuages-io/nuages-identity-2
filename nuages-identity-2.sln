@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".files", ".files", "{40E26C
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuages.Identity.Services.AWS", "src\Nuages.Identity.Services.AWS\Nuages.Identity.Services.AWS.csproj", "{41EEC318-0403-444C-B0DE-8D66C3A62B89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE8FF77C-FCCB-434B-BC49-C18FCC0FF5E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41EEC318-0403-444C-B0DE-8D66C3A62B89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41EEC318-0403-444C-B0DE-8D66C3A62B89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41EEC318-0403-444C-B0DE-8D66C3A62B89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41EEC318-0403-444C-B0DE-8D66C3A62B89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7B2B11B9-0621-49AB-96BB-009408E9B4F1} = {762005AF-B6D0-4906-8E7B-C995C63FA9E1}

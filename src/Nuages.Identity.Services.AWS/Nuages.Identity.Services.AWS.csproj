@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>Library</OutputType>
+        <RootNamespace>Nuages.Identity.AWS</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="../Nuages.Identity.Services\Nuages.Identity.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.1" />
+        <PackageReference Include="AWSSDK.SimpleEmailV2" Version="3.7.1.72" />
+        <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.3.45" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Amazon.AspNetCore.DataProtection.SSM" Version="2.1.0" />
+        <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />
+        <PackageReference Include="AWS.Logger.NLog" Version="3.1.0" />
+        <PackageReference Include="Nuages.AWS" Version="1.0.12" />
+    </ItemGroup>
+</Project>

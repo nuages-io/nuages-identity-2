@@ -1,5 +1,4 @@
-using Nuages.AWS.Secrets;
-using Nuages.Web;
+using Nuages.Identity.AWS;
 
 namespace Nuages.Identity.UI.Setup;
 
@@ -21,41 +20,11 @@ public static class ConfigExtensions
 
         configBuilder.AddEnvironmentVariables();
 
-        var configuration = configBuilder.Build();
+        configBuilder.Build();
 
-        var useAws = builder.Configuration.GetValue<bool>("Nuages:UseAWS");
+        //Remove if Not referencing Nuages.Identity.Services.AWS
+        configBuilder.LoadAWSConfiguration(builder.Configuration);
         
-        Console.WriteLine($"Use AWS = {useAws}");
-        if (!builder.Environment.IsDevelopment() && useAws)
-        {
-            var config = new ApplicationConfig();
-            
-            configuration.Bind("Nuages:ApplicationConfig", config);
-
-            if (config.ParameterStore.Enabled)
-            {
-                configBuilder.AddSystemsManager(configureSource =>
-                {
-                    configureSource.Path = config.ParameterStore.Path;
-                    configureSource.Optional = true;
-                    configureSource.ReloadAfter = TimeSpan.FromMinutes(15);
-                });
-            }
-
-            Console.WriteLine($"config.AppConfig.Enabled = {config.AppConfig.Enabled}");
-            
-            if (config.AppConfig.Enabled)
-            {
-                configBuilder.AddAppConfig(config.AppConfig.ApplicationId,
-                    config.AppConfig.EnvironmentId,
-                    config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
-            }
-            
-            builder.Configuration.TransformSecrets();
-        }
-        
-        
-
         return configBuilder;
 
     }

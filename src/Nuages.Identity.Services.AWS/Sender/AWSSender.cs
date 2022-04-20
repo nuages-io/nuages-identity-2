@@ -3,10 +3,11 @@ using Amazon.SimpleEmailV2;
 using Amazon.SimpleEmailV2.Model;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
+using Nuages.Identity.Services.Email.Sender;
 
 // ReSharper disable InconsistentNaming
 
-namespace Nuages.Identity.Services.Email.Sender.AWS;
+namespace Nuages.Identity.AWS.Sender;
 
 // ReSharper disable once InconsistentNaming
 public class AWSSender : MessageSender
@@ -67,25 +68,5 @@ public class AWSSender : MessageSender
         });
 
         return response.MessageId;
-    }
-}
-
-public static class AWSSenderExtension
-{
-    public static void AddAWSSender(this IServiceCollection services, string templateFileName, bool initializeTemplate = false)
-    {
-        services.AddAWSService<IAmazonSimpleEmailServiceV2>();
-        services.AddAWSService<IAmazonSimpleNotificationService>();
-        
-        services.AddScoped<IEmailMessageSender, AWSSender>();
-        services.AddScoped<ISmsMessageSender, AWSSender>();
-
-        if (initializeTemplate)
-        {
-            services.AddHostedService(serviceProvider =>
-                new SesTemplateInitializer(serviceProvider.GetRequiredService<IAmazonSimpleEmailServiceV2>(), templateFileName)
-            );
-        }
-        
     }
 }
