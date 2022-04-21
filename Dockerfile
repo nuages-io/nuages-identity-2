@@ -7,13 +7,10 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-# WORKDIR /src
 
 COPY . .
 
 RUN dotnet restore "src/Nuages.Identity.UI/Nuages.Identity.UI.csproj"
-
-COPY *.pfx /src/Nuages.Identity.UI/app/publish/
 
 WORKDIR "src/Nuages.Identity.UI/"
 
@@ -23,13 +20,14 @@ RUN curl -sL https://deb.nodesource.com/setup_17.x  | bash -
 RUN apt-get -y install nodejs
 RUN npm install
 
-RUN dotnet build "Nuages.Identity.UI.csproj" -c Release -o /app/build
+RUN dotnet build Nuages.Identity.UI.csproj -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish  Nuages.Identity.UI.csproj --configuration Release --framework net6.0 --self-contained false /p:GenerateRuntimeConfigurationFiles=true --runtime linux-x64 -o /app/publish
 
 FROM base AS final
 
-WORKDIR /app
 COPY --from=publish /app/publish .
+COPY /*.pfx .
+
 ENTRYPOINT ["dotnet", "Nuages.Identity.UI.dll"]
