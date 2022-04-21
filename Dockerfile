@@ -28,6 +28,6 @@ RUN dotnet publish  Nuages.Identity.UI.csproj --configuration Release --framewor
 FROM base AS final
 
 COPY --from=publish /app/publish .
-COPY Readme.md *.pfx .
+COPY Readme.md *.pfx ./
 
 ENTRYPOINT ["dotnet", "Nuages.Identity.UI.dll"]
