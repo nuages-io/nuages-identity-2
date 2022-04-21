@@ -7,11 +7,13 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-WORKDIR /src
+# WORKDIR /src
 
 COPY . .
 
 RUN dotnet restore "src/Nuages.Identity.UI/Nuages.Identity.UI.csproj"
+
+COPY *.pfx /src/Nuages.Identity.UI/app/publish/
 
 WORKDIR "src/Nuages.Identity.UI/"
 
@@ -27,6 +29,7 @@ FROM build AS publish
 RUN dotnet publish  Nuages.Identity.UI.csproj --configuration Release --framework net6.0 --self-contained false /p:GenerateRuntimeConfigurationFiles=true --runtime linux-x64 -o /app/publish
 
 FROM base AS final
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "Nuages.Identity.UI.dll"]

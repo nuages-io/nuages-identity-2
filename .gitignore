@@ -22,3 +22,5 @@ cdk.context.json
 internal-nlog-AspNetCore.txt
 nlog.config
 env.list
+nuages_identity.pfx
+dockerize.sh

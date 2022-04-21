@@ -182,7 +182,7 @@ public static class IdentityExtensions
         
         
         //Add at the end sot it overrides dependencies
-       services.AddAWS(configuration, "templates.json", true);
+       services.AddAWS(configuration, "templates.json");
     }
 
     private static void AddGoogle(IConfiguration configuration, AuthenticationBuilder auth)
