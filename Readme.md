@@ -68,7 +68,7 @@ Application will be available at http://localhost:8003 (no HTTPS)
 
 ## Configuration
 
-Configuration is done using the standard Configuration system. You may want to use one of the following ways to customize the application.
+Configuration is done using the standard ASP.NET Configuration system. You may want to use one of the following ways to customize the application.
 
 - Change appsettings.json
 - Add a appsettings.local.json and/or appesttings.prod.json (those file are not added to git)
