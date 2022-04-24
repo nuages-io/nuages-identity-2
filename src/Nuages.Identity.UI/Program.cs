@@ -35,6 +35,7 @@ services.AddDataProtection();
 var redis = builder.Configuration["Nuages:Data:Redis"];
 if (!string.IsNullOrEmpty(redis))
 {
+    Console.WriteLine("Using REDIS as Cache");
     builder.Services.AddStackExchangeRedisCache(options =>
     {
         options.Configuration = redis;
@@ -92,7 +93,7 @@ services.AddHealthChecks();
 
 services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-var corsDomains = builder.Configuration["NUages:AllowedCorsDomain"];
+var corsDomains = builder.Configuration["Nuages:AllowedCorsDomain"];
 if (!string.IsNullOrEmpty(corsDomains))
     services.AddCors( corsDomains.Split(",") );
 
@@ -113,7 +114,9 @@ else
 app.UseSession();
 
 app.UseWebOptimizer();
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseCookiePolicy();
