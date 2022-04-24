@@ -1,10 +1,14 @@
 # Nuages Identity
 
+
+
 ### What is Nuages Identity
 
 Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity. The main goal is to provide a production-ready solution, not just startup sample  project.
 
 Try it now!  https://identity.nuages.org 
+
+
 
 ### What is included?
 
@@ -23,6 +27,7 @@ Try it now!  https://identity.nuages.org
 - And more...
 
 
+
 ### Database storage
 
 Support is provided for the following Database engine. 
@@ -31,6 +36,8 @@ Support is provided for the following Database engine.
 - MongoDB
 - SqlServer
 - MySql
+
+
 
 ## Gettings Started
 
@@ -65,6 +72,8 @@ docker run -it --rm -p 8003:80 -e Nuages__Identity__Authority=http://localhost:8
 ```
 
 Application will be available at http://localhost:8003 (no HTTPS)
+
+
 
 ## Configuration
 
@@ -127,6 +136,19 @@ Configuration is done using the standard Configuration system. You may want to u
 }
 ```
 
+- **Nuages\__Identity__Name** : Name of your application
+- **Nuages\__Identity__Authority** : Your authority URL. It must match your public URL.
+- **Nuages\__Identity__SupportsAutoPasswordExpiration** : Set to true will auto expire password after AutoExpirePasswordDelayInDays days.
+- **Nuages\__Identity__AutoExpirePasswordDelayInDays** : If Enabled, the number of days before a password expires.
+- **Nuages\__Identity__SupportsLoginWithEmail** : Set to true to allow loging in by email AND user name.
+- **Nuages\__Identity__AutoConfirmExternalLogin** : Set to true to auto verified user registerd using an external OAuth provider
+- **Nuages\__Identity__EnablePasswordHistory** : Set to true to prevent reusing password
+- **Nuages\__Identity__PasswordHistoryCount** : Number of password to remember
+- **Nuages\__Identity__Audiences** : 
+- **Nuages\__Identity__Password**: Password options
+
+
+
 #### UI Options
 
 ```json
@@ -145,6 +167,17 @@ Configuration is done using the standard Configuration system. You may want to u
   }
 }
 ```
+
+- **Nuages\__UI__ShowRegistration** :
+- **Nuages\__UI__ExternalLoginAutoEnrollIfEmailExists** : Set to true to automatically bind external login to user account when the email match.
+- **Nuages\__UI__ExternalLoginPersistent** : Set tot true to remember external login
+- **Nuages\__UI__EnableMagicLink** : Set to true to allow magic link login
+- **Nuages\__UI__EnablePhoneFallback** : Set to true to allow SMS as an alterntive 2FA mechanism
+- **Nuages\__UI__Enable2FARememberDevice** : Set to true to allow remembering 2FA login on the device
+- **Nuages\__UI__EnableFido2** : Set to true to allow Fido2 as a 2FA alternative
+- **Nuages\__UI__FontAwesomeUrl** : Your Font Awesome 6 Kit URL
+
+
 
 #### Localization options
 
@@ -165,6 +198,8 @@ Configuration is done using the standard Configuration system. You may want to u
 
 See https://github.com/nuages-io/nuages-localization for more localization information
 
+
+
 #### OpenIdDict options
 
 ```json
@@ -178,6 +213,8 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
   }
 }
 ```
+
+
 
 #### Google Racaptcha
 
@@ -193,6 +230,8 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
   }
 }
 ```
+
+
 
 #### OAuth Provider
 
@@ -227,7 +266,7 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 
 
 
-##### System Manager options
+#### System Manager options
 
 ```json
 {
@@ -250,7 +289,7 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 
 
 
-##### Using SecretManager
+#### Using SecretManager
 
 You can use a secret instead of a string value for any configuration value.
 
@@ -286,16 +325,11 @@ Only string values are supported.
 
 
 
-## Coming next !
-
-- Management API
-- Management UI
-
 ---
 
 ### Dependencies
 
-- AWS decencies ar disabled by default. See next section for additional information.
+- AWS services are disabled by default. See next section for additional information.
 - LigerShark.WebOptimizer.Code https://github.com/ligershark/WebOptimizer
 - Font Awesome 6 https://fontawesome.com/
 - Vue 3 https://vuejs.org/
@@ -311,6 +345,7 @@ Only string values are supported.
   - Microsoft.AspNetCore.Authentication.MicrosoftAccount
 
 
+
 ### Dependencies when UseAWS flag is true
 
 - System Manager
@@ -320,3 +355,10 @@ Only string values are supported.
 - Simple Notification Service (SNS)
 - Secret Manager
 - HtmlAgilityPack https://html-agility-pack.net/ (Optional, required by email template loader)
+
+
+
+# Coming next !
+
+- Management API
+- Management UI
