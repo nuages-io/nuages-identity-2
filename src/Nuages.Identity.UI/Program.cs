@@ -75,6 +75,8 @@ services
     })
     .AddNuagesLocalization(builder.Configuration);
 
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
+
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders =
