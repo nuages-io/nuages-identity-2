@@ -115,7 +115,10 @@ else
 app.UseSession();
 
 app.UseWebOptimizer();
-app.UseHttpsRedirection();
+
+if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS_LAMBDA_FUNCTION_NAME")))
+    app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseCookiePolicy();
