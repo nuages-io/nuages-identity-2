@@ -2,18 +2,18 @@
 
 ### What is Nuages Identity
 
-Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity in a different way. The main goal is to provide a production-ready solution, not just startup project.
+Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity. The main goal is to provide a production-ready solution, not just startup sample  project.
 
 Try it now!  https://identity.nuages.org 
 
-### What is different?
+### What is included?
 
 - Ready to use as-is
 - Multi Language support (English and french included) https://github.com/nuages-io/nuages-localization
-- UI build with Vue 3 and Tailwind CSS https://tailwindcss.com/  (Dark and light theme)
 - Implement OpenIddict (client credential, device, authorization code, password flows) https://github.com/openiddict/openiddict-core
 - Implement Fido2 as 2FA method https://github.com/passwordless-lib/fido2-net-lib
-- Add SMS 2FA fallback
+- UI build with Vue 3 and Tailwind CSS https://tailwindcss.com/  (Dark and light theme)
+- SMS 2FA fallback
 - Login using Magic Link
 - Message service for sending Email ans SMS (using AWS SES). Basic email templates provided in English and French.
 - Support Google ReCaptcha
@@ -71,13 +71,13 @@ Application will be available at http://localhost:8003 (no HTTPS)
 Configuration is done using the standard Configuration system. You may want to use one of the following ways to customize the application.
 
 - Change appsettings.json
-- Add a appsettings.local.json and/or appesttings.prod.json (those file are not added to git)
+- Add a appsettings.local.json and/or appesettings.prod.json (those file are not added to git)
 - Use environment variables
 - If using AWS
   - You may use AppConfig
   - You may use ParameterStore
 
-##### Data storage options
+#### Data storage options
 
 ```json
 {
@@ -95,7 +95,9 @@ Configuration is done using the standard Configuration system. You may want to u
 - **Nuages\__Data__ConnectionString**: your database connection string
 - **Nuages\__Data__Redis**: Optional Redis connection string. If provided, it will be used as the distributed cache mechanism (IDistributedCache).
 
-##### Identity options
+
+
+#### Identity options
 
 ``` json
 {
@@ -125,7 +127,7 @@ Configuration is done using the standard Configuration system. You may want to u
 }
 ```
 
-##### UI Options
+#### UI Options
 
 ```json
 {
@@ -144,7 +146,7 @@ Configuration is done using the standard Configuration system. You may want to u
 }
 ```
 
-##### Localization options
+#### Localization options
 
 ```json
 {
@@ -163,7 +165,7 @@ Configuration is done using the standard Configuration system. You may want to u
 
 See https://github.com/nuages-io/nuages-localization for more localization information
 
-##### OpenIdDict options
+#### OpenIdDict options
 
 ```json
 {
@@ -177,7 +179,7 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 }
 ```
 
-##### Google Racaptcha
+#### Google Racaptcha
 
 ```json
 {
@@ -192,7 +194,7 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 }
 ```
 
-##### OAuth Provider
+#### OAuth Provider
 
 ```json
 {
