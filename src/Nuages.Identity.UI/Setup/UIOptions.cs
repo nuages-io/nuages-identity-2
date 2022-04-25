@@ -7,12 +7,10 @@ namespace Nuages.Identity.UI.Setup;
 
 public class UIOptions
 {
-    public bool ShowRegistration { get; set; }
-
+    public bool AllowSelfRegistration { get; set; }
     public bool ExternalLoginAutoEnrollIfEmailExists { get; set; }
     public bool ExternalLoginPersistent { get; set; }
     public bool Bypass2FAWithExternalLogin { get; set; } = true;
-
     public bool EnableMagicLink { get; set; } = true;
     public bool EnablePhoneFallback { get; set; } = true;
     public bool Enable2FARememberDevice { get; set; } = true;

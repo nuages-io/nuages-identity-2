@@ -8,12 +8,12 @@
 
 @{
     ViewData["Title"] = Localizer["login:title"];
-    ViewBag.ShowRegistration = UIOptions.Value.ShowRegistration;
+    ViewBag.AllowSelfRegistration = UIOptions.Value.AllowSelfRegistration;
 }
 
 @section Header
 {
-    @if (ViewBag.ShowRegistration)
+    @if (ViewBag.AllowSelfRegistration)
     {
         <div>
             <p class="mt-2 text-center text-sm">

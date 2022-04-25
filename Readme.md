@@ -74,7 +74,6 @@ docker run -it --rm -p 8003:80 -e Nuages__Identity__Authority=http://localhost:8
 Application will be available at http://localhost:8003 (no HTTPS)
 
 
-
 ## Configuration
 
 Configuration is done using the standard Configuration system. You may want to use one of the following ways to customize the application.
@@ -101,7 +100,7 @@ Configuration is done using the standard Configuration system. You may want to u
 ```
 
 - **Nuages\__Data__Storage** : InMemory, MongoDb, SqlServer or MySql.
-- **Nuages\__Data__ConnectionString**: your database connection string
+- **Nuages\__Data__ConnectionString**: Your database connection string
 - **Nuages\__Data__Redis**: Optional Redis connection string. If provided, it will be used as the distributed cache mechanism (IDistributedCache).
 
 
@@ -144,7 +143,7 @@ Configuration is done using the standard Configuration system. You may want to u
 - **Nuages\__Identity__AutoConfirmExternalLogin** : Set to true to auto verified user registerd using an external OAuth provider
 - **Nuages\__Identity__EnablePasswordHistory** : Set to true to prevent reusing password
 - **Nuages\__Identity__PasswordHistoryCount** : Number of password to remember
-- **Nuages\__Identity__Audiences** : 
+- **Nuages\__Identity__Audiences** : The Audiences supported by the authority.
 - **Nuages\__Identity__Password**: Password options
 
 
@@ -155,7 +154,7 @@ Configuration is done using the standard Configuration system. You may want to u
 {
   "Nuages": {
     "UI": {
-      "ShowRegistration": true,
+      "AllowSelfRegistration": true,
       "ExternalLoginAutoEnrollIfEmailExists": true,
       "ExternalLoginPersistent": true,
       "EnableMagicLink": true,
@@ -168,7 +167,7 @@ Configuration is done using the standard Configuration system. You may want to u
 }
 ```
 
-- **Nuages\__UI__ShowRegistration** :
+- **Nuages\__UI__AllowSelfRegistration** : Set to true to let user create their own account.
 - **Nuages\__UI__ExternalLoginAutoEnrollIfEmailExists** : Set to true to automatically bind external login to user account when the email match.
 - **Nuages\__UI__ExternalLoginPersistent** : Set tot true to remember external login
 - **Nuages\__UI__EnableMagicLink** : Set to true to allow magic link login
@@ -266,7 +265,7 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 
 
 
-#### System Manager options
+#### AWS System Manager options
 
 ```json
 {
@@ -289,7 +288,15 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 
 
 
-#### Using SecretManager
+Application settings can be set using System Manager **ParameterStore** and **AppConfig**. 
+
+Set Enable to true to activate.
+
+More info here https://github.com/aws/aws-dotnet-extensions-configuration
+
+
+
+#### Using AWS SecretManager
 
 You can use a secret instead of a string value for any configuration value.
 
@@ -301,7 +308,6 @@ So instead of
 {
   "Nuages": {
     "Data": {
-      "Storage": "MongoDb",
       "ConnectionString": "my connection string value"
     }
   }
@@ -314,8 +320,7 @@ You can swap the value for a secret ARN (the ARN can be found in your AWS accoun
 {
   "Nuages": {
     "Data": {
-      "Storage": "MongoDb",
-      "ConnectionString": " arn:aws:secretsmanager:{region}:{account_id}:secret:identity/mongo-ABC123"
+      "ConnectionString": "arn:aws:secretsmanager:{region}:{account_id}:secret:identity/mongo-ABC123"
     }
   }
 }
@@ -356,9 +361,3 @@ Only string values are supported.
 - Secret Manager
 - HtmlAgilityPack https://html-agility-pack.net/ (Optional, required by email template loader)
 
-
-
-# Coming next !
-
-- Management API
-- Management UI
