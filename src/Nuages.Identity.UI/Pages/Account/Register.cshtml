@@ -37,26 +37,19 @@
 
 @if (Model.ExternalLogins.Count > 0)
 {
-    <div  v-if="status != 'done'">
-         <partial name="Shared/SeparatorWithTitle" model="new { Title =  @Localizer["register:continueWith"] }"/>
-            
-            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4  grid grid-flow-row grid-cols-2" v-if="status != 'done'">
-              
-        
-                    @foreach (var provider in Model.ExternalLogins)
-                    {
-                       
-                            <button type="submit" name="provider" value="@provider.Name" class="btn-simple m-1">
-                                <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
-                                @provider.DisplayName
-                            </button>
-                      
-                    }
-        
-               
-            </form>
+    <div v-if="status != 'done'">
+        <partial name="Shared/SeparatorWithTitle" model="new { Title = @Localizer["register:continueWith"] }"/>
+
+        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="mt-4  grid grid-flow-row grid-cols-2" v-if="status != 'done'">
+            @foreach (var provider in Model.ExternalLogins)
+            {
+                <button type="submit" name="provider" value="@provider.Name" class="btn-simple m-1">
+                    <i class="@("fab fa-" + provider.DisplayName!.ToLower())"></i>&nbsp;
+                    @provider.DisplayName
+                </button>
+            }
+        </form>
     </div>
-   
 }
 
 @section Scripts
