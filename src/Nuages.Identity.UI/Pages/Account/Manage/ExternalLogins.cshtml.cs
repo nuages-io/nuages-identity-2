@@ -52,6 +52,7 @@ public class ExternalLoginsModel : PageModel
             CurrentLogins = await _userManager.GetLoginsAsync(user);
             OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
                 .Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
+                .Where(l => l.Name != "JwtOrCookie")
                 .ToList();
 
             string passwordHash = null;

@@ -71,7 +71,6 @@ public static class NuagesIdentityConfigExtensions
         
         services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
             .Configure<IKeyStore>((options, keyStore) => {
-
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateAudience = true,
