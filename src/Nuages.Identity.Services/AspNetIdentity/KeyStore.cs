@@ -1,7 +1,8 @@
 using Microsoft.IdentityModel.Tokens;
+
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Nuages.Identity.UI.OpenIdDict;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 public interface IKeyStore
 {

@@ -10,12 +10,8 @@ namespace Nuages.Identity.UI.OpenIdDict;
 
 public static class OpenIdDictConfigExtensions
 {
-    public static void AddNuagesOpenIdDict(this IServiceCollection services, IConfiguration configuration,
-        Action<OpenIdDictOptions> configure)
+    public static void AddNuagesOpenIdDict(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<OpenIdDictOptions>(configuration.GetSection("Nuages:OpenIdDict"));
-        services.Configure(configure);
-        
         services.AddScoped<IAudienceValidator, AudienceValidator>();
         services.AddScoped<IAuthorizationCodeFlowHandler, AuthorizationCodeFlowHandler>();
         services.AddScoped<IAuthorizeEndpoint, AuthorizeEndpoint>();
@@ -28,7 +24,7 @@ public static class OpenIdDictConfigExtensions
 
         services.AddScoped<IOpenIddictServerRequestProvider, OpenIdDictRequestProvider>();
         
-        services.AddSingleton<IKeyStore, KeyStoreFromConfiguration>();
+        
         
         services.AddOpenIddict()
             // Register the OpenIddict core components.

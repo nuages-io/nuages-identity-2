@@ -1,6 +1,4 @@
-using System.Security.Cryptography;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -64,33 +62,26 @@ public static class NuagesIdentityConfigExtensions
     {
         services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });
 
+        services.AddSingleton<IKeyStore, KeyStoreFromConfiguration>();
+        
         var nuagesIdentityOptions = new NuagesIdentityOptions();
         configuration.GetSection("Nuages:Identity").Bind(nuagesIdentityOptions);
         
-        var scheme = "JwtOrCookie";
-
-        var rsa = RSA.Create();
-        rsa.FromXmlString(configuration["Nuages:OpenIdDict:SigningKey"]);
-
-        var signingKey = new RsaSecurityKey(rsa);
+        const string scheme = "JwtOrCookie";
         
-        // services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
-        //     .Configure<IKeyStore>((options, keyManager) => {
-        //
-        //         options.TokenValidationParameters = new TokenValidationParameters
-        //         {
-        //             ValidateIssuerSigningKey = true,
-        //             IssuerSigningKey = keyManager.GetSecurityKeyFromName("jwt").Result,
-        //
-        //             ValidIssuer = "https://api.example.com",
-        //             ValidateIssuer = true
-        //         };
-        //
-        //         options.Audience = "https://api.example.com";
-        //         options.Authority = "https://api.example.com";
-        //
-        //         options.SaveToken = true;
-        //     });
+        services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+            .Configure<IKeyStore>((options, keyStore) => {
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidAudiences = nuagesIdentityOptions.Audiences,
+                    ValidateIssuer = true,
+                    ValidIssuer = nuagesIdentityOptions.Authority,
+                    ValidateIssuerSigningKey = false,
+                    IssuerSigningKey = keyStore.GetSigningKey()
+                };
+            });
         
         var builder = services.AddAuthentication(options =>
             {
@@ -100,18 +91,7 @@ public static class NuagesIdentityConfigExtensions
             .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
             .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
             .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme)
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateAudience = true,
-                    ValidAudiences = nuagesIdentityOptions.Audiences,
-                    ValidateIssuer = true,
-                    ValidIssuer = nuagesIdentityOptions.Authority,
-                    ValidateIssuerSigningKey = false,
-                    IssuerSigningKey = signingKey,
-                };
-            })
+            .AddJwtBearer()
             .AddPolicyScheme(scheme, scheme,
                 options =>
                 {

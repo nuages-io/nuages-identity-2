@@ -20,4 +20,9 @@ public class NuagesIdentityOptions
     
     public bool EnablePasswordHistory { get; set; }
     public int PasswordHistoryCount { get; set; } = 5;
+
+ 
+    public string? SigningKey { get; set; }
+    public string? EncryptionKey { get; set; }
+    public int KeySize { get; set; } = 2048;
 }

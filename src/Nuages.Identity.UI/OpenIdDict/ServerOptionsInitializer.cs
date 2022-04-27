@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Server;
 
 namespace Nuages.Identity.UI.OpenIdDict;

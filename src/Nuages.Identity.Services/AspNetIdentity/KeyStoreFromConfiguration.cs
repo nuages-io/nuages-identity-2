@@ -1,15 +1,16 @@
 using System.Security.Cryptography;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace Nuages.Identity.UI.OpenIdDict;
+namespace Nuages.Identity.Services.AspNetIdentity;
 
 public class KeyStoreFromConfiguration : IKeyStore
 {
-    private readonly OpenIdDictOptions _options;
+    private readonly NuagesIdentityOptions _options;
 
-    public KeyStoreFromConfiguration(IOptions<OpenIdDictOptions> options)
+    public KeyStoreFromConfiguration(IOptions<NuagesIdentityOptions> options)
     {
         _options = options.Value;
     }
