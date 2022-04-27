@@ -53,7 +53,7 @@ public class Login : PageModel
                 _stringLocalizer[
                     _nuagesIdentityOptions.SupportsLoginWithEmail ? "Login:Mode:userNameEmail" : "Login:Mode:email"];
 
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).Where(l => l.Name != "JwtOrCookie").ToList();
 
             return Page();
         }

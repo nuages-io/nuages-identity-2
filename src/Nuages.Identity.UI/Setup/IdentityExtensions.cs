@@ -136,7 +136,7 @@ public static class IdentityExtensions
             configure.DefaultCulture = configuration["Nuages:MessageService:DefaultCulture"];
         });
 
-        
+
         services.AddScoped<IEmailMessageSender, MessageSender>();
         services.AddScoped<ISmsMessageSender, MessageSender>();
 
@@ -169,7 +169,7 @@ public static class IdentityExtensions
                 throw new Exception("Invalid storage");
         }
 
-        var auth = services.AddNuagesAuthentication();
+        var auth = services.AddNuagesAuthentication(configuration);
 
         AddGoogle(configuration, auth);
         AddGitHub(configuration, auth);
@@ -177,13 +177,12 @@ public static class IdentityExtensions
         AddFacebook(configuration, auth);
         AddMicrosoft(configuration, auth);
 
+        
         services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });
 
-       
-        
         //Add at the end sot it overrides dependencies
-       services.AddAWS(configuration, "templates.json");
+        services.AddAWS(configuration, "templates.json");
     }
 
     private static void AddGoogle(IConfiguration configuration, AuthenticationBuilder auth)

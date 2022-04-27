@@ -43,7 +43,7 @@ public class RegisterModel : PageModel
             }
             
             ReturnUrl = returnUrl;
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).Where(l => l.Name != "JwtOrCookie").ToList();
 
             return Page();
         }
