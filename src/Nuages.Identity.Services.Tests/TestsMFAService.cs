@@ -30,7 +30,7 @@ public class TestsMfaService
             .Callback((NuagesApplicationUser<string> _, string key, CancellationToken _) => currentKey = key);
 
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.GetMFAUrlAsync(user.Id);
 
@@ -47,7 +47,7 @@ public class TestsMfaService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () => { await service.GetMFAUrlAsync(MockHelpers.BadId); });
     }
@@ -59,7 +59,7 @@ public class TestsMfaService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.ResetRecoveryCodesAsync(user.Id);
 
@@ -77,7 +77,7 @@ public class TestsMfaService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -113,7 +113,7 @@ public class TestsMfaService
             .Callback(() => sendCalled = true);
 
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), messageService.Object);
+            Options.Create(identityStuff.NuagesOptions), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.EnableMFAAsync(user.Id, MockHelpers.ValidToken);
 
@@ -130,7 +130,7 @@ public class TestsMfaService
 
 
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.EnableMFAAsync(user.Id, "bad_token");
 
@@ -146,7 +146,7 @@ public class TestsMfaService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -169,7 +169,7 @@ public class TestsMfaService
             .Callback(() => sendCalled = true);
 
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), messageService.Object);
+            Options.Create(identityStuff.NuagesOptions), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.DisableMFAAsync(user.Id);
 
@@ -186,7 +186,7 @@ public class TestsMfaService
 
 
         var service = new MFAService(identityStuff.UserManager, UrlEncoder.Default, new FakeStringLocalizer(),
-            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () => { await service.DisableMFAAsync(MockHelpers.BadId); });
     }

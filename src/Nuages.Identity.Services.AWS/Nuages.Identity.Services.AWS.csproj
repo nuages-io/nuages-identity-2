@@ -13,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="AWSSDK.EventBridge" Version="3.7.5.5" />
         <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
         <PackageReference Include="AWSSDK.SimpleEmailV2" Version="3.7.1.76" />
         <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.7.3.49" />

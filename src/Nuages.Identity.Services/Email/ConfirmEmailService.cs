@@ -8,10 +8,12 @@ namespace Nuages.Identity.Services.Email;
 public class ConfirmEmailService : IConfirmEmailService
 {
     private readonly NuagesUserManager _userManager;
+    private readonly IIdentityEventBus _identityEventBus;
 
-    public ConfirmEmailService(NuagesUserManager userManager)
+    public ConfirmEmailService(NuagesUserManager userManager, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<bool> Confirm(string userId, string code)
@@ -20,7 +22,19 @@ public class ConfirmEmailService : IConfirmEmailService
         if (user == null) return false;
 
         code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
-        return await _userManager.ConfirmEmailAsync(user, code) == IdentityResult.Success;
+
+        var res = await _userManager.ConfirmEmailAsync(user, code) == IdentityResult.Success;
+
+        if (res)
+        {
+            await _identityEventBus.PutEvent(IdentityEvents.ConfirmEmailSuccess, user);
+        }
+        else
+        {
+            await _identityEventBus.PutEvent(IdentityEvents.ConfirmEmailFailed, user);
+        }
+        
+        return res ;
     }
 }
 

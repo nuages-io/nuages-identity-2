@@ -26,7 +26,7 @@ public class TestsForgetPasswordService
 
         var forgetPasswordService = new ForgotPasswordService(identityStuff.UserManager,
             MockHelpers.MockHttpContextAccessor().Object, messageService.Object,
-            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await forgetPasswordService.StartForgotPassword(new ForgotPasswordModel
         {
@@ -54,7 +54,7 @@ public class TestsForgetPasswordService
 
         var forgetPasswordService = new ForgotPasswordService(identityStuff.UserManager,
             MockHelpers.MockHttpContextAccessor().Object, messageService.Object,
-            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await forgetPasswordService.StartForgotPassword(new ForgotPasswordModel
         {

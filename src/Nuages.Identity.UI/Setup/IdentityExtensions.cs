@@ -179,7 +179,8 @@ public static class IdentityExtensions
 
         services.AddUI(configuration);
         services.AddNuagesOpenIdDict(configuration, _ => { });
-        
+
+       
         
         //Add at the end sot it overrides dependencies
        services.AddAWS(configuration, "templates.json");

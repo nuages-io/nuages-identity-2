@@ -12,14 +12,16 @@ public class ChangePasswordService : IChangePasswordService
 {
     private readonly IStringLocalizer _localizer;
     private readonly IMessageService _messageService;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesUserManager _userManager;
 
     public ChangePasswordService(NuagesUserManager userManager, IStringLocalizer localizer,
-        IMessageService messageService)
+        IMessageService messageService, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _localizer = localizer;
         _messageService = messageService;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<ChangePasswordResultModel> AddPasswordAsync(string userid, string newPassword,
@@ -57,18 +59,28 @@ public class ChangePasswordService : IChangePasswordService
             res = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
 
             if (res.Succeeded)
+            {
+                await _identityEventBus.PutEvent(IdentityEvents.PasswordChanged,user);
+                
                 _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Changed",
                     new Dictionary<string, string>());
+            }
+            
         }
         else
         {
             res = await _userManager.AddPasswordAsync(user, newPassword);
 
             if (res.Succeeded)
+            {
+                await _identityEventBus.PutEvent(IdentityEvents.PasswordAdded,user);
+                
                 _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Added", new Dictionary<string, string>
                 {
                     // { "PhoneNumber", phoneNumber }
                 });
+            }
+               
         }
 
         return new ChangePasswordResultModel

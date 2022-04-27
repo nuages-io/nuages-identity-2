@@ -21,7 +21,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var url = await service.GetMagicLinkUrl(user.Id);
 
@@ -38,7 +38,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -62,7 +62,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.StartMagicLink(new StartMagicLinkModel
         {
@@ -89,7 +89,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.StartMagicLink(new StartMagicLinkModel
         {
@@ -119,7 +119,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             messageService.Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.StartMagicLink(new StartMagicLinkModel
         {
@@ -143,7 +143,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "MagicLinkLoginProvider",
             "magiclink-auth");
@@ -162,7 +162,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
 
         var url = await service.LoginMagicLink("bad_token", user.Id);
@@ -181,7 +181,7 @@ public class TestsMagicLinkService
 
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var token = await identityStuff.UserManager.GenerateUserTokenAsync(user, "MagicLinkLoginProvider",
             "magiclink-auth");

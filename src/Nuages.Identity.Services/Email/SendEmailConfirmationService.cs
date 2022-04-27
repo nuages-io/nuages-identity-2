@@ -14,15 +14,17 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
     private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
     private readonly IRuntimeConfiguration _runtimeConfiguration;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesUserManager _userManager;
 
     public SendEmailConfirmationService(NuagesUserManager userManager, IMessageService messageService,
-        IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration)
+        IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
 
         _messageService = messageService;
         _runtimeConfiguration = runtimeConfiguration;
+        _identityEventBus = identityEventBus;
         _options = options.Value;
     }
 
@@ -34,10 +36,15 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
 
         var user = await _userManager.FindByEmailAsync(email);
         if (user == null)
+        {
+            await _identityEventBus.PutEvent(IdentityEvents.ConfirmationEmailFailed, model);
+            
             return new SendEmailConfirmationResultModel
             {
                 Success = true // Fake success
             };
+        }
+          
 
         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -49,6 +56,8 @@ public class SendEmailConfirmationService : ISendEmailConfirmationService
             { "Link", url }
         });
 
+        await _identityEventBus.PutEvent(IdentityEvents.ConfirmationEmailSent, user);
+        
         return new SendEmailConfirmationResultModel
         {
             Url = _runtimeConfiguration.IsTest ? url : null,

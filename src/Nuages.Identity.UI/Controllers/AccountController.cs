@@ -190,7 +190,6 @@ public class AccountController : Controller
     {
         try
         {
-            
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new RegisterResultModel
                 {

@@ -12,18 +12,20 @@ public class LoginService : ILoginService
 {
     private readonly IMessageService _messageService;
     private readonly ILogger<LoginService> _logger;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _stringLocalizer;
     private readonly NuagesUserManager _userManager;
 
     public LoginService(NuagesUserManager userManager, NuagesSignInManager signInManager,
-        IStringLocalizer stringLocalizer, IMessageService messageService, ILogger<LoginService> logger)
+        IStringLocalizer stringLocalizer, IMessageService messageService, ILogger<LoginService> logger, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _stringLocalizer = stringLocalizer;
         _messageService = messageService;
         _logger = logger;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<LoginResultModel> LoginAsync(LoginModel model)
@@ -50,6 +52,8 @@ public class LoginService : ILoginService
             {
                 if (!user.LockoutMessageSent)
                 {
+                    await _identityEventBus.PutEvent(IdentityEvents.LockingOutUser, user);
+                        
                     _messageService.SendEmailUsingTemplate(user.Email, "Login_LockedOut", new Dictionary<string, string>
                     {
                         { "Minutes", _userManager.Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() }
@@ -62,27 +66,40 @@ public class LoginService : ILoginService
                         _logger.LogError(updateRes.Errors.First().Description);
                     }
                 }
+               
+                await _identityEventBus.PutEvent(IdentityEvents.FailedLoginUserIsLockedOut, user);
             }
             else
             {
                 if (user.LastFailedLoginReason == FailedLoginReason.EmailNotConfirmed)
+                {
+                    await _identityEventBus.PutEvent(IdentityEvents.FailedLoginUserIsNotConfirmed, user);
                     await _signInManager.SignInEmailNotVerified(user);
+                }
             }
         }
 
         if (result == SignInResult.Success)
+        {
+            await _identityEventBus.PutEvent(IdentityEvents.Login, user);
+            
             return new LoginResultModel
             {
                 Success = true
             };
-
-        return new LoginResultModel
+        }
+        
+        var loginResultModel = new LoginResultModel
         {
             Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
         };
+        
+        await _identityEventBus.PutEvent(IdentityEvents.LoginFailed, new { User = user, Result = loginResultModel});
+
+        return loginResultModel;
     }
 
     public async Task<LoginResultModel> Login2FAAsync(Login2FAModel model)
@@ -106,6 +123,8 @@ public class LoginService : ILoginService
                 _logger.LogError(updateRes.Errors.First().Description);
             }
             
+            await _identityEventBus.PutEvent(IdentityEvents.Login2FASuccess, user);
+            
             return new LoginResultModel
             {
                 Success = true
@@ -119,13 +138,17 @@ public class LoginService : ILoginService
             _logger.LogError(updateRes2.Errors.First().Description);
         }
         
-        return new LoginResultModel
+        var resultModel = new LoginResultModel
         {
             Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
         };
+
+        await _identityEventBus.PutEvent(IdentityEvents.Login2FAFailed, new { User = user, Result = resultModel});
+            
+        return resultModel;
     }
 
     public async Task<LoginResultModel> LoginRecoveryCodeAsync(LoginRecoveryCodeModel model)
@@ -138,10 +161,15 @@ public class LoginService : ILoginService
         var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
         if (result == SignInResult.Success)
+        {
+            await _identityEventBus.PutEvent(IdentityEvents.LoginRecoveryCodeSuccess, user);
+            
             return new LoginResultModel
             {
                 Success = true
             };
+        }
+          
 
         user.LastFailedLoginReason = FailedLoginReason.FailedRecoveryCode;
         
@@ -151,13 +179,17 @@ public class LoginService : ILoginService
             _logger.LogError(updateRes.Errors.First().Description);
         }
         
-        return new LoginResultModel
+        var resultModel = new LoginResultModel
         {
             Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
         };
+
+        await _identityEventBus.PutEvent(IdentityEvents.LoginRecoveryCodeFailed, new { User = user, resultModel});
+        
+        return resultModel;
     }
 
     public async Task<LoginResultModel> LoginSMSAsync(LoginSMSModel model)
@@ -170,10 +202,15 @@ public class LoginService : ILoginService
         var result = await _signInManager.TwoFactorSignInAsync("Phone", code, false, false);
 
         if (result == SignInResult.Success)
+        {
+            await _identityEventBus.PutEvent(IdentityEvents.LoginSMSSuccess, user);
+            
             return new LoginResultModel
             {
                 Success = true
             };
+            
+        }
 
         user.LastFailedLoginReason = FailedLoginReason.FailedSms;
         
@@ -183,15 +220,18 @@ public class LoginService : ILoginService
             _logger.LogError(updateRes.Errors.First().Description);
         }
         
-        return new LoginResultModel
+        var resultModel = new LoginResultModel
         {
             Result = new SignInResultModel(result),
             Message = GetMessage(user.LastFailedLoginReason),
             Success = false,
             Reason = user.LastFailedLoginReason
         };
-    }
 
+        await _identityEventBus.PutEvent(IdentityEvents.LoginSMSFailed, new { User = user, Result = resultModel});
+        
+        return resultModel;
+    }
 
     private string? GetMessage(FailedLoginReason? failedLoginReason)
     {
@@ -201,7 +241,6 @@ public class LoginService : ILoginService
 
         return _stringLocalizer[GetMessageKey(failedLoginReason)];
     }
-
 
     public static string GetMessageKey(FailedLoginReason? failedLoginReason)
     {

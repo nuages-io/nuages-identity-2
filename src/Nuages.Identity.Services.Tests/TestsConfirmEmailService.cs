@@ -1,5 +1,6 @@
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
+using Moq;
 using Nuages.Identity.Services.Email;
 using Xunit;
 
@@ -17,7 +18,7 @@ public class TestsConfirmEmailService
         var code = await mockUserManager.GenerateEmailConfirmationTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        var confirmEmailService = new ConfirmEmailService(mockUserManager);
+        var confirmEmailService = new ConfirmEmailService(mockUserManager, new Mock<IIdentityEventBus>().Object);
 
         Assert.True(await confirmEmailService.Confirm(user.Id, code));
     }
@@ -29,7 +30,7 @@ public class TestsConfirmEmailService
 
         var mockUserManager = MockHelpers.MockIdentityStuff(user).UserManager;
 
-        var confirmEmailService = new ConfirmEmailService(mockUserManager);
+        var confirmEmailService = new ConfirmEmailService(mockUserManager, new Mock<IIdentityEventBus>().Object);
 
         Assert.False(await confirmEmailService.Confirm(MockHelpers.BadId, "code"));
     }

@@ -27,7 +27,7 @@ public class TestsChangePhoneNumberService
             .Callback(() => sendCalled = true);
 
         var changePhoneNumberService = new ChangePhoneNumberService(identityStuff.UserManager,
-            new FakeStringLocalizer(), messageService.Object);
+            new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await changePhoneNumberService.ChangePhoneNumberAsync(user.Id, phoneNumber, token);
 
@@ -52,7 +52,7 @@ public class TestsChangePhoneNumberService
             .Callback(() => sendCalled = true);
 
         var changePhoneNumberService = new ChangePhoneNumberService(identityStuff.UserManager,
-            new FakeStringLocalizer(), messageService.Object);
+            new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await changePhoneNumberService.ChangePhoneNumberAsync(user.Id, phoneNumber, null);
 
@@ -70,7 +70,7 @@ public class TestsChangePhoneNumberService
         const string phoneNumber = MockHelpers.PhoneNumber;
 
         var changePhoneNumberService = new ChangePhoneNumberService(identityStuff.UserManager,
-            new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+            new FakeStringLocalizer(), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -95,7 +95,7 @@ public class TestsChangePhoneNumberService
             .Callback(() => sendCalled = true);
 
         var changePhoneNumberService = new ChangePhoneNumberService(identityStuff.UserManager,
-            new FakeStringLocalizer(), messageService.Object);
+            new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await changePhoneNumberService.ChangePhoneNumberAsync(user.Id, phoneNumber, null);
 

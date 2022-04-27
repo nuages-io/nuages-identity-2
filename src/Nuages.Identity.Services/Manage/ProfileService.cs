@@ -7,12 +7,14 @@ namespace Nuages.Identity.Services.Manage;
 public class ProfileService : IProfileService
 {
     private readonly IStringLocalizer _localizer;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesUserManager _userManager;
 
-    public ProfileService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public ProfileService(NuagesUserManager userManager, IStringLocalizer localizer, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _localizer = localizer;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<SaveProfileResultModel> SaveProfile(string id, SaveProfileModel model)
@@ -25,6 +27,8 @@ public class ProfileService : IProfileService
 
         var res = await _userManager.UpdateAsync(user);
 
+        await _identityEventBus.PutEvent(IdentityEvents.ProfileChanged, user);
+        
         return new SaveProfileResultModel
         {
             Success = res.Succeeded,

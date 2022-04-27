@@ -16,16 +16,19 @@ public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationSe
     private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
     private readonly IRuntimeConfiguration _runtimeConfiguration;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesUserManager _userManager;
 
     public SendEmailChangeConfirmationService(NuagesUserManager userManager, IMessageService messageService,
-        IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer, IRuntimeConfiguration runtimeConfiguration)
+        IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer, IRuntimeConfiguration runtimeConfiguration,
+        IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
 
         _messageService = messageService;
         _localizer = localizer;
         _runtimeConfiguration = runtimeConfiguration;
+        _identityEventBus = identityEventBus;
         _options = options.Value;
     }
 
@@ -64,6 +67,8 @@ public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationSe
         {
             { "Link", url }
         });
+        
+        await _identityEventBus.PutEvent(IdentityEvents.EmailChangedEmailSent, user);
 
         return new SendEmailChangeResultModel
         {

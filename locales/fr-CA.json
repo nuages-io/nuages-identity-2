@@ -265,7 +265,8 @@
 		"instructions": "Entrez votre courriel et choisissez un mot de passe.",
 		"passwordConfirmation": "Confirmation du mot de passe",
 		"passwordMustMatch": "Le mot de passe et la confirmation doivent être identique",
-		"title": "Création d'un compte"
+		"title": "Création d'un compte",
+		"userEmailAlreadyExists": "Un utilisateur avec le même courriel existe déjà."
 	},
 	"resetPassword": {
 		"email": "Votre courriel",

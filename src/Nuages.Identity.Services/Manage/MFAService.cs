@@ -19,17 +19,19 @@ public class MFAService : IMFAService
     private const string RecoveryCodes = "RecoveryCodes";
     private readonly IStringLocalizer _localizer;
     private readonly IMessageService _messageService;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesIdentityOptions _options;
     private readonly UrlEncoder _urlEncoder;
     private readonly NuagesUserManager _userManager;
 
     public MFAService(NuagesUserManager userManager, UrlEncoder urlEncoder, IStringLocalizer localizer,
-        IOptions<NuagesIdentityOptions> options, IMessageService messageService)
+        IOptions<NuagesIdentityOptions> options, IMessageService messageService, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _urlEncoder = urlEncoder;
         _localizer = localizer;
         _messageService = messageService;
+        _identityEventBus = identityEventBus;
         _options = options.Value;
     }
 
@@ -58,6 +60,8 @@ public class MFAService : IMFAService
             { "Link", url }
         });
 
+        await _identityEventBus.PutEvent(IdentityEvents.MFADisabled, user);
+        
         return new DisableMFAResultModel
         {
             Success = res.Succeeded,
@@ -95,6 +99,8 @@ public class MFAService : IMFAService
         {
             { "Link", url }
         });
+        
+        await _identityEventBus.PutEvent(IdentityEvents.MFAEnabled, user);
 
         return new MFAResultModel
         {
@@ -113,6 +119,8 @@ public class MFAService : IMFAService
 
         var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
 
+        await _identityEventBus.PutEvent(IdentityEvents.MFARecoveryCodeReset, user);
+        
         return new MFAResultModel
         {
             Success = true,

@@ -12,14 +12,16 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
 {
     private readonly IStringLocalizer _localizer;
     private readonly IMessageService _messageService;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesUserManager _userManager;
 
     public ChangePhoneNumberService(NuagesUserManager userManager, IStringLocalizer localizer,
-        IMessageService messageService)
+        IMessageService messageService, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _localizer = localizer;
         _messageService = messageService;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync(string userId, string phoneNumber,
@@ -50,17 +52,28 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
         if (res.Succeeded)
         {
             if (string.IsNullOrEmpty(phoneNumber))
+            {
+                await _identityEventBus.PutEvent(IdentityEvents.PhoneRemoved ,user);
+                
                 _messageService.SendEmailUsingTemplate(user.Email, "Fallback_Phone_Removed",
                     new Dictionary<string, string>
                     {
                         { "PhoneNumber", previousPhoneNumber }
                     });
+            }
+
             else
+            {
+                await _identityEventBus.PutEvent(IdentityEvents.PhoneAdded ,user);
+                
                 _messageService.SendEmailUsingTemplate(user.Email, "Fallback_Phone_Added",
                     new Dictionary<string, string>
                     {
                         { "PhoneNumber", phoneNumber }
                     });
+                
+            }
+                
         }
 
         return new ChangePhoneNumberResultModel

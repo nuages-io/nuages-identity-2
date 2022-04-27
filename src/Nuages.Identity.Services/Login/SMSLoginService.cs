@@ -17,13 +17,14 @@ public class SMSSendCodeService : ISMSSendCodeService
     private readonly ILogger<SMSSendCodeService> _logger;
     private readonly NuagesIdentityOptions _options;
     private readonly IRuntimeConfiguration _runtimeConfiguration;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly IMessageService _sender;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
 
     public SMSSendCodeService(NuagesUserManager userManager, NuagesSignInManager signInManager, IMessageService sender,
         IOptions<NuagesIdentityOptions> options, IStringLocalizer localizer, ILogger<SMSSendCodeService> logger,
-        IRuntimeConfiguration runtimeConfiguration)
+        IRuntimeConfiguration runtimeConfiguration, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -31,6 +32,7 @@ public class SMSSendCodeService : ISMSSendCodeService
         _localizer = localizer;
         _logger = logger;
         _runtimeConfiguration = runtimeConfiguration;
+        _identityEventBus = identityEventBus;
         _options = options.Value;
     }
 
@@ -49,10 +51,16 @@ public class SMSSendCodeService : ISMSSendCodeService
         if (user == null) throw new NotFoundException("UserNotFounc");
 
         if (string.IsNullOrEmpty(user.PhoneNumber) || !user.PhoneNumberConfirmed)
+        {
+            
+            await _identityEventBus.PutEvent(IdentityEvents.LoginSMSCodeNotAvailable, user);
+            
             return new SendSMSCodeResultModel
             {
                 Success = true //Fake success
             };
+        }
+            
 
         var code = await _userManager.GenerateTwoFactorTokenAsync(user, "Phone");
 
@@ -62,6 +70,8 @@ public class SMSSendCodeService : ISMSSendCodeService
 
         _sender.SendSms(user.PhoneNumber, message);
 
+        await _identityEventBus.PutEvent(IdentityEvents.LoginSMSCodeSent, user);
+        
         return new SendSMSCodeResultModel
         {
             Code = _runtimeConfiguration.IsTest ? code : null,

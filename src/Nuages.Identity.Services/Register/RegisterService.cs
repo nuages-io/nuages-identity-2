@@ -11,18 +11,20 @@ public class RegisterService : IRegisterService
 {
     private readonly IStringLocalizer _localizer;
     private readonly IMessageService _messageService;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesIdentityOptions _options;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
 
     public RegisterService(NuagesUserManager userManager, NuagesSignInManager signInManager, IStringLocalizer localizer,
-        IMessageService messageService, IOptions<NuagesIdentityOptions> options)
+        IMessageService messageService, IOptions<NuagesIdentityOptions> options, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _localizer = localizer;
 
         _messageService = messageService;
+        _identityEventBus = identityEventBus;
         _options = options.Value;
     }
 
@@ -53,6 +55,8 @@ public class RegisterService : IRegisterService
 
         if (res.Succeeded)
         {
+            await _identityEventBus.PutEvent(IdentityEvents.Register, user);
+            
             if (_userManager.Options.SignIn.RequireConfirmedEmail && !user.EmailConfirmed)
             {
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -64,7 +68,7 @@ public class RegisterService : IRegisterService
                 {
                     { "Link", url }
                 });
-
+                
                 return new RegisterResultModel
                 {
                     ShowConfirmationMessage = true,

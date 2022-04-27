@@ -30,7 +30,7 @@ public class TestsSendEmailChangeConfirmationService
 
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
 
         var res = await service.SendEmailChangeConfirmation(user.Id, newEmail);
@@ -55,7 +55,7 @@ public class TestsSendEmailChangeConfirmationService
 
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.SendEmailChangeConfirmation(user.Id, user.Email);
 
@@ -89,7 +89,7 @@ public class TestsSendEmailChangeConfirmationService
 
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager, messageService.Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.SendEmailChangeConfirmation(user.Id, newEmail);
 
@@ -108,7 +108,7 @@ public class TestsSendEmailChangeConfirmationService
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager,
             new Mock<IMessageService>().Object,
             Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(),
-            new Mock<IRuntimeConfiguration>().Object);
+            new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {

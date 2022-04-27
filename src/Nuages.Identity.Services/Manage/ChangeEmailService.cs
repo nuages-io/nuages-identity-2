@@ -9,12 +9,14 @@ namespace Nuages.Identity.Services.Manage;
 public class ChangeEmailService : IChangeEmailService
 {
     private readonly IStringLocalizer _localizer;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesUserManager _userManager;
 
-    public ChangeEmailService(NuagesUserManager userManager, IStringLocalizer localizer)
+    public ChangeEmailService(NuagesUserManager userManager, IStringLocalizer localizer, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _localizer = localizer;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<ChangeEmailResultModel> ChangeEmailAsync(string userId, string email, string? token)
@@ -32,6 +34,12 @@ public class ChangeEmailService : IChangeEmailService
                     Errors = new List<string> { _localizer["changeEmail:isNotChanged"] }
                 };
 
+            await _identityEventBus.PutEvent(IdentityEvents.EmailChangeFailedAlreadyExists, new
+            {
+                UserId = userId,
+                Email = email
+            });
+                
             return new ChangeEmailResultModel
             {
                 Success = false,
@@ -43,6 +51,8 @@ public class ChangeEmailService : IChangeEmailService
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
+        var previousEmail = user.Email;
+        
         var changeUserName = user.NormalizedEmail == user.NormalizedUserName;
 
         if (string.IsNullOrEmpty(token))
@@ -52,6 +62,12 @@ public class ChangeEmailService : IChangeEmailService
 
         if (changeUserName) res = await _userManager.SetUserNameAsync(user, email);
 
+        await _identityEventBus.PutEvent(IdentityEvents.EmailChangeFailedSuccess, new
+        {
+            PreviousEmail = previousEmail,
+            User = user
+        });
+        
         return new ChangeEmailResultModel
         {
             Success = res.Succeeded,

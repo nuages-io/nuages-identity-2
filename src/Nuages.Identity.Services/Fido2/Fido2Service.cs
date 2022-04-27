@@ -12,8 +12,10 @@ public class Fido2Service : IFido2Service
     private readonly IFido2Storage _fido2Storage;
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IMessageService _messageService;
+    private readonly IIdentityEventBus _identityEventBus;
 
-    public Fido2Service(IFido2 fido2, IFido2Storage fido2Storage, IHttpContextAccessor contextAccessor, IMessageService messageService)
+    public Fido2Service(IFido2 fido2, IFido2Storage fido2Storage, IHttpContextAccessor contextAccessor, 
+                        IMessageService messageService, IIdentityEventBus identityEventBus)
     {
         _fido2 = fido2;
         
@@ -22,6 +24,7 @@ public class Fido2Service : IFido2Service
         
         _contextAccessor = contextAccessor;
         _messageService = messageService;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<CredentialCreateOptions> MakeCredentialOptionsAsync(MakeCredentialOptionsRequest request)
@@ -88,6 +91,9 @@ public class Fido2Service : IFido2Service
             success.Result.Aaguid);
 
         await _fido2Storage.AddCredentialToUserAsync(options.User, credential);
+        
+        
+        await _identityEventBus.PutEvent(IdentityEvents.Fido2CredentialAdded, options.User);
         
         var email = await _fido2Storage.GetUserEmailAsync(options.User.Id);
         if (email != null)
@@ -167,5 +173,6 @@ public class Fido2Service : IFido2Service
             _messageService.SendEmailUsingTemplate(email, "SecurityKey_Removed", new Dictionary<string, string>());
         }
        
+        await _identityEventBus.PutEvent(IdentityEvents.Fido2CredentialRemoved, new { Email = userId});
     }
 }

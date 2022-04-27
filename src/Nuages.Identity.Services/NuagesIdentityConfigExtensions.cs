@@ -22,9 +22,7 @@ public static class NuagesIdentityConfigExtensions
 
         services.Configure<NuagesIdentityOptions>(configuration.GetSection("Nuages:Identity"));
 
-
         services.Configure(configure);
-
 
         var userType = builder.UserType;
         var totpProvider = typeof(MagicLinkLoginProvider<>).MakeGenericType(userType);
@@ -53,7 +51,8 @@ public static class NuagesIdentityConfigExtensions
         services.AddScoped<IMFAService, MFAService>();
         services.AddScoped<IProfileService, ProfileService>();
 
-
+        services.AddScoped<IIdentityEventBus, IdentityConsoleEventBus>();
+        
         return builder;
     }
 

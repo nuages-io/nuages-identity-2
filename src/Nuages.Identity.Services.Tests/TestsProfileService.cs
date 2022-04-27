@@ -15,7 +15,7 @@ public class TestsProfileService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
+        var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         const string newLastName = "LastName";
         const string newFirstName = "FirstName";
@@ -38,7 +38,7 @@ public class TestsProfileService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
+        var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -60,7 +60,7 @@ public class TestsProfileService
             IdentityResult.Failed(new IdentityError { Code = "error", Description = "error" }));
 
 
-        var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer());
+        var profileService = new ProfileService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         var res = await profileService.SaveProfile(user.Id, new SaveProfileModel
         {

@@ -265,7 +265,8 @@
 		"instructions": "Enter your email and choose a password.",
 		"passwordConfirmation": "Password Confirmation",
 		"passwordMustMatch": "Password and confirmation must be the same",
-		"title": "Register"
+		"title": "Register",
+		"userEmailAlreadyExists": "A user with the same email already exists."
 	},
 	"resetPassword": {
 		"email": "Your email",

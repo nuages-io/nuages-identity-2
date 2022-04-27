@@ -16,18 +16,20 @@ public class MagicLinkService : IMagicLinkService
     private readonly IMessageService _messageService;
     private readonly NuagesIdentityOptions _options;
     private readonly IRuntimeConfiguration _runtimeConfiguration;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesSignInManager _signinManager;
     private readonly NuagesUserManager _userManager;
 
     public MagicLinkService(NuagesUserManager userManager, NuagesSignInManager signinManager,
         IMessageService messageService, IStringLocalizer localizer,
-        IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration)
+        IOptions<NuagesIdentityOptions> options, IRuntimeConfiguration runtimeConfiguration, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _signinManager = signinManager;
         _messageService = messageService;
         _localizer = localizer;
         _runtimeConfiguration = runtimeConfiguration;
+        _identityEventBus = identityEventBus;
         _options = options.Value;
     }
 
@@ -77,21 +79,33 @@ public class MagicLinkService : IMagicLinkService
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
         if (user == null)
+        {
+            await _identityEventBus.PutEvent(IdentityEvents.MagicLinkFailedUserNotFound, model);
+            
             return new StartMagicLinkResultModel
             {
                 Success = true //Fake success
             };
+        }
+          
 
         var result = await _signinManager.CustomPreSignInCheck(user);
         // ReSharper disable once ConditionIsAlwaysTrueOrFalse
         if (result is { Succeeded: false })
-            return new StartMagicLinkResultModel
+        {
+            var resultModel = new StartMagicLinkResultModel
             {
                 Result = result,
                 Reason = user.LastFailedLoginReason,
                 Message = _localizer[LoginService.GetMessageKey(user.LastFailedLoginReason)],
                 Success = false
             };
+
+            await _identityEventBus.PutEvent(IdentityEvents.MagicLinkFailed, resultModel);
+
+            return resultModel;
+        }
+           
 
         var url = await GetMagicLinkUrl(user, model.ReturnUrl);
 
@@ -100,6 +114,8 @@ public class MagicLinkService : IMagicLinkService
             { "Link", url }
         });
 
+        await _identityEventBus.PutEvent(IdentityEvents.MagicLinkSent, user);
+        
         return new StartMagicLinkResultModel
         {
             Url = _runtimeConfiguration.IsTest ? url : null,

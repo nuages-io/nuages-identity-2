@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -36,7 +37,7 @@ public class TestsRegisterExternalService
             .Callback(() => sendCalled = true);
 
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
-            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), messageService.Object);
+            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object, new Mock<ILogger<RegisterExternalLoginService>>().Object);
 
         var res = await registerService.Register();
 
@@ -70,7 +71,7 @@ public class TestsRegisterExternalService
             .Callback(() => sendCalled = true);
 
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
-            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), messageService.Object);
+            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object, new Mock<ILogger<RegisterExternalLoginService>>().Object);
 
         var res = await registerService.Register();
 
@@ -95,7 +96,7 @@ public class TestsRegisterExternalService
 
 
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
-            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object, new Mock<ILogger<RegisterExternalLoginService>>().Object);
 
         var res = await registerService.Register();
 
@@ -114,7 +115,7 @@ public class TestsRegisterExternalService
             .ReturnsAsync(() => IdentityResult.Success);
 
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
-            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object, new Mock<ILogger<RegisterExternalLoginService>>().Object);
 
         var res = await registerService.Register();
 
@@ -149,7 +150,7 @@ public class TestsRegisterExternalService
             .ReturnsAsync(() => IdentityResult.Success);
 
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
-            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object, new Mock<ILogger<RegisterExternalLoginService>>().Object);
 
         var res = await registerService.Register();
 
@@ -173,7 +174,7 @@ public class TestsRegisterExternalService
             .ReturnsAsync(() => IdentityResult.Success);
 
         var registerService = new RegisterExternalLoginService(identityStuff.SignInManager, identityStuff.UserManager,
-            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object);
+            Options.Create(identityStuff.NuagesOptions), new FakeStringLocalizer(), new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object, new Mock<ILogger<RegisterExternalLoginService>>().Object);
 
         var res = await registerService.Register();
 

@@ -12,6 +12,8 @@ namespace Nuages.Identity.Services.Register;
 public class RegisterExternalLoginService : IRegisterExternalLoginService
 {
     private readonly IMessageService _messageService;
+    private readonly IIdentityEventBus _eventBus;
+    private readonly ILogger<RegisterExternalLoginService> _logger;
     private readonly NuagesIdentityOptions _options;
     private readonly NuagesSignInManager _signInManager;
     private readonly IStringLocalizer _stringLocalizer;
@@ -19,12 +21,14 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
 
     public RegisterExternalLoginService(NuagesSignInManager signInManager, NuagesUserManager userManager,
         IOptions<NuagesIdentityOptions> options,
-        IStringLocalizer stringLocalizer, IMessageService messageService)
+        IStringLocalizer stringLocalizer, IMessageService messageService, IIdentityEventBus eventBus, ILogger<RegisterExternalLoginService> logger)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _stringLocalizer = stringLocalizer;
         _messageService = messageService;
+        _eventBus = eventBus;
+        _logger = logger;
         _options = options.Value;
     }
 
@@ -32,19 +36,33 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
     {
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
+        {
+            const string error = "Error loading external login information during confirmation. {info}";
+            
+            _logger.LogError(error, info);
+            
             return new RegisterExternalLoginResultModel
             {
                 Success = false,
-                Errors = new List<string> { "Error loading external login information during confirmation." }
+                Errors = new List<string> { error }
             };
+        }
+            
 
         var email = info.Principal.FindFirstValue(ClaimTypes.Email);
         if (string.IsNullOrEmpty(email))
+        {
+            const string error =  "Email claim not found";
+            
+            _logger.LogError(error);
+            
             return new RegisterExternalLoginResultModel
             {
                 Success = false,
-                Errors = new List<string> { "Email claim not found" }
+                Errors = new List<string> {error }
             };
+        }
+            
 
         var user = new NuagesApplicationUser<string>
         {
@@ -60,6 +78,8 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             result = await AddLoginAsync(user, info);
             if (result.Succeeded)
             {
+                await _eventBus.PutEvent(IdentityEvents.Register, user);
+                
                 if (_userManager.Options.SignIn.RequireConfirmedEmail && !user.EmailConfirmed)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

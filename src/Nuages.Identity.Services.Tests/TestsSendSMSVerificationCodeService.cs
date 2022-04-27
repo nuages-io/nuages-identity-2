@@ -28,7 +28,7 @@ public class TestsSendSmsVerificationCodeService
         var service =
             new SendSMSVerificationCodeService(identityStuff.UserManager, messageService.Object,
                 new FakeStringLocalizer(), new Mock<ILogger<SendSMSVerificationCodeService>>().Object,
-                new Mock<IRuntimeConfiguration>().Object);
+                new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.SendCode(user.Id, user.PhoneNumber);
 
@@ -46,7 +46,7 @@ public class TestsSendSmsVerificationCodeService
         var service =
             new SendSMSVerificationCodeService(identityStuff.UserManager, new Mock<IMessageService>().Object,
                 new FakeStringLocalizer(), new Mock<ILogger<SendSMSVerificationCodeService>>().Object,
-                new Mock<IRuntimeConfiguration>().Object);
+                new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {

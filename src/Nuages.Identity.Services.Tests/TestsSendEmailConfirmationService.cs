@@ -23,7 +23,7 @@ public class TestsSendEmailConfirmationService
             .Callback(() => sendCalled = true);
 
         var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object,
-            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.SendEmailConfirmation(new SendEmailConfirmationModel
         {
@@ -49,7 +49,7 @@ public class TestsSendEmailConfirmationService
             .Callback(() => sendCalled = true);
 
         var service = new SendEmailConfirmationService(identityStuff.UserManager, messageService.Object,
-            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object);
+            Options.Create(identityStuff.NuagesOptions), new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await service.SendEmailConfirmation(new SendEmailConfirmationModel
         {

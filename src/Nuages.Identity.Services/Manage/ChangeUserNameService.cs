@@ -10,15 +10,17 @@ namespace Nuages.Identity.Services.Manage;
 public class ChangeUserNameService : IChangeUserNameService
 {
     private readonly IEmailValidator _emailValidator;
+    private readonly IIdentityEventBus _identityEventBus;
     private readonly IStringLocalizer _localizer;
     private readonly NuagesUserManager _userManager;
 
     public ChangeUserNameService(NuagesUserManager userManager, IStringLocalizer localizer,
-        IEmailValidator emailValidator)
+        IEmailValidator emailValidator, IIdentityEventBus identityEventBus)
     {
         _userManager = userManager;
         _localizer = localizer;
         _emailValidator = emailValidator;
+        _identityEventBus = identityEventBus;
     }
 
     public async Task<ChangeUserNameResultModel> ChangeUserNameAsync(string userId, string newUserName)
@@ -56,6 +58,9 @@ public class ChangeUserNameService : IChangeUserNameService
 
         var res = await _userManager.SetUserNameAsync(user, newUserName);
 
+        await _identityEventBus.PutEvent(IdentityEvents.UserNameChanged, user);
+
+        
         return new ChangeUserNameResultModel
         {
             Success = res.Succeeded,

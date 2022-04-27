@@ -1,7 +1,9 @@
 // ReSharper disable InconsistentNaming
 
+using Amazon.EventBridge;
 using Nuages.AWS.Secrets;
 using Nuages.Identity.AWS.Sender;
+using Nuages.Identity.Services;
 using Nuages.Web;
 
 namespace Nuages.Identity.AWS;
@@ -21,6 +23,9 @@ public static class IdentityAWSExtension
                 .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
         
             services.AddAWSSender(templateFileName, initializeTemplate);
+            
+            services.AddAWSService<IAmazonEventBridge>();
+            services.AddScoped<IIdentityEventBus, AwsIdentityEventBus>();
         }
     }
 

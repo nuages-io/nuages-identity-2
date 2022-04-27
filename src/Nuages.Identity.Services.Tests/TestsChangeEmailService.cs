@@ -15,7 +15,7 @@ public class TestsChangeEmailService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
+        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         const string newEmail = MockHelpers.NewTestEmail;
 
@@ -35,7 +35,7 @@ public class TestsChangeEmailService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
+        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         const string newEmail = MockHelpers.NewTestEmail;
 
@@ -51,7 +51,7 @@ public class TestsChangeEmailService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
+        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         var res = await changeEmailService.ChangeEmailAsync(user.Id, user.Email, null);
 
@@ -74,7 +74,7 @@ public class TestsChangeEmailService
                 Id = Guid.NewGuid().ToString()
             });
 
-        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
+        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         var res = await changeEmailService.ChangeEmailAsync(user.Id, newEmail, null);
 
@@ -89,7 +89,7 @@ public class TestsChangeEmailService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer());
+        var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {

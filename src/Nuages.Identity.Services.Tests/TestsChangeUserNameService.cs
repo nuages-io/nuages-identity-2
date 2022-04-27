@@ -18,7 +18,7 @@ public class TestsChangeUserNameService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var changeUserNameSrvice =
-            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
+            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator(), new Mock<IIdentityEventBus>().Object);
 
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, "new_user_name");
 
@@ -33,7 +33,7 @@ public class TestsChangeUserNameService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var changeUserNameSrvice =
-            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
+            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator(), new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
         {
@@ -51,7 +51,7 @@ public class TestsChangeUserNameService
             IdentityResult.Failed(new IdentityError { Code = "error", Description = "error" }));
 
         var changeUserNameSrvice =
-            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
+            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator(), new Mock<IIdentityEventBus>().Object);
 
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, "new_user_name");
 
@@ -69,7 +69,7 @@ public class TestsChangeUserNameService
             IdentityResult.Failed(new IdentityError { Code = "error", Description = "error" }));
 
         var changeUserNameSrvice =
-            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
+            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator(), new Mock<IIdentityEventBus>().Object);
 
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, "TEST2@NUAGES.ORG");
 
@@ -90,7 +90,7 @@ public class TestsChangeUserNameService
             .ReturnsAsync(() => user);
 
         var changeUserNameSrvice =
-            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
+            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator(), new Mock<IIdentityEventBus>().Object);
 
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, user.UserName);
 
@@ -111,7 +111,7 @@ public class TestsChangeUserNameService
             });
 
         var changeUserNameSrvice =
-            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator());
+            new ChangeUserNameService(identityStuff.UserManager, new FakeStringLocalizer(), new EmailValidator(), new Mock<IIdentityEventBus>().Object);
 
         var res = await changeUserNameSrvice.ChangeUserNameAsync(user.Id, "EXISTING");
 

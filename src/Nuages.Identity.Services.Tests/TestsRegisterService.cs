@@ -32,7 +32,7 @@ public class TestsRegisterService
 
         var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object, Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IIdentityEventBus>().Object);
 
         var res = await registerService.Register(new RegisterModel
         {
@@ -70,7 +70,7 @@ public class TestsRegisterService
 
         var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object, Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IIdentityEventBus>().Object);
 
         var res = await registerService.Register(new RegisterModel
         {
@@ -106,7 +106,7 @@ public class TestsRegisterService
 
         var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object, Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IIdentityEventBus>().Object);
 
         var res = await registerService.Register(new RegisterModel
         {
@@ -142,7 +142,7 @@ public class TestsRegisterService
 
         var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object, Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IIdentityEventBus>().Object);
 
         var res = await registerService.Register(new RegisterModel
         {
@@ -177,7 +177,7 @@ public class TestsRegisterService
 
         var registerService = new RegisterService(identityStuff.UserManager, identityStuff.SignInManager,
             new FakeStringLocalizer(),
-            messageService.Object, Options.Create(identityStuff.NuagesOptions));
+            messageService.Object, Options.Create(identityStuff.NuagesOptions), new Mock<IIdentityEventBus>().Object);
 
         var res = await registerService.Register(new RegisterModel
         {

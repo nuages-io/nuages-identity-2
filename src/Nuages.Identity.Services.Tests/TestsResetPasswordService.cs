@@ -19,7 +19,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object, new Mock<IIdentityEventBus>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -44,7 +44,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object, new Mock<IIdentityEventBus>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -70,7 +70,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object, new Mock<IIdentityEventBus>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -99,7 +99,7 @@ public class TestsResetPasswordService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
-        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object);
+        var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object, new Mock<IIdentityEventBus>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
