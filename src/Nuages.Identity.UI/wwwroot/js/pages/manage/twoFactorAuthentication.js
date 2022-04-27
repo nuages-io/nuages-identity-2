@@ -91,7 +91,8 @@ var App =
                     fetch("/api/manage/removePhone", {
                         method: "DELETE",
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            "X-XSRF-TOKEN": xsrfToken
                         }
                     })
                         .then(response => response.json())

@@ -129,7 +129,6 @@ public class ManageController : Controller
     }
 
     [HttpPost("changeUsername")]
-    [AllowAnonymous]
     public async Task<ChangeUserNameResultModel> ChangeUsernameAsync([FromBody] ChangeUserNameModel model)
     {
         try
@@ -157,7 +156,6 @@ public class ManageController : Controller
     }
 
     [HttpDelete("disable2Fa")]
-    [AllowAnonymous]
     public async Task<DisableMFAResultModel> Disable2FaAsync()
     {
         try
@@ -179,7 +177,6 @@ public class ManageController : Controller
     }
 
     [HttpPost("enable2FA")]
-    [AllowAnonymous]
     public async Task<MFAResultModel> Enable2FaAsync([FromBody] EnableMFAModel model)
     {
         try
@@ -207,7 +204,6 @@ public class ManageController : Controller
     }
 
     [HttpDelete("removePhone")]
-    [AllowAnonymous]
     public async Task<ChangePhoneNumberResultModel> RemovePhoneAsync()
     {
         try
@@ -235,7 +231,6 @@ public class ManageController : Controller
     }
 
     [HttpPost("sendPhoneChangeMessage")]
-    [AllowAnonymous]
     public async Task<SendSMSVerificationCodeResultModel> SendPhoneChangeVerificationAsync(
         [FromBody] SendSMSVerificationCodeModel model)
     {
@@ -258,7 +253,6 @@ public class ManageController : Controller
     }
 
     [HttpPost("changePhoneNumber")]
-    [AllowAnonymous]
     public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync([FromBody] ChangePhoneNumberModel model)
     {
         try
