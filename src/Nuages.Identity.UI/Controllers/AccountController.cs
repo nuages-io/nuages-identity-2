@@ -20,6 +20,7 @@ namespace Nuages.Identity.UI.Controllers;
 
 // ReSharper disable once UnusedType.Global
 [ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
 [Route("app/[controller]")]
 public class AccountController : Controller
 {

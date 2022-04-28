@@ -89,6 +89,28 @@ services.AddHttpContextAccessor();
 
 services.AddWebOptimizer(!builder.Environment.IsDevelopment(), !builder.Environment.IsDevelopment());
 
+builder.Services.AddSwaggerDocument(configSwagger =>
+{
+    configSwagger.PostProcess = document =>
+    {
+        document.Info.Version = "v1";
+        document.Info.Title = "Nuages Identity";
+
+        document.Info.Contact = new NSwag.OpenApiContact
+        {
+            Name = "Nuages.io",
+            Email = "martin@nuages.io",
+            Url = "https://github.com/nuages-io/nuages-identity-2"
+        };
+        document.Info.License = new NSwag.OpenApiLicense
+        {
+            Name = "Use under LICENCE",
+            Url = "http://www.apache.org/licenses/LICENSE-2.0"
+        };
+    };
+});
+
+
 services.AddHealthChecks();
 
 services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
@@ -137,6 +159,9 @@ app.UseEndpoints(endpoints =>
     endpoints.MapDefaultControllerRoute();
     endpoints.MapHealthChecks("health");
 });
+
+app.UseOpenApi();
+app.UseSwaggerUi3();
 
 app.Run();
 

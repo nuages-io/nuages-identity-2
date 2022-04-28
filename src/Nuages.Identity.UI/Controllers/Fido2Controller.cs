@@ -10,6 +10,7 @@ using Nuages.Web;
 namespace Nuages.Identity.UI.Controllers;
 
 [ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
 [Route("app/fido2")]
 public class Fido2Controller : Controller
 {

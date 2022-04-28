@@ -10,6 +10,7 @@ namespace Nuages.Identity.UI.Controllers;
 
 [Authorize]
 [ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
 [Route("app/[controller]")]
 public class ManageController : Controller
 {
