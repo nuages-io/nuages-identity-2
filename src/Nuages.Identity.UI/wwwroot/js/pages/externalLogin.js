@@ -11,7 +11,7 @@ var App =
                 doExternalLogin: function (token) {
                     var self = this;
 
-                    fetch("/api/account/registerExternalLogin", {
+                    fetch("/app/account/registerExternalLogin", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

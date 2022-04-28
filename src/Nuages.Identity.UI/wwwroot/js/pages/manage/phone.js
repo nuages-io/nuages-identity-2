@@ -20,7 +20,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/manage/sendPhoneChangeMessage", {
+                    fetch("/app/manage/sendPhoneChangeMessage", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/manage/changePhoneNumber", {
+                    fetch("/app/manage/changePhoneNumber", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

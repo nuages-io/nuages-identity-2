@@ -18,7 +18,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/manage/sendEmailChange", {
+                    fetch("/app/manage/sendEmailChange", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

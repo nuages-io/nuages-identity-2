@@ -12,7 +12,7 @@ var App =
                 {
                     var self = this;
                     
-                    fetch("/api/account/sendEmailConfirmation",
+                    fetch("/app/account/sendEmailConfirmation",
                         {
                             method: "POST",
                             headers: {

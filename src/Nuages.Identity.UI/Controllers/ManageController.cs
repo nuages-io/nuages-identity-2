@@ -10,7 +10,7 @@ namespace Nuages.Identity.UI.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("api/[controller]")]
+[Route("app/[controller]")]
 public class ManageController : Controller
 {
     private readonly IChangePasswordService _changePasswordService;
@@ -48,6 +48,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("changePassword")]
+    [ValidateAntiForgeryToken]
     public async Task<ChangePasswordResultModel> ChangePasswordAsync([FromBody] ChangePasswordModel model)
     {
         try
@@ -81,6 +82,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("setPassword")]
+    [ValidateAntiForgeryToken]
     public async Task<ChangePasswordResultModel> SetPasswordAsync([FromBody] ChangePasswordModel model)
     {
         try
@@ -108,6 +110,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("sendEmailChange")]
+    [ValidateAntiForgeryToken]
     public async Task<SendEmailChangeResultModel> SendEmailChangeMessageAsync([FromBody] SendEmailChangeModel model)
     {
         try
@@ -129,6 +132,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("changeUsername")]
+    [ValidateAntiForgeryToken]
     public async Task<ChangeUserNameResultModel> ChangeUsernameAsync([FromBody] ChangeUserNameModel model)
     {
         try
@@ -156,6 +160,7 @@ public class ManageController : Controller
     }
 
     [HttpDelete("disable2Fa")]
+    [ValidateAntiForgeryToken]
     public async Task<DisableMFAResultModel> Disable2FaAsync()
     {
         try
@@ -177,6 +182,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("enable2FA")]
+    [ValidateAntiForgeryToken]
     public async Task<MFAResultModel> Enable2FaAsync([FromBody] EnableMFAModel model)
     {
         try
@@ -204,6 +210,7 @@ public class ManageController : Controller
     }
 
     [HttpDelete("removePhone")]
+    [ValidateAntiForgeryToken]
     public async Task<ChangePhoneNumberResultModel> RemovePhoneAsync()
     {
         try
@@ -231,6 +238,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("sendPhoneChangeMessage")]
+    [ValidateAntiForgeryToken]
     public async Task<SendSMSVerificationCodeResultModel> SendPhoneChangeVerificationAsync(
         [FromBody] SendSMSVerificationCodeModel model)
     {
@@ -253,6 +261,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("changePhoneNumber")]
+    [ValidateAntiForgeryToken]
     public async Task<ChangePhoneNumberResultModel> ChangePhoneNumberAsync([FromBody] ChangePhoneNumberModel model)
     {
         try
@@ -292,6 +301,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("resetRecoveryCodes")]
+    [ValidateAntiForgeryToken]
     public async Task<MFAResultModel> ResetRecoveryCodesAsync()
     {
         try
@@ -311,6 +321,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("forgetBrowser")]
+    [ValidateAntiForgeryToken]
     public async Task<bool> ForgetBrowserAsync()
     {
         try
@@ -328,6 +339,7 @@ public class ManageController : Controller
     }
 
     [HttpPost("saveProfile")]
+    [ValidateAntiForgeryToken]
     public async Task<SaveProfileResultModel> SaveProfileAsync([FromBody] SaveProfileModel model)
     {
         try

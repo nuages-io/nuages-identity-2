@@ -20,7 +20,7 @@ var App =
                     var self = this;
                     var c = self.code;
 
-                    fetch("/api/account/loginRecoveryCode", {
+                    fetch("/app/account/loginRecoveryCode", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

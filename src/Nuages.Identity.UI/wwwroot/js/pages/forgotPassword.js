@@ -18,7 +18,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/account/forgotPassword", {
+                    fetch("/app/account/forgotPassword", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

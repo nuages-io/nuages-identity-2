@@ -10,7 +10,7 @@ using Nuages.Web;
 namespace Nuages.Identity.UI.Controllers;
 
 [ApiController]
-[Route("api/fido2")]
+[Route("app/fido2")]
 public class Fido2Controller : Controller
 {
     private readonly IFido2Service _fido2Service;
@@ -82,6 +82,7 @@ public class Fido2Controller : Controller
     
     [HttpPost]
     [Route("makeAssertion")]
+    [ValidateAntiForgeryToken]
     public async Task<JsonResult> MakeAssertion([FromBody] AuthenticatorAssertionRawResponse clientResponse)
     {
         try

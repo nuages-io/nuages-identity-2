@@ -61,7 +61,7 @@ async function handleAddSecurityKey(data, callback) {
 }
 
 async function fetchMakeCredentialOptions(formData) {
-    let response = await fetch('/api/fido2/makeCredentialOptions', {
+    let response = await fetch('/app/fido2/makeCredentialOptions', {
         method: 'POST', // or 'PUT'
         body: JSON.stringify(formData), // data can be `string` or {object}!
         headers: {
@@ -113,7 +113,7 @@ async function registerNewCredential(newCredential, callback) {
 }
 
 async function registerCredentialWithServer(formData) {
-    let response = await fetch('/api/fido2/makeCredential', {
+    let response = await fetch('/app/fido2/makeCredential', {
         method: 'POST', // or 'PUT'
         body: JSON.stringify(formData), // data can be `string` or {object}!
         headers: {

@@ -28,7 +28,7 @@ var App =
                     var c = self.passwordConfirm;
 
 
-                    fetch("/api/account/resetPassword", {
+                    fetch("/app/account/resetPassword", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

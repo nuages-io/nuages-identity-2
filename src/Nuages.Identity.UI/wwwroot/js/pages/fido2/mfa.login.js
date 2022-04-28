@@ -87,7 +87,7 @@ async function verifyAssertionWithServer(assertedCredential, callback) {
 
     let response;
     try {
-        let res = await fetch("/api/fido2/makeAssertion", {
+        let res = await fetch("/app/fido2/makeAssertion", {
             method: 'POST', // or 'PUT'
             body: JSON.stringify(data), // data can be `string` or {object}!
             headers: {

@@ -20,7 +20,7 @@ var App =
                     var self = this;
                     var c = self.code;
 
-                    fetch("/api/account/loginSMS", {
+                    fetch("/app/account/loginSMS", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

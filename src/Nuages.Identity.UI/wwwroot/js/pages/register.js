@@ -21,7 +21,7 @@ var App =
                     var p = self.password;
                     var pc = self.passwordConfirm;
 
-                    fetch("/api/account/register", {
+                    fetch("/app/account/register", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

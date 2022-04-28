@@ -14,7 +14,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/account/sendSMSCode", {
+                    fetch("/app/account/sendSMSCode", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

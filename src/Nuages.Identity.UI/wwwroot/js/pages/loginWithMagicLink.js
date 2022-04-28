@@ -18,7 +18,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/account/magicLinkLogin", {
+                    fetch("/app/account/magicLinkLogin", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/manage/enable2FA", {
+                    fetch("/app/manage/enable2FA", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

@@ -19,7 +19,7 @@ var App =
                     var l = self.lastName;
                     var f = self.firstName;
 
-                    fetch("/api/manage/saveProfile", {
+                    fetch("/app/manage/saveProfile", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

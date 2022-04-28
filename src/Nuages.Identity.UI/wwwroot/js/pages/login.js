@@ -24,7 +24,7 @@ var App =
                     var p = self.password;
                     var r = self.remember;
 
-                    fetch("/api/account/login", {
+                    fetch("/app/account/login", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

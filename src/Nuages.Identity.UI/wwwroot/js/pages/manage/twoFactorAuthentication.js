@@ -28,7 +28,7 @@ var App =
                 resetCodes() {
                     var self = this;
 
-                    fetch("/api/manage/resetRecoveryCodes", {
+                    fetch("/app/manage/resetRecoveryCodes", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ var App =
                 forgetBrowser() {
                     var self = this;
 
-                    fetch("/api/manage/forgetBrowser", {
+                    fetch("/app/manage/forgetBrowser", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ var App =
                     //Call API
                     this.status = "sending";
 
-                    fetch("/api/manage/disable2FA", {
+                    fetch("/app/manage/disable2FA", {
                         method: "DELETE",
                         headers: {
                             'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ var App =
                     //Call API
                     this.status = "sending";
 
-                    fetch("/api/manage/removePhone", {
+                    fetch("/app/manage/removePhone", {
                         method: "DELETE",
                         headers: {
                             'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ var App =
                     //Call API
                     this.status = "sending";
 
-                    fetch("/api/fido2/removeKey", {
+                    fetch("/app/fido2/removeKey", {
                         method: "DELETE",
                         body: JSON.stringify({ id: id}),
                         headers: {

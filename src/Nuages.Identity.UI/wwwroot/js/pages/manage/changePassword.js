@@ -21,7 +21,7 @@ var App =
                     var p = self.password;
                     var c = self.passwordConfirm;
 
-                    fetch("/api/manage/changePassword", {
+                    fetch("/app/manage/changePassword", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

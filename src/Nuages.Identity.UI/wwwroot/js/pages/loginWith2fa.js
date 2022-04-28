@@ -24,7 +24,7 @@ var App =
                     var r = self.remember;
                     var m = self.rememberMachine;
 
-                    fetch("/api/account/login2fa", {
+                    fetch("/app/account/login2fa", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',

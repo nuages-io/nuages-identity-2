@@ -19,7 +19,7 @@ var App =
 
                     this.status = "sending";
 
-                    fetch("/api/manage/changeUsername", {
+                    fetch("/app/manage/changeUsername", {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json',
