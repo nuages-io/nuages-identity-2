@@ -64,6 +64,8 @@ public static class OpenIdDictConfigExtensions
             // Register the OpenIddict server components.
             .AddServer(options =>
             {
+                options.SetIssuer(new Uri(configuration["Nuages:Identity:Authority"]));
+                
                 options.DisableAccessTokenEncryption();
 
                 options.SetAccessTokenLifetime(TimeSpan.FromDays(1));
