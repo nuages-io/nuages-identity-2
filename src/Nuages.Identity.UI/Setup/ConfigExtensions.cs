@@ -11,7 +11,7 @@ public static class ConfigExtensions
 
         if (builder.Environment.IsDevelopment())
         {
-            configBuilder.AddJsonFile("appsettings.local.json", false, true);
+            configBuilder.AddJsonFile("appsettings.local.json", true, true);
         }
         else
         {
