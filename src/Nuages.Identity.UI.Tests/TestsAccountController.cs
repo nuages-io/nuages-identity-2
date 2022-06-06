@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
@@ -24,6 +25,8 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
     public TestsAccountController(CustomWebApplicationFactoryAnonymous<Program> factory)
     {
+        Program.UseCookiePolicy = false;
+        
         _factory = factory;
 
         var scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
@@ -141,7 +144,10 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
     public async Task ShouldLoginWithErrorUnconfirmed()
     {
         
-        var client = _factory.CreateClient();
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = false
+        });
 
         var body = new LoginModel
         {

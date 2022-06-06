@@ -25,24 +25,29 @@ public class CustomWebApplicationFactory<TStartup>
         {
             configurationBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
             {
-                new("Nuages:OpenIdDict:Storage", "InMemory")
+                new("Nuages:OpenIdDict:Storage", "InMemory"),
+                new("Nuages:UseCookiePolicy", "false"),
+                
             });
         });
 
         builder.ConfigureTestServices(services =>
         {
+          
             services
                 .AddMvc()
                 .AddMvcOptions(options => { options.Filters.Clear(); });
                 
-            // services.AddAuthentication(options =>
-            //     {
-            //         options.DefaultAuthenticateScheme = "Test";
-            //         options.DefaultChallengeScheme = "Test";
-            //         options.DefaultScheme = "Test";
-            //     })
-            //     .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(
-            //         "Test", options => { options.DefaultUserId = DefaultUserId; });
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = "Test";
+                    options.DefaultChallengeScheme = "Test";
+                    options.DefaultScheme = "Test";
+                })
+                .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(
+                    "Test", options => { options.DefaultUserId = DefaultUserId; });
+            
+            services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.None; });
             
             var serviceDescriptorUser = services.First(s =>
                 s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));

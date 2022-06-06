@@ -141,7 +141,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-app.UseCookiePolicy();
+if (UseCookiePolicy)
+    app.UseCookiePolicy();
     
 app.UseRouting();
 
@@ -170,4 +171,5 @@ app.Run();
 public partial class Program //Require for Integration Tests
 #pragma warning restore CA1050
 {
+    static public bool UseCookiePolicy = true;
 }
