@@ -62,7 +62,6 @@ public class AccountController : Controller
 
     [HttpPost("login")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     public async Task<ActionResult<LoginResultModel>> LoginAsync([FromBody] LoginModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
@@ -103,7 +102,6 @@ public class AccountController : Controller
 
     [HttpPost("login2fa")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     // ReSharper disable once InconsistentNaming
     public async Task<ActionResult<LoginResultModel>> Login2FAAsync([FromBody] Login2FAModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
@@ -145,7 +143,6 @@ public class AccountController : Controller
 
     [HttpPost("loginRecoveryCode")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     // ReSharper disable once InconsistentNaming
     public async Task<ActionResult<LoginResultModel>> LoginRecoveryCodeAsync([FromBody] LoginRecoveryCodeModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
@@ -187,7 +184,6 @@ public class AccountController : Controller
 
     [HttpPost("register")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     public async Task<RegisterResultModel> RegisterAsync([FromBody] RegisterModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
@@ -243,7 +239,6 @@ public class AccountController : Controller
 
     [HttpPost("forgotPassword")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     public async Task<ForgotPasswordResultModel> ForgotPaswordAsync([FromBody] ForgotPasswordModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
@@ -271,7 +266,6 @@ public class AccountController : Controller
 
     [HttpPost("sendEmailConfirmation")]
     [Authorize(AuthenticationSchemes = NuagesIdentityConstants.EmailNotVerifiedScheme)]
-    [ValidateAntiForgeryToken]
     public async Task<SendEmailConfirmationResultModel> SendEmailConfirmationAsync(
         [FromBody] SendEmailConfirmationModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
@@ -302,7 +296,6 @@ public class AccountController : Controller
 
     [HttpPost("resetPassword")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     public async Task<ResetPasswordResultModel> ResetPasswordAsync([FromBody] ResetPasswordModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
@@ -330,7 +323,6 @@ public class AccountController : Controller
 
     [HttpPost("magicLinkLogin")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     public async Task<StartMagicLinkResultModel> MagicLinkLoginAsync([FromBody] StartMagicLinkModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
@@ -358,7 +350,6 @@ public class AccountController : Controller
 
     [HttpPost("sendSMSCode")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     public async Task<SendSMSCodeResultModel> SendSMSCodeAsync(
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)
     {
@@ -387,7 +378,6 @@ public class AccountController : Controller
 
     [HttpPost("loginSMS")]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     // ReSharper disable once InconsistentNaming
     public async Task<ActionResult<LoginResultModel>> LoginSMSAsync([FromBody] LoginSMSModel model,
         [FromHeader(Name = "X-Custom-RecaptchaToken")] string? recaptchaToken)

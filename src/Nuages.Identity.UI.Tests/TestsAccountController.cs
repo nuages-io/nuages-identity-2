@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
@@ -41,14 +42,14 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
     public async Task ShouldLoginWithSuccess()
     {
         var client = _factory.CreateClient();
-
+       
         var body = new LoginModel
         {
             UserNameOrEmail = IdentityDataSeeder.UserEmail,
             Password = IdentityDataSeeder.UserPassword
         };
 
-        var res = await client.PostAsync("api/account/login",
+        var res = await client.PostAsync("app/account/login",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -70,7 +71,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
             Email = IdentityDataSeeder.UserEmail
         };
 
-        var res = await client.PostAsync("api/account/forgotPassword",
+        var res = await client.PostAsync("app/account/forgotPassword",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -95,7 +96,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
             Code = result.Code!
         };
 
-        res = await client.PostAsync("api/account/resetPassword",
+        res = await client.PostAsync("app/account/resetPassword",
             new StringContent(JsonSerializer.Serialize(resetBody), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -117,7 +118,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
             Email = IdentityDataSeeder.UserEmail
         };
 
-        var res = await client.PostAsync("api/account/magicLinkLogin",
+        var res = await client.PostAsync("app/account/magicLinkLogin",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -146,7 +147,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         };
 
         //Login
-        var res = await client.PostAsync("api/account/login",
+        var res = await client.PostAsync("app/account/login",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -166,7 +167,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
         //Send confirmation link
 
-        res = await client.PostAsync("api/account/sendEmailConfirmation",
+        res = await client.PostAsync("app/account/sendEmailConfirmation",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -182,7 +183,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
         //Login again
 
-        res = await client.PostAsync("api/account/login",
+        res = await client.PostAsync("app/account/login",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -206,7 +207,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         };
 
         //Login
-        var res = await client.PostAsync("api/account/login",
+        var res = await client.PostAsync("app/account/login",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -237,7 +238,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
             Code = totp
         };
 
-        res = await client.PostAsync("api/account/login2fa",
+        res = await client.PostAsync("app/account/login2fa",
             new StringContent(JsonSerializer.Serialize(loginBody), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -268,7 +269,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         };
 
         //Login
-        var res = await client.PostAsync("api/account/login",
+        var res = await client.PostAsync("app/account/login",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -296,7 +297,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
             Code = codes.First()
         };
 
-        res = await client.PostAsync("api/account/loginRecoveryCode",
+        res = await client.PostAsync("app/account/loginRecoveryCode",
             new StringContent(JsonSerializer.Serialize(loginBody), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -327,7 +328,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         };
 
         //Login
-        var res = await client.PostAsync("api/account/login",
+        var res = await client.PostAsync("app/account/login",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -348,7 +349,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
         //Send SMS Code
 
-        res = await client.PostAsync("api/account/sendSMSCode", null);
+        res = await client.PostAsync("app/account/sendSMSCode", null);
         content = await res.Content.ReadAsStringAsync();
 
         var codeResult = JsonSerializer.Deserialize<SendSMSCodeResultModel>(content, _options);
@@ -365,7 +366,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
             Code = codeResult!.Code!
         };
 
-        res = await client.PostAsync("api/account/loginSMS",
+        res = await client.PostAsync("app/account/loginSMS",
             new StringContent(JsonSerializer.Serialize(loginBody), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -395,7 +396,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
             PasswordConfirm = IdentityDataSeeder.UserPassword
         };
 
-        var res = await client.PostAsync("api/account/register",
+        var res = await client.PostAsync("app/account/register",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);

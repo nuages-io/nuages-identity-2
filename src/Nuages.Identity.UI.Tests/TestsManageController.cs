@@ -44,7 +44,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             FirstName = "FirsName"
         };
 
-        var res = await client.PostAsync("api/manage/saveProfile",
+        var res = await client.PostAsync("app/manage/saveProfile",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -63,7 +63,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
         var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Add(TestAuthHandler.UserId, userId);
 
-        var res = await client.DeleteAsync("api/manage/disable2Fa");
+        var res = await client.DeleteAsync("app/manage/disable2Fa");
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
@@ -85,7 +85,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             Code = totp
         };
 
-        res = await client.PostAsync("api/manage/enable2Fa",
+        res = await client.PostAsync("app/manage/enable2Fa",
             new StringContent(JsonSerializer.Serialize(bodyEnable), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -104,7 +104,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
         var client = _factory.CreateClient();
 
 
-        var res = await client.GetAsync("api/manage/downloadRecoveryCodes");
+        var res = await client.GetAsync("app/manage/downloadRecoveryCodes");
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
@@ -117,7 +117,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
     {
         var client = _factory.CreateClient();
 
-        var res = await client.PostAsync("api/manage/resetRecoveryCodes",
+        var res = await client.PostAsync("app/manage/resetRecoveryCodes",
             null);
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -134,7 +134,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
     {
         var client = _factory.CreateClient();
 
-        var res = await client.PostAsync("api/manage/forgetBrowser",
+        var res = await client.PostAsync("app/manage/forgetBrowser",
             null);
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -157,7 +157,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             NewUserName = currentUserName + "2"
         };
 
-        var res = await client.PostAsync("api/manage/changeUserName",
+        var res = await client.PostAsync("app/manage/changeUserName",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -174,7 +174,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             NewUserName = currentUserName
         };
 
-        res = await client.PostAsync("api/manage/changeUserName",
+        res = await client.PostAsync("app/manage/changeUserName",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -196,7 +196,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             PhoneNumber = "8888888888"
         };
 
-        var res = await client.PostAsync("api/manage/sendPhoneChangeMessage",
+        var res = await client.PostAsync("app/manage/sendPhoneChangeMessage",
             new StringContent(JsonSerializer.Serialize(body2), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -213,7 +213,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             PhoneNumber = body2.PhoneNumber,
             Token = response.Code!
         };
-        res = await client.PostAsync("api/manage/changePhoneNumber",
+        res = await client.PostAsync("app/manage/changePhoneNumber",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -225,7 +225,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
         Assert.True(response2!.Success);
 
 
-        res = await client.DeleteAsync("api/manage/removePhone");
+        res = await client.DeleteAsync("app/manage/removePhone");
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
@@ -248,7 +248,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             NewPasswordConfirm = IdentityDataSeeder.UserPassword
         };
 
-        var res = await client.PostAsync("api/manage/changePassword",
+        var res = await client.PostAsync("app/manage/changePassword",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -268,7 +268,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             NewPasswordConfirm = IdentityDataSeeder.UserPassword
         };
 
-        res = await client.PostAsync("api/manage/setPassword",
+        res = await client.PostAsync("app/manage/setPassword",
             new StringContent(JsonSerializer.Serialize(body2), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -290,7 +290,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
             Email = "newemail@example.com"
         };
 
-        var res = await client.PostAsync("api/manage/sendEmailChange",
+        var res = await client.PostAsync("app/manage/sendEmailChange",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);

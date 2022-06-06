@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
@@ -30,6 +31,10 @@ public class CustomWebApplicationFactory<TStartup>
 
         builder.ConfigureTestServices(services =>
         {
+            services
+                .AddMvc()
+                .AddMvcOptions(options => { options.Filters.Clear(); });
+                
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = "Test";

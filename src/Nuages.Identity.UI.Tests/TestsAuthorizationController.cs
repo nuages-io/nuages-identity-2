@@ -32,7 +32,7 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
             { "audience", "IdentityAPI" },
             { "scope", "email profile openid" },
             { "client_id", "postman-ui" },
-            { "client_secret", "511536EF-F270-4058-80CA-1C89C192F69A" }
+            { "client_secret", "00000000-0000-0000-0000-000000000000" }
         }));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
@@ -57,7 +57,7 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
             { "grant_type", "client_credentials" },
             { "audience", "IdentityAPI" },
             { "client_id", "postman-ui" },
-            { "client_secret", "511536EF-F270-4058-80CA-1C89C192F69A" }
+            { "client_secret", "00000000-0000-0000-0000-000000000000" }
         }));
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);

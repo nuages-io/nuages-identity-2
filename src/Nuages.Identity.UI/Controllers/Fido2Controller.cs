@@ -83,7 +83,6 @@ public class Fido2Controller : Controller
     
     [HttpPost]
     [Route("makeAssertion")]
-    [ValidateAntiForgeryToken]
     public async Task<JsonResult> MakeAssertion([FromBody] AuthenticatorAssertionRawResponse clientResponse)
     {
         try

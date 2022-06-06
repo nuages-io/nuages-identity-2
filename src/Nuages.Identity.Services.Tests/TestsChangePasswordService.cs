@@ -1,4 +1,5 @@
 using Moq;
+using Nuages.Identity.Services.Admin;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Manage;
 using Nuages.Web.Exceptions;
@@ -145,7 +146,7 @@ public class TestsChangePasswordService
             .Callback(() => sendCalled = true);
 
         var changePasswordService =
-            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
+            new AdminChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
 
@@ -173,7 +174,7 @@ public class TestsChangePasswordService
             .Callback(() => sendCalled = true);
 
         var changePasswordService =
-            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
+            new AdminChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var code = await identityStuff.UserManager.GeneratePasswordResetTokenAsync(user);
 
@@ -204,7 +205,7 @@ public class TestsChangePasswordService
             .Callback(() => sendCalled = true);
 
         var changePasswordService =
-            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
+            new AdminChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(), messageService.Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await changePasswordService.AdminChangePasswordAsync(user.Id,
             newPassword, newPassword, false, true, null);
@@ -225,7 +226,7 @@ public class TestsChangePasswordService
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
 
         var changePasswordService =
-            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(),
+            new AdminChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(),
                 new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await changePasswordService.AdminChangePasswordAsync(user.Id,
@@ -248,7 +249,7 @@ public class TestsChangePasswordService
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, currentPassword);
 
         var changePasswordService =
-            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(),
+            new AdminChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(),
                 new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         await Assert.ThrowsAsync<NotFoundException>(async () =>
@@ -268,7 +269,7 @@ public class TestsChangePasswordService
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var changePasswordService =
-            new ChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(),
+            new AdminChangePasswordService(identityStuff.UserManager, new FakeStringLocalizer(),
                 new Mock<IMessageService>().Object, new Mock<IIdentityEventBus>().Object);
 
         var res = await changePasswordService.AdminChangePasswordAsync(user.Id,

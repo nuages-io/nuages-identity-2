@@ -26,6 +26,11 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
 
         builder.ConfigureTestServices(services =>
         {
+            services
+                .AddMvc()
+                .AddMvcOptions(options => { options.Filters.Clear(); });
+
+            
             var serviceDescriptorUser = services.First(s =>
                 s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));
             services.Remove(serviceDescriptorUser);
