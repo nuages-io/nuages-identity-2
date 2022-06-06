@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -88,11 +89,12 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
+        var pwd = Guid.NewGuid().ToString();
         var resetBody = new ResetPasswordModel
         {
             Email = IdentityDataSeeder.UserEmail,
-            Password = "Nuages123*",
-            PasswordConfirm = "Nuages123*",
+            Password = "Nuages123*" + pwd,
+            PasswordConfirm = "Nuages123*" + pwd,
             Code = result.Code!
         };
 
@@ -138,6 +140,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
     [Fact]
     public async Task ShouldLoginWithErrorUnconfirmed()
     {
+        
         var client = _factory.CreateClient();
 
         var body = new LoginModel
@@ -166,7 +169,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
         //Send confirmation link
-
+        
         res = await client.PostAsync("app/account/sendEmailConfirmation",
             new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json"));
 

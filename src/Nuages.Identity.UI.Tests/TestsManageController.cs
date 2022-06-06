@@ -241,11 +241,13 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
     {
         var client = _factory.CreateClient();
 
+        var pwd =  IdentityDataSeeder.UserPassword + Guid.NewGuid().ToString();
+        
         var body = new ChangePasswordModel
         {
             CurrentPassword = IdentityDataSeeder.UserPassword,
-            NewPassword = IdentityDataSeeder.UserPassword,
-            NewPasswordConfirm = IdentityDataSeeder.UserPassword
+            NewPassword = pwd,
+            NewPasswordConfirm = pwd
         };
 
         var res = await client.PostAsync("app/manage/changePassword",
@@ -262,10 +264,12 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
         var user = await _userManager.FindByIdAsync(_factory.DefaultUserId);
         await _userManager.RemovePasswordAsync(user);
 
+        pwd = IdentityDataSeeder.UserPassword +  Guid.NewGuid().ToString();
+        
         var body2 = new ChangePasswordModel
         {
-            NewPassword = IdentityDataSeeder.UserPassword,
-            NewPasswordConfirm = IdentityDataSeeder.UserPassword
+            NewPassword = pwd,
+            NewPasswordConfirm = pwd
         };
 
         res = await client.PostAsync("app/manage/setPassword",

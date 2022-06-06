@@ -35,14 +35,14 @@ public class CustomWebApplicationFactory<TStartup>
                 .AddMvc()
                 .AddMvcOptions(options => { options.Filters.Clear(); });
                 
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = "Test";
-                    options.DefaultChallengeScheme = "Test";
-                    options.DefaultScheme = "Test";
-                })
-                .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(
-                    "Test", options => { options.DefaultUserId = DefaultUserId; });
+            // services.AddAuthentication(options =>
+            //     {
+            //         options.DefaultAuthenticateScheme = "Test";
+            //         options.DefaultChallengeScheme = "Test";
+            //         options.DefaultScheme = "Test";
+            //     })
+            //     .AddScheme<TestAuthHandlerOptions, TestAuthHandler>(
+            //         "Test", options => { options.DefaultUserId = DefaultUserId; });
             
             var serviceDescriptorUser = services.First(s =>
                 s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));
