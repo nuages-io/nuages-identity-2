@@ -92,14 +92,16 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
-        var pwd = Guid.NewGuid().ToString();
+        var pwd = "Nuages123*" + Guid.NewGuid().ToString();
         var resetBody = new ResetPasswordModel
         {
             Email = IdentityDataSeeder.UserEmail,
-            Password = "Nuages123*" + pwd,
-            PasswordConfirm = "Nuages123*" + pwd,
+            Password = pwd,
+            PasswordConfirm = pwd,
             Code = result.Code!
         };
+        
+        
 
         res = await client.PostAsync("app/account/resetPassword",
             new StringContent(JsonSerializer.Serialize(resetBody), Encoding.UTF8, "application/json"));
@@ -111,6 +113,8 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         var result2 = JsonSerializer.Deserialize<ResetPasswordResultModel>(content, _options);
 
         Assert.True(result2!.Success);
+
+        IdentityDataSeeder.UserPassword = pwd;
     }
 
     [Fact]
