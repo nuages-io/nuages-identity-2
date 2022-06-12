@@ -415,4 +415,32 @@ public class TestsLoginService
             });
         });
     }
+    
+    [Fact]
+    public async Task ShouldLoginWithFailurePasswordMustBeChanged()
+    {
+        const string password = MockHelpers.StrongPassword;
+
+        var user = MockHelpers.CreateDefaultUser();
+        user.UserMustChangePassword = true;
+        
+        var identityStuff = MockHelpers.MockIdentityStuff(user);
+
+        user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
+
+        var loginService = new LoginService(identityStuff.UserManager, identityStuff.SignInManager,
+            new FakeStringLocalizer(),
+            new Mock<IMessageService>().Object, new Mock<ILogger<LoginService>>().Object, new Mock<IIdentityEventBus>().Object);
+
+        var res = await loginService.LoginAsync(new LoginModel
+        {
+            UserNameOrEmail = user.Email,
+            Password = password,
+            RememberMe = false
+        });
+
+        Assert.False(res.Success);
+        Assert.Equal(FailedLoginReason.PasswordMustBeChanged, res.Reason);
+        Assert.NotStrictEqual("errorMessage:no_access.error", res.Message);
+    }
 }

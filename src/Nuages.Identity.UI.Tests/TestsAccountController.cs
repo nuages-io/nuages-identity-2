@@ -1,10 +1,8 @@
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email;
 using Nuages.Identity.Services.Login;
@@ -92,7 +90,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
         Assert.Equal(HttpStatusCode.OK, res.StatusCode);
 
-        var pwd = "Nuages123*" + Guid.NewGuid().ToString();
+        var pwd = "Nuages123*" + Guid.NewGuid();
         var resetBody = new ResetPasswordModel
         {
             Email = IdentityDataSeeder.UserEmail,

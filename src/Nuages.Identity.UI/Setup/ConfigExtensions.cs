@@ -9,14 +9,9 @@ public static class ConfigExtensions
         var configBuilder = builder.Configuration
             .AddJsonFile("appsettings.json", false, true);
 
-        if (builder.Environment.IsDevelopment())
-        {
-            configBuilder.AddJsonFile("appsettings.local.json", true, true);
-        }
-        else
-        {
-            configBuilder.AddJsonFile("appsettings.prod.json", true, true);
-        }
+        var fileName = builder.Environment.IsDevelopment() ? "appsettings.local.json" : "appsettings.prod.json";
+        
+        configBuilder.AddJsonFile(fileName, true, true);
 
         configBuilder.AddEnvironmentVariables();
 

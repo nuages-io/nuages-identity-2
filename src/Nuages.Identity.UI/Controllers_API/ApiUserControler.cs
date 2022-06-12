@@ -11,7 +11,7 @@ public class ApiUserControler : Controller
 {
     // GET
     [HttpGet("info")]
-    public async Task<object> Index()
+    public  object Index()
     {
         return new { Test = "Yo" };
     }

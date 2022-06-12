@@ -12,16 +12,14 @@ public class AdminChangePasswordService : IAdminChangePasswordService
 {
     private readonly IStringLocalizer _localizer;
     private readonly IMessageService _messageService;
-    private readonly IIdentityEventBus _identityEventBus;
     private readonly NuagesUserManager _userManager;
 
     public AdminChangePasswordService(NuagesUserManager userManager, IStringLocalizer localizer,
-        IMessageService messageService, IIdentityEventBus identityEventBus)
+        IMessageService messageService)
     {
         _userManager = userManager;
         _localizer = localizer;
         _messageService = messageService;
-        _identityEventBus = identityEventBus;
     }
 
 
@@ -82,14 +80,6 @@ public interface IAdminChangePasswordService
 
     Task<ChangePasswordResultModel> AdminChangePasswordAsync(string userId, string newPassword,
         string newPasswordConfirmation, bool mustChangePassword, bool sendByEmail, string? token);
-}
-
-public class ChangePasswordModel
-{
-    public string CurrentPassword { get; set; } = string.Empty;
-
-    public string NewPassword { get; set; } = string.Empty;
-    public string NewPasswordConfirm { get; set; } = string.Empty;
 }
 
 public class ChangePasswordResultModel

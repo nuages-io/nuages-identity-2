@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 
 namespace Nuages.Identity.Services;
 
+[ExcludeFromCodeCoverage]
 public class IdentityConsoleEventBus : IIdentityEventBus
 {
     private readonly ILogger<IdentityConsoleEventBus> _logger;

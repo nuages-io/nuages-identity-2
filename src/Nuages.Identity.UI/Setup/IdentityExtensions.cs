@@ -1,5 +1,7 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Bson;
@@ -217,23 +219,29 @@ public static class IdentityExtensions
 
                 // Optional
                 // if you need an access token to call GitHub Apis
-                o.Events.OnCreatingTicket += async context =>
-                {
-                    if (context.AccessToken is { })
-                    {
-                        var github = new GitHubClient(new ProductHeaderValue("NuagesIdentity"))
-                        {
-                            Credentials = new Credentials(context.AccessToken)
-                        };
-
-                        var emails = await github.User.Email.GetAll();
-
-
-                        context.Identity?.AddClaim(new Claim("email", emails.Single(e => e.Primary).Email));
-                    }
-                };
+                SetupGithubOnCreatingEvent(o);
             });
         }
+    }
+
+    [ExcludeFromCodeCoverage]
+    private static void SetupGithubOnCreatingEvent(OAuthOptions o)
+    {
+        o.Events.OnCreatingTicket += async context =>
+        {
+            if (context.AccessToken is { })
+            {
+                var github = new GitHubClient(new ProductHeaderValue("NuagesIdentity"))
+                {
+                    Credentials = new Credentials(context.AccessToken)
+                };
+
+                var emails = await github.User.Email.GetAll();
+
+
+                context.Identity?.AddClaim(new Claim("email", emails.Single(e => e.Primary).Email));
+            }
+        };
     }
 
     private static void AddTwitter(IConfiguration configuration, AuthenticationBuilder auth)

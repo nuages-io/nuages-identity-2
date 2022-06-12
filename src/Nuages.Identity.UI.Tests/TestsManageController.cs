@@ -241,7 +241,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
     {
         var client = _factory.CreateClient();
 
-        var pwd =  IdentityDataSeeder.UserPassword + Guid.NewGuid().ToString();
+        var pwd =  IdentityDataSeeder.UserPassword + Guid.NewGuid();
         
         var body = new ChangePasswordModel
         {
@@ -264,7 +264,7 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
         var user = await _userManager.FindByIdAsync(_factory.DefaultUserId);
         await _userManager.RemovePasswordAsync(user);
 
-        pwd = IdentityDataSeeder.UserPassword +  Guid.NewGuid().ToString();
+        pwd = IdentityDataSeeder.UserPassword +  Guid.NewGuid();
         
         var body2 = new ChangePasswordModel
         {

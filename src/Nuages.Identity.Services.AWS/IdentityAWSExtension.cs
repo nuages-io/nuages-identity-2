@@ -1,5 +1,6 @@
 // ReSharper disable InconsistentNaming
 
+using System.Diagnostics.CodeAnalysis;
 using Amazon.EventBridge;
 using Nuages.AWS.Secrets;
 using Nuages.Identity.AWS.Sender;
@@ -37,26 +38,38 @@ public static class IdentityAWSExtension
             
             configManager.Bind("Nuages:ApplicationConfig", config);
 
-            if (config.ParameterStore.Enabled)
-            {
-                configBuilder.AddSystemsManager(configureSource =>
-                {
-                    configureSource.Path = config.ParameterStore.Path;
-                    configureSource.Optional = true;
-                    configureSource.ReloadAfter = TimeSpan.FromMinutes(15);
-                });
-            }
+            LoadParameterStoreConfiguration(configBuilder, config);
 
             Console.WriteLine($"config.AppConfig.Enabled = {config.AppConfig.Enabled}");
             
-            if (config.AppConfig.Enabled)
-            {
-                configBuilder.AddAppConfig(config.AppConfig.ApplicationId,
-                    config.AppConfig.EnvironmentId,
-                    config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
-            }
+            LoadAppConfigConfiguration(configBuilder, config);
             
             configManager.TransformSecrets();
+        }
+    }
+
+    [ExcludeFromCodeCoverage]
+    private static void LoadAppConfigConfiguration(IConfigurationBuilder configBuilder, ApplicationConfig config)
+    {
+        if (config.AppConfig.Enabled)
+        {
+            configBuilder.AddAppConfig(config.AppConfig.ApplicationId,
+                config.AppConfig.EnvironmentId,
+                config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
+        }
+    }
+
+    [ExcludeFromCodeCoverage]
+    private static void LoadParameterStoreConfiguration(IConfigurationBuilder configBuilder, ApplicationConfig config)
+    {
+        if (config.ParameterStore.Enabled)
+        {
+            configBuilder.AddSystemsManager(configureSource =>
+            {
+                configureSource.Path = config.ParameterStore.Path;
+                configureSource.Optional = true;
+                configureSource.ReloadAfter = TimeSpan.FromMinutes(15);
+            });
         }
     }
 }

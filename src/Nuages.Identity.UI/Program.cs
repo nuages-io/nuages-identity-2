@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
@@ -21,10 +22,12 @@ configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullNam
 configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
 configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
 
+var config = builder.Configuration;
+
 //Setup NLog, load configuration from IConfiguration
 
 LogManager.Setup().SetupExtensions(e => e.RegisterNLogWeb())
-    .LoadConfigurationFromSection(builder.Configuration);
+    .LoadConfigurationFromSection(config);
 
 builder.Host.UseNLog();
 
@@ -32,7 +35,9 @@ var services = builder.Services;
 
 services.AddDataProtection();
 
-var redis = builder.Configuration["Nuages:Data:Redis"];
+
+
+var redis = config["Nuages:Data:Redis"];
 if (!string.IsNullOrEmpty(redis))
 {
     Console.WriteLine("Using REDIS as Cache");
@@ -49,7 +54,9 @@ else
     services.AddDistributedMemoryCache();
 }
 
-services.AddNuagesIdentity(builder.Configuration); 
+
+
+services.AddNuagesIdentity(config); 
 
 //Do not remove if you use accentuated language
 services.Configure<WebEncoderOptions>(options =>
@@ -74,7 +81,7 @@ services
     {
         jsonOptions.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter());
     })
-    .AddNuagesLocalization(builder.Configuration);
+    .AddNuagesLocalization(config);
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -115,7 +122,7 @@ services.AddHealthChecks();
 
 services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-var corsDomains = builder.Configuration["Nuages:AllowedCorsDomain"];
+var corsDomains = config["Nuages:AllowedCorsDomain"];
 if (!string.IsNullOrEmpty(corsDomains))
     services.AddCors( corsDomains.Split(",") );
 
@@ -168,8 +175,9 @@ app.Run();
 
 // ReSharper disable once ClassNeverInstantiated.Global
 #pragma warning disable CA1050
+[ExcludeFromCodeCoverage]
 public partial class Program //Require for Integration Tests
 #pragma warning restore CA1050
-{
-    static public bool UseCookiePolicy = true;
+{ 
+    public static bool UseCookiePolicy = true;
 }

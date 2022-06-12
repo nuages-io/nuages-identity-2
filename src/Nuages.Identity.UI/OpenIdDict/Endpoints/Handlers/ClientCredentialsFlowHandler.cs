@@ -82,7 +82,10 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
                 return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
 
-            foreach (var claim in principal.Claims) claim.SetDestinations(ClaimsDestinations.GetDestinations(claim));
+            foreach (var claim in principal.Claims)
+            {
+                claim.SetDestinations(ClaimsDestinations.GetDestinations(claim));
+            }
 
             return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }

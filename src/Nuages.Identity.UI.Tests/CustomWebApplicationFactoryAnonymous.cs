@@ -19,6 +19,7 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
         {
             configurationBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
             {
+                new("Nuages:Data:Storage", "InMemory"),
                 new("Nuages:OpenIdDict:Storage", "InMemory")
             });
         });

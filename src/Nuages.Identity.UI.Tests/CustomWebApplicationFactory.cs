@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
-using Nuages.Identity.Services;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Web;
@@ -25,8 +24,9 @@ public class CustomWebApplicationFactory<TStartup>
         {
             configurationBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
             {
+                new("Nuages:Data:Storage", "InMemory"),
                 new("Nuages:OpenIdDict:Storage", "InMemory"),
-                new("Nuages:UseCookiePolicy", "false"),
+                new("Nuages:UseCookiePolicy", "false")
                 
             });
         });

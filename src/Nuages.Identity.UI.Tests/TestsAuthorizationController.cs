@@ -48,7 +48,7 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
     }
 
     [Fact]
-    public async Task ShouldLoginWithClientCredntialGrant()
+    public async Task ShouldLoginWithClientCredentialGrant()
     {
         var httpClient = _factory.CreateClient();
 
@@ -72,6 +72,31 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
         Assert.Equal("Bearer", result.token_type);
     }
 
+    [Fact]
+    public async Task ShouldFailLoginWithClientCredentialGrantBadAudience()
+    {
+        var httpClient = _factory.CreateClient();
+
+        var res = await httpClient.PostAsync("connect/token", new FormUrlEncodedContent(new Dictionary<string, string>
+        {
+            { "grant_type", "client_credentials" },
+            { "audience", "bad_audience" },
+            { "client_id", "postman-ui" },
+            { "client_secret", "00000000-0000-0000-0000-000000000000" }
+        }));
+
+        Assert.Equal(HttpStatusCode.BadRequest, res.StatusCode);
+
+        var content = await res.Content.ReadAsStringAsync();
+
+        var result = JsonSerializer.Deserialize<TokenResult>(content)!;
+
+        Assert.Null(result.access_token);
+        Assert.Null(result.id_token);
+        Assert.Null(result.token_type);
+        Assert.Equal("invalid_audience", result.error);
+    }
+    
     [Fact]
     public async Task ShouldAuthorize()
     {
@@ -133,5 +158,6 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
         public string? access_token { get; set; }
         public string? token_type { get; set; }
         public string? id_token { get; set; }
+        public string? error { get; set; }
     }
 }
