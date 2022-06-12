@@ -9,8 +9,9 @@ public class IdentityDataSeeder : IHostedService
 {
     public const string UserEmail = UserId + "@example.com";
     public const string UserUserName = "user";
+
+    public static string UserPassword { get; set; } = "Nuages123*";
     
-    public static string UserPassword = "Nuages123*";
     public const string UserId = "8e8afe93-74e1-47a7-9c02-c907cd37b9b9";
 
     public const string UserEmail_Unconfirmed = UserId_Unconfirmed + "@example.com";

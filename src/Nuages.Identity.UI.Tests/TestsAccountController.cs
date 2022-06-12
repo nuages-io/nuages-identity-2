@@ -23,8 +23,6 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
 
     public TestsAccountController(CustomWebApplicationFactoryAnonymous<Program> factory)
     {
-        Program.UseCookiePolicy = false;
-        
         _factory = factory;
 
         var scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
@@ -64,7 +62,7 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
     }
 
     [Fact]
-    public async Task ShouldLForgotPasswordWithSuccess()
+    public async Task ShouldForgotPasswordWithSuccess()
     {
         var client = _factory.CreateClient();
 

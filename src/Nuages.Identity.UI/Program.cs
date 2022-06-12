@@ -21,8 +21,9 @@ var configBuilder = builder.LoadConfiguration();
 configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
 configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
 configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
+configBuilder.AddInMemoryCollection(ConfigurationOverrides);
 
-var config = builder.Configuration;
+var config = configBuilder.Build();
 
 //Setup NLog, load configuration from IConfiguration
 
@@ -34,8 +35,6 @@ builder.Host.UseNLog();
 var services = builder.Services;
 
 services.AddDataProtection();
-
-
 
 var redis = config["Nuages:Data:Redis"];
 if (!string.IsNullOrEmpty(redis))
@@ -148,7 +147,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-if (UseCookiePolicy)
+var useCookiePolicy = config.GetValue<bool>("Nuages:UseCookiePolicy");
+if (useCookiePolicy)
     app.UseCookiePolicy();
     
 app.UseRouting();
@@ -178,6 +178,6 @@ app.Run();
 [ExcludeFromCodeCoverage]
 public partial class Program //Require for Integration Tests
 #pragma warning restore CA1050
-{ 
-    public static bool UseCookiePolicy = true;
+{
+    public static List<KeyValuePair<string, string>> ConfigurationOverrides { get; set; } = new();
 }

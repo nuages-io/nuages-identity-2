@@ -15,10 +15,10 @@ public static class ConfigExtensions
 
         configBuilder.AddEnvironmentVariables();
 
-        configBuilder.Build();
-
         //Remove if Not referencing Nuages.Identity.Services.AWS
         configBuilder.LoadAWSConfiguration(builder.Configuration);
+        
+        configBuilder.Build();
         
         return configBuilder;
 

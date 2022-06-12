@@ -15,30 +15,28 @@ public class CustomWebApplicationFactoryAnonymous<TStartup>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration(configurationBuilder =>
+        Program.ConfigurationOverrides = new List<KeyValuePair<string, string>>
         {
-            configurationBuilder.AddInMemoryCollection(new List<KeyValuePair<string, string>>
-            {
-                new("Nuages:Data:Storage", "InMemory"),
-                new("Nuages:OpenIdDict:Storage", "InMemory")
-            });
-        });
-
-
+            new("Nuages:Data:Storage", "InMemory"),
+            new("Nuages:OpenIdDict:Storage", "InMemory"),
+            new("Nuages:UseCookiePolicy", "false")
+        };
+            
         builder.ConfigureTestServices(services =>
         {
             services
                 .AddMvc()
                 .AddMvcOptions(options => { options.Filters.Clear(); });
-
             
-            var serviceDescriptorUser = services.First(s =>
+            var serviceDescriptorUser = services.FirstOrDefault(s =>
                 s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoUserStore"));
-            services.Remove(serviceDescriptorUser);
+            if (serviceDescriptorUser != null)
+                services.Remove(serviceDescriptorUser);
 
-            var serviceDescriptorRole = services.First(s =>
+            var serviceDescriptorRole = services.FirstOrDefault(s =>
                 s.ImplementationType != null && s.ImplementationType.Name.Contains("MongoRoleStore"));
-            services.Remove(serviceDescriptorRole);
+            if (serviceDescriptorRole != null)
+                services.Remove(serviceDescriptorRole);
 
             services.AddDbContext<TestDataContext>(options =>
             {
