@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -58,6 +59,7 @@ public static class NuagesIdentityConfigExtensions
         return builder;
     }
 
+    [ExcludeFromCodeCoverage]
     public static AuthenticationBuilder AddNuagesAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<CookiePolicyOptions>(options => { options.Secure = CookieSecurePolicy.Always; });

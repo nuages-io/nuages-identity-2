@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
@@ -148,6 +149,7 @@ public interface IRegisterExternalLoginService
     Task<RegisterExternalLoginResultModel> Register();
 }
 
+[ExcludeFromCodeCoverage]
 public class RegisterExternalLoginResultModel
 {
     public bool Success { get; set; }

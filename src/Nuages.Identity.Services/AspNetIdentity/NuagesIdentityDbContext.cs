@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Nuages.Identity.Services.Fido2.AspNetIdentity;
@@ -16,9 +17,13 @@ public class NuagesIdentityDbContext : IdentityDbContext<NuagesApplicationUser<s
     public DbSet<Fido2Credential> Fido2Credentials { get; set; } = null!;
 
     // ReSharper disable once UnusedMember.Global
+    [ExcludeFromCodeCoverage]
     public DbSet<OpenIddictEntityFrameworkCoreApplication> OpenIddictApplications { get; set; } = null!;
+    [ExcludeFromCodeCoverage]
     public DbSet<OpenIddictEntityFrameworkCoreScope> OpenIddictScopes { get; set; } = null!;
+    [ExcludeFromCodeCoverage]
     public DbSet<OpenIddictEntityFrameworkCoreAuthorization> OpenIddictAuthorizations { get; set; } = null!;
+    [ExcludeFromCodeCoverage]
     public DbSet<OpenIddictEntityFrameworkCoreToken> OpenIddictTokens { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
