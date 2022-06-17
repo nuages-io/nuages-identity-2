@@ -53,8 +53,6 @@ else
     services.AddDistributedMemoryCache();
 }
 
-
-
 services.AddNuagesIdentity(config); 
 
 //Do not remove if you use accentuated language
