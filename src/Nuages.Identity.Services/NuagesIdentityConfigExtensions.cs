@@ -78,7 +78,7 @@ public static class NuagesIdentityConfigExtensions
                     ValidateAudience = true,
                     ValidAudiences = nuagesIdentityOptions.Audiences,
                     ValidateIssuer = true,
-                    ValidIssuer = nuagesIdentityOptions.Authority,
+                    ValidIssuer = new Uri(nuagesIdentityOptions.Authority).AbsoluteUri,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = keyStore.GetSigningKey()
                 };
