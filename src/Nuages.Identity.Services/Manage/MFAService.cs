@@ -53,7 +53,7 @@ public class MFAService : IMFAService
 
         await _userManager.SetPhoneNumberAsync(user, "");
         
-        var url = $"{_options.Authority}/account/manage/twoFactorAuthentication";
+        var url = $"{_options.Authority}account/manage/twoFactorAuthentication";
 
         _messageService.SendEmailUsingTemplate(user.Email, "2FA_Disabled", new Dictionary<string, string>
         {
@@ -93,7 +93,7 @@ public class MFAService : IMFAService
 
         var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
 
-        var url = $"{_options.Authority}/account/manage/twoFactorAuthentication";
+        var url = $"{_options.Authority}account/manage/twoFactorAuthentication";
 
         _messageService.SendEmailUsingTemplate(user.Email, "2FA_Enabled", new Dictionary<string, string>
         {

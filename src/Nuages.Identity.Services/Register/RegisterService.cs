@@ -62,7 +62,7 @@ public class RegisterService : IRegisterService
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-                var url = $"{_options.Authority}/Account/ConfirmEmail?code={code}&userId={user.Id}";
+                var url = $"{_options.Authority}Account/ConfirmEmail?code={code}&userId={user.Id}";
                 
                 _messageService.SendEmailUsingTemplate(model.Email, "Confirm_Email", new Dictionary<string, string>
                 {

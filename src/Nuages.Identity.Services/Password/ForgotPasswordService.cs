@@ -53,7 +53,7 @@ public class ForgotPasswordService : IForgotPasswordService
         var code = await _userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-        var url = $"{_options.Authority}/Account/ResetPassword?code={code}";
+        var url = $"{_options.Authority}Account/ResetPassword?code={code}";
 
         _messageService.SendEmailUsingTemplate(model.Email, "Password_Reset", new Dictionary<string, string>
         {

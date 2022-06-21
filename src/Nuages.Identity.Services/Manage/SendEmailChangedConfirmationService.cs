@@ -61,7 +61,7 @@ public class SendEmailChangeConfirmationService : ISendEmailChangeConfirmationSe
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
         var url =
-            $"{_options.Authority}/Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(email))}";
+            $"{_options.Authority}Account/ConfirmEmailChange?code={code}&userId={user.Id}&email={WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(email))}";
 
         _messageService.SendEmailUsingTemplate(email, "Confirm_Email_Change", new Dictionary<string, string>
         {
