@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -69,8 +70,6 @@ public static class NuagesIdentityConfigExtensions
         var nuagesIdentityOptions = new NuagesIdentityOptions();
         configuration.GetSection("Nuages:Identity").Bind(nuagesIdentityOptions);
         
-        const string scheme = "JwtOrCookie";
-        
         services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
             .Configure<IKeyStore>((options, keyStore) => {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -83,28 +82,16 @@ public static class NuagesIdentityConfigExtensions
                     IssuerSigningKey = keyStore.GetSigningKey()
                 };
             });
-        
+
         var builder = services.AddAuthentication(options =>
             {
-                options.DefaultScheme = scheme;
-                options.DefaultChallengeScheme = scheme;
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
             .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
             .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme)
-            .AddJwtBearer()
-            .AddPolicyScheme(scheme, scheme,
-                options =>
-                {
-                    options.ForwardDefaultSelector = context =>
-                    {
-                        var authorization = context.Request.Headers[HeaderNames.Authorization];
-                        if (authorization.Any() && authorization.Single().StartsWith("Bearer"))
-                            return JwtBearerDefaults.AuthenticationScheme;
-                        
-                        return IdentityConstants.ApplicationScheme;
-                    };
-                });
+            .AddJwtBearer();
 
         return builder;
     }
