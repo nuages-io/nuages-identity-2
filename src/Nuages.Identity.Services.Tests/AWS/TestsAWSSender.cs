@@ -3,12 +3,11 @@ using Amazon.SimpleEmailV2.Model;
 using Amazon.SimpleNotificationService;
 using Moq;
 using Nuages.Identity.AWS.Sender;
-using Nuages.Identity.Services.Email.Sender;
 using Xunit;
 
 namespace Nuages.Identity.Services.Tests.AWS;
 
-public class TestsAWSSender
+public class TestsAwsSender
 {
     [Fact]
     public async Task ShouldSendEmailWithSuccess()
@@ -18,7 +17,7 @@ public class TestsAWSSender
 
         var sender = new AWSSender(emailService.Object, notificationService.Object);
 
-        sender.SendEmailUsingTemplateAsync("sys@nnuages.org", "test@nuages.org", "", "fr",
+        await sender.SendEmailUsingTemplateAsync("sys@nnuages.org", "test@nuages.org", "", "fr",
             new Dictionary<string, string>());
     }
     
@@ -32,7 +31,7 @@ public class TestsAWSSender
         
         var sender = new AWSSender(emailService.Object, notificationService.Object);
 
-        sender.SendEmailUsingTemplateAsync("sys@nnuages.org", "test@nuages.org", "", "fr",
+        await sender.SendEmailUsingTemplateAsync("sys@nnuages.org", "test@nuages.org", "", "fr",
             new Dictionary<string, string>());
     }
 }
