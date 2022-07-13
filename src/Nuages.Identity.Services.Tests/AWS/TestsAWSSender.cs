@@ -13,11 +13,16 @@ public class TestsAwsSender
     public async Task ShouldSendEmailWithSuccess()
     {
         var emailService = new Mock<IAmazonSimpleEmailServiceV2>();
+        emailService.Setup(s => s.SendEmailAsync(It.IsAny<SendEmailRequest>(), new CancellationToken())).ReturnsAsync(() => new SendEmailResponse
+        {
+            MessageId = Guid.NewGuid().ToString()
+        });
+
         var notificationService = new Mock<IAmazonSimpleNotificationService>();
 
         var sender = new AWSSender(emailService.Object, notificationService.Object);
 
-        await sender.SendEmailUsingTemplateAsync("sys@nnuages.org", "test@nuages.org", "", "fr",
+        await sender.SendEmailUsingTemplateAsync("sys@nuages.org", "test@nuages.org", "", "fr",
             new Dictionary<string, string>());
     }
     

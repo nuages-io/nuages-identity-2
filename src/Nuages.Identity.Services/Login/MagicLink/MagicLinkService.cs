@@ -128,9 +128,9 @@ public class MagicLinkService : IMagicLinkService
         var token = await _userManager.GenerateUserTokenAsync(user, "MagicLinkLoginProvider",
             "magiclink-auth");
 
-        var baseUrl = _options.Authority;
+        var baseUrl = new Uri(_options.Authority);
 
-        return $"{baseUrl}/account/magicLinkLogin?token={token}&userId={user.Id}&returnUrl={WebUtility.UrlEncode(returnUrl)}";
+        return $"{baseUrl.AbsoluteUri}account/magicLinkLogin?token={token}&userId={user.Id}&returnUrl={WebUtility.UrlEncode(returnUrl)}";
     }
 
 

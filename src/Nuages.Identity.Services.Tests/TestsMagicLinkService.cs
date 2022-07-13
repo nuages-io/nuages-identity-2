@@ -19,6 +19,8 @@ public class TestsMagicLinkService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
+        identityStuff.NuagesOptions.Authority = "https://localhost:8001/";
+        
         var service = new MagicLinkService(identityStuff.UserManager, identityStuff.SignInManager,
             new Mock<IMessageService>().Object, new FakeStringLocalizer(), Options.Create(identityStuff.NuagesOptions),
             new Mock<IRuntimeConfiguration>().Object, new Mock<IIdentityEventBus>().Object);
@@ -53,6 +55,7 @@ public class TestsMagicLinkService
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
+        identityStuff.NuagesOptions.Authority = "https://localhost:8001/";
         var sendCalled = false;
 
         var messageService = new Mock<IMessageService>();
