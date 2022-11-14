@@ -1,12 +1,12 @@
 
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
 COPY . .
 
@@ -20,10 +20,10 @@ RUN curl -sL https://deb.nodesource.com/setup_17.x  | bash -
 RUN apt-get -y install nodejs
 RUN npm install
 
-RUN dotnet build Nuages.Identity.UI.csproj -c Release -o /app/build
+RUN dotnet build Nuages.Identity.UI.csproj -c Release -o /app/build --framework net7.0
 
 FROM build AS publish
-RUN dotnet publish  Nuages.Identity.UI.csproj --configuration Release --framework net6.0 --self-contained false /p:GenerateRuntimeConfigurationFiles=true --runtime linux-x64 -o /app/publish
+RUN dotnet publish  Nuages.Identity.UI.csproj --configuration Release --framework net7.0 --self-contained false /p:GenerateRuntimeConfigurationFiles=true --runtime linux-x64 -o /app/publish
 
 FROM base AS final
 
