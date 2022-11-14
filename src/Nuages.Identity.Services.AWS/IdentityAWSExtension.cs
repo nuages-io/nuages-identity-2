@@ -38,6 +38,8 @@ public static class IdentityAWSExtension
 
     public static void LoadAWSConfiguration(this IConfigurationBuilder configBuilder, ConfigurationManager configManager)
     {
+        Console.WriteLine("LoadAWSConfiguration");
+        
         if (configManager.GetValue<bool>("Nuages:UseAWS"))
         {
             var config = new ApplicationConfig();
@@ -57,6 +59,8 @@ public static class IdentityAWSExtension
     [ExcludeFromCodeCoverage]
     private static void LoadAppConfigConfiguration(IConfigurationBuilder configBuilder, ApplicationConfig config)
     {
+        Console.WriteLine("LoadAppConfigConfiguration");
+        
         if (config.AppConfig.Enabled)
         {
             configBuilder.AddAppConfig(config.AppConfig.ApplicationId,
