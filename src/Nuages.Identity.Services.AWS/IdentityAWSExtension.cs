@@ -15,6 +15,8 @@ public static class IdentityAWSExtension
     {
         if (configuration.GetValue<bool>("Nuages:UseAWS"))
         {
+            Console.WriteLine($"AWS Host is Enabled");
+            
             //Add options from Configuration if available
             //https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
             services.AddDefaultAWSOptions(configuration.GetAWSOptions());
@@ -27,6 +29,10 @@ public static class IdentityAWSExtension
             
             services.AddAWSService<IAmazonEventBridge>();
             services.AddScoped<IIdentityEventBus, AwsIdentityEventBus>();
+        }
+        else
+        {
+            Console.WriteLine($"AWS Host is Disabled");
         }
     }
 
