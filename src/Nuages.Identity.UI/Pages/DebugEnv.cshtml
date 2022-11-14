@@ -14,14 +14,24 @@
 <body>
 <div>
     <table>
-         @foreach (var v in Model.EnvVariables)
-            {
-                <tr>
-                    <td>@v.Key</td>
-                     <td>@v.Value</td>
-                </tr>
-            }
+        @foreach (var v in Model.EnvVariables)
+        {
+            <tr>
+                <td>@v.Key</td>
+                <td>@v.Value</td>
+            </tr>
+        }
     </table>
+    <hr/>
+     <table>
+             @foreach (var v in Model.Configs)
+                {
+                    <tr>
+                        <td>@v.Key</td>
+                         <td>@v.Value</td>
+                    </tr>
+                }
+        </table>
    
 </div>
 </body>
