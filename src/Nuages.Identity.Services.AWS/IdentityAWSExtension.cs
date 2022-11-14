@@ -52,8 +52,6 @@ public static class IdentityAWSExtension
             
             LoadAppConfigConfiguration(configBuilder, config);
 
-            configBuilder.Build();
-            
             configManager.TransformSecrets();
         }
     }
