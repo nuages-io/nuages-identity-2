@@ -51,6 +51,8 @@ public static class IdentityAWSExtension
             Console.WriteLine($"config.AppConfig.Enabled = {config.AppConfig.Enabled}");
             
             LoadAppConfigConfiguration(configBuilder, config);
+
+            configBuilder.Build();
             
             configManager.TransformSecrets();
         }
@@ -63,6 +65,10 @@ public static class IdentityAWSExtension
         
         if (config.AppConfig.Enabled)
         {
+            Console.WriteLine($"config.AppConfig.ApplicationId = {config.AppConfig.ApplicationId}");
+            Console.WriteLine($"config.AppConfig.EnvironmentId = {config.AppConfig.EnvironmentId}");
+            Console.WriteLine($"config.AppConfig.ConfigProfileId = {config.AppConfig.ConfigProfileId}");
+            
             configBuilder.AddAppConfig(config.AppConfig.ApplicationId,
                 config.AppConfig.EnvironmentId,
                 config.AppConfig.ConfigProfileId, true, TimeSpan.FromMinutes(15));
