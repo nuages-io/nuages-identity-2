@@ -1,0 +1,28 @@
+@page
+@model Nuages.Identity.UI.Pages.DebugEnv
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div>
+    <table>
+         @foreach (var v in Model.EnvVariables)
+            {
+                <tr>
+                    <td>@v.Key</td>
+                     <td>@v.Value</td>
+                </tr>
+            }
+    </table>
+   
+</div>
+</body>
+</html>
