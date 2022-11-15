@@ -11,28 +11,28 @@ public class DebugEnv : PageModel
     {
         _configuration = configuration;
     }
-    public List<Variable> EnvVariables { get; set; } = new List<Variable>();
-    public List<Variable> Configs { get; set; } = new List<Variable>();
+    public List<Variable> EnvVariables { get; set; } = new();
+    public List<Variable> Configs { get; set; } = new ();
 
     public void OnGet()
     {
-        foreach (DictionaryEntry v in System.Environment.GetEnvironmentVariables())
-        {
-            EnvVariables.Add(new Variable
-            {
-                Key = v.Key.ToString(),
-                Value = v.Value.ToString()
-            });
-        }
-        
-        foreach (var v in _configuration.AsEnumerable())
-        {
-            Configs.Add(new Variable
-            {
-                Key = v.Key,
-                Value = v.Value!
-            });
-        }
+        // foreach (DictionaryEntry v in System.Environment.GetEnvironmentVariables())
+        // {
+        //     EnvVariables.Add(new Variable
+        //     {
+        //         Key = v.Key.ToString(),
+        //         Value = v.Value.ToString()
+        //     });
+        // }
+        //
+        // foreach (var v in _configuration.AsEnumerable())
+        // {
+        //     Configs.Add(new Variable
+        //     {
+        //         Key = v.Key,
+        //         Value = v.Value!
+        //     });
+        // }
     }
 
 }
