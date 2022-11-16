@@ -74,13 +74,24 @@ public class Fido2Service : IFido2Service
         var jsonOptions = _contextAccessor.HttpContext!.Session.GetString("fido2.attestationOptions");
         var options = CredentialCreateOptions.FromJson(jsonOptions);
 
-        async Task<bool> Callback(IsCredentialIdUniqueToUserParams args)
-        {
-            var users = await _fido2Storage.GetUsersByCredentialIdAsync(args.CredentialId);
-            return users.Count <= 0;
-        }
+             
+         // Func<IsCredentialIdUniqueToUserParams, Task<bool>> callback = async (IsCredentialIdUniqueToUserParams args) =>
+         // {
+         //     var users = await _fido2Storage.GetUsersByCredentialIdAsync(args.CredentialId);
+         //     if (users.Count > 0) return false;
+         //
+         //     return true;
+         // };
 
-        var success = await _fido2.MakeNewCredentialAsync(attestationResponse, options, Callback);
+         async Task<bool> Callback(IsCredentialIdUniqueToUserParams args, CancellationToken token)
+         {
+             List<Fido2User> users = await _fido2Storage.GetUsersByCredentialIdAsync(args.CredentialId);
+             if (users.Count > 0) return false;
+
+             return true;
+         }
+
+         var success = await _fido2.MakeNewCredentialAsync(attestationResponse, options,  Callback);
 
         var credential = _fido2Storage.CreateCredential(new PublicKeyCredentialDescriptor(success.Result.CredentialId), 
             success.Result.PublicKey,
@@ -137,7 +148,13 @@ public class Fido2Service : IFido2Service
         // 3. Get credential counter from database
         var storedCounter = creds.SignatureCounter;
 
-        async Task<bool> Callback(IsUserHandleOwnerOfCredentialIdParams args)
+        // async Task<bool> Callback(IsUserHandleOwnerOfCredentialIdParams args)
+        // {
+        //     var storedCreds = await _fido2Storage.GetCredentialsByUserHandleAsync(args.UserHandle);
+        //     return storedCreds.Exists(c => c.Descriptor.Id.SequenceEqual(args.CredentialId));
+        // }
+
+        async Task<bool> Callback(IsUserHandleOwnerOfCredentialIdParams args, CancellationToken token)
         {
             var storedCreds = await _fido2Storage.GetCredentialsByUserHandleAsync(args.UserHandle);
             return storedCreds.Exists(c => c.Descriptor.Id.SequenceEqual(args.CredentialId));
