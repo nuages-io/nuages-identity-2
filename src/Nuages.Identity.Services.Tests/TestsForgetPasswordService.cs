@@ -13,6 +13,7 @@ public class TestsForgetPasswordService
     public async Task ShouldStartForgetPasswordWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
+        Assert.NotNull(user.Email);
         user.EmailConfirmed = true;
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -41,6 +42,7 @@ public class TestsForgetPasswordService
     public async Task ShouldStartForgetPasswordWithSuccessEmailNotSentBecauseNotCOnfirmed()
     {
         var user = MockHelpers.CreateDefaultUser();
+        Assert.NotNull(user.Email);
         user.EmailConfirmed = false;
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);

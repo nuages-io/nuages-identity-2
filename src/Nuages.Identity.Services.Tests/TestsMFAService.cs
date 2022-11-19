@@ -91,7 +91,8 @@ public class TestsMfaService
     public async Task ShouldEnableMfaWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         string? currentKey = null;
@@ -158,7 +159,8 @@ public class TestsMfaService
     public async Task ShouldDisableMfaWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;

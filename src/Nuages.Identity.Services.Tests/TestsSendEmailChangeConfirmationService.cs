@@ -43,7 +43,8 @@ public class TestsSendEmailChangeConfirmationService
     public async Task ShouldSendSendEMailWithErrorNotChanged()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+            
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;
@@ -102,7 +103,8 @@ public class TestsSendEmailChangeConfirmationService
     public async Task ShouldSendSendEMailWithExceptionNotFound()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var service = new SendEmailChangeConfirmationService(identityStuff.UserManager,

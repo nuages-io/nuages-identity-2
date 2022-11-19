@@ -157,7 +157,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
 
             await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme,
-                StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
+                StoreAuthInfo("PasswordExpired", user.Id, user.Email!, newCode));
 
             return false;
         }
@@ -183,7 +183,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                     newCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(newCode));
 
                     await Context.SignInAsync(NuagesIdentityConstants.PasswordExpiredScheme,
-                        StoreAuthInfo("PasswordExpired", user.Id, user.Email, newCode));
+                        StoreAuthInfo("PasswordExpired", user.Id, user.Email!, newCode));
 
                     return false;
                 }
@@ -229,7 +229,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
 
 
     public override async Task SignInWithClaimsAsync(NuagesApplicationUser<string> user,
-        AuthenticationProperties authenticationProperties,
+        AuthenticationProperties? authenticationProperties,
         IEnumerable<Claim> additionalClaims)
     {
         user.LastLogin = DateTime.UtcNow;
@@ -271,10 +271,10 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
     public async Task SignInEmailNotVerified(NuagesApplicationUser<string> user)
     {
         await Context.SignInAsync(NuagesIdentityConstants.EmailNotVerifiedScheme,
-            StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email));
+            StoreAuthInfo("EmailNotConfirmed", user.Id, user.Email!));
     }
 
-    public async Task<SignInResult> CustomPreSignInCheck(NuagesApplicationUser<string> user)
+    public async Task<SignInResult?> CustomPreSignInCheck(NuagesApplicationUser<string> user)
     {
         var res = await PreSignInCheck(user);
 
@@ -303,6 +303,11 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                     if (result.Principal != null)
                     {
                         var id = result.Principal.FindFirstValue(ClaimTypes.Name);
+                        if (string.IsNullOrEmpty(id))
+                        {
+                            throw new Exception("name claim not found");
+                        }
+                        
                         var user = await UserManager.FindByIdAsync(id);
                         if (user != null)
                         {

@@ -22,7 +22,7 @@ public class TestAuthHandler : AuthenticationHandler<TestAuthHandlerOptions>
         var claims = new List<Claim>
         {
             Context.Request.Headers.TryGetValue(UserId, out var userId)
-                ? new Claim("sub", userId[0])
+                ? new Claim("sub", userId[0]!)
                 : new Claim("sub", Options.DefaultUserId)
         };
 

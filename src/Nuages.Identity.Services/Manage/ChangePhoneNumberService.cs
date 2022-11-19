@@ -33,7 +33,7 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
         if (user == null)
             throw new NotFoundException("UserNotFound");
 
-        var previousPhoneNumber = user.PhoneNumber;
+        var previousPhoneNumber = user.PhoneNumber!;
 
         IdentityResult res;
 
@@ -55,7 +55,7 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
             {
                 await _identityEventBus.PutEvent(IdentityEvents.PhoneRemoved ,user);
                 
-                _messageService.SendEmailUsingTemplate(user.Email, "Fallback_Phone_Removed",
+                _messageService.SendEmailUsingTemplate(user.Email!, "Fallback_Phone_Removed",
                     new Dictionary<string, string>
                     {
                         { "PhoneNumber", previousPhoneNumber }
@@ -66,7 +66,7 @@ public class ChangePhoneNumberService : IChangePhoneNumberService
             {
                 await _identityEventBus.PutEvent(IdentityEvents.PhoneAdded ,user);
                 
-                _messageService.SendEmailUsingTemplate(user.Email, "Fallback_Phone_Added",
+                _messageService.SendEmailUsingTemplate(user.Email!, "Fallback_Phone_Added",
                     new Dictionary<string, string>
                     {
                         { "PhoneNumber", phoneNumber }

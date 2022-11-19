@@ -85,14 +85,18 @@ public class Fido2Service : IFido2Service
 
          async Task<bool> Callback(IsCredentialIdUniqueToUserParams args, CancellationToken token)
          {
-             List<Fido2User> users = await _fido2Storage.GetUsersByCredentialIdAsync(args.CredentialId);
-             if (users.Count > 0) return false;
-
-             return true;
+             var users = await _fido2Storage.GetUsersByCredentialIdAsync(args.CredentialId);
+             return users.Count <= 0;
          }
 
          var success = await _fido2.MakeNewCredentialAsync(attestationResponse, options,  Callback);
 
+         if (success == null)
+             throw new Exception("success is null");
+         
+         if (success.Result == null)
+             throw new Exception("success.Result is null");
+         
         var credential = _fido2Storage.CreateCredential(new PublicKeyCredentialDescriptor(success.Result.CredentialId), 
             success.Result.PublicKey,
             success.Result.User.Id,

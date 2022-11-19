@@ -59,10 +59,10 @@ public class AdminChangePasswordService : IAdminChangePasswordService
         if (res.Succeeded) user.UserMustChangePassword = mustChangePassword;
 
         if (sendByEmail)
-            _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Changed_ByAdmin",
+            _messageService.SendEmailUsingTemplate(user.Email!, "Password_Was_Changed_ByAdmin",
                 new Dictionary<string, string>
                 {
-                    { "UserName", user.UserName },
+                    { "UserName", user.UserName! },
                     { "Password", newPassword },
                     { "MustCHangePassword", mustChangePassword.ToString() }
                 });

@@ -31,7 +31,7 @@ public class FakeSignInManager : NuagesSignInManager
 
 
     public override async Task SignInWithClaimsAsync(NuagesApplicationUser<string> user,
-        AuthenticationProperties authenticationProperties,
+        AuthenticationProperties? authenticationProperties,
         IEnumerable<Claim> additionalClaims)
     {
         user.LastLogin = DateTime.UtcNow;
@@ -53,12 +53,12 @@ public class FakeSignInManager : NuagesSignInManager
         return await Task.FromResult(SignInResult.Failed);
     }
 
-    public override async Task<NuagesApplicationUser<string>> GetTwoFactorAuthenticationUserAsync()
+    public override async Task<NuagesApplicationUser<string>?> GetTwoFactorAuthenticationUserAsync()
     {
         if (CurrentUser == null)
             return (await Task.FromResult((NuagesApplicationUser<string>?)null))!;
 
-        return await Task.FromResult(CurrentUser);
+        return await Task.FromResult(CurrentUser!);
     }
 
     public override async Task<SignInResult> TwoFactorRecoveryCodeSignInAsync(string recoveryCode)
@@ -76,7 +76,7 @@ public class FakeSignInManager : NuagesSignInManager
             : SignInResult.Failed);
     }
 
-    public override async Task<ExternalLoginInfo> GetExternalLoginInfoAsync(string? expectedXsrf = null)
+    public override async Task<ExternalLoginInfo?> GetExternalLoginInfoAsync(string? expectedXsrf = null)
     {
         var i = new ClaimsIdentity();
         if (CurrentUser == null)

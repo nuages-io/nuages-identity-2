@@ -35,6 +35,7 @@ public class TestsNuagesUserManager
         var res = await _identityStuff.UserManager.CreateAsync(_defaultUser);
 
         Assert.True(res.Succeeded);
+        Assert.NotNull(_defaultUser.Email);
 
         Assert.NotNull(await _identityStuff.UserManager.FindAsync(_defaultUser.Email));
     }
@@ -45,7 +46,8 @@ public class TestsNuagesUserManager
         var res = await _identityStuff.UserManager.CreateAsync(_defaultUser);
 
         Assert.True(res.Succeeded);
-
+        Assert.NotNull(_defaultUser.UserName);
+        
         Assert.NotNull(await _identityStuff.UserManager.FindAsync(_defaultUser.UserName));
     }
 

@@ -62,7 +62,7 @@ public class ChangePasswordService : IChangePasswordService
             {
                 await _identityEventBus.PutEvent(IdentityEvents.PasswordChanged,user);
                 
-                _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Changed",
+                _messageService.SendEmailUsingTemplate(user.Email!, "Password_Was_Changed",
                     new Dictionary<string, string>());
             }
             
@@ -75,7 +75,7 @@ public class ChangePasswordService : IChangePasswordService
             {
                 await _identityEventBus.PutEvent(IdentityEvents.PasswordAdded,user);
                 
-                _messageService.SendEmailUsingTemplate(user.Email, "Password_Was_Added", new Dictionary<string, string>
+                _messageService.SendEmailUsingTemplate(user.Email!, "Password_Was_Added", new Dictionary<string, string>
                 {
                     // { "PhoneNumber", phoneNumber }
                 });

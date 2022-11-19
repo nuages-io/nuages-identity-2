@@ -238,6 +238,10 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         //Login with Code
 
         var user = await _userManager.FindByEmailAsync(IdentityDataSeeder.UserEmail_MFA);
+        
+        if (user == null)
+            throw new ArgumentException(nameof(user));
+        
         var key = await _userManager.GetAuthenticatorKeyAsync(user);
 
         var totp = new Totp(Base32Encoding.ToBytes(key)).ComputeTotp();
@@ -299,8 +303,15 @@ public class TestsAccountController : IClassFixture<CustomWebApplicationFactoryA
         //Login with Code
 
         var user = await _userManager.FindByEmailAsync(IdentityDataSeeder.UserEmail_MFA);
+        
+        if (user == null)
+            throw new ArgumentException(nameof(user));
+        
         var codes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 1);
 
+        if (codes == null)
+            throw new ArgumentException(nameof(codes));
+        
         var loginBody = new LoginRecoveryCodeModel
         {
             Code = codes.First()

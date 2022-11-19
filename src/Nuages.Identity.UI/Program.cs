@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configBuilder = builder.LoadConfiguration();
 
 //Load Language files
-configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName);
+configBuilder.SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName!);
 configBuilder.AddJsonFileTranslation("/locales/fr-CA.json");
 configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
 configBuilder.AddInMemoryCollection(ConfigurationOverrides);
@@ -158,13 +158,18 @@ app.UseAuthorization();
 
 app.UseRequestLocalization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapRazorPages();
-    endpoints.MapControllers();
-    endpoints.MapDefaultControllerRoute();
-    endpoints.MapHealthChecks("health");
-});
+// app.UseEndpoints(endpoints =>
+// {
+//     endpoints.MapRazorPages();
+//     endpoints.MapControllers();
+//     endpoints.MapDefaultControllerRoute();
+//     endpoints.MapHealthChecks("health");
+// });
+
+app.MapRazorPages();
+app.MapControllers();
+app.MapDefaultControllerRoute();
+app.MapHealthChecks("health");
 
 app.UseOpenApi();
 app.UseSwaggerUi3();
@@ -177,5 +182,5 @@ app.Run();
 public partial class Program //Require for Integration Tests
 #pragma warning restore CA1050
 {
-    public static List<KeyValuePair<string, string>> ConfigurationOverrides { get; set; } = new();
+    public static List<KeyValuePair<string, string?>> ConfigurationOverrides { get; set; } = new();
 }

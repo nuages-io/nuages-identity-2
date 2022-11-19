@@ -12,7 +12,8 @@ public class TestsChangePhoneNumberService
     public async Task ChangePhoneNumberWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         const string phoneNumber = MockHelpers.PhoneNumber;
@@ -39,7 +40,8 @@ public class TestsChangePhoneNumberService
     public async Task ChangePhoneNumberWithSuccessWithoutToken()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         const string phoneNumber = MockHelpers.PhoneNumber;
@@ -82,7 +84,8 @@ public class TestsChangePhoneNumberService
     public async Task ChangePhoneNumberEmptyWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         const string phoneNumber = "";

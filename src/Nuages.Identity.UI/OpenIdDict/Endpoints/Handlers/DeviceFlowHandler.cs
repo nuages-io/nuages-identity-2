@@ -33,7 +33,7 @@ public class DeviceFlowHandler : IDeviceFlowHandler
             // Note: if you want to automatically invalidate the authorization code/refresh token
             // when the user password/roles change, use the following line instead:
             // var user = _signInManager.ValidateSecurityStampAsync(info.Principal);
-            var user = await _userManager.GetUserAsync(principal);
+            var user = await _userManager.GetUserAsync(principal!);
             if (user == null)
                 return new ForbidResult(new List<string>
                     {

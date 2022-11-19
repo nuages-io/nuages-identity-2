@@ -40,7 +40,9 @@ public class UserInfoEndpoint : IUserInfoEndpoint
 
         if (_contextAccessor.HttpContext!.User.HasScope(OpenIddictConstants.Scopes.Email))
         {
-            claims[OpenIddictConstants.Claims.Email] = await _userManager.GetEmailAsync(user);
+            var email = await _userManager.GetEmailAsync(user);
+            if (!string.IsNullOrEmpty(email))
+                claims[OpenIddictConstants.Claims.Email] = email;
         }
 
         if (_contextAccessor.HttpContext!.User.HasScope(OpenIddictConstants.Scopes.Roles))

@@ -48,7 +48,8 @@ public class TestsChangeEmailService
     public async Task ChangeEmailWithErrorNotChanged()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var changeEmailService = new ChangeEmailService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<IIdentityEventBus>().Object);

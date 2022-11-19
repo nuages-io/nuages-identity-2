@@ -20,7 +20,7 @@ public class CustomWebApplicationFactory<TStartup>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        Program.ConfigurationOverrides = new List<KeyValuePair<string, string>> 
+        Program.ConfigurationOverrides = new List<KeyValuePair<string, string?>> 
             { new("Nuages:Data:Storage", "InMemory"), 
             new("Nuages:OpenIdDict:Storage", "InMemory"),
             new("Nuages:UseCookiePolicy", "false")

@@ -54,7 +54,7 @@ public class LoginService : ILoginService
                 {
                     await _identityEventBus.PutEvent(IdentityEvents.LockingOutUser, user);
                         
-                    _messageService.SendEmailUsingTemplate(user.Email, "Login_LockedOut", new Dictionary<string, string>
+                    _messageService.SendEmailUsingTemplate(user.Email!, "Login_LockedOut", new Dictionary<string, string>
                     {
                         { "Minutes", _userManager.Options.Lockout.DefaultLockoutTimeSpan.Minutes.ToString() }
                     });
@@ -113,6 +113,9 @@ public class LoginService : ILoginService
 
         //Reload to avoind concurrency error
         user = await _userManager.FindByIdAsync(user.Id);
+        
+        if (user == null) 
+            throw new NotFoundException("UserNotFound");
         
         if (result == SignInResult.Success)
         {

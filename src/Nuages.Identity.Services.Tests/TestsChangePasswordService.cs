@@ -13,7 +13,8 @@ public class TestsChangePasswordService
     public async Task ShouldChangePasswordWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         const string currentPassword = MockHelpers.StrongPassword;
         const string newPassword = MockHelpers.StrongPassword + "New";
 
@@ -40,7 +41,8 @@ public class TestsChangePasswordService
     public async Task ShouldAddPasswordWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -131,7 +133,8 @@ public class TestsChangePasswordService
     public async Task ShouldAdminChangePasswordWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         const string currentPassword = MockHelpers.StrongPassword;
         const string newPassword = MockHelpers.StrongPassword + "New";
 
@@ -161,7 +164,8 @@ public class TestsChangePasswordService
     public async Task ShouldAdminAddPasswordWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         const string newPassword = MockHelpers.StrongPassword + "New";
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -190,7 +194,8 @@ public class TestsChangePasswordService
     public async Task ShouldAdminChangePasswordWithoutTokenWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         const string currentPassword = MockHelpers.StrongPassword;
         const string newPassword = MockHelpers.StrongPassword + "New";
 

@@ -42,6 +42,8 @@ public class TestsSmsCodeService
     {
         var user = MockHelpers.CreateDefaultUser();
 
+        Assert.NotNull(user.PhoneNumber);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;

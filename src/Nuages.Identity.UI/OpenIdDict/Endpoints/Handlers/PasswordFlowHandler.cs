@@ -1,3 +1,4 @@
+using Amazon.SimpleEmailV2.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Nuages.Identity.Services.AspNetIdentity;
@@ -41,7 +42,9 @@ public class PasswordFlowHandler : IPasswordFlowHandler
             }
 
             var user = await _userManager.FindByNameAsync(request.Username!);
-
+            if (user == null)
+                throw new NotFoundException("User not found");
+            
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.
             var principal = await _signInManager.CreateUserPrincipalAsync(user);

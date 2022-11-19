@@ -13,12 +13,12 @@ public class PasswordReuseValidator<TUser, TKey> : IPasswordValidator<TUser>
         _identityOptions = identityOptions.Value;
     }
     
-    public Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user, string password)
+    public Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user, string? password)
     {
         if (!_identityOptions.EnablePasswordHistory)
             return Task.FromResult(IdentityResult.Success);
 
-        if (user.PasswordHistory != null)
+        if (user.PasswordHistory != null && !string.IsNullOrEmpty(password))
         {
             // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
             foreach (var pwd in user.PasswordHistory.Passwords)

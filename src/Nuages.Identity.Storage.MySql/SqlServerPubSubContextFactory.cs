@@ -15,13 +15,16 @@ public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<NuagesI
     public NuagesIdentityDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName)
+            .SetBasePath(Directory.GetParent(AppContext.BaseDirectory)?.FullName!)
             .AddJsonFile("appsettings.mysql.json", false)
             .Build();
         
         var optionsBuilder = new DbContextOptionsBuilder<NuagesIdentityDbContext>();
 
         var connectionString =  configuration["ConnectionString"];
+
+        if (string.IsNullOrEmpty(connectionString))
+            throw new ArgumentNullException(nameof(connectionString));
         
         optionsBuilder
             .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), b => b.MigrationsAssembly("Nuages.Identity.Storage.MySql"));

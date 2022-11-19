@@ -126,7 +126,7 @@ public class TestsAuthorizationController : IClassFixture<CustomWebApplicationFa
         var location = res.Headers.GetValues("Location").FirstOrDefault();
         Assert.NotNull(location);
 
-        var uri = new Uri(location!);
+        var uri = new Uri(location);
 
         var parameetrs = HttpUtility.ParseQueryString(uri.Query);
 

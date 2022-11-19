@@ -45,9 +45,12 @@ public class MagicLinkService : IMagicLinkService
     public async Task<MagicLinkResultModel> LoginMagicLink(string token, string userId)
     {
         var user = await _userManager.FindByIdAsync(userId);
-
+        if (user == null)
+            throw new NotFoundException("UserNotFound");
+        
         var isValid =
             await _userManager.VerifyUserTokenAsync(user, "MagicLinkLoginProvider", "magiclink-auth", token);
+        
         if (!isValid)
             return new MagicLinkResultModel
             {
@@ -109,7 +112,7 @@ public class MagicLinkService : IMagicLinkService
 
         var url = await GetMagicLinkUrl(user, model.ReturnUrl);
 
-        _messageService.SendEmailUsingTemplate(user.Email, "MagicLink_Login", new Dictionary<string, string>
+        _messageService.SendEmailUsingTemplate(user.Email!, "MagicLink_Login", new Dictionary<string, string>
         {
             { "Link", url }
         });

@@ -69,7 +69,7 @@ public static class MockHelpers
                 .ReturnsAsync(() => user);
 
             mockIdentity.UserEmailStore
-                .Setup(u => u.FindByEmailAsync(user.NormalizedEmail, It.IsAny<CancellationToken>()))
+                .Setup(u => u.FindByEmailAsync(user.NormalizedEmail!, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user);
             mockIdentity.UserEmailStore.Setup(u => u.GetEmailConfirmedAsync(user, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(() => user.EmailConfirmed);

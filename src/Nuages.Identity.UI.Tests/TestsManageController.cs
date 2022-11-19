@@ -75,6 +75,8 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
 
         var user = await _userManager.FindByIdAsync(userId);
 
+        Assert.NotNull(user);
+        
         await _userManager.ResetAuthenticatorKeyAsync(user);
         var key = await _userManager.GetAuthenticatorKeyAsync(user);
 
@@ -151,7 +153,14 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
         var client = _factory.CreateClient();
 
         var user = await _userManager.FindByIdAsync(_factory.DefaultUserId);
+
+        if (user == null)
+            throw new ArgumentException(nameof(user));
+        
         var currentUserName = user.UserName;
+
+        Assert.NotNull(currentUserName);
+        
         var body = new ChangeUserNameModel
         {
             NewUserName = currentUserName + "2"
@@ -166,7 +175,10 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
 
         var response = JsonSerializer.Deserialize<ChangeUserNameResultModel>(content, _options);
 
-        Assert.True(response!.Success);
+        if (response == null)
+            throw new ArgumentException(nameof(response));
+        
+        Assert.True(response.Success);
 
 
         body = new ChangeUserNameModel
@@ -262,6 +274,9 @@ public class TestsManageController : IClassFixture<CustomWebApplicationFactory<P
         Assert.True(response!.Success);
 
         var user = await _userManager.FindByIdAsync(_factory.DefaultUserId);
+
+        Assert.NotNull(user);
+        
         await _userManager.RemovePasswordAsync(user);
 
         pwd = IdentityDataSeeder.UserPassword +  Guid.NewGuid();

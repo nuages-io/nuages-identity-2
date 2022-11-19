@@ -13,6 +13,9 @@ public class TestsSendEmailConfirmationService
     public async Task SendEmailConfirmationWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
+        
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;
@@ -39,6 +42,8 @@ public class TestsSendEmailConfirmationService
     {
         var user = MockHelpers.CreateDefaultUser();
 
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;

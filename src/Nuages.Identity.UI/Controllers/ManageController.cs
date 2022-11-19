@@ -64,7 +64,8 @@ public class ManageController : Controller
             if (res.Success)
             {
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
-                await _signInManager.RefreshSignInAsync(user);
+                if (user != null)
+                    await _signInManager.RefreshSignInAsync(user);
             }
 
             return res;
@@ -139,7 +140,8 @@ public class ManageController : Controller
             if (res.Success)
             {
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
-                await _signInManager.RefreshSignInAsync(user);
+                if (user != null)
+                    await _signInManager.RefreshSignInAsync(user);
             }
 
             return res;
@@ -187,7 +189,8 @@ public class ManageController : Controller
             if (res.Success)
             {
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
-                await _signInManager.RefreshSignInAsync(user);
+                if (user != null)
+                    await _signInManager.RefreshSignInAsync(user);
             }
 
             return res;
@@ -214,7 +217,8 @@ public class ManageController : Controller
             if (res.Success)
             {
                 var user = await _userManager.FindByIdAsync(User.Sub()!);
-                await _signInManager.RefreshSignInAsync(user);
+                if (user != null)
+                    await _signInManager.RefreshSignInAsync(user);
             }
 
             return res;

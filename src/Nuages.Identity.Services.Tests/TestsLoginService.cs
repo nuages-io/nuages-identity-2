@@ -3,8 +3,8 @@ using Moq;
 using Nuages.Identity.Services.AspNetIdentity;
 using Nuages.Identity.Services.Email.Sender;
 using Nuages.Identity.Services.Login;
-using Nuages.Web.Exceptions;
 using Xunit;
+using NotFoundException = Nuages.Web.Exceptions.NotFoundException;
 
 namespace Nuages.Identity.Services.Tests;
 
@@ -15,7 +15,8 @@ public class TestsLoginService
     {
         var user = MockHelpers.CreateDefaultUser();
 
-
+        Assert.NotNull(user.Email);
+        
         const string password = MockHelpers.StrongPassword;
 
         var identityStuff = MockHelpers.MockIdentityStuff(user, new NuagesIdentityOptions
@@ -53,6 +54,8 @@ public class TestsLoginService
 
         var user = MockHelpers.CreateDefaultUser();
 
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         user.PasswordHash = identityStuff.UserManager.PasswordHasher.HashPassword(user, password);
@@ -108,6 +111,9 @@ public class TestsLoginService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
+        
+        Assert.NotNull(user.Email);
+        
         user.AccessFailedCount = 4;
         user.LockoutEnabled = true;
         user.LockoutEnd = DateTimeOffset.Now.AddDays(1);
@@ -139,6 +145,8 @@ public class TestsLoginService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
+        Assert.NotNull(user.Email);
+        
         user.EmailConfirmed = false;
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -170,6 +178,9 @@ public class TestsLoginService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
+        
+        Assert.NotNull(user.Email);
+        
         user.EmailConfirmed = false;
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -202,6 +213,9 @@ public class TestsLoginService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
+        
+        Assert.NotNull(user.Email);
+        
         user.AccessFailedCount = 5;
         user.LockoutEnabled = true;
 
@@ -422,6 +436,9 @@ public class TestsLoginService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
+        
+        Assert.NotNull(user.Email);
+        
         user.UserMustChangePassword = true;
         
         var identityStuff = MockHelpers.MockIdentityStuff(user);

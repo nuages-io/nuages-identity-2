@@ -90,7 +90,8 @@ public class TestsRegisterService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         identityStuff.UserStore
@@ -126,7 +127,8 @@ public class TestsRegisterService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         identityStuff.UserStore

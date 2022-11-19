@@ -110,6 +110,10 @@ public class IdentityDataSeeder : IHostedService
 
         var existingUser = await userManager.FindByEmailAsync(AdminEmail);
 
+
+        if (existingUser == null)
+            throw new ArgumentException(nameof(existingUser));
+        
         if (!await userManager.IsInRoleAsync(existingUser, "Admin"))
             await userManager.AddToRoleAsync(existingUser, "Admin");
     }

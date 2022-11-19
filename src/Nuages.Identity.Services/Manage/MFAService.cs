@@ -55,7 +55,7 @@ public class MFAService : IMFAService
         
         var url = $"{_options.Authority}account/manage/twoFactorAuthentication";
 
-        _messageService.SendEmailUsingTemplate(user.Email, "2FA_Disabled", new Dictionary<string, string>
+        _messageService.SendEmailUsingTemplate(user.Email!, "2FA_Disabled", new Dictionary<string, string>
         {
             { "Link", url }
         });
@@ -95,7 +95,7 @@ public class MFAService : IMFAService
 
         var url = $"{_options.Authority}account/manage/twoFactorAuthentication";
 
-        _messageService.SendEmailUsingTemplate(user.Email, "2FA_Enabled", new Dictionary<string, string>
+        _messageService.SendEmailUsingTemplate(user.Email!, "2FA_Enabled", new Dictionary<string, string>
         {
             { "Link", url }
         });
@@ -105,7 +105,7 @@ public class MFAService : IMFAService
         return new MFAResultModel
         {
             Success = true,
-            Codes = recoveryCodes.ToList()
+            Codes = recoveryCodes?.ToList() ?? new List<string>()
         };
     }
 
@@ -124,7 +124,7 @@ public class MFAService : IMFAService
         return new MFAResultModel
         {
             Success = true,
-            Codes = recoveryCodes.ToList()
+            Codes = recoveryCodes?.ToList() ?? new List<string>()
         };
     }
 
@@ -166,9 +166,12 @@ public class MFAService : IMFAService
             key = await _userManager.GetAuthenticatorKeyAsync(user);
         }
 
+        if (string.IsNullOrEmpty(key))
+            throw new ArgumentNullException(nameof(key));
+
         var email = await _userManager.GetEmailAsync(user);
 
-        var url = GenerateQrCodeUri(email, key);
+        var url = GenerateQrCodeUri(email!, key);
 
         return (key, url);
     }

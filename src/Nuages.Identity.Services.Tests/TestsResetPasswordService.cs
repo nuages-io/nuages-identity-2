@@ -15,6 +15,7 @@ public class TestsResetPasswordService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
+        Assert.NotNull(user.Email);
         user.EmailConfirmed = false;
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);
@@ -67,7 +68,8 @@ public class TestsResetPasswordService
         const string password = "password";
 
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var resetService = new ResetPasswordService(identityStuff.UserManager, new FakeStringLocalizer(), new Mock<ILogger<ResetPasswordService>>().Object, new Mock<IIdentityEventBus>().Object);
@@ -95,6 +97,7 @@ public class TestsResetPasswordService
         const string password = MockHelpers.StrongPassword;
 
         var user = MockHelpers.CreateDefaultUser();
+        Assert.NotNull(user.Email);
         user.EmailConfirmed = false;
 
         var identityStuff = MockHelpers.MockIdentityStuff(user);

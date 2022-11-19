@@ -75,9 +75,9 @@ public class TwoFactorAuthenticationModel : PageModel
             RecoveryCodesString = RecoveryCodes.Any() ? string.Join(",", RecoveryCodes) : "";
             
             if (user.PhoneNumberConfirmed) 
-                FallbackNumber = user.PhoneNumber;
+                FallbackNumber = user.PhoneNumber!;
 
-            Username = user.UserName;
+            Username = user.UserName!;
             
             return Page();
         }

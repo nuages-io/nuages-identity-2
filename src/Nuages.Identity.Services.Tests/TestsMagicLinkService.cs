@@ -52,7 +52,8 @@ public class TestsMagicLinkService
     public async Task ShoudStartMagicLinkWithSuccess()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         identityStuff.NuagesOptions.Authority = "https://localhost:8001/";
@@ -81,6 +82,8 @@ public class TestsMagicLinkService
     {
         var user = MockHelpers.CreateDefaultUser();
 
+        Assert.NotNull(user.Email);
+        
         var identityStuff = MockHelpers.MockIdentityStuff(user);
 
         var sendCalled = false;
@@ -107,7 +110,8 @@ public class TestsMagicLinkService
     public async Task ShoudStartMagicLinkWithErrorCantLogin()
     {
         var user = MockHelpers.CreateDefaultUser();
-
+        Assert.NotNull(user.Email);
+        
         user.LockoutEnd = DateTimeOffset.Now.AddMinutes(10);
         user.LockoutEnabled = true;
 

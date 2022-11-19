@@ -14,7 +14,7 @@ public class ServerOptionsInitializer : IConfigureNamedOptions<OpenIddictServerO
         _keyStore = keyStore;
     }
 
-    public void Configure(string name, OpenIddictServerOptions options)
+    public void Configure(string? name, OpenIddictServerOptions options)
     {
         Configure(options);
     }

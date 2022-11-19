@@ -35,7 +35,7 @@ public class ForgotPasswordService : IForgotPasswordService
     public async Task<ForgotPasswordResultModel> StartForgotPassword(ForgotPasswordModel model)
     {
         var user = await _userManager.FindByEmailAsync(model.Email);
-        if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+        if (user == null || string.IsNullOrEmpty(user.Email) || !await _userManager.IsEmailConfirmedAsync(user))
         {
             await _identityEventBus.PutEvent(IdentityEvents.ForgetPasswordUrlNotAvailable, new
             {

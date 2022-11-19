@@ -51,8 +51,8 @@ public static class IdentityExtensions
                     configuration.GetSection("Nuages:Identity:Password").Bind(identity.Password);
                 });
 
-        var storage = Enum.Parse<StorageType>(configuration["Nuages:Data:Storage"]);
-        var connectionString = configuration["Nuages:Data:ConnectionString"];
+        var storage = Enum.Parse<StorageType>(configuration["Nuages:Data:Storage"]!);
+        var connectionString = configuration["Nuages:Data:ConnectionString"]!;
 
         switch (storage)
         {
@@ -122,13 +122,13 @@ public static class IdentityExtensions
 
         identityBuilder.AddNuagesIdentityServices(configuration, _ => { });
 
-        var uri = new Uri(configuration["Nuages:Identity:Authority"]);
+        var uri = new Uri(configuration["Nuages:Identity:Authority"]!);
 
         var fidoBuilder2 = identityBuilder.AddNuagesFido2(options =>
         {
             options.ServerDomain = uri.Host;
             options.ServerName = configuration["Nuages:Identity:Name"];
-            options.Origins = new HashSet<string> { configuration["Nuages:Identity:Authority"] };
+            options.Origins = new HashSet<string> { configuration["Nuages:Identity:Authority"]! };
             options.TimestampDriftTolerance = 300000;
         });
 
@@ -153,7 +153,7 @@ public static class IdentityExtensions
             {
                 fidoBuilder2.AddFido2MongoStorage(config =>
                 {
-                    config.ConnectionString = configuration["Nuages:Data:ConnectionString"];
+                    config.ConnectionString = configuration["Nuages:Data:ConnectionString"]!;
                 });
                 break;
             }
@@ -195,8 +195,8 @@ public static class IdentityExtensions
 
             auth.AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"];
-                googleOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Google:ClientSecret"];
+                googleOptions.ClientId = configuration["Nuages:OpenIdProviders:Google:ClientId"]!;
+                googleOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Google:ClientSecret"]!;
             });
         }
     }
@@ -209,8 +209,8 @@ public static class IdentityExtensions
 
             auth.AddGitHub(o =>
             {
-                o.ClientId = configuration["Nuages:OpenIdProviders:GitHub:ClientId"];
-                o.ClientSecret = configuration["Nuages:OpenIdProviders:GitHub:ClientSecret"];
+                o.ClientId = configuration["Nuages:OpenIdProviders:GitHub:ClientId"]!;
+                o.ClientSecret = configuration["Nuages:OpenIdProviders:GitHub:ClientSecret"]!;
                 o.CallbackPath = "/signin-github";
 
                 // Grants access to read a user's profile data.
@@ -268,8 +268,8 @@ public static class IdentityExtensions
 
             auth.AddFacebook(facebookOptions =>
             {
-                facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:AppId"];
-                facebookOptions.AppSecret = configuration["Nuages:OpenIdProviders:Facebook:AppSecret"];
+                facebookOptions.AppId = configuration["Nuages:OpenIdProviders:Facebook:AppId"]!;
+                facebookOptions.AppSecret = configuration["Nuages:OpenIdProviders:Facebook:AppSecret"]!;
             });
         }
     }
@@ -282,8 +282,8 @@ public static class IdentityExtensions
 
             auth.AddMicrosoftAccount(microsoftOptions =>
             {
-                microsoftOptions.ClientId = configuration["Nuages:OpenIdProviders:Microsoft:ClientId"];
-                microsoftOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Microsoft:ClientSecret"];
+                microsoftOptions.ClientId = configuration["Nuages:OpenIdProviders:Microsoft:ClientId"]!;
+                microsoftOptions.ClientSecret = configuration["Nuages:OpenIdProviders:Microsoft:ClientSecret"]!;
             });
         }
     }
