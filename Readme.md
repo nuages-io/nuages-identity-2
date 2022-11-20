@@ -64,15 +64,16 @@ Application will be available at https://localhost:8001
 
 ### Run locally with Docker
 
-From root directory,
+From the root directory,
 
 ```shell
 docker build -t nuages.identity.ui .
-docker run -it --rm -p 8003:80 -e Nuages__Identity__Authority=http://localhost:8003 --name nuage-identity nuages.identity.ui
+docker run -it --rm -p 8003:80 --env-file ./env.list --name nuage-identity nuages.identity.ui
 ```
 
 Application will be available at http://localhost:8003 (no HTTPS)
 
+Note: env.list must include environment variables required to run the app (see Configuratio below)
 
 ## Configuration
 
