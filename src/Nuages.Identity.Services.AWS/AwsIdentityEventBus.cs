@@ -9,12 +9,12 @@ namespace Nuages.Identity.AWS;
 public class AwsIdentityEventBus : IIdentityEventBus
 {
     private readonly IAmazonEventBridge _eventBridge;
-    private readonly ILogger<AwsIdentityEventBus> _eventBus;
+    private readonly ILogger<AwsIdentityEventBus> _logger;
 
-    public AwsIdentityEventBus(IAmazonEventBridge eventBridge, ILogger<AwsIdentityEventBus> eventBus)
+    public AwsIdentityEventBus(IAmazonEventBridge eventBridge, ILogger<AwsIdentityEventBus> logger)
     {
         _eventBridge = eventBridge;
-        _eventBus = eventBus;
+        _logger = logger;
     }
     
     public async Task PutEvent(IdentityEvents eventName, object detail)
@@ -33,6 +33,6 @@ public class AwsIdentityEventBus : IIdentityEventBus
             }
         });
         
-        _eventBus.LogInformation("EVENT BRIDGE => OnLogin :" + res.HttpStatusCode + " failed = " + res.FailedEntryCount);
+        _logger.LogInformation("EVENT BRIDGE => OnLogin :" + res.HttpStatusCode + " failed = " + res.FailedEntryCount);
     }
 }
