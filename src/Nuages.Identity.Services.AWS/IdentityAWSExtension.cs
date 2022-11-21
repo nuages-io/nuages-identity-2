@@ -35,8 +35,12 @@ public static class IdentityAWSExtension
         
             services.AddAWSSender(templateFileName, initializeTemplate);
             
-            services.AddAWSService<IAmazonEventBridge>();
-            services.AddScoped<IIdentityEventBus, AwsIdentityEventBus>();
+            services.AddEventBus(configure =>
+            {
+                configure.Name = configuration["Nuages:EventBus:Name"];
+                configure.Source = configuration["Nuages:EventBus:Source"];
+            });
+            
         }
         else
         {
@@ -44,6 +48,19 @@ public static class IdentityAWSExtension
         }
     }
 
+    static void AddEventBus(this IServiceCollection services, Action<EventBusOptions> configure)
+    {
+        services.Configure(configure);
+        services.AddScoped<IIdentityEventBus, AwsIdentityEventBus>();
+        services.AddAWSService<IAmazonEventBridge>();
+    }
+    
+    public class EventBusOptions
+    {
+        public string? Name { get; set; }
+        public string? Source { get; set; }    
+    }
+    
     public static void LoadAWSConfiguration(this IConfigurationBuilder configBuilder, ConfigurationManager configManager)
     {
         Console.WriteLine("LoadAWSConfiguration");
