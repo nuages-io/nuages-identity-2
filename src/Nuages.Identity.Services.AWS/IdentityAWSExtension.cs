@@ -2,6 +2,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Amazon.EventBridge;
+using Amazon.Runtime;
 using Nuages.AWS.Secrets;
 using Nuages.Identity.AWS.Sender;
 using Nuages.Identity.Services;
@@ -16,11 +17,18 @@ public static class IdentityAWSExtension
         if (configuration.GetValue<bool>("Nuages:UseAWS"))
         {
             Console.WriteLine("AWS Host is Enabled");
+
+            var awsOption = configuration.GetAWSOptions();
             
             //Add options from Configuration if available
             //https://docs.aws.amazon.com/sdk-for-net/v3/developer-guide/net-dg-config-netcore.html
-            services.AddDefaultAWSOptions(configuration.GetAWSOptions());
-    
+           
+            var environmentVariable = Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID");
+            if (!string.IsNullOrEmpty(environmentVariable))
+                awsOption.Credentials = new EnvironmentVariablesAWSCredentials();
+            
+            services.AddDefaultAWSOptions(awsOption);
+            
             //Save Data Protection key to AWS SM Paramtere Store
             services.AddDataProtection()
                 .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
