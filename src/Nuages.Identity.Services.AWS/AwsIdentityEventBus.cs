@@ -10,11 +10,13 @@ public class AwsIdentityEventBus : IIdentityEventBus
 {
     private readonly IAmazonEventBridge _eventBridge;
     private readonly ILogger<AwsIdentityEventBus> _logger;
+    private readonly IConfiguration _configuration;
 
-    public AwsIdentityEventBus(IAmazonEventBridge eventBridge, ILogger<AwsIdentityEventBus> logger)
+    public AwsIdentityEventBus(IAmazonEventBridge eventBridge, ILogger<AwsIdentityEventBus> logger, IConfiguration configuration)
     {
         _eventBridge = eventBridge;
         _logger = logger;
+        _configuration = configuration;
     }
     
     public async Task PutEvent(IdentityEvents eventName, object detail)
@@ -27,8 +29,8 @@ public class AwsIdentityEventBus : IIdentityEventBus
                 {
                     Detail = JsonSerializer.Serialize(detail),
                     DetailType = eventName.ToString(),
-                    EventBusName = "nuages-identity-events",
-                    Source = "nuages.identity"
+                    EventBusName = _configuration["Nuages:EventBus:Name"],
+                    Source = _configuration["Nuages:EventBus:Source"]
                 }
             }
         });
