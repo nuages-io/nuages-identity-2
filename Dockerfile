@@ -25,9 +25,13 @@ RUN dotnet build Nuages.Identity.UI.csproj -c Release -o /app/build --framework 
 FROM build AS publish
 RUN dotnet publish  Nuages.Identity.UI.csproj --configuration Release --framework net7.0 --self-contained false /p:GenerateRuntimeConfigurationFiles=true --runtime linux-x64 -o /app/publish
 
+RUN dotnet dev-certs https -ep aspnetapp.pfx -p TestPassword
+
 FROM base AS final
 
 COPY --from=publish /app/publish .
 COPY Readme.md *.pfx ./
+
+
 
 ENTRYPOINT ["dotnet", "Nuages.Identity.UI.dll"]
