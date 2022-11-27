@@ -388,6 +388,15 @@ Only string values are supported.
 
 ---
 
+### Restrictions 
+
+Some restrictions apply compare to the default ASP.NET identity implementation.
+
+1. A phone number cannot be used as the primary 2FA method. It can only be used as a fallback mechanism.
+2. It is not possible to require a verified phone number to login
+3. User's email cannot be different from the username if the username is an email.
+4. Email must be unique system wide
+
 ### Dependencies
 
 - AWS services are disabled by default. See next section for additional information.
@@ -416,5 +425,6 @@ Only string values are supported.
 - Simple Notification Service (SNS)
 - Secret Manager
 - EventBridge (optional)
+- ElastiCache (REDIS) (optional)
 - HtmlAgilityPack https://html-agility-pack.net/ (Optional, required by email template loader)
 
