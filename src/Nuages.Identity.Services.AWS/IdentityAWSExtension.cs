@@ -34,13 +34,17 @@ public static class IdentityAWSExtension
                 .PersistKeysToAWSSystemsManager("Nuages.Identity.UI/DataProtection");
         
             services.AddAWSSender(templateFileName, initializeTemplate);
-            
-            services.AddEventBus(configure =>
+
+            var eventBusName = configuration["Nuages:EventBus:Name"];
+
+            if (!string.IsNullOrEmpty(eventBusName))
             {
-                configure.Name = configuration["Nuages:EventBus:Name"];
-                configure.Source = configuration["Nuages:EventBus:Source"];
-            });
-            
+                services.AddEventBus(configure =>
+                {
+                    configure.Name = configuration["Nuages:EventBus:Name"];
+                    configure.Source = configuration["Nuages:EventBus:Source"] ?? "nuages.identity";
+                });
+            }
         }
         else
         {
