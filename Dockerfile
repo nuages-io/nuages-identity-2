@@ -30,4 +30,5 @@ FROM base AS final
 COPY --from=publish /app/publish .
 COPY Readme.md *.pfx ./
 
+
 ENTRYPOINT ["dotnet", "Nuages.Identity.UI.dll"]

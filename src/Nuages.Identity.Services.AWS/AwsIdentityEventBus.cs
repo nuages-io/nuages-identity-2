@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Amazon.EventBridge;
 using Amazon.EventBridge.Model;
+using Microsoft.Extensions.Options;
 using Nuages.Identity.Services;
 
 namespace Nuages.Identity.AWS;
@@ -9,12 +10,14 @@ namespace Nuages.Identity.AWS;
 public class AwsIdentityEventBus : IIdentityEventBus
 {
     private readonly IAmazonEventBridge _eventBridge;
-    private readonly ILogger<AwsIdentityEventBus> _eventBus;
+    private readonly ILogger<AwsIdentityEventBus> _logger;
+    private readonly IdentityAWSExtension.EventBusOptions _eventBuOptions;
 
-    public AwsIdentityEventBus(IAmazonEventBridge eventBridge, ILogger<AwsIdentityEventBus> eventBus)
+    public AwsIdentityEventBus(IAmazonEventBridge eventBridge, ILogger<AwsIdentityEventBus> logger, IOptions<IdentityAWSExtension.EventBusOptions> eventBuOptions)
     {
         _eventBridge = eventBridge;
-        _eventBus = eventBus;
+        _logger = logger;
+        _eventBuOptions = eventBuOptions.Value;
     }
     
     public async Task PutEvent(IdentityEvents eventName, object detail)
@@ -27,12 +30,12 @@ public class AwsIdentityEventBus : IIdentityEventBus
                 {
                     Detail = JsonSerializer.Serialize(detail),
                     DetailType = eventName.ToString(),
-                    EventBusName = "nuages-identity-events",
-                    Source = "nuages.identity"
+                    EventBusName = _eventBuOptions.Name,
+                    Source =_eventBuOptions.Source
                 }
             }
         });
         
-        _eventBus.LogInformation("EVENT BRIDGE => OnLogin :" + res.HttpStatusCode + " failed = " + res.FailedEntryCount);
+        _logger.LogInformation("EVENT BRIDGE => OnLogin :" + res.HttpStatusCode + " failed = " + res.FailedEntryCount);
     }
 }
