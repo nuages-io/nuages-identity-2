@@ -4,7 +4,7 @@
 
 ### What is Nuages Identity
 
-Nuages Identity is an ASP.NET Core application implementing ASP.NET Identity. The main goal is to provide a production-ready solution, not just startup sample  project.
+Nuages Identity is an ASP.NET Core 7 application implementing ASP.NET Identity. The main goal is to provide a production-ready solution, not just a startup sample  project.
 
 Try it now!  https://identity.nuages.org 
 
@@ -12,7 +12,7 @@ Try it now!  https://identity.nuages.org
 
 ### What is included?
 
-- Ready to use as-is
+- Ready to use as-is with .NET 7 support
 - Multi Language support (English and french included) https://github.com/nuages-io/nuages-localization
 - Implement OpenIddict (client credential, device, authorization code, password flows) https://github.com/openiddict/openiddict-core
 - Implement Fido2 as 2FA method https://github.com/passwordless-lib/fido2-net-lib
@@ -55,7 +55,7 @@ Those settings can be changed using standard configuration mechanism.
 
 From root directory,
 
-``` sh
+``` shell
 cd src/Nuages.Identity.UI
 dotnet run
 ```
@@ -73,7 +73,17 @@ docker run -it --rm -p 8003:80 --env-file ./env.list --name nuage-identity nuage
 
 Application will be available at http://localhost:8003 (no HTTPS)
 
-Note: env.list must include environment variables required to run the app (see Configuratio below)
+Note: env.list must include environment variables required to run the app (see Configuration below)
+
+## Deployment
+
+The application can be deployed using standard ASP.NET Core mechanism.  
+
+The sample site https://identity.nuages.org is deployed on AWS with ECS using the following CDK project.
+
+https://github.com/nuages-io/nuages-deploy-ecs-cdk
+
+
 
 ## Configuration
 
@@ -104,6 +114,22 @@ Configuration is done using the standard Configuration system. You may want to u
 - **Nuages\__Data__ConnectionString**: Your database connection string
 - **Nuages\__Data__Redis**: Optional Redis connection string. If provided, it will be used as the distributed cache mechanism (IDistributedCache).
 
+IMPORTANT! Initial database migration is required for SqlServer and MySql.
+
+- Create a appsettings.mysql.json or appsettings.sqlserver.json file in either Nuages.Identity.Storage.MySql or Nuages.Identity.Storage.SqlServer depending on your database choice. 
+- Add the connection string the file 
+
+````json
+{
+    "ConnectionString" : "server=localhost;user=yourUser;password=yourPassword;database=identity"
+}
+````
+
+- Run the following command to create the database
+
+```
+ dotnet ef database update
+```
 
 
 #### Identity options
