@@ -290,7 +290,36 @@ See https://github.com/nuages-io/nuages-localization for more localization infor
 
 ## Configuration with AWS
 
+#### EventBridge Options
 
+```json
+{
+  "Nuages":
+  {
+   "EventBus" :
+      {
+        "Source" : null,
+        "Name" : null
+      }
+  }
+}
+
+```
+
+#### SES Options
+
+```json
+{
+  "Nuages":
+  {
+    "MessageService": {
+      "SendFromEmail": "youremail@yourdomain.com",
+      "DefaultCulture": "en"
+    }
+  }
+}
+
+```
 
 #### AWS System Manager options
 
@@ -386,5 +415,6 @@ Only string values are supported.
 - Simple Email Service (SES)
 - Simple Notification Service (SNS)
 - Secret Manager
+- EventBridge (optional)
 - HtmlAgilityPack https://html-agility-pack.net/ (Optional, required by email template loader)
 
