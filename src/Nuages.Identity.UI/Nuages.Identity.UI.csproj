@@ -4,6 +4,7 @@
         <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>  
         <Nullable>enable</Nullable>
         <ImplicitUsings>true</ImplicitUsings>
+        <PublishAot>true</PublishAot>
     </PropertyGroup>
     <Target Name="Tailwind" BeforeTargets="Build">
         <Exec Command="npm run css:build" />
