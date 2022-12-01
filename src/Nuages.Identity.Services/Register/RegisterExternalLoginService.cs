@@ -130,8 +130,7 @@ public class RegisterExternalLoginService : IRegisterExternalLoginService
             });
 
         /* PATH for unit test*/
-        if (info.LoginProvider == "loginProvider" && info.ProviderKey == "providerKey" &&
-            info.ProviderDisplayName == "displayName")
+        if (info is { LoginProvider: "loginProvider", ProviderKey: "providerKey", ProviderDisplayName: "displayName" })
             return IdentityResult.Success;
 
 

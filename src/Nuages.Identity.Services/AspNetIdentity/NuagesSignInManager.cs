@@ -57,7 +57,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         }
         else
         {
-            if (!res.IsLockedOut && !res.IsNotAllowed && !res.RequiresTwoFactor)
+            if (res is { IsLockedOut: false, IsNotAllowed: false, RequiresTwoFactor: false })
             {
                 user.LastFailedLoginReason = FailedLoginReason.UserNameOrPasswordInvalid;
                 var updateRes = await UserManager.UpdateAsync(user);

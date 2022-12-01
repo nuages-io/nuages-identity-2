@@ -167,7 +167,7 @@ public class MFAService : IMFAService
         }
 
         if (string.IsNullOrEmpty(key))
-            throw new ArgumentNullException(nameof(key));
+            throw new Exception("key must be provided");
 
         var email = await _userManager.GetEmailAsync(user);
 

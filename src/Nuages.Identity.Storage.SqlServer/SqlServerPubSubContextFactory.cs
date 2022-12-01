@@ -22,9 +22,9 @@ public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<NuagesI
         var optionsBuilder = new DbContextOptionsBuilder<NuagesIdentityDbContext>();
 
         var connectionString =  configuration["ConnectionString"];
-        
+
         if (string.IsNullOrEmpty(connectionString))
-            throw new ArgumentNullException(nameof(connectionString));
+            throw new Exception("connectionString mus be provided");
         
         optionsBuilder
             .UseSqlServer(connectionString, b => b.MigrationsAssembly("Nuages.Identity.Storage.SqlServer"));

@@ -52,7 +52,7 @@ public static class IdentityAWSExtension
         }
     }
 
-    static void AddEventBus(this IServiceCollection services, Action<EventBusOptions> configure)
+    private static void AddEventBus(this IServiceCollection services, Action<EventBusOptions> configure)
     {
         services.Configure(configure);
         services.AddScoped<IIdentityEventBus, AwsIdentityEventBus>();
