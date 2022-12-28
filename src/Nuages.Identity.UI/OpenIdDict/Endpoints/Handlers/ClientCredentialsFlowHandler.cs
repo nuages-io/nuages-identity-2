@@ -51,11 +51,11 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
                 throw new Exception("Unabel to get client name");
 
             // Use the client_id as the subject identifier.
-            identity.AddClaim(OpenIddictConstants.Claims.Subject, clientId,
-                OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken);
+            identity.AddClaim(OpenIddictConstants.Claims.Subject, clientId/*,
+                OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken*/);
 
-            identity.AddClaim(OpenIddictConstants.Claims.Name, name,
-                OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken);
+            identity.AddClaim(OpenIddictConstants.Claims.Name, name/*,
+                OpenIddictConstants.Destinations.AccessToken, OpenIddictConstants.Destinations.IdentityToken*/);
 
             // Note: In the original OAuth 2.0 specification, the client credentials grant
             // doesn't return an identity token, which is an OpenID Connect concept.

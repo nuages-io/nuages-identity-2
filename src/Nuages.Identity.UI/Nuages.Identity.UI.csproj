@@ -9,42 +9,42 @@
         <Exec Command="npm run css:build" />
     </Target>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="[6.0.7]">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="[6.0.7]" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.1" />
         <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="[6.0.7]" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="[6.0.7]" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="[6.0.7]" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.1" />
         
     </ItemGroup>    
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="7.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="7.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.1" />
         <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="7.0.0" />
-        <PackageReference Include="Octokit" Version="4.0.1" />
+        <PackageReference Include="Octokit" Version="4.0.3" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="OpenIddict.AspNetCore" Version="3.1.1" />
-        <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="3.1.1" />
-        <PackageReference Include="OpenIddict.MongoDb" Version="3.1.1" />
-        <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.5" />
-        <PackageReference Include="NLog" Version="5.0.5" />         
+        <PackageReference Include="OpenIddict.AspNetCore" Version="4.0.0" />
+        <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="4.0.0" />
+        <PackageReference Include="OpenIddict.MongoDb" Version="4.0.0" />
+        <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.0" />
+        <PackageReference Include="NLog" Version="5.1.0" />         
         <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.372" />
-        <PackageReference Include="NSwag.AspNetCore" Version="13.17.0" />
+        <PackageReference Include="NSwag.AspNetCore" Version="13.18.2" />
         <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
   
     <ItemGroup>
-        <PackageReference Include="Nuages.Web" Version="1.3.19" />
+        <PackageReference Include="Nuages.Web" Version="1.3.21" />
         <PackageReference Include="Nuages.Localization" Version="1.4.6" />       
-        <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="1.1.0" />
+        <PackageReference Include="Nuages.AspNetIdentity.Stores.Mongo" Version="1.1.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Nuages.Identity.Services.AWS\Nuages.Identity.Services.AWS.csproj" />
