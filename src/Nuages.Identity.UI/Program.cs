@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
@@ -24,6 +25,23 @@ configBuilder.AddJsonFileTranslation("/locales/en-CA.json");
 configBuilder.AddInMemoryCollection(ConfigurationOverrides);
 
 var config = configBuilder.Build();
+
+var useCert = config.GetValue<bool>("Nuages:Certificate:Enabled");
+if (useCert)
+{
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ConfigureHttpsDefaults(httpsOptions =>
+        {
+            var certPath = Path.Combine(builder.Environment.ContentRootPath, "certs/cert.pem");
+            var keyPath = Path.Combine(builder.Environment.ContentRootPath, "certs/key.pem");
+            httpsOptions.ServerCertificate = X509Certificate2.CreateFromPemFile(certPath, 
+                keyPath);
+        });
+    });
+}
+
+
 
 //Setup NLog, load configuration from IConfiguration
 
