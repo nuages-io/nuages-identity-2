@@ -67,10 +67,10 @@
             <Link>templates.json</Link>
         </Content>
         <Content Include="certs\cert.pem" CopyToOutputDirectory="Always">
-            <Link>templates.json</Link>
+            <Link>certs\cert.pem</Link>
         </Content>
         <Content Include="certs\key.pem" CopyToOutputDirectory="Always">
-            <Link>templates.json</Link>
+            <Link>certs\key.pem</Link>
         </Content>
     </ItemGroup>
    

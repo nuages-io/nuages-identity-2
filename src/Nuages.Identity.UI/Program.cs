@@ -33,8 +33,8 @@ if (useCert)
     {
         options.ConfigureHttpsDefaults(httpsOptions =>
         {
-            var certPath = Path.Combine(builder.Environment.ContentRootPath, "certs/cert.pem");
-            var keyPath = Path.Combine(builder.Environment.ContentRootPath, "certs/key.pem");
+            var certPath = Path.Combine(AppContext.BaseDirectory, "certs/cert.pem");
+            var keyPath = Path.Combine(AppContext.BaseDirectory, "certs/key.pem");
             httpsOptions.ServerCertificate = X509Certificate2.CreateFromPemFile(certPath, 
                 keyPath);
         });
