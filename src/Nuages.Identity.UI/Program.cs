@@ -163,7 +163,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
-var useCookiePolicy = config.GetValue<bool>("Nuages:UseCookiePolicy");
+var useCookiePolicy = config.GetValue<bool>("Nuages.");
 if (useCookiePolicy)
     app.UseCookiePolicy();
     
