@@ -8,7 +8,8 @@ public class NuagesIdentityOptions
 
     public string Authority { get; set; } = string.Empty;
     public string[]? Audiences { get; set; }
-
+    public bool ValidateAudience { get; set; }
+    
     public PasswordOptions Password { get; set; } = new();
 
     public bool EnableAutoPasswordExpiration { get; set; }

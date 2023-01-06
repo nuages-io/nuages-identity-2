@@ -19,20 +19,25 @@ public class AudienceValidator : IAudienceValidator
 
     public string? CheckAudience(OpenIddictRequest openIdDictRequest, IPrincipal? principal)
     {
-        if (openIdDictRequest.Audiences != null)
+        if (_options.ValidateAudience)
         {
-            foreach (var audience in openIdDictRequest.Audiences)
-                if (IsValidAudience(audience))
-                    (principal!.Identity as ClaimsIdentity ?? throw new InvalidOperationException())
-                        .AddClaim("aud", audience);
-                else
-                    return "Invalid Audience provided";
+            
+            if (openIdDictRequest.Audiences != null)
+            {
+                foreach (var audience in openIdDictRequest.Audiences)
+                    if (IsValidAudience(audience!))
+                        (principal!.Identity as ClaimsIdentity ?? throw new InvalidOperationException())
+                            .AddClaim("aud", audience!);
+                    else
+                        return "Invalid Audience provided";
+            }
+            else
+            {
+                if (HasAudiences)
+                    return "Audience must be provided";
+            }
         }
-        else
-        {
-            if (HasAudiences)
-                return "Audience must be provided";
-        }
+        
 
         return null;
     }

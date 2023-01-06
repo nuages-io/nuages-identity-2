@@ -116,8 +116,7 @@ public class AuthorizeEndpoint : IAuthorizeEndpoint
         // For that, simply restrict the list of scopes before calling SetScopes.
         principal.SetScopes(openIdRequest.GetScopes());
         principal.SetResources(await _scopeManager.ListResourcesAsync(principal.GetScopes()).ToListAsync());
-        principal.SetAudiences(openIdRequest.Audiences);
-        
+
         // Automatically create a permanent authorization 
         var authorization = authorizations.LastOrDefault() ?? await _authorizationManager.CreateAsync(
             principal,

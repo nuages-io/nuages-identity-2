@@ -1,6 +1,7 @@
 using Amazon.SimpleEmailV2.Model;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -12,13 +13,15 @@ public class PasswordFlowHandler : IPasswordFlowHandler
     private readonly IAudienceValidator _audienceValidator;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
+    private readonly NuagesIdentityOptions _options;
 
     public PasswordFlowHandler(NuagesSignInManager signInManager, NuagesUserManager userManager,
-        IAudienceValidator audienceValidator)
+        IAudienceValidator audienceValidator, IOptions<NuagesIdentityOptions> options)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _audienceValidator = audienceValidator;
+        _options = options.Value;
     }
 
     public async Task<IActionResult> ProcessPasswordFlow(OpenIddictRequest request)
@@ -58,6 +61,7 @@ public class PasswordFlowHandler : IPasswordFlowHandler
                 OpenIddictConstants.Scopes.Roles
             }.Intersect(request.GetScopes()));
 
+            
             var error = _audienceValidator.CheckAudience(request, principal);
             if (!string.IsNullOrEmpty(error))
             {
@@ -70,7 +74,21 @@ public class PasswordFlowHandler : IPasswordFlowHandler
                 return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
 
-            foreach (var claim in principal.Claims)
+            if (_options.Audiences != null)
+            {
+                if (request.Audiences != null && request.Audiences.Any())
+                {
+                    principal.SetAudiences(_options.Audiences.Intersect(request.Audiences).Select(v =>v!));
+                }
+                else
+                {
+                    principal.SetAudiences(_options.Audiences);
+                }
+            }
+            
+            
+            
+;            foreach (var claim in principal.Claims)
                 claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
 
             return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);

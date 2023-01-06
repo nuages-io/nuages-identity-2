@@ -1,7 +1,9 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
 
@@ -12,14 +14,16 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
     private readonly IOpenIddictApplicationManager _applicationManager;
     private readonly IAudienceValidator _audienceValidator;
     private readonly IOpenIddictScopeManager _scopeManager;
+    private readonly NuagesIdentityOptions _options;
 
     public ClientCredentialsFlowHandler(IOpenIddictApplicationManager applicationManager,
         IOpenIddictScopeManager scopeManager,
-        IAudienceValidator audienceValidator)
+        IAudienceValidator audienceValidator, IOptions<NuagesIdentityOptions> options)
     {
         _applicationManager = applicationManager;
         _scopeManager = scopeManager;
         _audienceValidator = audienceValidator;
+        _options = options.Value;
     }
 
     public async Task<IActionResult> ProcessClientCredentialsFlow(
@@ -82,7 +86,19 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
                 return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
 
-            foreach (var claim in principal.Claims)
+            if (principal != null && _options.Audiences != null)
+            {
+                if (openIdDictRequest.Audiences != null && openIdDictRequest.Audiences.Any())
+                {
+                    principal.SetAudiences(_options.Audiences.Intersect(openIdDictRequest.Audiences).Select(v => v!));
+                }
+                else
+                {
+                    principal.SetAudiences(_options.Audiences);
+                }
+            }
+            
+            foreach (var claim in principal!.Claims)
             {
                 claim.SetDestinations(ClaimsDestinations.GetDestinations(claim));
             }

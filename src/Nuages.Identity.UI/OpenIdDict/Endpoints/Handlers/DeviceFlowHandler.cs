@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -9,15 +10,17 @@ namespace Nuages.Identity.UI.OpenIdDict.Endpoints.Handlers;
 public class DeviceFlowHandler : IDeviceFlowHandler
 {
     private readonly IHttpContextAccessor _contextAccessor;
+    private readonly NuagesIdentityOptions _options;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
 
     public DeviceFlowHandler(NuagesUserManager userManager, NuagesSignInManager signInManager,
-        IHttpContextAccessor contextAccessor)
+        IHttpContextAccessor contextAccessor, IOptions<NuagesIdentityOptions> options)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _contextAccessor = contextAccessor;
+        _options = options.Value;
     }
 
     public async Task<IActionResult> ProcessDeviceFlow(OpenIddictRequest openIdDictRequest)
@@ -62,8 +65,20 @@ public class DeviceFlowHandler : IDeviceFlowHandler
             foreach (var claim in principal?.Claims!)
                 claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
 
+            if (principal != null && _options.Audiences != null)
+            {
+                if (openIdDictRequest.Audiences != null && openIdDictRequest.Audiences.Any())
+                {
+                    principal.SetAudiences(_options.Audiences.Intersect(openIdDictRequest.Audiences).Select(v => v!));
+                }
+                else
+                {
+                    principal.SetAudiences(_options.Audiences);
+                }
+            }
+            
             // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
-            return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
+            return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal!);
         }
 
         throw new Exception("Wrong grantType");
