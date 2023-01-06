@@ -47,7 +47,7 @@ public class PasswordFlowHandler : IPasswordFlowHandler
             var user = await _userManager.FindByNameAsync(request.Username!);
             if (user == null)
                 throw new NotFoundException("User not found");
-            
+
             // Create a new ClaimsPrincipal containing the claims that
             // will be used to create an id_token, a token or a code.
             var principal = await _signInManager.CreateUserPrincipalAsync(user);
@@ -61,7 +61,7 @@ public class PasswordFlowHandler : IPasswordFlowHandler
                 OpenIddictConstants.Scopes.Roles
             }.Intersect(request.GetScopes()));
 
-            
+
             var error = _audienceValidator.CheckAudience(request, principal);
             if (!string.IsNullOrEmpty(error))
             {
@@ -78,7 +78,7 @@ public class PasswordFlowHandler : IPasswordFlowHandler
             {
                 if (request.Audiences != null && request.Audiences.Any())
                 {
-                    principal.SetAudiences(_options.Audiences.Intersect(request.Audiences).Select(v =>v!));
+                    principal.SetAudiences(_options.Audiences.Intersect(request.Audiences).Select(v => v!));
                 }
                 else
                 {
@@ -86,9 +86,7 @@ public class PasswordFlowHandler : IPasswordFlowHandler
                 }
             }
             
-            
-            
-;            foreach (var claim in principal.Claims)
+            foreach (var claim in principal.Claims)
                 claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
 
             return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);

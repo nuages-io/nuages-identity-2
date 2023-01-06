@@ -65,7 +65,7 @@ public class DeviceFlowHandler : IDeviceFlowHandler
             foreach (var claim in principal?.Claims!)
                 claim.SetDestinations(ClaimsDestinations.GetDestinations(claim, principal));
 
-            if (principal != null && _options.Audiences != null)
+            if (_options.Audiences != null)
             {
                 if (openIdDictRequest.Audiences != null && openIdDictRequest.Audiences.Any())
                 {
@@ -78,7 +78,7 @@ public class DeviceFlowHandler : IDeviceFlowHandler
             }
             
             // Returning a SignInResult will ask OpenIddict to issue the appropriate access/identity tokens.
-            return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal!);
+            return new SignInResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, principal);
         }
 
         throw new Exception("Wrong grantType");

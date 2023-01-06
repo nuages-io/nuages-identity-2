@@ -35,7 +35,7 @@ public class EmailModel : PageModel
         try
         {
             var user = await _userManager.FindByIdAsync(User.Sub()!);
-            Email = user.Email;
+            Email = user!.Email;
             EmailVerified = user.EmailConfirmed;
 
             return Page();

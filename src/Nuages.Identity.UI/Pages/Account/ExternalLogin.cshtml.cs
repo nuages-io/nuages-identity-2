@@ -115,7 +115,7 @@ public class ExternalLoginModel : PageModel
             {
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email);
 
-                var user = await _userManager.FindByEmailAsync(Email);
+                var user = await _userManager.FindByEmailAsync(Email!);
                 if (user != null)
                 {
                     if (result.IsNotAllowed)

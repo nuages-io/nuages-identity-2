@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Nuages.Identity.Services.AspNetIdentity;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
@@ -13,17 +12,15 @@ public class AuthorizationCodeFlowHandler : IAuthorizationCodeFlowHandler
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly NuagesSignInManager _signInManager;
     private readonly NuagesUserManager _userManager;
-    private readonly NuagesIdentityOptions _options;
 
     public AuthorizationCodeFlowHandler(NuagesUserManager userManager, NuagesSignInManager signInManager,
         IAudienceValidator audienceValidator,
-        IHttpContextAccessor contextAccessor, IOptions<NuagesIdentityOptions> options)
+        IHttpContextAccessor contextAccessor)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _audienceValidator = audienceValidator;
         _contextAccessor = contextAccessor;
-        _options = options.Value;
     }
 
     public async Task<IActionResult> ProcessAuthorizationCodeFlow(OpenIddictRequest openIdDictRequest)
@@ -72,18 +69,6 @@ public class AuthorizationCodeFlowHandler : IAuthorizationCodeFlowHandler
             });
         
             return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
-        }
-        
-        if (principal != null && _options.Audiences != null)
-        {
-            if (openIdDictRequest.Audiences != null && openIdDictRequest.Audiences.Any())
-            {
-                principal.SetAudiences(_options.Audiences.Intersect(openIdDictRequest.Audiences).Select(v => v!));
-            }
-            else
-            {
-                principal.SetAudiences(_options.Audiences.Select(v => v!));
-            }
         }
 
         foreach (var claim in principal!.Claims)

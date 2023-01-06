@@ -50,7 +50,6 @@ public class TokenEndpoint : ITokenEndpoint
                 return await _codeFlowHandler.ProcessAuthorizationCodeFlow(request);
             }
         }
-
         throw new InvalidOperationException("The specified grant type lol is not supported.");
     }
 }
@@ -59,3 +58,4 @@ public interface ITokenEndpoint
 {
     Task<IActionResult> Exchange();
 }
+

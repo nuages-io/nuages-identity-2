@@ -86,7 +86,7 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
                 return new ForbidResult(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, properties);
             }
 
-            if (principal != null && _options.Audiences != null)
+            if (_options.Audiences != null)
             {
                 if (openIdDictRequest.Audiences != null && openIdDictRequest.Audiences.Any())
                 {
@@ -98,7 +98,7 @@ public class ClientCredentialsFlowHandler : IClientCredentialsFlowHandler
                 }
             }
             
-            foreach (var claim in principal!.Claims)
+            foreach (var claim in principal.Claims)
             {
                 claim.SetDestinations(ClaimsDestinations.GetDestinations(claim));
             }
