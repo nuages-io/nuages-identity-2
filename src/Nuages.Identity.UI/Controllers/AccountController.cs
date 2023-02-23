@@ -70,7 +70,7 @@ public class AccountController : Controller
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
-                $"Initiate login : ID = {id} {model.UserNameOrEmail} RememberMe = {model.RememberMe} RecaptchaToken = {recaptchaToken}");
+                "Initiate login : ID = {Id} {UserNameOrEmail} RememberMe = {RememberMe} RecaptchaToken = {RecaptchaToken}",id, model.UserNameOrEmail, model.RememberMe, recaptchaToken);
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
@@ -84,13 +84,13 @@ public class AccountController : Controller
             var res = await _loginService.LoginAsync(model);
 
             _logger.LogInformation(
-                $"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+                "Login Result : ID = {Id} Success = {Success} Result = {Result} Reason = {Reason} Message = {Message}",id,res.Success,res.Result,res.Reason,res.Message);
 
             return res;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new LoginResultModel
             {
@@ -111,7 +111,7 @@ public class AccountController : Controller
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
-                $"Initiate login 2FA : ID = {id} {model.Code} RememberMe = {model.RememberMe} RecaptchaToken = {recaptchaToken}");
+                "Initiate login 2FA : ID = {Id} {Code} RememberMe = {RememberMe} RecaptchaToken = {RecaptchaToken}",id, model.Code, model.RememberMe, recaptchaToken);
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
@@ -125,13 +125,13 @@ public class AccountController : Controller
             var res = await _loginService.Login2FAAsync(model);
 
             _logger.LogInformation(
-                $"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+                "Login Result : ID = {Id} Success = {Success} Result = {Result} Reason = {Reason} Message = {Message}",id,res.Success, res.Result,res.Reason,res.Message);
 
             return res;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new LoginResultModel
             {
@@ -152,7 +152,7 @@ public class AccountController : Controller
             var id = Guid.NewGuid().ToString();
 
             _logger.LogInformation(
-                $"Initiate login Recovery Code : ID = {id} {model.Code} RecaptchaToken = {recaptchaToken}");
+                "Initiate login Recovery Code : ID = {Id} {Code} RecaptchaToken = {RecaptchaToken}",id,model.Code, recaptchaToken);
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
@@ -166,13 +166,13 @@ public class AccountController : Controller
             var res = await _loginService.LoginRecoveryCodeAsync(model);
 
             _logger.LogInformation(
-                $"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+                "Login Result : ID = {Id} Success = {Success} Result = {Result} Reason = {Reason} Message = {Message}",id,res.Success,res.Result,res.Reason,res.Message);
 
             return res;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new LoginResultModel
             {
@@ -199,7 +199,7 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new RegisterResultModel
             {
@@ -227,7 +227,7 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new RegisterExternalLoginResultModel
             {
@@ -254,7 +254,7 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new ForgotPasswordResultModel
             {
@@ -284,7 +284,7 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new SendEmailConfirmationResultModel
             {
@@ -311,7 +311,7 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new ResetPasswordResultModel
             {
@@ -338,7 +338,7 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new StartMagicLinkResultModel
             {
@@ -365,7 +365,7 @@ public class AccountController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new SendSMSCodeResultModel
             {
@@ -386,7 +386,7 @@ public class AccountController : Controller
         {
             var id = Guid.NewGuid().ToString();
 
-            _logger.LogInformation($"Initiate login SMS : ID = {id} {model.Code} RecaptchaToken = {recaptchaToken}");
+            _logger.LogInformation("Initiate login SMS : ID = {Id} {Code} RecaptchaToken = {RecaptchaToken}",id,model.Code,recaptchaToken);
 
             if (!await _recaptchaValidator.ValidateAsync(recaptchaToken))
                 return new LoginResultModel
@@ -400,13 +400,13 @@ public class AccountController : Controller
             var res = await _loginService.LoginSMSAsync(model);
 
             _logger.LogInformation(
-                $"Login Result : ID = {id} Success = {res.Success} Result = {res.Result} Resson = {res.Reason} Message = {res.Message}");
+                "Login Result : ID = {Id} Success = {Success} Result = {Result} Reason = {Reason} Message = {Message}",id,res.Success,res.Result,res.Reason,res.Message);
 
             return res;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new LoginResultModel
             {

@@ -53,7 +53,7 @@ public class ResetPasswordService : IResetPasswordService
            var updateRes = await _userManager.UpdateAsync(user);
             if (!updateRes.Succeeded)
             {
-                _logger.LogError(updateRes.Errors.First().Description);
+                _logger.LogError("{Error}",updateRes.Errors.First().Description);
             }
             
             await _identityEventBus.PutEvent(IdentityEvents.ResetPasswordSuccess, user);

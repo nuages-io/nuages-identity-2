@@ -54,12 +54,12 @@ public class ManageController : Controller
         try
         {
             _logger.LogInformation(
-                $"Initiate ChangePassword : Name = {User.Identity!.Name} {model.CurrentPassword} NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
+                "Initiate ChangePassword : Name = {Name} {CurrentPassword} NewPassword = {NewPassword} NewPasswordConfirm = {NewPasswordConfirm}",User.Identity!.Name,model.CurrentPassword,model.NewPassword,model.NewPasswordConfirm);
 
             var res = await _changePasswordService.ChangePasswordAsync(User.Sub()!, model.CurrentPassword,
                 model.NewPassword, model.NewPasswordConfirm);
 
-            _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
+            _logger.LogInformation("Login Result : Success = {Success} Error = {Error}",res.Success,res.Errors.FirstOrDefault());
 
             if (res.Success)
             {
@@ -72,7 +72,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new ChangePasswordResultModel
             {
@@ -88,18 +88,18 @@ public class ManageController : Controller
         try
         {
             _logger.LogInformation(
-                $"Initiate ChangePassword : Name = {User.Identity!.Name}  NewPassword = {model.NewPassword} NewPasswordConfirm = {model.NewPasswordConfirm}");
+                "Initiate ChangePassword : Name = {Name}  NewPassword = {NewPassword} NewPasswordConfirm = {NewPasswordConfirm}",User.Identity!.Name,model.NewPassword,model.NewPasswordConfirm);
 
             var res = await _changePasswordService.AddPasswordAsync(User.Sub()!, model.NewPassword,
                 model.NewPasswordConfirm);
 
-            _logger.LogInformation($"Login Result : Success = {res.Success} Error = {res.Errors.FirstOrDefault()}");
+            _logger.LogInformation("Login Result : Success = {Success} Error = {Error}",res.Success,res.Errors.FirstOrDefault());
 
             return res;
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new ChangePasswordResultModel
             {
@@ -120,7 +120,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new SendEmailChangeResultModel
             {
@@ -148,7 +148,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new ChangeUserNameResultModel
             {
@@ -169,7 +169,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new DisableMFAResultModel
             {
@@ -197,7 +197,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new MFAResultModel
             {
@@ -225,7 +225,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}",e.Message);
 
             return new ChangePhoneNumberResultModel
             {
@@ -247,7 +247,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new SendSMSVerificationCodeResultModel
             {
@@ -268,7 +268,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new ChangePhoneNumberResultModel
             {
@@ -290,7 +290,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new EmptyResult();
         }
@@ -305,7 +305,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new MFAResultModel
             {
@@ -326,7 +326,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return false;
         }
@@ -341,7 +341,7 @@ public class ManageController : Controller
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             return new SaveProfileResultModel
             {

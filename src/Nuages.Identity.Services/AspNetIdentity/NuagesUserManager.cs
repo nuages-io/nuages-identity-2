@@ -40,7 +40,7 @@ public class NuagesUserManager : UserManager<NuagesApplicationUser<string>>
            var updateRes = await UpdateAsync(user);
            if (!updateRes.Succeeded)
            {
-               Logger.LogError(updateRes.Errors.First().Description);
+               Logger.LogError("{Error}", updateRes.Errors.First().Description);
               return IdentityResult.Failed(updateRes.Errors.ToArray());
            }
         }

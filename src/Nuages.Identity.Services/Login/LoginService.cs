@@ -63,7 +63,7 @@ public class LoginService : ILoginService
                     var updateRes = await _userManager.UpdateAsync(user);
                     if (!updateRes.Succeeded)
                     {
-                        _logger.LogError(updateRes.Errors.First().Description);
+                        _logger.LogError("{Error}",updateRes.Errors.First().Description);
                     }
                 }
                
@@ -123,7 +123,7 @@ public class LoginService : ILoginService
             var updateRes = await _userManager.UpdateAsync(user);
             if (!updateRes.Succeeded)
             {
-                _logger.LogError(updateRes.Errors.First().Description);
+                _logger.LogError("{Error}", updateRes.Errors.First().Description);
             }
             
             await _identityEventBus.PutEvent(IdentityEvents.Login2FASuccess, user);
@@ -138,7 +138,7 @@ public class LoginService : ILoginService
         var updateRes2 = await _userManager.UpdateAsync(user);
         if (!updateRes2.Succeeded)
         {
-            _logger.LogError(updateRes2.Errors.First().Description);
+            _logger.LogError("{Error}",updateRes2.Errors.First().Description);
         }
         
         var resultModel = new LoginResultModel
@@ -179,7 +179,7 @@ public class LoginService : ILoginService
         var updateRes = await _userManager.UpdateAsync(user);
         if (!updateRes.Succeeded)
         {
-            _logger.LogError(updateRes.Errors.First().Description);
+            _logger.LogError("{Error}", updateRes.Errors.First().Description);
         }
         
         var resultModel = new LoginResultModel
@@ -220,7 +220,7 @@ public class LoginService : ILoginService
         var updateRes = await _userManager.UpdateAsync(user);
         if (!updateRes.Succeeded)
         {
-            _logger.LogError(updateRes.Errors.First().Description);
+            _logger.LogError("{Error}", updateRes.Errors.First().Description);
         }
         
         var resultModel = new LoginResultModel

@@ -63,7 +63,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                 var updateRes = await UserManager.UpdateAsync(user);
                 if (!updateRes.Succeeded)
                 {
-                    Logger.LogError(updateRes.Errors.First().Description);
+                    Logger.LogError("{Error}",updateRes.Errors.First().Description);
                     return SignInResult.Failed;
                 }
             }
@@ -81,7 +81,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             var updateRes = await UserManager.UpdateAsync(user);
             if (!updateRes.Succeeded)
             {
-                Logger.LogError(updateRes.Errors.First().Description);
+                Logger.LogError("{Error}", updateRes.Errors.First().Description);
                 return false;
             }
 
@@ -112,7 +112,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             var updateRes = await UserManager.UpdateAsync(user);
             if (!updateRes.Succeeded)
             {
-                Logger.LogError(updateRes.Errors.First().Description);
+                Logger.LogError("{Error}", updateRes.Errors.First().Description);
             }
             
             return false;
@@ -130,7 +130,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             var updateRes = await UserManager.UpdateAsync(user);
             if (!updateRes.Succeeded)
             {
-                Logger.LogError(updateRes.Errors.First().Description);
+                Logger.LogError("{Error}", updateRes.Errors.First().Description);
             }
             
             return false;
@@ -149,7 +149,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
             var updateRes = await UserManager.UpdateAsync(user);
             if (!updateRes.Succeeded)
             {
-                Logger.LogError(updateRes.Errors.First().Description);
+                Logger.LogError("{Error}",updateRes.Errors.First().Description);
                 return  false;
             }
             
@@ -175,7 +175,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                     var updateRes =await UserManager.UpdateAsync(user);
                     if (!updateRes.Succeeded)
                     {
-                        Logger.LogError(updateRes.Errors.First().Description);
+                        Logger.LogError("{Error}", updateRes.Errors.First().Description);
                         return false;
                     }
                     
@@ -203,7 +203,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                 var updateRes = await UserManager.UpdateAsync(user);
                 if (!updateRes.Succeeded)
                 {
-                    Logger.LogError(updateRes.Errors.First().Description);
+                    Logger.LogError("{Error}", updateRes.Errors.First().Description);
                 }
                 
                 return false;
@@ -217,7 +217,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                 var updateRes = await UserManager.UpdateAsync(user);
                 if (!updateRes.Succeeded)
                 {
-                    Logger.LogError(updateRes.Errors.First().Description);
+                    Logger.LogError("{Error}", updateRes.Errors.First().Description);
                     return false;
                 }
                 
@@ -241,7 +241,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         var updateRes = await UserManager.UpdateAsync(user);
         if (!updateRes.Succeeded)
         {
-            Logger.LogError(updateRes.Errors.First().Description);
+            Logger.LogError("{Error}", updateRes.Errors.First().Description);
             return;
         }
         
@@ -255,7 +255,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
         var updateRes = await UserManager.UpdateAsync(user);
         if (!updateRes.Succeeded)
         {
-            Logger.LogError(updateRes.Errors.First().Description);
+            Logger.LogError("{Error}", updateRes.Errors.First().Description);
             return SignInResult.Failed;
         }
         
@@ -315,7 +315,7 @@ public class NuagesSignInManager : SignInManager<NuagesApplicationUser<string>>
                             var updateRes = await UserManager.UpdateAsync(user);
                             if (!updateRes.Succeeded)
                             {
-                                Logger.LogError(updateRes.Errors.First().Description);
+                                Logger.LogError("{Error}", updateRes.Errors.First().Description);
                             }
                         }
                     }
