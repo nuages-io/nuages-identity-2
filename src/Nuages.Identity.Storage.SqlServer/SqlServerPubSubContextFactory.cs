@@ -24,8 +24,8 @@ public class SqlServerPubSubContextFactory : IDesignTimeDbContextFactory<NuagesI
         var connectionString =  configuration["ConnectionString"];
 
         if (string.IsNullOrEmpty(connectionString))
-            throw new Exception("connectionString mus be provided");
-        
+            throw new Exception("ConnectionString must be provided");
+
         optionsBuilder
             .UseSqlServer(connectionString, b => b.MigrationsAssembly("Nuages.Identity.Storage.SqlServer"));
 
