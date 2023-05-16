@@ -87,6 +87,7 @@ public static class NuagesIdentityConfigExtensions
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(NuagesIdentityConstants.EmailNotVerifiedScheme)
             .AddCookie(NuagesIdentityConstants.ResetPasswordScheme)
             .AddCookie(NuagesIdentityConstants.PasswordExpiredScheme)
