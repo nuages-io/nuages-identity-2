@@ -229,7 +229,7 @@ public static class IdentityExtensions
     {
         o.Events.OnCreatingTicket += async context =>
         {
-            if (context.AccessToken is { })
+            if (context.AccessToken is not null)
             {
                 var github = new GitHubClient(new ProductHeaderValue("NuagesIdentity"))
                 {
