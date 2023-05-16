@@ -35,7 +35,7 @@ public class AwsIdentityEventBus : IIdentityEventBus
                 }
             }
         });
-        
-        _logger.LogInformation("EVENT BRIDGE => OnLogin :" + res.HttpStatusCode + " failed = " + res.FailedEntryCount);
+
+        _logger.LogInformation("EVENT BRIDGE => OnLogin :{HttpStatusCode} failed = {Count}", res.HttpStatusCode,res.FailedEntryCount);
     }
 }

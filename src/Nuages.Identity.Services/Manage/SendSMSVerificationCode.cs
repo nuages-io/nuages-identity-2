@@ -45,7 +45,7 @@ public class SendSMSVerificationCodeService : ISendSMSVerificationCodeService
 
         var message = _localizer["changePhoneNumber:smsMessage", code];
 
-        _logger.LogInformation($"Message : {message} No: {phoneNumber}");
+        _logger.LogInformation("Message : {Message} No: {PhoneNumber}",message,phoneNumber);
 
         _sender.SendSms(phoneNumber, message);
 

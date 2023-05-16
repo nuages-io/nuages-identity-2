@@ -29,7 +29,7 @@ public class ErrorModel : PageModel
     {
         var feature = HttpContext.Features.Get<IExceptionHandlerFeature>();
         if (feature != null)
-            _logger.LogError(feature.Error, feature.Error.Message);
+            _logger.LogError(feature.Error, "{Message}", feature.Error.Message);
 
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
     }

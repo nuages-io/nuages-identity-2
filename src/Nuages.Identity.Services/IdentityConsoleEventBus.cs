@@ -15,8 +15,8 @@ public class IdentityConsoleEventBus : IIdentityEventBus
 
     public Task PutEvent(IdentityEvents eventName, object detail)
     {
-        _logger.LogInformation($"Event : {eventName} " + JsonSerializer.Serialize(detail));
-        
+        _logger.LogInformation("Event : {EventName} {Detail}",eventName, JsonSerializer.Serialize(detail));
+
         return Task.CompletedTask;
     }
 }

@@ -66,7 +66,7 @@ public class SMSSendCodeService : ISMSSendCodeService
 
         var message = _localizer["magicLink:message", code, _options.Name];
 
-        _logger.LogInformation($"Message : {message} No: {user.PhoneNumber}");
+        _logger.LogInformation("Message : {Message} No: {PhoneNumber}",message,user.PhoneNumber);
 
         _sender.SendSms(user.PhoneNumber, message);
 

@@ -61,7 +61,7 @@ public class ExternalLoginModel : PageModel
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             throw;
         }
@@ -76,7 +76,7 @@ public class ExternalLoginModel : PageModel
 
             if (remoteError != null)
             {
-                _logger.LogError("External Login Error : " + remoteError);
+                _logger.LogError("External Login Error : {Error}", remoteError);
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
 
@@ -92,11 +92,11 @@ public class ExternalLoginModel : PageModel
             if (result.Succeeded)
             {
                 Console.WriteLine($"returnUrl = {returnUrl}");
-                _logger.LogInformation($"returnUrl = {returnUrl}");
-                
+                _logger.LogInformation("returnUrl = {ReturnUrl}", returnUrl);
+
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity!.Name,
                     info.LoginProvider);
-                
+
                 return Redirect(returnUrl);
             }
 
@@ -108,7 +108,6 @@ public class ExternalLoginModel : PageModel
 
             ReturnUrl = returnUrl;
             ProviderDisplayName = info.ProviderDisplayName;
-
 
             if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email) &&
                 _options.ExternalLoginAutoEnrollIfEmailExists)
@@ -160,7 +159,7 @@ public class ExternalLoginModel : PageModel
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}",e.Message);
 
             throw;
         }

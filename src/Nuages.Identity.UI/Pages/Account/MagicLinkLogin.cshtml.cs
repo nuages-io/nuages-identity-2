@@ -33,7 +33,7 @@ public class MagicLinkLogin : PageModel
         }
         catch (Exception e)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(e, "{Message}", e.Message);
 
             throw;
         }
