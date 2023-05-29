@@ -6,10 +6,6 @@
 
 Nuages Identity is an ASP.NET Core 7 application implementing ASP.NET Identity. The main goal is to provide a production-ready solution, not just a startup sample  project.
 
-Try it now!  https://identity.nuages.org 
-
-
-
 ### What is included?
 
 - Ready to use as-is with .NET 7 support
